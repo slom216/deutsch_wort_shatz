@@ -1,0 +1,13 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Deutsch Wort Shatz</title>
+<!--
+  Static-host fallback (GitHub Pages and similar serve 404.html for unknown paths).
+  The app is a single-page application with real URLs, so redirect back to the root and
+  let the client router resolve the path.
+-->
+<script>
+  sessionStorage.setItem('dws:redirect', location.pathname + location.search + location.hash);
+  location.replace('/');
+</script>
+<p>Loading Deutsch Wort Shatz…</p>

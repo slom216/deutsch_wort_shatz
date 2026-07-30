@@ -1,0 +1,134 @@
+/**
+ * Design tokens (Phase 0 deliverable 16).
+ *
+ * All colour, spacing, type and motion values used by the application resolve to a
+ * token defined here. Components must not hard-code raw values.
+ *
+ * Contrast: every `--color-text*` on its matching `--color-surface*` meets WCAG AA (§30).
+ */
+
+:root {
+  /* ---- palette ---- */
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #eef0f4;
+  --color-border: #d8dce4;
+  --color-border-strong: #b6bcc9;
+
+  --color-text: #16191f;
+  --color-text-muted: #5a6273;
+  --color-text-inverse: #ffffff;
+
+  --color-primary: #2f5bd7;
+  --color-primary-hover: #2648ab;
+  --color-primary-subtle: #e6ecfb;
+  --color-on-primary: #ffffff;
+
+  --color-success: #1c7a4a;
+  --color-success-subtle: #e3f4ea;
+  --color-warning: #8a5a00;
+  --color-warning-subtle: #fdf1dc;
+  --color-danger: #b3261e;
+  --color-danger-subtle: #fce9e8;
+
+  /* CEFR level accents — always paired with a text label, never colour alone (§30). */
+  --color-level-a1: #1c7a4a;
+  --color-level-a2: #2f5bd7;
+  --color-level-b1: #7a3fb8;
+
+  /* ---- spacing scale ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* ---- typography ---- */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- radii, shadow, layout ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(16 20 30 / 8%);
+  --shadow-md: 0 2px 8px rgb(16 20 30 / 10%);
+
+  --sidebar-width: 15rem;
+  --content-max-width: 72rem;
+
+  /* ---- motion (§30: reduced motion honoured below) ---- */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
+
+  --focus-ring: 2px solid var(--color-primary);
+  --focus-ring-offset: 2px;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #12141a;
+    --color-surface: #1a1d25;
+    --color-surface-raised: #222630;
+    --color-surface-sunken: #0e1015;
+    --color-border: #333846;
+    --color-border-strong: #4a5162;
+
+    --color-text: #eef0f5;
+    --color-text-muted: #a5adbf;
+    --color-text-inverse: #12141a;
+
+    --color-primary: #8aa8f5;
+    --color-primary-hover: #a5bcf8;
+    --color-primary-subtle: #1e2740;
+    --color-on-primary: #10131c;
+
+    --color-success: #67d09a;
+    --color-success-subtle: #14291f;
+    --color-warning: #e8b866;
+    --color-warning-subtle: #2d2416;
+    --color-danger: #f19a94;
+    --color-danger-subtle: #2e1817;
+
+    --color-level-a1: #67d09a;
+    --color-level-a2: #8aa8f5;
+    --color-level-b1: #c39ae8;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-md: 0 2px 8px rgb(0 0 0 / 45%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+  }
+}

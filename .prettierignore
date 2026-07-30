@@ -1,0 +1,11 @@
+# Authored by the project owner — never reformatted.
+DEVELOPMENT_INSTRUCTIONS.md
+
+dist
+coverage
+node_modules
+playwright-report
+test-results
+data
+src/content/vocabulary/generated
+package-lock.json

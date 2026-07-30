@@ -1,0 +1,3 @@
+# Netlify-style SPA fallback: the app uses real paths (/learn, /word/:id), so a deep link
+# must serve index.html rather than 404. Harmless on hosts that ignore this file.
+/*  /index.html  200

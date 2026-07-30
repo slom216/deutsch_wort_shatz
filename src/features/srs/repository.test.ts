@@ -1,0 +1,188 @@
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import { introduceEntry, loadAllProgress, loadProgress, recordReview } from './repository';
+import { dueEntries, queueCounts } from './queue';
+import { db, VocabularyLearningDatabase } from '@/features/persistence/db';
+
+const NOW = new Date('2026-04-01T09:00:00.000Z');
+
+const recognitionExercise = {
+  type: 'multipleChoice' as const,
+  isProduction: false,
+  requiresTypedInput: false,
+};
+const productionExercise = {
+  type: 'typedTranslation' as const,
+  isProduction: true,
+  requiresTypedInput: true,
+};
+
+async function answer(
+  entryId: string,
+  correct: boolean,
+  options: Partial<Parameters<typeof recordReview>[0]> = {},
+) {
+  return recordReview({
+    entryId,
+    exercise: recognitionExercise,
+    correct,
+    attempts: 1,
+    revealed: false,
+    hintUsed: false,
+    responseMs: 4_000,
+    errorCategories: [],
+    reviewedAt: NOW,
+    ...options,
+  });
+}
+
+beforeEach(async () => {
+  await db.entryProgress.clear();
+  await db.exerciseHistory.clear();
+});
+
+describe('SRS repository', () => {
+  it('creates a progress record when an entry is introduced', async () => {
+    const created = await introduceEntry('a1-0001-hallo', NOW);
+    expect(created.srs.status).toBe('new');
+    expect(await loadProgress('a1-0001-hallo')).toBeDefined();
+  });
+
+  it('does not overwrite an existing record on re-introduction', async () => {
+    await introduceEntry('a1-0001-hallo', NOW);
+    await answer('a1-0001-hallo', true);
+    const again = await introduceEntry('a1-0001-hallo', NOW);
+    expect(again.totalAttempts).toBe(1);
+  });
+
+  it('grades and schedules a correct answer without asking the learner', async () => {
+    const { grade, progress } = await answer('a1-0001-hallo', true);
+    expect(grade).toBe(2);
+    expect(progress.srs.status).toBe('learning');
+    expect(progress.srs.intervalDays).toBeGreaterThan(0);
+  });
+
+  it('grades a wrong answer as failed and counts a lapse', async () => {
+    const { grade, progress } = await answer('a1-0001-hallo', false);
+    expect(grade).toBe(0);
+    expect(progress.srs.lapses).toBe(1);
+    expect(progress.totalCorrect).toBe(0);
+  });
+
+  it('accumulates error categories for the difficulty model', async () => {
+    await answer('a1-0001-hallo', false, {
+      errorCategories: ['wrongArticle', 'wrongCapitalization'],
+    });
+    await answer('a1-0001-hallo', false, { errorCategories: ['wrongArticle'] });
+
+    const stored = await loadProgress('a1-0001-hallo');
+    expect(stored?.errorCounts).toEqual({ wrongArticle: 2, wrongCapitalization: 1 });
+  });
+
+  it('raises difficulty as the learner keeps failing', async () => {
+    const first = await answer('a1-0001-hallo', true);
+    for (let i = 0; i < 5; i += 1) {
+      await answer('a1-0001-hallo', false, { errorCategories: ['wrongArticle'] });
+    }
+    const last = await loadProgress('a1-0001-hallo');
+    expect(last!.srs.difficulty).toBeGreaterThan(first.progress.srs.difficulty);
+  });
+
+  it('does not count a revealed answer as correct', async () => {
+    const { grade, progress } = await answer('a1-0001-hallo', true, { revealed: true });
+    expect(grade).toBe(0);
+    expect(progress.totalCorrect).toBe(0);
+  });
+
+  it('tracks first-attempt correctness separately', async () => {
+    await answer('a1-0001-hallo', true, { attempts: 2 });
+    const stored = await loadProgress('a1-0001-hallo');
+    expect(stored?.totalCorrect).toBe(1);
+    expect(stored?.firstAttemptCorrect).toBe(0);
+  });
+
+  it('records per-exercise-type performance', async () => {
+    await answer('a1-0001-hallo', true);
+    await answer('a1-0001-hallo', true, { exercise: productionExercise });
+
+    const stored = await loadProgress('a1-0001-hallo');
+    expect(stored?.srs.exercisePerformance.multipleChoice?.attempts).toBe(1);
+    expect(stored?.srs.exercisePerformance.typedTranslation?.attempts).toBe(1);
+  });
+
+  it('rebuilds the due queue from storage, so it survives a refresh', async () => {
+    await answer('a1-0001-hallo', true);
+    await answer('a1-0002-ich', true);
+    await answer('a1-0003-sein', false);
+
+    // A fresh database handle over the same data stands in for a page reload.
+    const reopened = new VocabularyLearningDatabase();
+    await reopened.open();
+    const reloaded = await reopened.entryProgress.toArray();
+    reopened.close();
+
+    expect(reloaded).toHaveLength(3);
+    const later = new Date(NOW.getTime() + 2 * 86_400_000);
+    expect(dueEntries(reloaded, later)).toHaveLength(3);
+  });
+
+  it('reports queue counts against the full vocabulary size', async () => {
+    await answer('a1-0001-hallo', true);
+    const all = await loadAllProgress();
+    const counts = queueCounts(all, 10_000, NOW);
+    expect(counts.newAvailable).toBe(9_999);
+    expect(counts.learning).toBe(1);
+  });
+
+  it('promotes an entry to mastered once every criterion is met', async () => {
+    const entryId = 'a1-0006-der-tag';
+    let at = new Date(NOW);
+
+    // Walk the learning steps, then keep succeeding on typed production until the
+    // interval passes 30 days and difficulty stays low.
+    for (let i = 0; i < 12; i += 1) {
+      const result = await recordReview({
+        entryId,
+        exercise: productionExercise,
+        correct: true,
+        attempts: 1,
+        revealed: false,
+        hintUsed: false,
+        responseMs: 2_000,
+        errorCategories: [],
+        reviewedAt: at,
+      });
+      // Mirror the review into history, which is where mastery evidence is read from.
+      await db.exerciseHistory.put({
+        id: `h-${i}`,
+        entryId,
+        sessionId: 's1',
+        exerciseType: 'typedTranslation',
+        correct: true,
+        firstAttempt: true,
+        revealed: false,
+        hintUsed: false,
+        responseMs: 2_000,
+        grade: result.grade,
+        errorCategories: [],
+        answeredAt: at.toISOString(),
+        xpAwarded: 0,
+      });
+      at = new Date(at.getTime() + result.progress.srs.intervalDays * 86_400_000);
+    }
+
+    const stored = await loadProgress(entryId);
+    expect(stored?.srs.intervalDays).toBeGreaterThanOrEqual(30);
+    expect(stored?.srs.status).toBe('mastered');
+  });
+
+  it('never deletes progress when updating it', async () => {
+    await answer('a1-0001-hallo', true);
+    const before = await loadProgress('a1-0001-hallo');
+    await answer('a1-0001-hallo', false);
+    const after = await loadProgress('a1-0001-hallo');
+
+    expect(after?.introducedAt).toBe(before?.introducedAt);
+    expect(after?.totalAttempts).toBe(2);
+  });
+});

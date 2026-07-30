@@ -1,0 +1,98 @@
+.achievement-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--space-3);
+}
+
+.achievement {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+}
+
+.achievement--unlocked {
+  border-color: var(--color-success);
+  background: var(--color-success-subtle);
+}
+
+.achievement__icon {
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+  color: var(--color-text-muted);
+}
+
+.achievement--unlocked .achievement__icon {
+  color: var(--color-success);
+}
+
+.achievement__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.achievement__name {
+  font-weight: var(--weight-semibold);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.achievement__status {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+}
+
+.achievement--unlocked .achievement__status {
+  color: var(--color-success);
+}
+
+.achievement__description {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.achievement__bar {
+  height: 0.4rem;
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-top: var(--space-1);
+}
+
+.achievement__bar span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+}
+
+/* ---- daily goal + level meters ---- */
+
+.meter {
+  height: 0.6rem;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.meter--goal span {
+  background: var(--color-success);
+}
