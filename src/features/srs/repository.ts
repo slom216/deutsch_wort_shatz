@@ -27,6 +27,14 @@ export async function loadProgress(
   return database.entryProgress.get(entryId);
 }
 
+/**
+ * Quiz score at which an entry counts as mastered.
+ *
+ * Answering correctly first time is +1, getting it wrong is −1, and the score never goes
+ * below zero — so five clean answers master a word, and every slip costs one of them.
+ */
+export const MASTERY_SCORE_TARGET = 5;
+
 /** Creates the progress record for a newly introduced entry (§18). */
 export function createProgress(entryId: string, now: Date): EntryProgress {
   return {
@@ -38,7 +46,18 @@ export function createProgress(entryId: string, now: Date): EntryProgress {
     firstAttemptCorrect: 0,
     hintsUsed: 0,
     errorCounts: {},
+    masteryScore: 0,
+    totalResponseMs: 0,
   };
+}
+
+/** The score after one answer: +1 clean, −1 wrong, floored at 0. */
+export function nextMasteryScore(
+  current: number,
+  outcome: { correct: boolean; attempts: number; revealed: boolean },
+): number {
+  const clean = outcome.correct && outcome.attempts === 1 && !outcome.revealed;
+  return Math.max(0, current + (clean ? 1 : -1));
 }
 
 export async function introduceEntry(
@@ -103,19 +122,26 @@ export async function recordReview(
   }
 
   const totalAttempts = existing.totalAttempts + 1;
+  const totalResponseMs = (existing.totalResponseMs ?? 0) + input.responseMs;
   const withCounters: EntryProgress = {
     ...existing,
     totalAttempts,
+    totalResponseMs,
     totalCorrect: existing.totalCorrect + (input.correct && !input.revealed ? 1 : 0),
     firstAttemptCorrect:
       existing.firstAttemptCorrect +
       (input.correct && input.attempts === 1 && !input.revealed ? 1 : 0),
     hintsUsed: existing.hintsUsed + (input.hintUsed ? 1 : 0),
     errorCounts,
+    masteryScore: nextMasteryScore(existing.masteryScore ?? 0, input),
   };
 
   /* ---- difficulty, then scheduling ---- */
-  const responseTimeRatio = input.responseMs / expectedResponseMs(input.exercise.type);
+  // §21 wants the *mean* response time relative to expectation. Using this one answer
+  // would let a single distracted attempt swing difficulty by up to +0.13, which is
+  // enough to shorten every future interval and to disqualify the entry from mastery.
+  const responseTimeRatio =
+    totalResponseMs / totalAttempts / expectedResponseMs(input.exercise.type);
   const difficulty = computeDifficulty(difficultyInputsFrom(withCounters, responseTimeRatio));
 
   const srs = applyReview(withCounters.srs, {
@@ -170,7 +196,11 @@ export async function recordReview(
     recentGrades: [...evidence.recentGrades, grade],
   });
 
-  if (check.mastered && updated.srs.status === 'review') {
+  // Two independent routes to mastered: the §22 evidence check, and a quiz score of 5.
+  // Keeping both means an entry already mastered under §22 is never demoted by the
+  // arrival of the score, and a word answered cleanly five times counts as known.
+  const scoreMastered = updated.masteryScore >= MASTERY_SCORE_TARGET;
+  if ((check.mastered || scoreMastered) && updated.srs.status === 'review') {
     updated = { ...updated, srs: { ...updated.srs, status: 'mastered' } };
   }
 

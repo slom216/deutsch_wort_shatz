@@ -137,7 +137,6 @@ export function WordOrderingExercise({
   return (
     <div className="exercise">
       <p className="exercise__prompt">{exercise.prompt}</p>
-      {exercise.hint ? <p className="exercise__hint">{exercise.hint}</p> : null}
       <p className="exercise__hint">
         Drag the words, or use the arrow buttons on each word. With the keyboard, press Space to
         pick a word up, then use the arrow keys.

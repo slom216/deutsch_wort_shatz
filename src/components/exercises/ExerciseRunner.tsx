@@ -18,6 +18,10 @@ import './exercises.css';
  * Owns the attempt lifecycle that the automatic grading in §20 depends on:
  * a first wrong answer offers one retry, a second wrong answer locks the exercise, and
  * the learner may reveal the answer at any point (which scores zero, §23).
+ *
+ * The hint is owned here too, and is opt-in. §20 caps a hinted answer at grade 1 and §21
+ * weights hint usage at 10% of difficulty, neither of which means anything if the hint is
+ * always on screen — a hint the learner cannot decline is not a hint.
  */
 
 export interface ExerciseOutcome {
@@ -25,6 +29,7 @@ export interface ExerciseOutcome {
   readonly result: EvaluationResult;
   readonly attempts: number;
   readonly revealed: boolean;
+  readonly hintUsed: boolean;
   readonly responseMs: number;
 }
 
@@ -72,6 +77,7 @@ export function ExerciseRunner({
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const [locked, setLocked] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [hintShown, setHintShown] = useState(false);
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
@@ -79,6 +85,7 @@ export function ExerciseRunner({
     setResult(null);
     setLocked(false);
     setRevealed(false);
+    setHintShown(false);
     startedAt.current = Date.now();
   }, [exercise.id]);
 
@@ -93,10 +100,10 @@ export function ExerciseRunner({
     [attempt, revealed],
   );
 
-  const retry = (): void => {
+  const retry = useCallback((): void => {
     setAttempt((current) => current + 1);
     setResult(null);
-  };
+  }, []);
 
   const reveal = (): void => {
     setRevealed(true);
@@ -109,18 +116,43 @@ export function ExerciseRunner({
     });
   };
 
-  const advance = (): void => {
+  const advance = useCallback((): void => {
     if (!result) return;
     onComplete({
       exercise,
       result: revealed ? { ...result, correct: false } : result,
       attempts: attempt,
       revealed,
+      hintUsed: hintShown,
       responseMs: Date.now() - startedAt.current,
     });
-  };
+  }, [result, onComplete, exercise, revealed, attempt, hintShown]);
 
   const canRetry = result !== null && !result.correct && !revealed && attempt < MAX_ATTEMPTS;
+
+  // Enter takes whichever step the exercise is waiting for, so a whole session runs from
+  // the keyboard: continue once it is answered, or try again after a first wrong answer.
+  useEffect(() => {
+    if (!locked && !canRetry) return undefined;
+
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key !== 'Enter' || event.altKey || event.ctrlKey || event.metaKey) return;
+      const target = event.target as HTMLElement | null;
+      // A focused button or a text field handles its own Enter; intercepting would either
+      // fire the button twice or swallow a typed answer's submit.
+      if (target instanceof HTMLButtonElement) return;
+      if (target instanceof HTMLInputElement && target.type !== 'radio') return;
+      if (target instanceof HTMLTextAreaElement) return;
+      event.preventDefault();
+      if (locked) advance();
+      else retry();
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [locked, canRetry, advance, retry]);
 
   return (
     <section className="runner" aria-label="Exercise">
@@ -133,6 +165,12 @@ export function ExerciseRunner({
         attempt,
         revealed,
       })}
+
+      {exercise.hint && hintShown ? (
+        <p className="exercise__hint" role="status">
+          {exercise.hint}
+        </p>
+      ) : null}
 
       {result ? (
         <ExerciseFeedback
@@ -149,6 +187,18 @@ export function ExerciseRunner({
           </button>
         ) : null}
 
+        {exercise.hint && !hintShown && !locked ? (
+          <button
+            type="button"
+            className="runner__hint"
+            onClick={() => {
+              setHintShown(true);
+            }}
+          >
+            Show hint
+          </button>
+        ) : null}
+
         {!locked && !revealed ? (
           <button type="button" className="runner__reveal" onClick={reveal}>
             Show answer
@@ -157,7 +207,7 @@ export function ExerciseRunner({
 
         {locked ? (
           <button type="button" className="runner__next" onClick={advance}>
-            Continue
+            Continue <span aria-hidden="true">(Enter)</span>
           </button>
         ) : null}
       </div>

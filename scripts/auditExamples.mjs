@@ -9,6 +9,14 @@
 import { finish, loadAllEntries, printSample, ui } from './lib/loadDataset.mjs';
 
 /**
+ * Formulaic examples the audit tolerates before failing.
+ *
+ * Set at the level the shipped datasets currently sit at, so the count can only go down.
+ * Rewriting them is language work, not a code change — see README, "Known content issues".
+ */
+const MAX_FORMULAIC_EXAMPLES = 9600;
+
+/**
  * Punctuation- and case-insensitive containment check, tolerant of short inflectional
  * endings so `Arbeitsplan` still matches `Arbeitsplans` in a sentence. Both sides are
  * normalized identically — normalizing only the token would make every phrase entry
@@ -103,6 +111,50 @@ function main() {
     warnings.push(...tokenNotFound);
   } else {
     ui.ok('every target token occurs in its own sentence');
+  }
+
+  /* ---- formulaic example sentences ----
+   *
+   * An example sentence exists so the learner meets the word in use, and so sentence
+   * completion has something to gap. A template does neither: "Das ist der ___" is
+   * answerable from the article alone, and 6,000 B1 entries share one skeleton, so a
+   * session's sentences differ only in the blank. This counts them so the debt is visible
+   * on every run rather than discovered by a learner.
+   */
+  const TEMPLATES = [
+    /^Das ist (der|die|das) /,
+    /^(Heute|Wir) (üben|lernen|müssen|können|machen) /,
+    /^Diese Lösung ist /,
+    /^Ich möchte (heute|das|die|den|mich heute) /,
+    /^Der Kurs ist /,
+    /^Das Wort ist /,
+    /^Hier sind die /,
+    / ist in diesem Zusammenhang wichtig\.$/,
+  ];
+
+  const formulaic = entries.filter(
+    (entry) =>
+      (entry.exampleSentences ?? []).length > 0 &&
+      entry.exampleSentences.every((example) =>
+        TEMPLATES.some((pattern) => pattern.test(example.german ?? '')),
+      ),
+  );
+
+  if (formulaic.length > MAX_FORMULAIC_EXAMPLES) {
+    ui.fail(
+      `${formulaic.length} entries have only formulaic example sentences ` +
+        `(threshold ${MAX_FORMULAIC_EXAMPLES})`,
+    );
+    printSample(
+      formulaic.slice(0, 5).map((e) => `${e.id}: "${e.exampleSentences[0].german}"`),
+      5,
+    );
+    errors.push(`${formulaic.length} entries have only formulaic example sentences`);
+  } else if (formulaic.length > 0) {
+    ui.warn(`${formulaic.length} entries have only formulaic example sentences`);
+    warnings.push(`${formulaic.length} formulaic example sentences`);
+  } else {
+    ui.ok('no entry relies on a formulaic example sentence');
   }
 
   /* ---- editorial-review backlog declared by the datasets ---- */

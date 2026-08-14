@@ -50,7 +50,6 @@ export function TypedTranslationExercise({
       <p className="exercise__question" lang={exercise.answerLanguage === 'de' ? 'en' : 'de'}>
         {exercise.question}
       </p>
-      {exercise.hint ? <p className="exercise__hint">{exercise.hint}</p> : null}
 
       <form
         onSubmit={(event) => {

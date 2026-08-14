@@ -28,7 +28,6 @@ describe('ExerciseRunner', () => {
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
 
     await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     expect(screen.getByRole('status')).toHaveTextContent(/correct/i);
 
@@ -47,7 +46,6 @@ describe('ExerciseRunner', () => {
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
 
     await user.click(screen.getByRole('radio', { name: 'night' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     // First wrong answer: a retry is offered and the exercise is not yet locked.
     const retry = screen.getByRole('button', { name: /try again/i });
@@ -55,7 +53,6 @@ describe('ExerciseRunner', () => {
 
     await user.click(retry);
     await user.click(screen.getByRole('radio', { name: 'year' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     // Second wrong answer: no further retry.
     expect(screen.queryByRole('button', { name: /try again/i })).not.toBeInTheDocument();
@@ -72,10 +69,8 @@ describe('ExerciseRunner', () => {
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
 
     await user.click(screen.getByRole('radio', { name: 'night' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
     await user.click(screen.getByRole('button', { name: /try again/i }));
     await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
     await user.click(screen.getByRole('button', { name: /continue/i }));
 
     const outcome = lastOutcome(onComplete);
@@ -113,13 +108,70 @@ describe('ExerciseRunner', () => {
     const user = userEvent.setup();
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={vi.fn()} />);
 
-    const submit = screen.getByRole('button', { name: /check answer/i });
     await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(submit);
 
     const status = screen.getByRole('status');
     expect(status).toHaveAttribute('aria-live', 'polite');
     expect(document.activeElement).not.toBe(status);
+  });
+
+  it('answers with a number key and continues with Enter', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
+
+    // 'day' is the correct option; find its position so the test does not depend on the
+    // fixture's option order.
+    const position = fixtures.multipleChoice.options.indexOf('day') + 1;
+    await user.keyboard(String(position));
+
+    expect(screen.getByRole('status')).toHaveTextContent(/correct/i);
+
+    await user.keyboard('{Enter}');
+
+    const outcome = lastOutcome(onComplete);
+    expect(outcome.result.correct).toBe(true);
+    expect(outcome.attempts).toBe(1);
+  });
+
+  it('ignores a number key beyond the last option', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
+
+    await user.keyboard('9');
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(onComplete).not.toHaveBeenCalled();
+  });
+
+  it('hides the hint until it is asked for, and records that it was used', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    const exercise = { ...fixtures.multipleChoice, hint: 'A part of the day.' };
+    render(<ExerciseRunner exercise={exercise} onComplete={onComplete} />);
+
+    expect(screen.queryByText('A part of the day.')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /show hint/i }));
+    expect(screen.getByText('A part of the day.')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('radio', { name: 'day' }));
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(lastOutcome(onComplete).hintUsed).toBe(true);
+  });
+
+  it('reports no hint use when the hint was never opened', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    const exercise = { ...fixtures.multipleChoice, hint: 'A part of the day.' };
+    render(<ExerciseRunner exercise={exercise} onComplete={onComplete} />);
+
+    await user.click(screen.getByRole('radio', { name: 'day' }));
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(lastOutcome(onComplete).hintUsed).toBe(false);
   });
 
   it('runs every exercise type without crashing', () => {

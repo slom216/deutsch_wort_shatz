@@ -40,9 +40,30 @@ describe('buildSession — review sessions', () => {
     expect(session.entryIds.length).toBeLessThanOrEqual(16);
   });
 
-  it('uses at least 4 exercise types', () => {
-    const session = buildSession({ mode: 'review', entries: pilot, seed: 'r3' });
-    expect(session.exerciseTypes.length).toBeGreaterThanOrEqual(4);
+  it('uses 4 to 6 exercise types (§19)', () => {
+    for (const seed of SEEDS) {
+      const session = buildSession({ mode: 'review', entries: pilot, seed });
+      expect(session.exerciseTypes.length).toBeGreaterThanOrEqual(4);
+      expect(session.exerciseTypes.length).toBeLessThanOrEqual(6);
+    }
+  });
+
+  it('relaxes foldable strictness when the learner turns strict checking off (§16)', () => {
+    const strict = buildSession({ mode: 'review', entries: pilot, seed: 'strict' });
+    const lenient = buildSession({
+      mode: 'review',
+      entries: pilot,
+      seed: 'strict',
+      strictAnswerChecking: false,
+    });
+
+    expect(strict.exercises.some((e) => e.strictness.capitalization)).toBe(true);
+    for (const exercise of lenient.exercises) {
+      expect(exercise.strictness.capitalization).toBe(false);
+      expect(exercise.strictness.umlauts).toBe(false);
+      expect(exercise.strictness.eszett).toBe(false);
+      expect(exercise.strictness.punctuation).toBe(false);
+    }
   });
 
   it('keeps at least 40% active production', () => {
@@ -95,6 +116,18 @@ describe('buildSession — new-word sessions', () => {
   it('introduces 5 entries', () => {
     const session = buildSession({ mode: 'new', entries: pilot, seed: 'n1' });
     expect(session.entryIds).toHaveLength(5);
+  });
+
+  it('honours the learner’s configured batch size (§18)', () => {
+    for (const batchSize of [5, 10, 15, 20]) {
+      const session = buildSession({
+        mode: 'new',
+        entries: pilot,
+        seed: `batch-${batchSize}`,
+        newWordEntryCount: batchSize,
+      });
+      expect(session.entryIds).toHaveLength(batchSize);
+    }
   });
 
   it('gives each entry 2 to 3 exercises', () => {
@@ -239,6 +272,8 @@ describe('difficulty adaptation (§21)', () => {
     return {
       entryId,
       introducedAt: '2026-01-01T00:00:00.000Z',
+      masteryScore: 0,
+      totalResponseMs: 0,
       srs: {
         entryId,
         status: 'review',

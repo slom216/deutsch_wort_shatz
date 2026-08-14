@@ -5,7 +5,9 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
 import { useReviewState } from '@/features/srs/useReviewState';
+import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useSettingsStore } from '@/features/settings/settingsStore';
+import { availableExerciseTypes, EXERCISE_TYPE_LABELS } from '@/features/practice/exerciseTypes';
 import '@/styles/lists.css';
 import './SettingsPage.css';
 
@@ -25,20 +27,14 @@ export default function ReviewPage(): ReactNode {
   const { loading, error, counts, due, overdue, forecast } = useReviewState();
   const settings = useSettingsStore((state) => state.settings);
 
+  // §19: listening and speaking only when enabled *and* supported by this browser.
+  const types = availableExerciseTypes(settings);
+  const labels = useEntryLabels(due.slice(0, 12).map((entry) => entry.entryId));
+
   const start = (): void => {
     const sessionId = `review-${Date.now().toString(36)}`;
-    const types = [
-      'multipleChoice',
-      'typedTranslation',
-      'sentenceCompletion',
-      'matching',
-      'wordOrdering',
-    ]
-      .concat(settings.listeningEnabled ? ['listening'] : [])
-      .concat(settings.speakingEnabled ? ['speaking'] : [])
-      .join(',');
     void navigate(
-      `/practice/session/${sessionId}?mode=review&length=${estimateSessionSize(counts.due)}&types=${types}`,
+      `/practice/session/${sessionId}?mode=review&length=${estimateSessionSize(counts.due)}&types=${types.join(',')}`,
     );
   };
 
@@ -83,6 +79,26 @@ export default function ReviewPage(): ReactNode {
 
       {counts.due > 0 ? (
         <>
+          <section className="settings-section" aria-labelledby="review-mix">
+            <h2 id="review-mix">Exercise mix</h2>
+            <p className="band-summary">
+              This session draws from these formats. Listening and speaking appear only when you
+              have enabled them and this browser supports them (§19).
+            </p>
+            <ul className="band-list">
+              {types.map((type) => (
+                <li key={type}>
+                  <span className="band-chip">
+                    <span className="band-chip__name">{EXERCISE_TYPE_LABELS[type]}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="band-summary">
+              <Link to="/settings">Change which formats you practise</Link>
+            </p>
+          </section>
+
           <button type="button" className="exercise__submit" onClick={start}>
             Start review ({counts.due} due)
           </button>
@@ -96,8 +112,8 @@ export default function ReviewPage(): ReactNode {
               {due.slice(0, 12).map((entry) => (
                 <li key={entry.entryId} className="entry-row">
                   <span className="entry-row__rank">{entry.srs.status}</span>
-                  <Link className="entry-row__german" to={`/word/${entry.entryId}`}>
-                    {entry.entryId}
+                  <Link className="entry-row__german" to={`/word/${entry.entryId}`} lang="de">
+                    {labels.get(entry.entryId) ?? entry.entryId}
                   </Link>
                   <span className="entry-row__english">
                     difficulty {entry.srs.difficulty.toFixed(2)}

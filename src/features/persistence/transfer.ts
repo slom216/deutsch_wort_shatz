@@ -122,6 +122,20 @@ function migrate(raw: Record<string, unknown>): Record<string, unknown> {
   const version = typeof raw.schemaVersion === 'number' ? raw.schemaVersion : 1;
   const migrated = { ...raw };
 
+  if (version < 4) {
+    // Versions 1–3 predate the per-entry quiz score and the cumulative response time.
+    // Both start at zero: a learner who imports an old export keeps every review, and
+    // simply has to earn the score. Their §22 mastery is untouched.
+    const rows = Array.isArray(migrated.entryProgress) ? migrated.entryProgress : [];
+    migrated.entryProgress = rows.map((row) => {
+      const record = row as Record<string, unknown>;
+      return {
+        ...record,
+        masteryScore: record.masteryScore ?? 0,
+        totalResponseMs: record.totalResponseMs ?? 0,
+      };
+    });
+  }
   if (version < 3) {
     migrated.xpEvents ??= [];
   }
@@ -262,6 +276,9 @@ export async function applyImport(
           database.sessions.clear(),
           database.achievements.clear(),
           database.xpEvents.clear(),
+          // "Discard everything stored here first" has to include settings, or the
+          // learner's old preferences quietly survive a replace they asked for.
+          database.settings.clear(),
         ]);
         await database.entryProgress.bulkPut(file.entryProgress);
       } else {
@@ -275,11 +292,23 @@ export async function applyImport(
           return incoming.totalAttempts >= current.totalAttempts ? incoming : current;
         });
         await database.entryProgress.bulkPut(merged);
+
+        // Where the local counters won, the incoming history for that entry is dropped.
+        // Importing it anyway would leave more history rows than the kept counters
+        // account for, and the progress screens count history rows directly — the two
+        // would then disagree permanently, with no way to tell which is right.
+        const keptLocal = new Set(
+          merged.filter((row) => existing.get(row.entryId) === row).map((row) => row.entryId),
+        );
+        await database.exerciseHistory.bulkPut(
+          file.exerciseHistory.filter((row) => !keptLocal.has(row.entryId)),
+        );
       }
 
-      // History, sessions, achievements and XP events all have stable ids, so `bulkPut`
-      // deduplicates naturally in both modes.
-      await database.exerciseHistory.bulkPut(file.exerciseHistory);
+      if (mode === 'replace') await database.exerciseHistory.bulkPut(file.exerciseHistory);
+
+      // Sessions, achievements and XP events have stable ids, so `bulkPut` deduplicates
+      // naturally in both modes.
       await database.sessions.bulkPut(file.sessions);
       await database.achievements.bulkPut(file.achievements);
       await database.xpEvents.bulkPut(file.xpEvents);
@@ -308,12 +337,45 @@ export interface RepairReport {
 }
 
 /**
+ * Reports what a repair *would* delete, without touching anything (§25 "preview").
+ *
+ * Repair is a deletion, so the learner sees the count first and confirms it.
+ */
+export async function inspectRepair(
+  database: VocabularyLearningDatabase = db,
+): Promise<RepairReport> {
+  const [progress, history] = await Promise.all([
+    database.entryProgress.toArray(),
+    database.exerciseHistory.toArray(),
+  ]);
+
+  const removedProgress = progress.filter(
+    (row) => !entryProgressSchema.safeParse(row).success,
+  ).length;
+  const removedHistory = history.filter(
+    (row) => !exerciseHistorySchema.safeParse(row).success,
+  ).length;
+
+  return {
+    removedProgress,
+    removedHistory,
+    ok: removedProgress === 0 && removedHistory === 0,
+  };
+}
+
+/**
  * Database repair (§17): drops rows that no longer satisfy their schema, which is what
  * lets a learner recover from a partially corrupted database without losing everything.
+ *
+ * §24 forbids deleting progress silently, so this is deliberately awkward to reach: the
+ * caller previews with `inspectRepair`, confirms, and gets a full export back as a backup
+ * before anything is removed.
  */
 export async function repairDatabase(
   database: VocabularyLearningDatabase = db,
-): Promise<RepairReport> {
+): Promise<RepairReport & { readonly backup: string }> {
+  const backup = await exportProgress(database);
+
   const [progress, history] = await Promise.all([
     database.entryProgress.toArray(),
     database.exerciseHistory.toArray(),
@@ -333,5 +395,6 @@ export async function repairDatabase(
     removedProgress: badProgress.length,
     removedHistory: badHistory.length,
     ok: badProgress.length === 0 && badHistory.length === 0,
+    backup: JSON.stringify(backup, null, 2),
   };
 }

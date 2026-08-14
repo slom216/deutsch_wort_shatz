@@ -36,6 +36,8 @@ function makeProgress(entryId: string): EntryProgress {
     firstAttemptCorrect: 1,
     hintsUsed: 0,
     errorCounts: {},
+    masteryScore: 0,
+    totalResponseMs: 0,
   };
 }
 

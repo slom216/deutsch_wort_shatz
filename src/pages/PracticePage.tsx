@@ -3,9 +3,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { CEFR_LEVELS, bandsForLevel } from '@/content/vocabulary/frequencyBands';
+import { TOPICS, topicSlug, type Topic } from '@/content/vocabulary/topics';
 import { useSettingsStore } from '@/features/settings/settingsStore';
-import type { ExerciseType } from '@/schemas/vocabularySchema';
+import {
+  ALL_EXERCISE_TYPES,
+  availableExerciseTypes,
+  EXERCISE_TYPE_LABELS,
+} from '@/features/practice/exerciseTypes';
+import { wordClassSchema, type ExerciseType } from '@/schemas/vocabularySchema';
 import './SettingsPage.css';
+
+const WORD_CLASSES = wordClassSchema.options;
 
 /**
  * Free practice setup (§18).
@@ -13,16 +21,6 @@ import './SettingsPage.css';
  * Selections are encoded into the session URL so a session is addressable and can be
  * rebuilt deterministically after a refresh.
  */
-
-const EXERCISE_TYPES: ReadonlyArray<{ value: ExerciseType; label: string }> = [
-  { value: 'multipleChoice', label: 'Multiple choice' },
-  { value: 'typedTranslation', label: 'Typed translation' },
-  { value: 'sentenceCompletion', label: 'Sentence completion' },
-  { value: 'matching', label: 'Matching' },
-  { value: 'wordOrdering', label: 'Word ordering' },
-  { value: 'listening', label: 'Listening' },
-  { value: 'speaking', label: 'Speaking' },
-];
 
 const SESSION_LENGTHS = [10, 20, 30] as const;
 
@@ -32,16 +30,13 @@ export default function PracticePage(): ReactNode {
 
   const [level, setLevel] = useState<string>('A1');
   const [band, setBand] = useState<string>('all');
+  const [topic, setTopic] = useState<string>('all');
+  const [wordClass, setWordClass] = useState<string>('all');
   const [length, setLength] = useState<number>(20);
+  // Listening and speaking start selected only when they are both enabled and supported
+  // by this browser (§19); the learner can still tick them on deliberately.
   const [types, setTypes] = useState<Set<ExerciseType>>(
-    () =>
-      new Set(
-        EXERCISE_TYPES.map((t) => t.value).filter(
-          (value) =>
-            (value !== 'listening' || settings.listeningEnabled) &&
-            (value !== 'speaking' || settings.speakingEnabled),
-        ),
-      ),
+    () => new Set(availableExerciseTypes(settings)),
   );
 
   const toggle = (value: ExerciseType): void => {
@@ -61,6 +56,8 @@ export default function PracticePage(): ReactNode {
       band,
       length: String(length),
       types: [...types].join(','),
+      ...(topic === 'all' ? {} : { topic: topicSlug(topic as Topic) }),
+      ...(wordClass === 'all' ? {} : { class: wordClass }),
     });
     void navigate(`/practice/session/${sessionId}?${params.toString()}`);
   };
@@ -108,6 +105,38 @@ export default function PracticePage(): ReactNode {
             ))}
           </select>
         </div>
+
+        <div className="settings-field">
+          <label htmlFor="practice-topic">Topic</label>
+          <select
+            id="practice-topic"
+            value={topic}
+            onChange={(event) => setTopic(event.target.value)}
+          >
+            <option value="all">Any topic</option>
+            {TOPICS.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="settings-field">
+          <label htmlFor="practice-class">Word class</label>
+          <select
+            id="practice-class"
+            value={wordClass}
+            onChange={(event) => setWordClass(event.target.value)}
+          >
+            <option value="all">Any word class</option>
+            {WORD_CLASSES.map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </div>
       </section>
 
       <section className="settings-section" aria-labelledby="practice-format">
@@ -130,15 +159,15 @@ export default function PracticePage(): ReactNode {
 
         <fieldset className="settings-field">
           <legend>Exercise types</legend>
-          {EXERCISE_TYPES.map((type) => (
-            <div key={type.value} className="settings-field--checkbox">
+          {ALL_EXERCISE_TYPES.map((type) => (
+            <div key={type} className="settings-field--checkbox">
               <input
-                id={`type-${type.value}`}
+                id={`type-${type}`}
                 type="checkbox"
-                checked={types.has(type.value)}
-                onChange={() => toggle(type.value)}
+                checked={types.has(type)}
+                onChange={() => toggle(type)}
               />
-              <label htmlFor={`type-${type.value}`}>{type.label}</label>
+              <label htmlFor={`type-${type}`}>{EXERCISE_TYPE_LABELS[type]}</label>
             </div>
           ))}
         </fieldset>

@@ -1,7 +1,13 @@
 import { db, type VocabularyLearningDatabase } from '@/features/persistence/db';
 import type { EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
 import { localDateKey } from '@/features/srs/localDate';
-import type { CefrLevel } from '@/content/vocabulary/frequencyBands';
+import {
+  bandEntryCount,
+  bandForRank,
+  FREQUENCY_BANDS,
+  LEVEL_ENTRY_COUNTS,
+  type CefrLevel,
+} from '@/content/vocabulary/frequencyBands';
 import {
   evaluateAchievements,
   newlyUnlocked,
@@ -13,6 +19,8 @@ import {
   exerciseXp,
   levelProgress,
   PERFECT_SESSION_MIN_EXERCISES,
+  XP_COMPLETE_BAND,
+  XP_COMPLETE_LEVEL,
   XP_DAILY_GOAL,
   XP_MASTER_ENTRY,
   XP_PERFECT_SESSION,
@@ -74,6 +82,60 @@ export async function awardSessionBonuses(
   if (perfect) {
     await awardBonus(
       { id: `perfect:${sessionId}`, type: 'perfectSession', amount: XP_PERFECT_SESSION },
+      database,
+    );
+  }
+}
+
+/**
+ * Rank encoded in a stable id (§12), e.g. `a1-0042-der-mann` → 42.
+ *
+ * Reading the rank from the id means completion can be checked without loading the
+ * 2.8 MB search index just to find out which band an entry belongs to.
+ */
+function rankOf(entryId: string): number | null {
+  const match = /^[ab][12]-(\d{4,})-/.exec(entryId);
+  if (!match?.[1]) return null;
+  const rank = Number(match[1]);
+  return Number.isFinite(rank) ? rank : null;
+}
+
+/**
+ * Awards the frequency-band (100 XP) and CEFR-level (500 XP) completion bonuses (§23).
+ *
+ * "Complete" means every entry mastered, matching the A1/A2/B1 Master achievements.
+ * Both are keyed by band or level, so re-checking after every session is free.
+ */
+export async function awardCompletionBonuses(
+  database: VocabularyLearningDatabase = db,
+): Promise<void> {
+  const progress = await database.entryProgress.toArray();
+
+  const masteredByBand = new Map<string, number>();
+  const masteredByLevel: Record<CefrLevel, number> = { A1: 0, A2: 0, B1: 0 };
+
+  for (const record of progress) {
+    if (record.srs.status !== 'mastered') continue;
+    const rank = rankOf(record.entryId);
+    if (rank === null) continue;
+    const band = bandForRank(rank);
+    if (!band) continue;
+    masteredByBand.set(band.id, (masteredByBand.get(band.id) ?? 0) + 1);
+    masteredByLevel[band.level] += 1;
+  }
+
+  for (const band of FREQUENCY_BANDS) {
+    if ((masteredByBand.get(band.id) ?? 0) < bandEntryCount(band)) continue;
+    await awardBonus(
+      { id: `band:${band.id}`, type: 'bandComplete', amount: XP_COMPLETE_BAND },
+      database,
+    );
+  }
+
+  for (const level of LEVELS) {
+    if (masteredByLevel[level] < LEVEL_ENTRY_COUNTS[level]) continue;
+    await awardBonus(
+      { id: `level:${level}`, type: 'levelComplete', amount: XP_COMPLETE_LEVEL },
       database,
     );
   }

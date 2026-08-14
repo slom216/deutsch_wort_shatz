@@ -3,6 +3,7 @@ import type { ExerciseType, VocabularyEntry } from '@/schemas/vocabularySchema';
 import type { EntryProgress } from '@/schemas/progressSchema';
 import { planFor, scoreExercise } from '@/features/srs/adaptation';
 import { createRandom, type Random } from '../random';
+import { ALL_EXERCISE_TYPES } from '../exerciseTypes';
 import { generateAllForEntry } from '../generators';
 import { availableMatchingVariants, generateMatching } from '../generators/matching';
 
@@ -31,8 +32,16 @@ export interface BuildSessionOptions {
   readonly pool?: readonly VocabularyEntry[];
   readonly seed: string;
   readonly targetExerciseCount?: number;
+  /** Entries in a new-word batch. The learner configures this (§18: 5, 10, 15 or 20). */
+  readonly newWordEntryCount?: number;
   /** Types the learner has enabled; listening/speaking are excluded when unsupported. */
   readonly allowedTypes?: readonly ExerciseType[];
+  /**
+   * Strict German answer checking (§16). Default and recommended. Turning it off relaxes
+   * the four dimensions the evaluator can fold — capitalization, umlauts, ß and
+   * punctuation — for every exercise in this session.
+   */
+  readonly strictAnswerChecking?: boolean;
   /**
    * Stored progress, keyed by entry id. When present, each entry's exercises are chosen
    * to suit its automatic difficulty (§21): a struggling word returns to recognition with
@@ -58,6 +67,12 @@ const DEFAULT_REVIEW_EXERCISES = 20;
 const REVIEW_MIN_ENTRIES = 12;
 const REVIEW_MAX_ENTRIES = 16;
 const NEW_WORD_ENTRIES = 5;
+/**
+ * §19: a review session uses 4–6 exercise types. Every entry in the dataset enables all
+ * seven, so without a cap a session uses all of them and feels scattershot. The types are
+ * drawn with the session's seeded RNG, so the same session id always picks the same six.
+ */
+const MAX_SESSION_TYPES = 6;
 const MAX_SAME_TYPE_RUN = 3;
 const MAX_SAME_ENTRY_RUN = 2;
 const MIN_PRODUCTION_RATIO = 0.4;
@@ -249,12 +264,31 @@ function enforceRatios(
   return result;
 }
 
+/**
+ * Drops the four strictness dimensions the evaluator folds, for a learner who has turned
+ * strict checking off (§16). Article, plural and word order are left alone: those decide
+ * *what* an exercise asks for, not how exactly the answer is compared.
+ */
+function relaxStrictness(exercise: Exercise): Exercise {
+  return {
+    ...exercise,
+    strictness: {
+      ...exercise.strictness,
+      capitalization: false,
+      umlauts: false,
+      eszett: false,
+      punctuation: false,
+    },
+  };
+}
+
 function pickEntries(
   entries: readonly VocabularyEntry[],
   mode: SessionMode,
   random: Random,
+  newWordEntryCount: number,
 ): VocabularyEntry[] {
-  if (mode === 'new') return entries.slice(0, NEW_WORD_ENTRIES);
+  if (mode === 'new') return entries.slice(0, newWordEntryCount);
 
   const desired = Math.min(
     Math.max(REVIEW_MIN_ENTRIES, Math.min(REVIEW_MAX_ENTRIES, entries.length)),
@@ -267,9 +301,17 @@ function pickEntries(
 }
 
 export function buildSession(options: BuildSessionOptions): BuiltSession {
-  const { mode, entries, seed, allowedTypes } = options;
+  const { mode, entries, seed } = options;
   const pool = options.pool ?? entries;
   const random = createRandom(seed);
+
+  // §19: 4–6 exercise types. A new-word session is short and follows its own rules, so it
+  // keeps whatever the learner enabled; a review session draws six of them.
+  const enabledTypes = options.allowedTypes ?? ALL_EXERCISE_TYPES;
+  const allowedTypes: readonly ExerciseType[] =
+    mode === 'new' || enabledTypes.length <= MAX_SESSION_TYPES
+      ? enabledTypes
+      : random.shuffle(enabledTypes).slice(0, MAX_SESSION_TYPES);
 
   if (entries.length === 0) {
     return {
@@ -281,7 +323,12 @@ export function buildSession(options: BuildSessionOptions): BuiltSession {
     };
   }
 
-  const sessionEntries = pickEntries(entries, mode, random);
+  const sessionEntries = pickEntries(
+    entries,
+    mode,
+    random,
+    options.newWordEntryCount ?? NEW_WORD_ENTRIES,
+  );
   const targetCount =
     options.targetExerciseCount ??
     (mode === 'new' ? sessionEntries.length * 3 : DEFAULT_REVIEW_EXERCISES);
@@ -294,7 +341,7 @@ export function buildSession(options: BuildSessionOptions): BuiltSession {
       pool,
       random,
       id: `${seed}-${entry.id}`,
-      ...(allowedTypes ? { allowedTypes } : {}),
+      allowedTypes,
     });
     if (generated.length > 0) byEntry.set(entry.id, generated);
   }
@@ -302,7 +349,7 @@ export function buildSession(options: BuildSessionOptions): BuiltSession {
   // Matching is generated from the entry group rather than per entry, so a session
   // restricted to matching alone legitimately has no per-entry exercises at all. Only
   // give up once matching has also been ruled out.
-  const matchingAllowed = !allowedTypes || allowedTypes.includes('matching');
+  const matchingAllowed = allowedTypes.includes('matching');
   if (byEntry.size === 0 && !(matchingAllowed && sessionEntries.length >= 5)) {
     return { exercises: [], entryIds: [], exerciseTypes: [], productionRatio: 0, typedRatio: 0 };
   }
@@ -399,7 +446,9 @@ export function buildSession(options: BuildSessionOptions): BuiltSession {
   if (mode !== 'new') {
     chosen = enforceRatios(chosen, spare, chosen.length);
   }
-  const ordered = interleave(chosen, MAX_SAME_TYPE_RUN, MAX_SAME_ENTRY_RUN, mode === 'new');
+  const interleaved = interleave(chosen, MAX_SAME_TYPE_RUN, MAX_SAME_ENTRY_RUN, mode === 'new');
+  const ordered =
+    options.strictAnswerChecking === false ? interleaved.map(relaxStrictness) : interleaved;
 
   const productionCount = ordered.filter((e) => e.isProduction).length;
   const typedCount = ordered.filter((e) => e.requiresTypedInput).length;

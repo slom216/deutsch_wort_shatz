@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import { resolveTopic } from '../../src/content/vocabulary/topics.ts';
-import { NOUN_CORRECTIONS } from '../../src/content/vocabulary/corrections.ts';
+import { ENTRY_CORRECTIONS } from '../../src/content/vocabulary/corrections.ts';
 
 export const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const DATA_DIR = path.join(REPO_ROOT, 'data');
@@ -82,7 +82,7 @@ export function normalizeEntryTopics(entry) {
  * the audits and to the eventual human reviewer — nothing is changed silently.
  */
 export function applyCorrections(entry) {
-  const correction = NOUN_CORRECTIONS[entry.id];
+  const correction = ENTRY_CORRECTIONS[entry.id];
   if (!correction) return entry;
 
   const corrected = {
@@ -93,10 +93,20 @@ export function applyCorrections(entry) {
       : {}),
     ...(correction.article ? { article: correction.article } : {}),
     ...(correction.german ? { german: correction.german } : {}),
+    ...(correction.thirdPersonPresent ? { thirdPersonPresent: correction.thirdPersonPresent } : {}),
+    ...(correction.simplePast ? { simplePast: correction.simplePast } : {}),
+    ...(correction.pastParticiple ? { pastParticiple: correction.pastParticiple } : {}),
     editorialCorrection: {
       reason: correction.reason,
       reviewed: false,
-      original: { german: entry.german, article: entry.article, plural: entry.plural },
+      original: {
+        german: entry.german,
+        article: entry.article,
+        plural: entry.plural,
+        thirdPersonPresent: entry.thirdPersonPresent,
+        simplePast: entry.simplePast,
+        pastParticiple: entry.pastParticiple,
+      },
       ...correction,
     },
   };
@@ -114,9 +124,21 @@ export function applyCorrections(entry) {
     return { ...rest, wordClass: correction.wordClass, kind: 'word' };
   }
 
-  // A corrected headword must also be searchable under its new form.
-  if (correction.german) {
-    corrected.searchableForms = [...new Set([correction.german, ...(entry.searchableForms ?? [])])];
+  // A corrected headword or verb form must also be searchable under it — §16 requires
+  // searching by inflected form, and the old forms were not German.
+  const added = [
+    correction.german,
+    correction.thirdPersonPresent,
+    correction.simplePast,
+    correction.pastParticiple,
+  ].filter(Boolean);
+  if (added.length > 0) {
+    const stale = new Set(
+      [entry.thirdPersonPresent, entry.simplePast, entry.pastParticiple].filter(Boolean),
+    );
+    corrected.searchableForms = [
+      ...new Set([...added, ...(entry.searchableForms ?? []).filter((form) => !stale.has(form))]),
+    ];
   }
 
   return corrected;

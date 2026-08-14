@@ -4,13 +4,10 @@ A desktop-first German vocabulary trainer for CEFR levels **A1, A2 and B1**. It 
 entirely in the browser: no backend, no account, no cloud storage, no external AI or
 speech services. All learner progress is stored locally in IndexedDB.
 
-This repository currently implements **Phase 0 — Project Skeleton** and
-**Phase 1 — Vocabulary Model and Exercise Engine** from
-[`DEVELOPMENT_INSTRUCTIONS.md`](./DEVELOPMENT_INSTRUCTIONS.md).
-
-All seven exercise formats work, German answers are checked strictly, and session
-results persist locally. Spaced repetition (Phase 2) and gamification (Phase 7) are not
-built yet, so practice sessions do not schedule reviews or award XP.
+All seven exercise formats work, German answers are checked strictly, spaced repetition
+schedules reviews automatically, and XP, streaks and achievements are earned from real
+sessions. The vocabulary is 10,000 entries — see **Known content issues** for what is
+wrong with it, which is the honest limit on how useful the app currently is.
 
 ## Requirements
 
@@ -45,8 +42,9 @@ before the dev server starts.
 | `npm run audit:duplicates`    | Duplicate IDs and indistinguishable duplicate senses |
 | `npm run audit:ranks`         | Rank uniqueness, bounds, gaps and band occupancy     |
 | `npm run audit:topics`        | Controlled topic registry conformance                |
-| `npm run audit:examples`      | Example sentences and target tokens                  |
-| `npm run audit:all`           | All of the above                                     |
+| `npm run audit:examples`      | Example sentences, target tokens and formulaic prose |
+| `npm run audit:all`           | All of the above, plus every per-phase rank gate     |
+| `npm run audit:release`       | §18 release gate (currently fails on phrase counts)  |
 
 ## Content pipeline
 
@@ -65,6 +63,21 @@ the per-level split 1,000 / 3,000 / 6,000.
 
 `src/content/vocabulary/registry.ts` is the only way the app reaches content. Every band
 is a lazy dynamic import, giving one chunk per band in the production build.
+
+### Editorial corrections
+
+`src/content/vocabulary/corrections.ts` holds per-entry repairs applied at build time, so
+the authoring files stay the single source of truth. Each carries a reason and is reported
+by `audit:release` as awaiting human sign-off. Three kinds:
+
+- **countability and missing plurals** — `Wasser` marked countable, `Eltern` marked
+  singular, ordinary nouns whose plural was simply absent;
+- **line-break artifacts** — eighteen A2 compounds were transcribed from a two-column
+  layout with the break intact (`Krankenver sicherung`, `Gehirn erschütterung`). As stored
+  they are not German words, and strict checking would mark the correct spelling wrong;
+- **generated verb conjugations** — six multi-word reflexive verbs were conjugated by
+  suffixing the whole headword, so `sich die Hände waschen` shipped with the participle
+  `gedie Hände wascht`. The head verb is conjugated instead.
 
 ### Topic normalisation
 
@@ -85,48 +98,88 @@ tested without rendering anything:
   exact match, once the dimensions an exercise marks as non-strict are folded. Feedback
   reports _every_ dimension that is wrong: `die strasse` against `die Straße` yields both a
   capitalization issue and an ß issue, exactly as §16 requires. All twelve error categories
-  are classified.
+  are classified. Turning off **Strict answer checking** in Settings relaxes the four
+  foldable dimensions — capitalization, umlauts, ß and punctuation — for new sessions.
 - **`generators/`** — one generator per format, each returning `null` when an entry cannot
   support a variant (an article question needs a noun, a participle question needs a verb).
-  Distractors are drawn from the same topic first, then nearby frequency ranks.
 - **`session/`** — session construction against the §19 constraints, verified across 60
-  random seeds: 20 exercises, 12–16 entries, no more than 3 identical formats or 2
-  same-entry exercises in a row, at least 40% production and 25% typed input.
-- **`random.ts`** — seeded RNG. A session id seeds generation, so reloading a session URL
-  rebuilds exactly the same exercises and only outcomes need persisting.
+  random seeds: 20 exercises, 12–16 entries, 4–6 exercise types, no more than 3 identical
+  formats or 2 same-entry exercises in a row, at least 40% production and 25% typed input.
+- **`random.ts`** — seeded RNG. A session id seeds generation, so the same id always builds
+  the same session.
 
 Matching and word ordering both work with a mouse, with the keyboard, and with a screen
 reader; drag-and-drop is never the only way to answer (§15, §30).
 
+### Multiple choice
+
+Six options rather than the four in §15, chosen deliberately:
+
+- distractors come from the **same CEFR level**, with an English gloss within **±2 letters**
+  of the correct one, widening to ±3 and ±4 only when too few candidates qualify. Option
+  length is otherwise a giveaway — a learner who knows nothing can still spot the one long
+  answer among five short ones;
+- options are numbered, and pressing **1–6** answers immediately. **Enter** then continues,
+  or retries after a first wrong answer, so a whole session runs from the keyboard;
+- the article variant offers three options, because German has three articles.
+
+### Quiz score and mastery
+
+Each entry carries a `masteryScore`: **+1** for a correct first-attempt answer, **−1** for
+a wrong one, floored at zero. Reaching **5** marks the entry mastered.
+
+This is deliberately separate from XP. XP is a lifetime total that drives learner level and
+achievements, so it must only ever grow; the quiz score is per entry and moves both ways.
+The §22 evidence rule (five successful reviews, three of them production, a typed
+first-attempt success, a 30-day interval, difficulty below 0.35, no recent lapse) remains a
+second, independent route to mastered, so nothing already earned is demoted.
+
+## Session resume
+
+Reloading mid-session resumes rather than restarting. The generated exercises are stored on
+the session record, because regenerating them from the session id is deterministic only
+while its inputs are — and one of them is the learner's stored progress, which the session
+itself is busy changing. Answers already in `exerciseHistory` are replayed into memory and
+never re-graded: history rows are idempotent, but `recordReview` is not, and re-answering
+would grade and reschedule the entry twice.
+
 ## Known content issues
 
-The audits pass, but they report editorial-review items that the datasets' own metadata
-already flags as `linguisticReview: required`. These must be resolved before the Phase 18
-release gate:
+The audits pass, but they report a real backlog. These are language-authoring problems, not
+code problems, and none of them can be fixed by a code change:
 
-- **11 nouns have no article** (`Süßwasser-`, `Standard`, `Ostern`, …). Several are
-  compound-forming stems or proper nouns where an article is arguably not applicable.
-- **93 nouns have no plural**, most marked `numberUsage: "unspecified"`.
-- **19 example sentences** have a target token that does not occur in the sentence. These
-  are reflexive verbs whose generated sentences are awkward or wrong, e.g.
-  `sich die Füße abtreten` → _"Ich möchte mich heute die Füße abtreten."_ One is a
-  genuine typo in the source data: `sich für etwas interessierien` (should be
-  _interessieren_).
-- **8,714 entries** carry a source-declared review status; the 6,000 B1 entries are
-  productive compounds and collocations that are grammatically valid but of uncertain
-  real-world frequency and CEFR placement.
-- **18 repeated surface forms** (`sein` the verb vs. `sein` the pronoun) are _not_
-  defects — the audit confirms each pair is explicitly distinguished by word class or
-  gloss, as §13 requires.
+- **All 6,000 B1 entries are machine-generated.** Every one carries a `generationPattern`:
+  4,400 productive compounds, 515 derived adjectives, 485 prefixed verbs and 600 generated
+  collocations. The result is cartesian-product vocabulary — `Arbeitsplan`, `Berufsplan`,
+  `Zeitplan`, `Terminplan` and so on across twenty head nouns — including forms that are not
+  real German (`Zeitchance`, `Arbeitskunde`, `Zeitort`). Sixty per cent of the app currently
+  teaches invented words as fact, and fixing it needs a real B1 word list.
+- **9,578 of 10,000 entries have only formulaic example sentences.** `Das ist der …`
+  (3,091), `… ist in diesem Zusammenhang wichtig` (~2,000), `Heute üben wir …` (600),
+  `Diese Lösung ist …` (515). Sentence completion on `Das ist der ___` is answerable from
+  the article alone. `audit:examples` counts these on every run and fails above a threshold
+  set at the current level, so the number can only go down.
+- **A2 is 86% nouns** (2,578 of 3,000; 1 adverb, 37 adjectives, 136 verbs), and its ranks
+  follow a topic list rather than frequency, which §3 principle 1 puts first.
+- **`audit:release` fails on phrase counts**: A1 has 59 phrases against the 150 the §6
+  completion criteria require, A2 215 against 400, B1 600 against 800. Around 476 phrases
+  need writing. CI runs this gate with `continue-on-error: true` for that reason.
+- **19 target tokens do not occur in their own sentence** — reflexive verbs whose generated
+  sentence is ungrammatical, e.g. `sich die Füße abtreten` → _"Ich möchte mich heute die
+  Füße abtreten."_
+- **8,714 entries** carry a source-declared review status.
 
 ## Deviations from the specification
 
-Both are forced by the data and are enforced in the schema rather than worked around:
-
+- §15 specifies **four** multiple-choice options; this app uses **six**, with
+  length-matched distractors. See "Multiple choice" above.
 - §12 specifies a **four-digit** rank in every ID, which cannot express rank 10,000. The
   enforced rule is zero-padding to a minimum of four digits.
 - §10 does not list `dative+accusative` as a `requiredCase`, but ditransitive verbs in the
   dataset need it.
+- §13's duplicate-sense check treats a differing **primary topic** as an explicit
+  distinction, alongside word class and gloss. Topic is the third axis of the content
+  hierarchy in §8, so the same word taught under two topics is deliberate.
 
 ## Project layout
 
@@ -134,9 +187,9 @@ Both are forced by the data and are enforced in the schema rather than worked ar
 data/                     authoring source of truth (three JSON files)
 scripts/                  content build + validation/audit scripts (Node, .mjs)
 src/app/                  App, router, providers, error boundary
-src/components/           layout and common components
-src/content/vocabulary/   topic + band registries, lazy-loading registry
-src/features/             persistence (Dexie), settings (Zustand), learning
+src/components/           layout, common, exercise and vocabulary components
+src/content/vocabulary/   topic + band registries, corrections, lazy-loading registry
+src/features/             practice engine, SRS, gamification, persistence, search, speech
 src/pages/                one component per route
 src/schemas/              Zod schemas — the single source of truth for types
 src/test/                 setup and helpers
@@ -146,6 +199,7 @@ e2e/                      Playwright specs
 ## Privacy
 
 No account, no backend, no analytics, no recordings. Progress is stored locally and can be
-exported or deleted by the learner. Speaking exercises use the browser's speech
-recognition; the app does not record or store voice, and browser behaviour varies —
-processing is **not** guaranteed to be local.
+exported or deleted by the learner. Repairing the database exports a backup first and asks
+for confirmation, because repair deletes unreadable rows (§24). Speaking exercises use the
+browser's speech recognition; the app does not record or store voice, and browser behaviour
+varies — processing is **not** guaranteed to be local.

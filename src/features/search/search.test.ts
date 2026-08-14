@@ -163,6 +163,8 @@ function makeProgress(
     firstAttemptCorrect: 5,
     hintsUsed: 0,
     errorCounts: {},
+    masteryScore: 0,
+    totalResponseMs: 0,
   };
 }
 

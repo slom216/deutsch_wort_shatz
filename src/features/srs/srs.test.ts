@@ -36,6 +36,8 @@ function progress(overrides: ProgressOverrides = {}): EntryProgress {
     firstAttemptCorrect: 0,
     hintsUsed: 0,
     errorCounts: {},
+    masteryScore: 0,
+    totalResponseMs: 0,
     ...rest,
     srs: { ...base, ...(srsOverrides ?? {}) },
   };

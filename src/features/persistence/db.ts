@@ -31,7 +31,7 @@ export interface DatabaseMetadata {
 }
 
 /** Bumped whenever the Dexie schema changes. Mirrored into the `metadata` table. */
-export const DATABASE_SCHEMA_VERSION = 3;
+export const DATABASE_SCHEMA_VERSION = 4;
 export const DATABASE_NAME = 'deutsch-wort-shatz';
 
 export class VocabularyLearningDatabase extends Dexie {
@@ -90,6 +90,26 @@ export class VocabularyLearningDatabase extends Dexie {
     this.version(3).stores({
       xpEvents: 'id, type, awardedAt',
     });
+
+    // Version 4 — adds the per-entry quiz score and the cumulative response time.
+    //
+    // Both are backfilled rather than defaulted at read time, so the difficulty model and
+    // the mastery check never have to guess whether a row predates them. An existing
+    // learner starts at score 0 with mastery already reached under the §22 rules intact:
+    // the score is a second route to mastered, not a demotion of the first.
+    this.version(4)
+      .stores({
+        entryProgress: 'entryId, srs.status, srs.dueAt, srs.difficulty, masteryScore, introducedAt',
+      })
+      .upgrade(async (transaction) =>
+        transaction
+          .table<EntryProgress, string>('entryProgress')
+          .toCollection()
+          .modify((progress) => {
+            progress.masteryScore ??= 0;
+            progress.totalResponseMs ??= 0;
+          }),
+      );
   }
 }
 

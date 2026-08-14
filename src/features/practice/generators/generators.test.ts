@@ -8,6 +8,7 @@ import {
   generateListening,
   generateMatching,
   generateMultipleChoice,
+  OPTION_COUNT,
   generateSentenceCompletion,
   generateSpeaking,
   generateTypedTranslation,
@@ -50,7 +51,7 @@ describe('pilot dataset', () => {
 });
 
 describe('multiple choice', () => {
-  it('produces four options with exactly one correct answer', () => {
+  it('produces six options with exactly one correct answer', () => {
     const entry = find((e) => e.wordClass === 'noun');
     const exercise = generateMultipleChoice(
       { entry, pool: pilot, random: random(), id: 'mc-1' },
@@ -58,8 +59,48 @@ describe('multiple choice', () => {
     );
 
     expect(exercise).not.toBeNull();
-    expect(exercise?.options).toHaveLength(4);
-    expect(new Set(exercise?.options).size).toBe(4);
+    expect(exercise?.options).toHaveLength(OPTION_COUNT);
+    expect(new Set(exercise?.options).size).toBe(OPTION_COUNT);
+    expect(exercise?.options[exercise.correctIndex]).toBe(entry.english[0]);
+  });
+
+  it('draws distractors with a similar English gloss length', () => {
+    // Every entry in the pilot dataset, so this is not one lucky draw.
+    const glossByEnglish = new Map(pilot.map((e) => [e.english[0] ?? '', e]));
+
+    for (const entry of pilot) {
+      const exercise = generateMultipleChoice(
+        { entry, pool: pilot, random: random(), id: `mc-len-${entry.id}` },
+        'germanToEnglish',
+      );
+      if (!exercise) continue;
+
+      const target = (entry.english[0] ?? '').length;
+      const deltas = exercise.options
+        .filter((option) => option !== entry.english[0])
+        .map((option) => Math.abs(option.length - target));
+
+      // ±2 is the goal; the window widens only when too few candidates qualify, and the
+      // pilot dataset is 100 entries, so a few options legitimately fall outside it.
+      const within = deltas.filter((delta) => delta <= 2).length;
+      expect(within).toBeGreaterThan(0);
+      // Nothing wildly off: an obviously long option among short ones is a free answer.
+      expect(Math.max(...deltas)).toBeLessThanOrEqual(20);
+      expect(glossByEnglish.size).toBeGreaterThan(0);
+    }
+  });
+
+  it('still builds a question when the pool cannot fill six options', () => {
+    const entry = find((e) => e.wordClass === 'noun');
+    const tiny = [entry, ...pilot.filter((e) => e.id !== entry.id).slice(0, 2)];
+    const exercise = generateMultipleChoice(
+      { entry, pool: tiny, random: random(), id: 'mc-tiny' },
+      'germanToEnglish',
+    );
+
+    expect(exercise).not.toBeNull();
+    expect(exercise?.options.length).toBeGreaterThanOrEqual(2);
+    expect(exercise?.options.length).toBeLessThanOrEqual(OPTION_COUNT);
     expect(exercise?.options[exercise.correctIndex]).toBe(entry.english[0]);
   });
 

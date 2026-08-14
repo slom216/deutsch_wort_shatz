@@ -93,13 +93,47 @@ export async function loadLevel(level: CefrLevel): Promise<readonly VocabularyEn
   return loaded.flat();
 }
 
+/**
+ * Entry id → band, built once from the index.
+ *
+ * A review session looks up 40 entries; a linear scan of 10,000 records each time is
+ * 400,000 comparisons before the first question appears.
+ */
+let bandByEntryId: Map<string, string> | null = null;
+
+async function bandOf(entryId: string): Promise<string | undefined> {
+  if (!bandByEntryId) {
+    const index = await loadSearchIndex();
+    bandByEntryId = new Map(index.map((record) => [record.id, record.frequencyBand]));
+  }
+  return bandByEntryId.get(entryId);
+}
+
 /** Looks up a single entry by its stable ID, loading only the band that contains it. */
 export async function loadEntry(entryId: string): Promise<VocabularyEntry | null> {
-  const index = await loadSearchIndex();
-  const record = index.find((r) => r.id === entryId);
-  if (!record) return null;
-  const entries = await loadBand(record.frequencyBand);
+  const bandId = await bandOf(entryId);
+  if (!bandId) return null;
+  const entries = await loadBand(bandId);
   return entries.find((e) => e.id === entryId) ?? null;
+}
+
+/** Looks up several entries at once, loading each needed band exactly once. */
+export async function loadEntries(
+  entryIds: readonly string[],
+): Promise<Map<string, VocabularyEntry>> {
+  const wanted = new Set(entryIds);
+  const bandIds = new Set<string>();
+  for (const entryId of wanted) {
+    const bandId = await bandOf(entryId);
+    if (bandId) bandIds.add(bandId);
+  }
+
+  const loaded = await Promise.all([...bandIds].map((bandId) => loadBand(bandId)));
+  const found = new Map<string, VocabularyEntry>();
+  for (const entry of loaded.flat()) {
+    if (wanted.has(entry.id)) found.set(entry.id, entry);
+  }
+  return found;
 }
 
 /** True when the generated bundles are present — used by the content self-check. */
@@ -112,4 +146,5 @@ export function resetContentCache(): void {
   bandCache.clear();
   manifestPromise = null;
   indexPromise = null;
+  bandByEntryId = null;
 }

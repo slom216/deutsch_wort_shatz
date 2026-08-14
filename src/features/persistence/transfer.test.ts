@@ -32,6 +32,8 @@ function progressRow(entryId: string, attempts = 3): EntryProgress {
     firstAttemptCorrect: attempts,
     hintsUsed: 0,
     errorCounts: {},
+    masteryScore: 0,
+    totalResponseMs: 0,
   };
 }
 
@@ -208,6 +210,35 @@ describe('import application (§25)', () => {
     // The local record had more attempts, so a merge keeps it.
     expect(kept?.totalAttempts).toBe(9);
     expect(await db.entryProgress.count()).toBe(2);
+  });
+
+  it('does not import history for an entry whose local counters it kept', async () => {
+    // Local record wins on attempts, so importing that entry's history anyway would leave
+    // more history rows than `totalAttempts` accounts for — and the progress screens count
+    // history rows directly, so the two would disagree forever.
+    await db.entryProgress.put(progressRow('a1-0001-hallo', 9));
+    const incoming = {
+      ...(await exportProgress()),
+      entryProgress: [progressRow('a1-0001-hallo', 2)],
+      exerciseHistory: [historyRow('other:1'), historyRow('other:2')],
+    };
+
+    await applyImport(incoming, 'merge');
+
+    expect((await db.entryProgress.get('a1-0001-hallo'))?.totalAttempts).toBe(9);
+    expect(await db.exerciseHistory.count()).toBe(0);
+  });
+
+  it('imports history for an entry whose incoming record it took', async () => {
+    await db.entryProgress.put(progressRow('a1-0001-hallo', 2));
+    const incoming = {
+      ...(await exportProgress()),
+      entryProgress: [progressRow('a1-0001-hallo', 12)],
+      exerciseHistory: [historyRow('other:1'), historyRow('other:2')],
+    };
+
+    await applyImport(incoming, 'merge');
+    expect(await db.exerciseHistory.count()).toBe(2);
   });
 
   it('takes the incoming record when it reflects more study', async () => {

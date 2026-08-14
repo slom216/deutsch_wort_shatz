@@ -5,6 +5,7 @@ import type { Exercise, EvaluationResult } from '@/schemas/exerciseSchema';
 import type { Grade } from '@/schemas/progressSchema';
 import { loadAllProgress, loadProgress, recordReview } from '@/features/srs/repository';
 import {
+  awardCompletionBonuses,
   awardMasteryBonus,
   awardSessionBonuses,
   awardDailyGoalBonus,
@@ -22,8 +23,12 @@ import { buildSession, type SessionMode } from './buildSession';
  * `exerciseHistory` as it happens, which is what makes results survive a refresh.
  *
  * Each answer is handed to the SRS, which grades it automatically, recomputes difficulty
- * and reschedules the entry (§20, §21). XP arrives with gamification in Phase 7, so
- * `xpAwarded` is recorded as 0 for now and the history rows already have the right shape.
+ * and reschedules the entry (§20, §21).
+ *
+ * Reloading mid-session resumes rather than restarting: the exercises rebuild identically
+ * from the seed, and the answers already in `exerciseHistory` are replayed into memory. A
+ * restart would re-answer them, and while history rows are idempotent, `recordReview` is
+ * not — the entry would be graded and rescheduled twice.
  */
 
 export interface AnsweredExercise {
@@ -32,7 +37,11 @@ export interface AnsweredExercise {
   readonly result: EvaluationResult;
   readonly attempts: number;
   readonly revealed: boolean;
+  /** Whether the learner opened the hint before answering (§20: caps the grade at 1). */
+  readonly hintUsed: boolean;
   readonly responseMs: number;
+  /** Filled in by the store; callers do not supply it. */
+  readonly xpAwarded?: number;
 }
 
 interface SessionState {
@@ -42,6 +51,7 @@ interface SessionState {
   readonly currentIndex: number;
   readonly answers: readonly AnsweredExercise[];
   readonly status: 'idle' | 'active' | 'completed';
+  readonly startedAt: string;
 
   readonly start: (options: {
     sessionId: string;
@@ -49,7 +59,9 @@ interface SessionState {
     entries: readonly VocabularyEntry[];
     pool?: readonly VocabularyEntry[];
     targetExerciseCount?: number;
+    newWordEntryCount?: number;
     allowedTypes?: readonly Exercise['type'][];
+    strictAnswerChecking?: boolean;
   }) => Promise<void>;
   readonly recordAnswer: (answer: AnsweredExercise) => Promise<void>;
   readonly advance: () => Promise<void>;
@@ -81,11 +93,10 @@ function summarize(
     completedExerciseCount: answers.length,
     correctCount: correct,
     firstAttemptCorrectCount: firstAttemptCorrect,
-    xpEarned: 0,
+    xpEarned: answers.reduce((sum, answer) => sum + (answer.xpAwarded ?? 0), 0),
+    exercises: [...exercises],
   };
 }
-
-let startedAt = new Date().toISOString();
 
 export const useSessionStore = create<SessionState>((set, get) => ({
   sessionId: null,
@@ -94,42 +105,87 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   currentIndex: 0,
   answers: [],
   status: 'idle',
+  startedAt: new Date().toISOString(),
 
-  start: async ({ sessionId, mode, entries, pool, targetExerciseCount, allowedTypes }) => {
+  start: async ({
+    sessionId,
+    mode,
+    entries,
+    pool,
+    targetExerciseCount,
+    newWordEntryCount,
+    allowedTypes,
+    strictAnswerChecking,
+  }) => {
     // Stored progress drives exercise adaptation (§21): the builder uses each entry's
     // automatic difficulty to decide which formats it gets.
-    const stored = await loadAllProgress();
+    const [stored, existingRecord, history] = await Promise.all([
+      loadAllProgress(),
+      db.sessions.get(sessionId),
+      db.exerciseHistory.where('sessionId').equals(sessionId).toArray(),
+    ]);
     const progressByEntry = new Map(stored.map((record) => [record.entryId, record]));
 
-    const built = buildSession({
-      mode,
-      entries,
-      seed: sessionId,
-      progressByEntry,
-      ...(pool ? { pool } : {}),
-      ...(targetExerciseCount === undefined ? {} : { targetExerciseCount }),
-      ...(allowedTypes ? { allowedTypes } : {}),
-    });
+    // An interrupted session resumes with the exercises it was actually built from. They
+    // are only regenerated for a session that has none stored, because generation reads
+    // the learner's progress and this session has been changing it.
+    const exercises =
+      existingRecord?.exercises && existingRecord.exercises.length > 0
+        ? existingRecord.exercises
+        : buildSession({
+            mode,
+            entries,
+            seed: sessionId,
+            progressByEntry,
+            ...(pool ? { pool } : {}),
+            ...(targetExerciseCount === undefined ? {} : { targetExerciseCount }),
+            ...(newWordEntryCount === undefined ? {} : { newWordEntryCount }),
+            ...(allowedTypes ? { allowedTypes } : {}),
+            ...(strictAnswerChecking === undefined ? {} : { strictAnswerChecking }),
+          }).exercises;
 
-    startedAt = new Date().toISOString();
+    // Replay what this session already answered. Exercises are answered in order, so the
+    // first exercise with no history row is where the learner left off.
+    const rowByExerciseId = new Map(history.map((row) => [row.id, row]));
+
+    const answered: AnsweredExercise[] = [];
+    for (const exercise of exercises) {
+      const row = rowByExerciseId.get(`${sessionId}:${exercise.id}`);
+      if (!row) break;
+      answered.push({
+        exerciseId: exercise.id,
+        entryId: exercise.entryId,
+        // Only `correct` is read back; the learner's own text is not worth persisting.
+        result: { correct: row.correct, issues: [], submittedAnswer: '', expectedAnswer: '' },
+        attempts: row.firstAttempt ? 1 : 2,
+        revealed: row.revealed,
+        hintUsed: row.hintUsed,
+        responseMs: row.responseMs,
+        xpAwarded: row.xpAwarded,
+      });
+    }
+
+    const startedAt = existingRecord?.startedAt ?? new Date().toISOString();
+    const finished = exercises.length === 0 || answered.length >= exercises.length;
+
     set({
       sessionId,
       mode,
-      exercises: built.exercises,
-      currentIndex: 0,
-      answers: [],
-      status: built.exercises.length > 0 ? 'active' : 'completed',
+      exercises,
+      currentIndex: answered.length,
+      answers: answered,
+      status: finished ? 'completed' : 'active',
+      startedAt,
     });
 
-    await db.sessions.put(summarize(sessionId, mode, built.exercises, [], startedAt, false));
+    await db.sessions.put(summarize(sessionId, mode, exercises, answered, startedAt, finished));
   },
 
   recordAnswer: async (answer) => {
-    const { sessionId, mode, exercises, answers } = get();
+    const { sessionId, mode, exercises, answers, startedAt } = get();
     if (!sessionId) return;
-
-    const next = [...answers, answer];
-    set({ answers: next });
+    // A resumed session replays its stored answers, so an exercise can already be here.
+    if (answers.some((existing) => existing.exerciseId === answer.exerciseId)) return;
 
     const exercise = exercises.find((e) => e.id === answer.exerciseId);
     const errorCategories = answer.result.issues.map((issue) => issue.category);
@@ -150,7 +206,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         correct: answer.result.correct,
         attempts: answer.attempts,
         revealed: answer.revealed,
-        hintUsed: false,
+        hintUsed: answer.hintUsed,
         responseMs: answer.responseMs,
         errorCategories,
         reviewedAt: answeredAt,
@@ -166,6 +222,9 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       });
     }
 
+    const next = [...answers, { ...answer, xpAwarded }];
+    set({ answers: next });
+
     await db.exerciseHistory.put({
       id: `${sessionId}:${answer.exerciseId}`,
       entryId: answer.entryId,
@@ -175,7 +234,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       correct: answer.result.correct,
       firstAttempt: answer.attempts === 1,
       revealed: answer.revealed,
-      hintUsed: false,
+      hintUsed: answer.hintUsed,
       responseMs: answer.responseMs,
       grade,
       errorCategories,
@@ -192,7 +251,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   },
 
   advance: async () => {
-    const { sessionId, mode, exercises, answers, currentIndex } = get();
+    const { sessionId, mode, exercises, answers, currentIndex, startedAt } = get();
     const nextIndex = currentIndex + 1;
 
     if (nextIndex >= exercises.length) {
@@ -203,6 +262,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         await awardSessionBonuses(sessionId);
         const settings = await db.settings.get('user-settings');
         await awardDailyGoalBonus(settings?.dailyGoal ?? 20);
+        // Band and level completion, checked once per session rather than per answer.
+        await awardCompletionBonuses();
       }
       return;
     }

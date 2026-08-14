@@ -1,6 +1,7 @@
 import type { ListeningExercise, SpeakingExercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { selectDistractors } from './distractors';
+import { OPTION_COUNT as MULTIPLE_CHOICE_OPTION_COUNT } from './multipleChoice';
 import {
   acceptedGerman,
   englishStrictness,
@@ -24,7 +25,8 @@ import type { GeneratorContext } from './multipleChoice';
 export type ListeningVariant = 'chooseEnglish' | 'typeGerman' | 'identifyTargetWord';
 export type SpeakingVariant = 'repeatWord' | 'repeatPhrase' | 'readSentence';
 
-const OPTION_COUNT = 4;
+/** Matches multiple choice, so option count never depends on which format asked. */
+const OPTION_COUNT = MULTIPLE_CHOICE_OPTION_COUNT;
 
 export function generateListening(
   context: GeneratorContext,

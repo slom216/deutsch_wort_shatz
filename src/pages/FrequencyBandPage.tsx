@@ -3,11 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
+import { VirtualList } from '@/components/common/VirtualList';
 import { bandBySlug, isCefrLevel } from '@/content/vocabulary/frequencyBands';
 import { loadBand } from '@/content/vocabulary/registry';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import '@/pages/LearnPage.css';
 import '@/styles/lists.css';
+
+const ROW_HEIGHT = 44;
 
 /**
  * `/learn/:level/:frequencyBand` — the entries in one frequency band.
@@ -81,22 +84,28 @@ export default function FrequencyBandPage(): ReactNode {
       {entries ? (
         <>
           <p className="band-summary">
-            Showing the first 50 of {entries.length.toLocaleString('en-US')} entries.
+            {entries.length.toLocaleString('en-US')} entries, in frequency order.
           </p>
-          <ol className="entry-list">
-            {entries.slice(0, 50).map((entry) => (
-              <li key={entry.id} className="entry-row">
+          {/* Virtualized rather than truncated: a B1 band is 1,500 entries, and showing
+              the first 50 made the rest of the band unreachable from here (§29). */}
+          <VirtualList
+            items={entries}
+            rowHeight={ROW_HEIGHT}
+            ariaLabel={`${band.id} entries`}
+            keyOf={(entry) => entry.id}
+            renderRow={(entry) => (
+              <div className="entry-row" style={{ height: ROW_HEIGHT }}>
                 <span className="entry-row__rank">{entry.rank.toLocaleString('en-US')}</span>
-                <Link className="entry-row__german" to={`/word/${entry.id}`}>
+                <Link className="entry-row__german" to={`/word/${entry.id}`} lang="de">
                   {entry.wordClass === 'noun' && entry.article ? `${entry.article} ` : ''}
                   {entry.german}
                 </Link>
                 <span className="entry-row__english">{entry.english.join(', ')}</span>
                 <span className="entry-row__class">{entry.wordClass}</span>
                 <span className="entry-row__topic">{entry.primaryTopic}</span>
-              </li>
-            ))}
-          </ol>
+              </div>
+            )}
+          />
         </>
       ) : null}
     </>

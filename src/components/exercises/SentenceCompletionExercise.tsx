@@ -51,7 +51,6 @@ export function SentenceCompletionExercise({
   return (
     <div className="exercise">
       <p className="exercise__prompt">{exercise.prompt}</p>
-      {exercise.hint ? <p className="exercise__hint">{exercise.hint}</p> : null}
 
       <form
         onSubmit={(event) => {

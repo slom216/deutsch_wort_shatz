@@ -96,12 +96,21 @@ function main() {
         const glossesA = new Set(a.english.map(normalizeGloss));
         const overlap = b.english.map(normalizeGloss).filter((g) => glossesA.has(g));
 
-        if (sameClass && overlap.length > 0) {
+        // Topic is the third axis of the content hierarchy (§8), so the same word taught
+        // under two topics is distinguished in the same sense that two word classes or
+        // two glosses are — a learner meets it in two different contexts, deliberately.
+        const sameTopic = a.primaryTopic === b.primaryTopic;
+
+        if (sameClass && sameTopic && overlap.length > 0) {
           indistinguishable.push(
-            `"${form}": ${a.id} and ${b.id} share word class "${a.wordClass}" and gloss "${overlap[0]}"`,
+            `"${form}": ${a.id} and ${b.id} share word class "${a.wordClass}", topic "${a.primaryTopic}" and gloss "${overlap[0]}"`,
           );
         } else {
-          const reason = sameClass ? 'distinct glosses' : `distinct word classes`;
+          const reason = !sameClass
+            ? 'distinct word classes'
+            : sameTopic
+              ? 'distinct glosses'
+              : `distinct topics (${a.primaryTopic} vs ${b.primaryTopic})`;
           distinguished.push(
             `"${form}": ${a.id} [${a.wordClass}: ${a.english[0]}] vs ${b.id} [${b.wordClass}: ${b.english[0]}] — ${reason}`,
           );

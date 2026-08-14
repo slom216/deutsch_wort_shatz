@@ -1,6 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-import type { MatchingExercise as MatchingExerciseType } from '@/schemas/exerciseSchema';
+import type {
+  ErrorCategory,
+  MatchingExercise as MatchingExerciseType,
+} from '@/schemas/exerciseSchema';
 import type { ExerciseComponentProps } from './exerciseProps';
 import './exercises.css';
 
@@ -44,6 +47,13 @@ export function MatchingExercise({
     setSelectedLeft(null);
   };
 
+  /** What a mismatch means for this matching variant (§16 error categories). */
+  const categoryFor = (variant: string): ErrorCategory => {
+    if (variant === 'nounToPlural') return 'wrongPlural';
+    if (variant === 'verbToParticiple') return 'wrongConjugation';
+    return 'wrongMeaning';
+  };
+
   const submit = (): void => {
     if (!allMatched || locked) return;
 
@@ -55,7 +65,9 @@ export function MatchingExercise({
       issues: correct
         ? []
         : wrong.map((pair) => ({
-            category: 'wrongMeaning' as const,
+            // The variant says what a mismatch actually was. Filing a wrong plural under
+            // "wrong meaning" would put it in the wrong column of the error statistics.
+            category: categoryFor(exercise.variant),
             message: `"${pair.left}" matches "${pair.right}".`,
           })),
       submittedAnswer: exercise.pairs

@@ -46,6 +46,16 @@ export const entryProgressSchema = z.object({
   hintsUsed: z.number().int().min(0),
   /** Counts per error category from §16, keyed by category name. */
   errorCounts: z.record(z.string(), z.number().int().min(0)),
+  /**
+   * Running quiz score: +1 for a first-attempt correct answer, −1 for a wrong one,
+   * floored at 0. Reaching `MASTERY_SCORE_TARGET` marks the entry mastered.
+   *
+   * Deliberately separate from XP: XP is a lifetime total that drives learner level and
+   * achievements, so it must only ever grow. This score is per entry and moves both ways.
+   */
+  masteryScore: z.number().int().min(0),
+  /** Total response time across all attempts, in ms. Divided by `totalAttempts` for §21. */
+  totalResponseMs: z.number().min(0),
 });
 
 export const exerciseHistorySchema = z.object({

@@ -35,7 +35,7 @@ export const multipleChoice: MultipleChoiceExercise = {
   variant: 'germanToEnglish',
   prompt: 'What does this mean in English?',
   question: 'der Tag',
-  options: ['day', 'night', 'year', 'week'],
+  options: ['day', 'night', 'year', 'week', 'hour', 'month'],
   correctIndex: 0,
 };
 
@@ -106,7 +106,7 @@ export const listeningChoice: ListeningExercise = {
   prompt: 'Listen, then choose the English meaning.',
   spokenText: 'der Tag',
   mode: 'chooseEnglish',
-  options: ['day', 'night', 'year', 'week'],
+  options: ['day', 'night', 'year', 'week', 'hour', 'month'],
   correctIndex: 0,
   canonicalAnswer: 'der Tag',
 };

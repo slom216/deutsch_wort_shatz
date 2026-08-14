@@ -27,11 +27,22 @@ test('practice setup starts a session', async ({ page }) => {
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 });
 
+test('multiple choice offers six numbered options', async ({ page }) => {
+  await startSession(page, 'multipleChoice');
+
+  // Six options by default. The article variant legitimately offers three, since German
+  // has three articles, so the hint is asserted against the count actually rendered.
+  const options = await page.getByRole('radio').count();
+  expect(options).toBeGreaterThanOrEqual(3);
+  expect(options).toBeLessThanOrEqual(6);
+  await expect(page.getByText(`Press 1–${options} to answer.`)).toBeVisible();
+});
+
 test('multiple choice can be answered and gives feedback', async ({ page }) => {
   await startSession(page, 'multipleChoice');
 
+  // Choosing an option answers outright — there is no separate confirm step.
   await page.getByRole('radio').first().check();
-  await page.getByRole('button', { name: /check answer/i }).click();
 
   await expect(page.getByRole('status')).toBeVisible();
   await expect(
@@ -39,6 +50,23 @@ test('multiple choice can be answered and gives feedback', async ({ page }) => {
       .getByRole('button', { name: /continue/i })
       .or(page.getByRole('button', { name: /try again/i })),
   ).toBeVisible();
+});
+
+test('a number key answers, and Enter moves on', async ({ page }) => {
+  await startSession(page, 'multipleChoice');
+
+  await page.keyboard.press('1');
+  await expect(page.getByRole('status')).toBeVisible();
+
+  // Option 1 may or may not be the right answer. A wrong first answer offers a retry, so
+  // reveal to reach the locked state either way; then Enter continues.
+  await page
+    .getByRole('button', { name: /show answer/i })
+    .click({ timeout: 2_000 })
+    .catch(() => {});
+
+  await page.keyboard.press('Enter');
+  await expect(page.getByText(/Exercise 2 of/)).toBeVisible();
 });
 
 test('typed translation enforces strict German spelling', async ({ page }) => {
@@ -128,7 +156,6 @@ test('a completed session persists its results across a reload', async ({ page }
   for (let i = 0; i < 3; i += 1) {
     await expect(page.getByText(new RegExp(`Exercise ${i + 1} of 3`))).toBeVisible();
     await page.getByRole('radio').first().check();
-    await page.getByRole('button', { name: /check answer/i }).click();
     const retry = page.getByRole('button', { name: /try again/i });
     if (await retry.isVisible().catch(() => false)) {
       await page.getByRole('button', { name: /show answer/i }).click();

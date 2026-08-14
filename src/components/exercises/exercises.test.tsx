@@ -30,7 +30,20 @@ describe('MultipleChoiceExercise', () => {
       />,
     );
     expect(screen.getByText('der Tag')).toBeInTheDocument();
-    expect(screen.getAllByRole('radio')).toHaveLength(4);
+    expect(screen.getAllByRole('radio')).toHaveLength(fixtures.multipleChoice.options.length);
+  });
+
+  it('numbers every option', () => {
+    render(
+      <MultipleChoiceExercise
+        {...defaults}
+        exercise={fixtures.multipleChoice}
+        onSubmit={vi.fn()}
+      />,
+    );
+    for (let position = 1; position <= fixtures.multipleChoice.options.length; position += 1) {
+      expect(screen.getByText(String(position))).toBeInTheDocument();
+    }
   });
 
   it('reports a correct choice', async () => {
@@ -45,7 +58,6 @@ describe('MultipleChoiceExercise', () => {
     );
 
     await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     expect(lastResult(onSubmit).correct).toBe(true);
   });
@@ -62,22 +74,43 @@ describe('MultipleChoiceExercise', () => {
     );
 
     await user.click(screen.getByRole('radio', { name: 'night' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     const result = lastResult(onSubmit);
     expect(result.correct).toBe(false);
     expect(result.issues[0]?.message).toMatch(/day/);
   });
 
-  it('cannot be submitted before an option is chosen', () => {
+  it('answers on the matching number key', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
     render(
       <MultipleChoiceExercise
         {...defaults}
         exercise={fixtures.multipleChoice}
-        onSubmit={vi.fn()}
+        onSubmit={onSubmit}
       />,
     );
-    expect(screen.getByRole('button', { name: /check answer/i })).toBeDisabled();
+
+    await user.keyboard(String(fixtures.multipleChoice.options.indexOf('day') + 1));
+
+    expect(lastResult(onSubmit).correct).toBe(true);
+  });
+
+  it('does not answer once locked', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    render(
+      <MultipleChoiceExercise
+        {...defaults}
+        locked
+        exercise={fixtures.multipleChoice}
+        onSubmit={onSubmit}
+      />,
+    );
+
+    await user.keyboard('1');
+
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('is keyboard operable', async () => {
@@ -91,10 +124,9 @@ describe('MultipleChoiceExercise', () => {
       />,
     );
 
+    // Tab reaches the radio group, Space selects — and selecting is answering.
     await user.tab();
     await user.keyboard(' ');
-    await user.tab();
-    await user.keyboard('{Enter}');
 
     expect(onSubmit).toHaveBeenCalled();
   });

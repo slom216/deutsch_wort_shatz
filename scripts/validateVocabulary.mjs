@@ -104,12 +104,34 @@ function main() {
   const verbProblems = [];
   const phraseProblems = [];
 
+  const uncapitalizedNouns = [];
+
   for (const entry of entries) {
     if (entry.wordClass === 'noun') {
       if (!entry.article) missingArticle.push(`${entry.id} (${entry.german})`);
-      if (!entry.plural && entry.numberUsage !== 'pluralOnly') {
+      // §13 exempts nouns the dataset marks as having no plural at all; everything else
+      // must carry one, because §14 forbids teaching a noun without it.
+      if (
+        !entry.plural &&
+        entry.numberUsage !== 'pluralOnly' &&
+        entry.numberUsage !== 'singularOnly'
+      ) {
         missingPlural.push(`${entry.id} (${entry.german}, numberUsage=${entry.numberUsage})`);
       }
+      // §13: "noun is not capitalized". German nouns always are, but the capital does not
+      // have to be the first letter of the entry: "heiße Schokolade" and "Pommes frites"
+      // are both correct. What is never correct is a noun with no capital at all — that
+      // entry is either a misfiled word class or a truncated source row.
+      const hasCapital = entry.german
+        .trim()
+        .split(/\s+/)
+        .some((word) => {
+          // Leading punctuation is not the letter under test: „Bitte nicht stören“-Schild
+          // and (Regen)schirm both carry their capital behind a quote or a bracket.
+          const first = word.replace(/^[^\p{L}]+/u, '').charAt(0);
+          return first && first === first.toUpperCase() && first !== first.toLowerCase();
+        });
+      if (!hasCapital) uncapitalizedNouns.push(`${entry.id} (${entry.german})`);
     }
     if (entry.wordClass === 'verb') {
       for (const field of [
@@ -143,23 +165,32 @@ function main() {
     ui.ok('all phrases declare a register and phrase type');
   }
 
-  // Article/plural gaps are genuine content defects, but the shipped datasets declare
-  // "linguisticReview: required". They are reported every run and must be resolved
-  // before the Phase 18 release gate rather than blocking Phase 0.
+  // §13: a missing article or plural is an error, not a warning. §14 forbids teaching a
+  // noun without them, so an entry lacking either cannot produce a valid exercise.
+  // Nouns the dataset marks `singularOnly` or `pluralOnly` are exempt from the plural
+  // rule — "die Schweiz" has no plural to teach.
   if (missingArticle.length > 0) {
-    ui.warn(`${missingArticle.length} nouns have no article (editorial review required)`);
+    ui.fail(`${missingArticle.length} nouns have no article`);
     printSample(missingArticle, 5);
-    warnings.push(...missingArticle);
+    errors.push(...missingArticle);
   } else {
     ui.ok('every noun has an article');
   }
 
   if (missingPlural.length > 0) {
-    ui.warn(`${missingPlural.length} nouns have no plural (editorial review required)`);
+    ui.fail(`${missingPlural.length} countable nouns have no plural`);
     printSample(missingPlural, 5);
-    warnings.push(...missingPlural);
+    errors.push(...missingPlural);
   } else {
-    ui.ok('every noun has a plural');
+    ui.ok('every countable noun has a plural');
+  }
+
+  if (uncapitalizedNouns.length > 0) {
+    ui.fail(`${uncapitalizedNouns.length} nouns are not capitalized`);
+    printSample(uncapitalizedNouns, 5);
+    errors.push(...uncapitalizedNouns);
+  } else {
+    ui.ok('every noun is capitalized');
   }
 
   finish('validate:vocabulary', errors, warnings);

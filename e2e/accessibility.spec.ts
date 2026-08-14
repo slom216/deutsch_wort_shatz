@@ -116,7 +116,6 @@ test('correctness is never conveyed by colour alone', async ({ page }) => {
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 
   await page.getByRole('radio').first().check();
-  await page.getByRole('button', { name: /check answer/i }).click();
 
   // The feedback panel states the outcome in words, in a live region.
   const status = page.getByRole('status').first();

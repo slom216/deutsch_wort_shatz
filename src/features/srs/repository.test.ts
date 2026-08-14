@@ -186,3 +186,58 @@ describe('SRS repository', () => {
     expect(after?.totalAttempts).toBe(2);
   });
 });
+
+describe('quiz score', () => {
+  const entryId = 'a1-0001-hallo';
+
+  it('adds one for a clean answer and subtracts one for a wrong one', async () => {
+    expect((await answer(entryId, true)).progress.masteryScore).toBe(1);
+    expect((await answer(entryId, true)).progress.masteryScore).toBe(2);
+    expect((await answer(entryId, false)).progress.masteryScore).toBe(1);
+  });
+
+  it('never goes below zero', async () => {
+    for (let i = 0; i < 3; i += 1) await answer(entryId, false);
+    expect((await loadProgress(entryId))?.masteryScore).toBe(0);
+  });
+
+  it('does not count a second-attempt or revealed answer as clean', async () => {
+    await answer(entryId, true, { attempts: 2 });
+    expect((await loadProgress(entryId))?.masteryScore).toBe(0);
+
+    await answer(entryId, true, { revealed: true });
+    expect((await loadProgress(entryId))?.masteryScore).toBe(0);
+  });
+
+  it('masters an entry once the score reaches five', async () => {
+    // The score only promotes an entry that has reached `review`; a word still in its
+    // learning steps is not mastered by five quick answers on the same day.
+    let at = NOW;
+    for (let i = 0; i < 8; i += 1) {
+      const result = await answer(entryId, true, {
+        exercise: productionExercise,
+        reviewedAt: at,
+      });
+      if (result.progress.srs.status === 'mastered') break;
+      at = new Date(at.getTime() + result.progress.srs.intervalDays * 86_400_000);
+    }
+
+    const stored = await loadProgress(entryId);
+    expect(stored?.masteryScore).toBeGreaterThanOrEqual(5);
+    expect(stored?.srs.status).toBe('mastered');
+  });
+
+  it('averages response time rather than reacting to the last answer', async () => {
+    // Multiple choice expects 6s. Five answers at 3s, then one distracted 15s answer.
+    for (let i = 0; i < 5; i += 1) await answer(entryId, true, { responseMs: 3_000 });
+    const steady = (await loadProgress(entryId))?.srs.difficulty ?? 0;
+
+    await answer(entryId, true, { responseMs: 15_000 });
+    const afterOneSlow = (await loadProgress(entryId))?.srs.difficulty ?? 0;
+
+    // Instantaneous, 15s is 2.5× expected and saturates the response-time term, adding
+    // its full 0.20 weight. Averaged, the mean is 5s — under expectation — so the term
+    // barely moves. Difficulty gates both scheduling and mastery, so this matters.
+    expect(afterOneSlow - steady).toBeLessThan(0.1);
+  });
+});

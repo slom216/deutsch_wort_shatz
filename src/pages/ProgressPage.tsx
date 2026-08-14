@@ -6,7 +6,8 @@ import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
 import { loadAllProgress } from '@/features/srs/repository';
-import { hardestEntries, masteredEntries } from '@/features/srs/queue';
+import { hardestEntries, masteredEntries, queueCounts } from '@/features/srs/queue';
+import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { db } from '@/features/persistence/db';
 import { useGamification } from '@/features/gamification/useGamification';
 import {
@@ -92,6 +93,11 @@ export default function ProgressPage(): ReactNode {
   const hardest = useMemo(() => hardestEntries(progress, 10), [progress]);
   const mastered = useMemo(() => masteredEntries(progress).slice(0, 20), [progress]);
   const weakTopics = useMemo(() => (index ? weakestTopics(index, byEntry) : []), [index, byEntry]);
+  const counts = useMemo(() => queueCounts(progress, index?.length ?? 0), [progress, index]);
+  const labels = useEntryLabels([
+    ...hardest.map((entry) => entry.entryId),
+    ...mastered.map((entry) => entry.entryId),
+  ]);
 
   if (error) {
     return (
@@ -131,7 +137,10 @@ export default function ProgressPage(): ReactNode {
         <StatCard label="Introduced" value={stats.introduced} hint="Entries you have met" />
         <StatCard label="Learning" value={stats.learning} hint="Short intervals" />
         <StatCard label="In review" value={stats.review} hint="Long intervals" />
-        <StatCard label="Mastered" value={stats.mastered} hint="Meets every criterion" />
+        <StatCard label="Mastered" value={stats.mastered} hint="Score 5, or every §22 criterion" />
+        <StatCard label="Due today" value={counts.due} hint="Ready to review now" />
+        <StatCard label="Overdue" value={counts.overdue} hint="More than a day late" />
+        <StatCard label="Exercises answered" value={stats.totalAttempts} hint="All time" />
         <StatCard
           label="Total accuracy"
           value={percent(stats.accuracy)}
@@ -269,8 +278,10 @@ export default function ProgressPage(): ReactNode {
             <ul className="example-list">
               {hardest.map((entry) => (
                 <li key={entry.entryId}>
-                  <Link to={`/word/${entry.entryId}`}>{entry.entryId}</Link> — difficulty{' '}
-                  {entry.srs.difficulty.toFixed(2)}
+                  <Link to={`/word/${entry.entryId}`} lang="de">
+                    {labels.get(entry.entryId) ?? entry.entryId}
+                  </Link>{' '}
+                  — difficulty {entry.srs.difficulty.toFixed(2)}
                 </li>
               ))}
             </ul>
@@ -281,15 +292,17 @@ export default function ProgressPage(): ReactNode {
           <h2 id="mastered">Mastered words</h2>
           {mastered.length === 0 ? (
             <p className="band-summary">
-              Mastery needs five successful reviews, three of them production, and a 30-day
-              interval.
+              Mastery needs a quiz score of 5, or the full §22 evidence: five successful reviews,
+              three of them production, and a 30-day interval.
             </p>
           ) : (
             <ul className="example-list">
               {mastered.map((entry) => (
                 <li key={entry.entryId}>
-                  <Link to={`/word/${entry.entryId}`}>{entry.entryId}</Link> — interval{' '}
-                  {Math.round(entry.srs.intervalDays)} days
+                  <Link to={`/word/${entry.entryId}`} lang="de">
+                    {labels.get(entry.entryId) ?? entry.entryId}
+                  </Link>{' '}
+                  — interval {Math.round(entry.srs.intervalDays)} days
                 </li>
               ))}
             </ul>

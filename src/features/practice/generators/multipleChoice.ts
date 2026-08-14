@@ -16,9 +16,12 @@ import {
 /**
  * Multiple choice (§15).
  *
- * Four options by default, exactly one correct, distractors preferably from the same
- * topic or a nearby frequency range. A variant returns null when the entry cannot
- * support it — an article question needs a noun, a verb-form question needs a verb.
+ * Six options by default, exactly one correct, distractors drawn from the same level with
+ * an English gloss of similar length (see `distractors.ts`). A variant returns null when
+ * the entry cannot support it — an article question needs a noun, a verb-form question
+ * needs a verb.
+ *
+ * `article` is naturally capped at three options, since German has three articles.
  */
 
 export type MultipleChoiceVariant =
@@ -30,7 +33,7 @@ export type MultipleChoiceVariant =
   | 'verbForm'
   | 'phraseContext';
 
-const OPTION_COUNT = 4;
+export const OPTION_COUNT = 6;
 
 export interface GeneratorContext {
   readonly entry: VocabularyEntry;

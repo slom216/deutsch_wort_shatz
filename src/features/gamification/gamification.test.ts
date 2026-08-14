@@ -431,6 +431,8 @@ describe('gamification persistence', () => {
       firstAttemptCorrect: 1,
       hintsUsed: 0,
       errorCounts: {},
+      masteryScore: 0,
+      totalResponseMs: 0,
     });
 
     const snapshot = await loadGamification(20, TOTALS, new Date());

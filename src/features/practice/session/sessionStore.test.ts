@@ -59,6 +59,7 @@ describe('session store', () => {
       result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
       attempts: 1,
       revealed: false,
+      hintUsed: false,
       responseMs: 1234,
     });
 
@@ -88,6 +89,7 @@ describe('session store', () => {
       },
       attempts: 1,
       revealed: false,
+      hintUsed: false,
       responseMs: 900,
     });
 
@@ -105,6 +107,7 @@ describe('session store', () => {
       result: { correct: false, issues: [], submittedAnswer: '', expectedAnswer: 'x' },
       attempts: 1,
       revealed: true,
+      hintUsed: false,
       responseMs: 100,
     });
     await useSessionStore.getState().recordAnswer({
@@ -113,6 +116,7 @@ describe('session store', () => {
       result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
       attempts: 2,
       revealed: false,
+      hintUsed: false,
       responseMs: 100,
     });
 
@@ -152,6 +156,7 @@ describe('session store', () => {
         },
         attempts: 1,
         revealed: false,
+        hintUsed: false,
         responseMs: 500,
       });
     }
@@ -171,6 +176,7 @@ describe('session store', () => {
       result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
       attempts: 1,
       revealed: false,
+      hintUsed: false,
       responseMs: 200,
     });
 
@@ -179,5 +185,81 @@ describe('session store', () => {
 
     const history = await loadSessionHistory('durable');
     expect(history).toHaveLength(1);
+  });
+});
+
+describe('resuming after a reload', () => {
+  async function answerFirst(count: number, sessionId: string): Promise<void> {
+    for (let index = 0; index < count; index += 1) {
+      const exercise = useSessionStore.getState().exercises[index]!;
+      await useSessionStore.getState().recordAnswer({
+        exerciseId: exercise.id,
+        entryId: exercise.entryId,
+        result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
+        attempts: 1,
+        revealed: false,
+        hintUsed: false,
+        responseMs: 900,
+      });
+      await useSessionStore.getState().advance();
+    }
+    expect(await loadSessionHistory(sessionId)).toHaveLength(count);
+  }
+
+  beforeEach(async () => {
+    await db.entryProgress.clear();
+  });
+
+  it('picks up where the learner left off instead of starting over', async () => {
+    await startSession('resumed');
+    await answerFirst(2, 'resumed');
+
+    // A reload: the store is empty and the page calls start() again with the same id.
+    useSessionStore.getState().reset();
+    await startSession('resumed');
+
+    const state = useSessionStore.getState();
+    expect(state.currentIndex).toBe(2);
+    expect(state.answers).toHaveLength(2);
+    expect(state.status).toBe('active');
+  });
+
+  it('does not re-grade the answers it replays', async () => {
+    await startSession('no-double-count');
+    await answerFirst(2, 'no-double-count');
+
+    const before = await db.entryProgress.toArray();
+    const attemptsBefore = before.reduce((sum, row) => sum + row.totalAttempts, 0);
+    expect(attemptsBefore).toBe(2);
+
+    useSessionStore.getState().reset();
+    await startSession('no-double-count');
+
+    const after = await db.entryProgress.toArray();
+    expect(after.reduce((sum, row) => sum + row.totalAttempts, 0)).toBe(attemptsBefore);
+  });
+
+  it('keeps the answered count on the session record rather than resetting it to zero', async () => {
+    await startSession('summary-kept');
+    await answerFirst(2, 'summary-kept');
+
+    useSessionStore.getState().reset();
+    await startSession('summary-kept');
+
+    const record = await loadSessionRecord('summary-kept');
+    expect(record?.completedExerciseCount).toBe(2);
+    expect(record?.correctCount).toBe(2);
+  });
+
+  it('records the XP earned on the session', async () => {
+    await startSession('xp-session');
+    await answerFirst(3, 'xp-session');
+
+    const record = await loadSessionRecord('xp-session');
+    const history = await loadSessionHistory('xp-session');
+    const expected = history.reduce((sum, row) => sum + row.xpAwarded, 0);
+
+    expect(expected).toBeGreaterThan(0);
+    expect(record?.xpEarned).toBe(expected);
   });
 });

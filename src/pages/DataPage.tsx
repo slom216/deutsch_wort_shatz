@@ -7,6 +7,7 @@ import {
   exportFilename,
   exportProgress,
   inspectImport,
+  inspectRepair,
   repairDatabase,
   serializeExport,
   type ImportInspection,
@@ -31,19 +32,31 @@ export default function DataPage(): ReactNode {
   const [inspection, setInspection] = useState<ImportInspection | null>(null);
   const [mode, setMode] = useState<ImportMode>('merge');
   const [importMessage, setImportMessage] = useState<string | null>(null);
+  const [repairPreview, setRepairPreview] = useState<RepairReport | null>(null);
   const [repair, setRepair] = useState<RepairReport | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [resetDone, setResetDone] = useState(false);
 
-  const download = async (): Promise<void> => {
-    const file = await exportProgress();
-    const blob = new Blob([serializeExport(file)], { type: 'application/json' });
+  const saveFile = (contents: string, filename: string): void => {
+    const blob = new Blob([contents], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = exportFilename();
+    anchor.download = filename;
     anchor.click();
     URL.revokeObjectURL(url);
+  };
+
+  const download = async (): Promise<void> => {
+    saveFile(serializeExport(await exportProgress()), exportFilename());
+  };
+
+  const runRepair = async (): Promise<void> => {
+    const result = await repairDatabase();
+    saveFile(result.backup, `before-repair-${exportFilename()}`);
+    setRepairPreview(null);
+    setRepair(result);
+    await hydrate();
   };
 
   const choose = async (file: File): Promise<void> => {
@@ -210,23 +223,59 @@ export default function DataPage(): ReactNode {
       <section className="settings-section" aria-labelledby="data-repair">
         <h2 id="data-repair">Repair database</h2>
         <p>
-          Checks every stored record against its schema and removes any that are corrupt. Valid
-          progress is left untouched.
+          Checks every stored record against its schema. Repair <strong>deletes</strong> the records
+          it cannot read, so it reports what it found first and downloads a backup before removing
+          anything (§24: progress is never deleted silently).
         </p>
-        <button
-          type="button"
-          className="data-reset__button"
-          onClick={() => {
-            void repairDatabase().then(setRepair);
-          }}
-        >
-          Check and repair
-        </button>
+
+        {!repairPreview ? (
+          <button
+            type="button"
+            className="data-reset__button"
+            onClick={() => {
+              setRepair(null);
+              void inspectRepair().then(setRepairPreview);
+            }}
+          >
+            Check for corrupt records
+          </button>
+        ) : null}
+
+        {repairPreview && !repair ? (
+          <div className="data-reset__confirm" role="group" aria-label="Confirm repair">
+            <p role="status">
+              {repairPreview.ok
+                ? 'No problems found. Every stored record is valid — nothing to repair.'
+                : `Found ${repairPreview.removedProgress} unreadable progress record(s) and ${repairPreview.removedHistory} unreadable history row(s). Repairing deletes them permanently.`}
+            </p>
+            <div className="data-reset__actions">
+              {repairPreview.ok ? null : (
+                <button
+                  type="button"
+                  className="data-reset__button"
+                  onClick={() => {
+                    void runRepair();
+                  }}
+                >
+                  Download a backup and repair
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setRepairPreview(null);
+                }}
+              >
+                {repairPreview.ok ? 'Close' : 'Cancel'}
+              </button>
+            </div>
+          </div>
+        ) : null}
+
         {repair ? (
           <p role="status" className="data-reset__done">
-            {repair.ok
-              ? 'No problems found. Every stored record is valid.'
-              : `Removed ${repair.removedProgress} corrupt progress records and ${repair.removedHistory} corrupt history rows.`}
+            Removed {repair.removedProgress} corrupt progress records and {repair.removedHistory}{' '}
+            corrupt history rows. A backup of everything as it was has been downloaded.
           </p>
         ) : null}
       </section>

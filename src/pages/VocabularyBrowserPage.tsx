@@ -1,9 +1,11 @@
-import { useDeferredValue, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { VirtualList } from '@/components/common/VirtualList';
+import { GermanCharacterHelper } from '@/components/exercises/GermanCharacterHelper';
+import { handleGermanCharacterShortcut } from '@/components/exercises/germanCharacters';
 import { CEFR_LEVELS, FREQUENCY_BANDS } from '@/content/vocabulary/frequencyBands';
 import { TOPICS } from '@/content/vocabulary/topics';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
@@ -54,6 +56,7 @@ export default function VocabularyBrowserPage(): ReactNode {
   );
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<VocabularyFilters>(EMPTY_FILTERS);
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
   // Keeps the text field responsive: the expensive filter runs against the deferred value.
   const deferredFilters = useDeferredValue(filters);
@@ -128,12 +131,19 @@ export default function VocabularyBrowserPage(): ReactNode {
           <label htmlFor="vocab-search">Search</label>
           <input
             id="vocab-search"
+            ref={searchRef}
             type="search"
             value={filters.query}
             onChange={(event) => set('query', event.target.value)}
+            onKeyDown={(event) => {
+              handleGermanCharacterShortcut(event);
+            }}
             placeholder="Straße, gegangen, die Bücher, to speak"
             autoComplete="off"
           />
+          {/* §17: every text input offers these — including the box whose own
+              placeholder is "Straße". */}
+          <GermanCharacterHelper targetRef={searchRef} />
         </div>
 
         <Select

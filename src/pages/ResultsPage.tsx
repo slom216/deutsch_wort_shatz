@@ -5,6 +5,8 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
 import { loadSessionHistory, loadSessionRecord } from '@/features/practice/session/sessionStore';
+import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import type { ExerciseHistory } from '@/schemas/progressSchema';
 import type { PracticeSessionRecord } from '@/schemas/sessionSchema';
 import '@/styles/lists.css';
@@ -19,7 +21,9 @@ export default function ResultsPage(): ReactNode {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [record, setRecord] = useState<PracticeSessionRecord | null>(null);
   const [history, setHistory] = useState<ExerciseHistory[]>([]);
+  const [scores, setScores] = useState<Map<string, number>>(new Map());
   const [state, setState] = useState<'loading' | 'ready' | 'missing'>('loading');
+  const labels = useEntryLabels([...new Set(history.map((row) => row.entryId))]);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -34,6 +38,11 @@ export default function ResultsPage(): ReactNode {
       setRecord(session ?? null);
       setHistory(rows.sort((a, b) => a.answeredAt.localeCompare(b.answeredAt)));
       setState(session ? 'ready' : 'missing');
+
+      // The quiz score each entry now stands at, so the session reads as progress made.
+      const progress = await loadAllProgress();
+      if (cancelled) return;
+      setScores(new Map(progress.map((row) => [row.entryId, row.masteryScore])));
     })().catch(() => {
       // If local storage is unavailable there are no results to show. Fall through to
       // the "not found" screen rather than leaving the page on a spinner forever.
@@ -88,6 +97,11 @@ export default function ResultsPage(): ReactNode {
       <dl className="stat-grid">
         <StatCard label="Accuracy" value={`${accuracy}%`} hint={`${correct} of ${answered}`} />
         <StatCard label="Correct first time" value={firstAttempt} hint="No hint, no retry" />
+        <StatCard
+          label="XP earned"
+          value={record.xpEarned}
+          hint="Bonuses are added on the dashboard"
+        />
         <StatCard label="Revealed" value={revealed} hint="Answers you asked to see" />
         <StatCard
           label="Average time"
@@ -115,14 +129,18 @@ export default function ResultsPage(): ReactNode {
           {history.map((row) => (
             <li key={row.id} className="entry-row">
               <span className="entry-row__rank">{row.correct ? '✓' : '✗'}</span>
-              <Link className="entry-row__german" to={`/word/${row.entryId}`}>
-                {row.entryId}
+              <Link className="entry-row__german" to={`/word/${row.entryId}`} lang="de">
+                {labels.get(row.entryId) ?? row.entryId}
               </Link>
               <span className="entry-row__english">{row.exerciseType}</span>
               <span className="entry-row__class">
                 {row.revealed ? 'revealed' : row.firstAttempt ? 'first try' : 'retried'}
               </span>
-              <span className="entry-row__topic">{(row.responseMs / 1000).toFixed(1)}s</span>
+              <span className="entry-row__topic">
+                {scores.has(row.entryId)
+                  ? `score ${scores.get(row.entryId)}/${MASTERY_SCORE_TARGET}`
+                  : `${(row.responseMs / 1000).toFixed(1)}s`}
+              </span>
             </li>
           ))}
         </ol>

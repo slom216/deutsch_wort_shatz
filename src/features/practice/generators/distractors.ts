@@ -4,13 +4,27 @@ import type { Random } from '../random';
 /**
  * Distractor selection (§15).
  *
- * Distractors must be plausible and are preferably drawn from the same topic or a nearby
- * frequency range, so a multiple-choice question cannot be solved by noticing that three
- * options are obviously from a different part of the vocabulary.
+ * Distractors must be plausible. Three preferences apply, outermost first:
+ *
+ *  1. the same CEFR level as the target;
+ *  2. an English gloss of similar length — within ±2 letters, widening only when too few
+ *     candidates qualify. Option length is otherwise a giveaway: a learner who knows
+ *     nothing can still spot the one long answer among five short ones;
+ *  3. the same topic, then a nearby frequency range, then anything else (§15).
  */
 
 /** How far apart two ranks may be and still count as "nearby frequency". */
 const NEARBY_RANK_WINDOW = 400;
+
+/**
+ * Gloss-length windows, tried in order. The last is unbounded, so selection degrades to
+ * "any plausible candidate" rather than returning too few options.
+ */
+const GLOSS_LENGTH_WINDOWS: readonly number[] = [2, 3, 4, Number.POSITIVE_INFINITY];
+
+function glossLength(entry: VocabularyEntry): number {
+  return (entry.english[0] ?? '').length;
+}
 
 export interface DistractorOptions<T> {
   readonly target: VocabularyEntry;
@@ -33,28 +47,46 @@ export function selectDistractors<T>(options: DistractorOptions<T>): T[] {
   const { target, pool, count, random, valueOf, exclude = [], filter } = options;
 
   const taken = new Set<string>(exclude.map((value) => JSON.stringify(value)));
-  const candidates = pool.filter(
+  const eligible = pool.filter(
     (entry) => entry.id !== target.id && (filter ? filter(entry) : true),
   );
 
-  const sameTopic: VocabularyEntry[] = [];
-  const nearbyRank: VocabularyEntry[] = [];
-  const rest: VocabularyEntry[] = [];
+  // Prefer the target's own level, but only while that still leaves enough candidates —
+  // a review session's pool does not always cover every level its due entries span.
+  const sameLevel = eligible.filter((entry) => entry.level === target.level);
+  const candidates = sameLevel.length >= count ? sameLevel : eligible;
 
+  /** Same topic, then nearby frequency, then the rest; same word class first within each. */
+  const byRelatedness = (group: readonly VocabularyEntry[]): VocabularyEntry[] => {
+    const sameTopic: VocabularyEntry[] = [];
+    const nearbyRank: VocabularyEntry[] = [];
+    const rest: VocabularyEntry[] = [];
+
+    for (const entry of group) {
+      if (entry.primaryTopic === target.primaryTopic) sameTopic.push(entry);
+      else if (Math.abs(entry.rank - target.rank) <= NEARBY_RANK_WINDOW) nearbyRank.push(entry);
+      else rest.push(entry);
+    }
+
+    // Same word class first: an article question wants other nouns, and a translation
+    // question is harder when the options are all the same part of speech.
+    return [sameTopic, nearbyRank, rest].flatMap((tier) => {
+      const sameClass = tier.filter((entry) => entry.wordClass === target.wordClass);
+      const otherClass = tier.filter((entry) => entry.wordClass !== target.wordClass);
+      return [...random.shuffle(sameClass), ...random.shuffle(otherClass)];
+    });
+  };
+
+  const targetLength = glossLength(target);
+  const buckets: VocabularyEntry[][] = GLOSS_LENGTH_WINDOWS.map(() => []);
   for (const entry of candidates) {
-    if (entry.primaryTopic === target.primaryTopic) sameTopic.push(entry);
-    else if (Math.abs(entry.rank - target.rank) <= NEARBY_RANK_WINDOW) nearbyRank.push(entry);
-    else rest.push(entry);
+    const delta = Math.abs(glossLength(entry) - targetLength);
+    const index = GLOSS_LENGTH_WINDOWS.findIndex((window) => delta <= window);
+    (buckets[index] as VocabularyEntry[]).push(entry);
   }
 
   const results: T[] = [];
-  // Same word class first within each tier: an article question wants other nouns, and a
-  // translation question is harder when the options are all the same part of speech.
-  const tiers = [sameTopic, nearbyRank, rest].map((tier) => {
-    const sameClass = tier.filter((entry) => entry.wordClass === target.wordClass);
-    const otherClass = tier.filter((entry) => entry.wordClass !== target.wordClass);
-    return [...random.shuffle(sameClass), ...random.shuffle(otherClass)];
-  });
+  const tiers = buckets.map(byRelatedness);
 
   for (const tier of tiers) {
     for (const entry of tier) {

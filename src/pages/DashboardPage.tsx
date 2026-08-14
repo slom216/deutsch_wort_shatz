@@ -1,12 +1,17 @@
-import type { ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { StatCard } from '@/components/common/StatCard';
+import { loadSearchIndex } from '@/content/vocabulary/registry';
+import { isTopic, topicSlug } from '@/content/vocabulary/topics';
+import { progressByLevel, weakestTopics } from '@/features/progress/analytics';
 import { useContentManifest } from '@/features/learning/useContentManifest';
+import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { useGamification } from '@/features/gamification/useGamification';
+import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
 import '@/styles/lists.css';
 import './SettingsPage.css';
 import './AchievementsPage.css';
@@ -14,17 +19,47 @@ import './AchievementsPage.css';
 /**
  * Dashboard (§6).
  *
- * Study figures come from the SRS state stored in IndexedDB. XP, learner level, streaks
- * and achievements arrive with gamification in Phase 7 and are not shown as zeroes here,
- * because a fabricated zero reads as a real measurement (§34).
+ * Every figure is derived from what is stored in IndexedDB — SRS state, exercise history
+ * and XP events. Nothing is shown as a fabricated zero (§34).
  */
 export default function DashboardPage(): ReactNode {
   const { manifest, error: contentError } = useContentManifest();
   const settings = useSettingsStore((state) => state.settings);
-  const { loading, counts, hardest, error: progressError } = useReviewState();
+  const { loading, counts, hardest, progress, error: progressError } = useReviewState();
   const { snapshot: game } = useGamification();
 
   const started = counts.learning + counts.review + counts.mastered;
+  const hardestFive = hardest.slice(0, 5);
+  const labels = useEntryLabels(hardestFive.map((entry) => entry.entryId));
+
+  const [index, setIndex] = useState<readonly VocabularyIndexRecord[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    loadSearchIndex()
+      .then((loaded) => {
+        if (!cancelled) setIndex(loaded);
+      })
+      .catch(() => {
+        // The level and topic panels are additive; `contentError` already reports a
+        // missing content build.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const progressByEntry = useMemo(
+    () => new Map(progress.map((record) => [record.entryId, record])),
+    [progress],
+  );
+  const levels = useMemo(() => progressByLevel(index, progressByEntry), [index, progressByEntry]);
+  const weakest = useMemo(() => weakestTopics(index, progressByEntry, 5), [index, progressByEntry]);
+
+  /** Achievements the learner unlocked most recently (§6). */
+  const recentAchievements = (game?.achievements ?? [])
+    .filter((status) => status.unlockedAt)
+    .sort((a, b) => (b.unlockedAt ?? '').localeCompare(a.unlockedAt ?? ''))
+    .slice(0, 5);
 
   return (
     <>
@@ -133,29 +168,78 @@ export default function DashboardPage(): ReactNode {
 
       <div className="dashboard-columns">
         <section className="settings-section" aria-labelledby="dash-levels">
-          <h2 id="dash-levels">Vocabulary by level</h2>
+          <h2 id="dash-levels">Progress by level</h2>
           <ul className="example-list">
-            {(['A1', 'A2', 'B1'] as const).map((level) => (
-              <li key={level}>
-                <Link to={`/learn/${level.toLowerCase()}`}>{level}</Link> —{' '}
-                {manifest ? manifest.entriesByLevel[level].toLocaleString('en-US') : '—'} entries
-              </li>
-            ))}
+            {(['A1', 'A2', 'B1'] as const).map((level) => {
+              const row = levels.find((entry) => entry.key === level);
+              const total = row?.total ?? manifest?.entriesByLevel[level];
+              return (
+                <li key={level}>
+                  <Link to={`/learn/${level.toLowerCase()}`}>{level}</Link> —{' '}
+                  {row
+                    ? `${row.introduced.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} introduced · ${row.mastered.toLocaleString('en-US')} mastered`
+                    : `${total ? total.toLocaleString('en-US') : '—'} entries`}
+                </li>
+              );
+            })}
           </ul>
         </section>
 
         <section className="settings-section" aria-labelledby="dash-hardest">
           <h2 id="dash-hardest">Hardest words</h2>
-          {hardest.length === 0 ? (
+          {hardestFive.length === 0 ? (
             <p className="band-summary">
               Nothing yet — this fills in once you have answered a few exercises.
             </p>
           ) : (
             <ul className="example-list">
-              {hardest.slice(0, 5).map((entry) => (
+              {hardestFive.map((entry) => (
                 <li key={entry.entryId}>
-                  <Link to={`/word/${entry.entryId}`}>{entry.entryId}</Link> — difficulty{' '}
-                  {entry.srs.difficulty.toFixed(2)}
+                  <Link to={`/word/${entry.entryId}`} lang="de">
+                    {labels.get(entry.entryId) ?? entry.entryId}
+                  </Link>{' '}
+                  — difficulty {entry.srs.difficulty.toFixed(2)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="settings-section" aria-labelledby="dash-weakest">
+          <h2 id="dash-weakest">Weakest topics</h2>
+          {weakest.length === 0 ? (
+            <p className="band-summary">
+              Nothing yet — this fills in once you have studied words across a few topics.
+            </p>
+          ) : (
+            <ul className="example-list">
+              {weakest.map((topic) => (
+                <li key={topic.topic}>
+                  {isTopic(topic.topic) ? (
+                    <Link to={`/topic/${topicSlug(topic.topic)}`}>{topic.topic}</Link>
+                  ) : (
+                    topic.topic
+                  )}{' '}
+                  — difficulty {topic.difficulty.toFixed(2)} across {topic.entries} entr
+                  {topic.entries === 1 ? 'y' : 'ies'}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="settings-section" aria-labelledby="dash-achievements">
+          <h2 id="dash-achievements">Recent achievements</h2>
+          {recentAchievements.length === 0 ? (
+            <p className="band-summary">
+              None yet. <Link to="/achievements">See what you can unlock</Link>.
+            </p>
+          ) : (
+            <ul className="example-list">
+              {recentAchievements.map((status) => (
+                <li key={status.definition.id}>
+                  <Link to="/achievements">{status.definition.name}</Link> —{' '}
+                  {new Date(status.unlockedAt as string).toLocaleDateString()}
                 </li>
               ))}
             </ul>

@@ -1,5 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
+// A full new-word batch is five explanation cards plus fifteen exercises; the default
+// 30s budget is tight for that many round trips through IndexedDB.
+test.describe.configure({ timeout: 90_000 });
+
 /**
  * Phase 2 end-to-end: the SRS loop in a real browser.
  *
@@ -7,26 +11,40 @@ import { expect, test, type Page } from '@playwright/test';
  * due, the queue survives a refresh, and no manual rating is ever requested.
  */
 
-/** Learns one batch of new words, answering every exercise. */
-async function learnABatch(page: Page): Promise<void> {
+/** Starts a new-word batch and reads past the first explanation card (§18). */
+async function startBatch(page: Page): Promise<void> {
   await page.goto('/learn');
   await page.getByRole('button', { name: /learn \d+ new words/i }).click();
-  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 
-  // Reveal-and-continue is the fastest deterministic way through any exercise type.
-  // Clicks are tolerant: the last Continue navigates to the results page, so the button
-  // can legitimately disappear between the visibility check and the click.
-  for (let i = 0; i < 40; i += 1) {
+  // A new word is explained before it is graded, so the card comes first.
+  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
+  await page.getByRole('button', { name: /practise this word/i }).click();
+  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+}
+
+/** Learns one batch of new words, answering every exercise. */
+async function learnABatch(page: Page): Promise<void> {
+  await startBatch(page);
+
+  // Reveal-and-continue is the fastest deterministic way through any exercise type, and
+  // each new entry interposes its explanation card. `isVisible()` resolves immediately,
+  // so a step that is not on screen costs nothing rather than a click timeout.
+  for (let i = 0; i < 80; i += 1) {
     if (page.url().includes('/results/')) break;
 
-    await page
-      .getByRole('button', { name: /show answer/i })
-      .click({ timeout: 2_000 })
-      .catch(() => {});
-    await page
-      .getByRole('button', { name: /continue/i })
-      .click({ timeout: 2_000 })
-      .catch(() => {});
+    const card = page.getByRole('button', { name: /practise this word/i });
+    if (await card.isVisible().catch(() => false)) {
+      await card.click({ timeout: 2_000 }).catch(() => {});
+      continue;
+    }
+
+    const reveal = page.getByRole('button', { name: /show answer/i });
+    if (await reveal.isVisible().catch(() => false))
+      await reveal.click({ timeout: 2_000 }).catch(() => {});
+
+    const next = page.getByRole('button', { name: /continue/i });
+    if (await next.isVisible().catch(() => false))
+      await next.click({ timeout: 2_000 }).catch(() => {});
   }
 }
 
@@ -75,10 +93,22 @@ test('the review page reports queue counts and a forecast', async ({ page }) => 
   await expect(page.getByRole('heading', { name: /review forecast/i })).toBeVisible();
 });
 
-test('the learner is never asked to rate a word (§20)', async ({ page }) => {
+test('a new word is explained before it is graded (§18)', async ({ page }) => {
   await page.goto('/learn');
   await page.getByRole('button', { name: /learn \d+ new words/i }).click();
+
+  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
+  // The card carries the §14 presentation: headword, translation and an example.
+  await expect(page.getByText(/Word 1 of/)).toBeVisible();
+  await expect(page.getByRole('button', { name: /hear .* pronounced/i })).toBeVisible();
+  await expect(page.getByText(/Exercise 1 of/)).toHaveCount(0);
+
+  await page.getByRole('button', { name: /practise this word/i }).click();
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+});
+
+test('the learner is never asked to rate a word (§20)', async ({ page }) => {
+  await startBatch(page);
 
   await page.getByRole('button', { name: /show answer/i }).click();
 

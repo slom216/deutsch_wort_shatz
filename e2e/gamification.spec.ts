@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+// Several tests walk a whole new-word batch before asserting anything about XP.
+test.describe.configure({ timeout: 90_000 });
+
 /**
  * Phase 7 end-to-end: gamification in a real browser.
  *
@@ -10,16 +13,23 @@ import { expect, test, type Page } from '@playwright/test';
 
 /** Answers one session, revealing every answer (so every award is zero XP). */
 async function revealThroughSession(page: Page): Promise<void> {
-  for (let i = 0; i < 30; i += 1) {
+  for (let i = 0; i < 80; i += 1) {
     if (page.url().includes('/results/')) break;
-    await page
-      .getByRole('button', { name: /show answer/i })
-      .click({ timeout: 2_000 })
-      .catch(() => {});
-    await page
-      .getByRole('button', { name: /continue/i })
-      .click({ timeout: 2_000 })
-      .catch(() => {});
+
+    // A new-word session shows each entry's explanation card before its exercises (§18).
+    const card = page.getByRole('button', { name: /practise this word/i });
+    if (await card.isVisible().catch(() => false)) {
+      await card.click({ timeout: 2_000 }).catch(() => {});
+      continue;
+    }
+
+    const reveal = page.getByRole('button', { name: /show answer/i });
+    if (await reveal.isVisible().catch(() => false))
+      await reveal.click({ timeout: 2_000 }).catch(() => {});
+
+    const next = page.getByRole('button', { name: /continue/i });
+    if (await next.isVisible().catch(() => false))
+      await next.click({ timeout: 2_000 }).catch(() => {});
   }
 }
 
@@ -73,7 +83,7 @@ test('the achievements page has no leaderboard or paid currency', async ({ page 
 test('revealed answers earn no XP', async ({ page }) => {
   await page.goto('/learn');
   await page.getByRole('button', { name: /learn \d+ new words/i }).click();
-  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
 
   await revealThroughSession(page);
   expect(await totalXp(page)).toBe(0);
@@ -92,10 +102,6 @@ test('XP is earned and does not double on a refresh', async ({ page }) => {
       .getByRole('radio')
       .first()
       .check({ timeout: 2_000 })
-      .catch(() => {});
-    await page
-      .getByRole('button', { name: /check answer/i })
-      .click({ timeout: 2_000 })
       .catch(() => {});
     await page
       .getByRole('button', { name: /show answer/i })
@@ -130,7 +136,7 @@ test('resetting progress clears gamification, but only after confirmation', asyn
   // Earn something first.
   await page.goto('/learn');
   await page.getByRole('button', { name: /learn \d+ new words/i }).click();
-  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
   await revealThroughSession(page);
 
   await page.goto('/data');
