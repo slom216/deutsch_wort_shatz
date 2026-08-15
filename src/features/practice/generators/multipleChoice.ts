@@ -1,7 +1,7 @@
 import type { MultipleChoiceExercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import type { Random } from '../random';
-import { selectDistractors } from './distractors';
+import { nearMiss, selectDistractors } from './distractors';
 import {
   acceptedGerman,
   headword,
@@ -21,6 +21,11 @@ import {
  * the entry cannot support it — an article question needs a noun, a verb-form question
  * needs a verb.
  *
+ * About half the German-answer questions include the right answer misspelled by a single
+ * letter, so recognizing the shape of the word is not enough (`nearMiss`). Only about half,
+ * because a near miss is also a tell: two options one letter apart point at each other.
+ * English-answer variants get none — a misspelled gloss tests English, not German.
+ *
  * `article` is naturally capped at three options, since German has three articles.
  */
 
@@ -34,6 +39,20 @@ export type MultipleChoiceVariant =
   | 'phraseContext';
 
 export const OPTION_COUNT = 6;
+
+/**
+ * Variants whose options are German words, and so the only ones a near miss belongs in.
+ * `article` and `wordClass` offer a closed set of labels — "dos" alongside der/die/das would
+ * test spelling, not grammar — and the English-answer variants would only test English.
+ */
+const GERMAN_OPTION_VARIANTS: readonly MultipleChoiceVariant[] = [
+  'englishToGerman',
+  'plural',
+  'verbForm',
+];
+
+/** How often those variants actually get one. */
+const NEAR_MISS_CHANCE = 0.5;
 
 export interface GeneratorContext {
   readonly entry: VocabularyEntry;
@@ -58,7 +77,21 @@ function assemble(
   // Fewer than two options cannot make a question.
   if (fields.distractors.length === 0) return null;
 
-  const options = random.shuffle([fields.correct, ...fields.distractors]);
+  // The near miss replaces a distractor rather than joining them, so the count stays at six.
+  // Accepted answers are excluded from it: an option that is also right would be a trap.
+  const near =
+    GERMAN_OPTION_VARIANTS.includes(variant) && random.next() < NEAR_MISS_CHANCE
+      ? nearMiss(fields.correct, random, [
+          ...fields.distractors,
+          ...entry.english,
+          ...acceptedGerman(entry),
+        ])
+      : null;
+  const distractors = near
+    ? [near, ...fields.distractors].slice(0, OPTION_COUNT - 1)
+    : fields.distractors;
+
+  const options = random.shuffle([fields.correct, ...distractors]);
   const correctIndex = options.indexOf(fields.correct);
   if (correctIndex < 0) return null;
 
@@ -174,6 +207,8 @@ export function generateMultipleChoice(
     case 'verbForm': {
       if (!isVerbEntry(entry)) return null;
       const correct = entry.pastParticiple;
+      // Datasets that record no conjugation cannot ask for one.
+      if (!correct) return null;
       return assemble(context, variant, {
         prompt: 'Which is the past participle?',
         question: entry.infinitive,
@@ -184,7 +219,7 @@ export function generateMultipleChoice(
           pool,
           count: OPTION_COUNT - 1,
           random,
-          valueOf: (candidate) => (isVerbEntry(candidate) ? candidate.pastParticiple : null),
+          valueOf: (candidate) => (isVerbEntry(candidate) ? (candidate.pastParticiple ?? null) : null),
           exclude: [correct],
           filter: (candidate) => isVerbEntry(candidate),
         }),
@@ -224,7 +259,7 @@ export function availableMultipleChoiceVariants(entry: VocabularyEntry): Multipl
   const variants: MultipleChoiceVariant[] = ['germanToEnglish', 'englishToGerman', 'wordClass'];
   if (isNounEntry(entry) && entry.article) variants.push('article');
   if (pluralForm(entry)) variants.push('plural');
-  if (isVerbEntry(entry)) variants.push('verbForm');
+  if (isVerbEntry(entry) && entry.pastParticiple) variants.push('verbForm');
   if (isPhraseEntry(entry)) variants.push('phraseContext');
   return variants;
 }

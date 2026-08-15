@@ -47,7 +47,7 @@ const ROW_HEIGHT = 44;
  * All filters combine with AND. Search covers German, English and every stored inflected
  * form, so a participle, a plural or an article form all find their entry. Typing is
  * deferred rather than debounced by hand — React keeps the input responsive while the
- * 10,000-row filter runs at a lower priority.
+ * Full-dataset filter runs at a lower priority.
  */
 export default function VocabularyBrowserPage(): ReactNode {
   const [index, setIndex] = useState<SearchableRecord[] | null>(null);
@@ -112,7 +112,7 @@ export default function VocabularyBrowserPage(): ReactNode {
       <>
         <PageHeader
           title="Vocabulary"
-          description="Search all 10,000 entries. Plurals, participles and article forms are all searchable."
+          description="Search every entry by German headword or English meaning."
         />
         <LoadingScreen label="Loading vocabulary index…" />
       </>
@@ -123,7 +123,7 @@ export default function VocabularyBrowserPage(): ReactNode {
     <>
       <PageHeader
         title="Vocabulary"
-        description="Search all 10,000 entries. Plurals, participles and article forms are all searchable."
+        description="Search every entry by German headword or English meaning."
       />
 
       <div className="vocab-filters">

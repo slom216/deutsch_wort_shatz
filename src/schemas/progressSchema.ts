@@ -72,7 +72,8 @@ export const exerciseHistorySchema = z.object({
   grade: gradeSchema,
   errorCategories: z.array(z.string()),
   answeredAt: z.string().datetime(),
-  xpAwarded: z.number().int().min(0),
+  /** Negative when the answer was wrong: there is no second try (§23). */
+  xpAwarded: z.number().int(),
 });
 
 export const achievementRecordSchema = z.object({

@@ -9,6 +9,12 @@ import {
 } from './searchIndex';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
 import {
+  bandEntryCount,
+  bandById,
+  LEVEL_ENTRY_COUNTS,
+  TOTAL_ENTRY_COUNT,
+} from '@/content/vocabulary/frequencyBands';
+import {
   activitySummary,
   errorCategoryStats,
   exerciseTypePerformance,
@@ -36,12 +42,12 @@ function search(
 }
 
 describe('vocabulary search (§16)', () => {
-  it('indexes all 10,000 entries', () => {
-    expect(index).toHaveLength(10_000);
+  it('indexes every entry in the datasets', () => {
+    expect(index).toHaveLength(TOTAL_ENTRY_COUNT);
   });
 
   it('returns everything with no filters', () => {
-    expect(search()).toHaveLength(10_000);
+    expect(search()).toHaveLength(TOTAL_ENTRY_COUNT);
   });
 
   it('finds an entry by its German headword', () => {
@@ -51,12 +57,24 @@ describe('vocabulary search (§16)', () => {
   });
 
   it('finds an entry by its English translation', () => {
-    expect(search({ query: 'to be' }).some((r) => r.id === 'a1-0003-sein')).toBe(true);
+    expect(search({ query: 'to be' }).some((r) => r.english.includes('to be'))).toBe(true);
   });
 
-  it('finds a verb by an inflected form', () => {
-    // "gewesen" is only the participle of "sein" — it is not the headword.
-    expect(search({ query: 'gewesen' }).some((r) => r.id === 'a1-0003-sein')).toBe(true);
+  it('finds an entry by any of its searchable forms', () => {
+    // §16 searches every stored form, not just the headword. The current datasets record
+    // one form per entry, so this covers the mechanism on a record that has two.
+    const withForm = prepareIndex([
+      {
+        ...(index[0] as SearchableRecord),
+        id: 'test-0001-form',
+        german: 'sein',
+        searchableForms: ['sein', 'gewesen'],
+      },
+    ]);
+    const results = searchVocabulary(withForm, {
+      filters: { ...EMPTY_FILTERS, query: 'gewesen' },
+    });
+    expect(results.map((r) => r.id)).toEqual(['test-0001-form']);
   });
 
   it('searches case-insensitively', () => {
@@ -64,21 +82,21 @@ describe('vocabulary search (§16)', () => {
   });
 
   it('searches without umlauts and ß', () => {
-    const withUmlaut = search({ query: 'Bücher' }).length;
-    const without = search({ query: 'Bucher' }).length;
+    const withUmlaut = search({ query: 'Frühling' }).length;
+    const without = search({ query: 'Fruhling' }).length;
     expect(without).toBeGreaterThan(0);
     expect(without).toBeGreaterThanOrEqual(withUmlaut);
   });
 
   it('filters by level', () => {
     const results = search({ level: 'A2' });
-    expect(results).toHaveLength(3000);
+    expect(results).toHaveLength(LEVEL_ENTRY_COUNTS.A2);
     expect(results.every((r) => r.level === 'A2')).toBe(true);
   });
 
   it('filters by frequency band', () => {
     const results = search({ band: 'A1 Core 1' });
-    expect(results).toHaveLength(250);
+    expect(results).toHaveLength(bandEntryCount(bandById('A1 Core 1')!));
   });
 
   it('filters by word class', () => {
@@ -104,21 +122,23 @@ describe('vocabulary search (§16)', () => {
   });
 
   it('filters by learning status', () => {
+    const first = index[0] as SearchableRecord;
     const progress = new Map<string, EntryProgress>([
-      ['a1-0003-sein', makeProgress('a1-0003-sein', 'mastered', 0.2)],
+      [first.id, makeProgress(first.id, 'mastered', 0.2)],
     ]);
     expect(search({ status: 'mastered' }, progress)).toHaveLength(1);
     // Everything else is "new".
-    expect(search({ status: 'new' }, progress)).toHaveLength(9_999);
+    expect(search({ status: 'new' }, progress)).toHaveLength(TOTAL_ENTRY_COUNT - 1);
   });
 
   it('filters by difficulty band', () => {
+    const [hard, easy] = [index[0] as SearchableRecord, index[1] as SearchableRecord];
     const progress = new Map<string, EntryProgress>([
-      ['a1-0003-sein', makeProgress('a1-0003-sein', 'review', 0.9)],
-      ['a1-0002-ich', makeProgress('a1-0002-ich', 'review', 0.1)],
+      [hard.id, makeProgress(hard.id, 'review', 0.9)],
+      [easy.id, makeProgress(easy.id, 'review', 0.1)],
     ]);
-    expect(search({ difficulty: 'high' }, progress).map((r) => r.id)).toEqual(['a1-0003-sein']);
-    expect(search({ difficulty: 'low' }, progress).map((r) => r.id)).toEqual(['a1-0002-ich']);
+    expect(search({ difficulty: 'high' }, progress).map((r) => r.id)).toEqual([hard.id]);
+    expect(search({ difficulty: 'low' }, progress).map((r) => r.id)).toEqual([easy.id]);
   });
 
   it('returns nothing for an impossible combination', () => {
@@ -133,8 +153,8 @@ describe('vocabulary search (§16)', () => {
 
   it('counts facets', () => {
     const counts = facetCounts(index);
-    expect(counts.byLevel.A1).toBe(1000);
-    expect(counts.byLevel.B1).toBe(6000);
+    expect(counts.byLevel.A1).toBe(LEVEL_ENTRY_COUNTS.A1);
+    expect(counts.byLevel.B1).toBe(LEVEL_ENTRY_COUNTS.B1);
   });
 });
 
@@ -171,15 +191,26 @@ function makeProgress(
 /* --------------------------------------------------------------- analytics */
 
 describe('progress analytics (§16)', () => {
-  const progress = new Map<string, EntryProgress>([
-    ['a1-0003-sein', makeProgress('a1-0003-sein', 'mastered', 0.2)],
-    ['a1-0002-ich', makeProgress('a1-0002-ich', 'review', 0.8)],
-  ]);
+  // Two real A1 entries, read from the built index: ids move whenever the datasets do.
+  let progress: Map<string, EntryProgress>;
+  let history: ExerciseHistory[];
 
-  const history: ExerciseHistory[] = [
+  beforeAll(() => {
+    const [mastered, struggling] = [index[0] as SearchableRecord, index[1] as SearchableRecord];
+    progress = new Map<string, EntryProgress>([
+      [mastered.id, makeProgress(mastered.id, 'mastered', 0.2)],
+      [struggling.id, makeProgress(struggling.id, 'review', 0.8)],
+    ]);
+    history = [
+      { ...historyTemplate[0], entryId: mastered.id } as ExerciseHistory,
+      { ...historyTemplate[1], entryId: struggling.id } as ExerciseHistory,
+    ];
+  });
+
+  const historyTemplate: ExerciseHistory[] = [
     {
       id: 'h1',
-      entryId: 'a1-0003-sein',
+      entryId: 'placeholder',
       sessionId: 's1',
       exerciseType: 'multipleChoice',
       correct: true,
@@ -194,7 +225,7 @@ describe('progress analytics (§16)', () => {
     },
     {
       id: 'h2',
-      entryId: 'a1-0002-ich',
+      entryId: 'placeholder',
       sessionId: 's1',
       exerciseType: 'typedTranslation',
       correct: false,
@@ -212,14 +243,14 @@ describe('progress analytics (§16)', () => {
   it('breaks progress down by level against the true totals', () => {
     const rows = progressByLevel(index, progress);
     const a1 = rows.find((row) => row.key === 'A1');
-    expect(a1?.total).toBe(1000);
+    expect(a1?.total).toBe(LEVEL_ENTRY_COUNTS.A1);
     expect(a1?.introduced).toBe(2);
     expect(a1?.mastered).toBe(1);
   });
 
   it('breaks progress down by topic', () => {
     const rows = progressByTopic(index, progress);
-    expect(rows.reduce((sum, row) => sum + row.total, 0)).toBe(10_000);
+    expect(rows.reduce((sum, row) => sum + row.total, 0)).toBe(TOTAL_ENTRY_COUNT);
     expect(rows.reduce((sum, row) => sum + row.introduced, 0)).toBe(2);
   });
 

@@ -51,7 +51,7 @@ function pairsFor(entries: readonly VocabularyEntry[], variant: MatchingVariant)
       case 'verbToParticiple':
         if (!isVerbEntry(entry)) break;
         left = entry.infinitive;
-        right = entry.pastParticiple;
+        right = entry.pastParticiple ?? null;
         break;
     }
 

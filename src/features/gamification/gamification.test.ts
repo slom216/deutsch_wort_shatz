@@ -56,46 +56,16 @@ describe('XP rules (§23)', () => {
     expect(XP_BY_TYPE.speaking).toBe(10);
   });
 
-  it('awards nothing for a wrong answer', () => {
+  it('deducts the same amount for a wrong answer', () => {
     expect(
-      exerciseXp({
-        exerciseType: 'typedTranslation',
-        correct: false,
-        attempts: 1,
-        revealed: false,
-      }),
-    ).toBe(0);
+      exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: false }),
+    ).toBe(-8);
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: true, revealed: false })).toBe(8);
   });
 
   it('awards nothing for a revealed answer', () => {
-    expect(
-      exerciseXp({ exerciseType: 'typedTranslation', correct: true, attempts: 1, revealed: true }),
-    ).toBe(0);
-  });
-
-  it('halves XP for a correct second attempt', () => {
-    const first = exerciseXp({
-      exerciseType: 'typedTranslation',
-      correct: true,
-      attempts: 1,
-      revealed: false,
-    });
-    const second = exerciseXp({
-      exerciseType: 'typedTranslation',
-      correct: true,
-      attempts: 2,
-      revealed: false,
-    });
-    expect(first).toBe(8);
-    expect(second).toBe(4);
-  });
-
-  it('never awards more on a retry than on a first attempt', () => {
-    for (const type of Object.keys(XP_BY_TYPE) as (keyof typeof XP_BY_TYPE)[]) {
-      const first = exerciseXp({ exerciseType: type, correct: true, attempts: 1, revealed: false });
-      const retry = exerciseXp({ exerciseType: type, correct: true, attempts: 2, revealed: false });
-      expect(retry).toBeLessThanOrEqual(first);
-    }
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: true, revealed: true })).toBe(0);
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: true })).toBe(0);
   });
 });
 

@@ -663,8 +663,10 @@ Variants:
 
 Rules:
 
-- four options by default;
+- six options by default;
 - exactly one correct answer;
+- one option is the correct answer with a single letter changed, added or removed, never
+  the first or last letter of a word;
 - plausible distractors;
 - distractors preferably from same topic or nearby frequency range.
 
@@ -947,7 +949,6 @@ Grade rules:
 
 #### Difficult
 
-- correct on second attempt;
 - correct after hint;
 - correct but significantly slow;
 - minor configured partial error.
@@ -1126,9 +1127,9 @@ Complete frequency band: 100 XP
 Complete CEFR level: 500 XP
 ```
 
-Second-attempt answer:
+Wrong answer (there is no second try):
 
-- 50% XP.
+- minus the exercise type's XP.
 
 Revealed answer:
 
@@ -1564,7 +1565,7 @@ Add motivation systems after A1 is stable.
 ### Acceptance Criteria
 
 - refresh cannot duplicate XP;
-- second attempts grant reduced XP;
+- wrong answers deduct XP;
 - revealed answers grant no XP;
 - streak uses local date;
 - achievements cannot duplicate;

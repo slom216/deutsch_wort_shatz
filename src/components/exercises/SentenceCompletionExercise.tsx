@@ -24,7 +24,6 @@ export function SentenceCompletionExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
   revealed,
 }: ExerciseComponentProps<SentenceCompletionExerciseType>): ReactNode {
   const [value, setValue] = useState('');
@@ -33,7 +32,7 @@ export function SentenceCompletionExercise({
   useEffect(() => {
     setValue('');
     inputRef.current?.focus();
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
   const submit = (): void => {
     if (locked) return;

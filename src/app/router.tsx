@@ -17,6 +17,7 @@ const LearnPage = lazy(() => import('@/pages/LearnPage'));
 const LevelPage = lazy(() => import('@/pages/LevelPage'));
 const FrequencyBandPage = lazy(() => import('@/pages/FrequencyBandPage'));
 const TopicPage = lazy(() => import('@/pages/TopicPage'));
+const ContinuousPage = lazy(() => import('@/pages/ContinuousPage'));
 const ReviewPage = lazy(() => import('@/pages/ReviewPage'));
 const PracticePage = lazy(() => import('@/pages/PracticePage'));
 const PracticeSessionPage = lazy(() => import('@/pages/PracticeSessionPage'));
@@ -45,6 +46,7 @@ export const routes: RouteObject[] = [
       { path: 'learn/:level', element: page(<LevelPage />) },
       { path: 'learn/:level/:frequencyBand', element: page(<FrequencyBandPage />) },
       { path: 'topic/:topicSlug', element: page(<TopicPage />) },
+      { path: 'continuous/:sessionId', element: page(<ContinuousPage />) },
       { path: 'review', element: page(<ReviewPage />) },
       { path: 'practice', element: page(<PracticePage />) },
       { path: 'practice/session/:sessionId', element: page(<PracticeSessionPage />) },

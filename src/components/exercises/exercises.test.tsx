@@ -14,7 +14,7 @@ import { GermanCharacterHelper } from './GermanCharacterHelper';
 import * as fixtures from '@/test/fixtures/exercises';
 import type { EvaluationResult } from '@/schemas/exerciseSchema';
 
-const defaults = { locked: false, attempt: 1, revealed: false };
+const defaults = { locked: false, revealed: false };
 
 function lastResult(onSubmit: ReturnType<typeof vi.fn>): EvaluationResult {
   return onSubmit.mock.calls.at(-1)?.[0] as EvaluationResult;
@@ -436,8 +436,24 @@ describe('ListeningExercise', () => {
       <ListeningExercise {...defaults} exercise={fixtures.listeningChoice} onSubmit={onSubmit} />,
     );
 
-    await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(screen.getByRole('button', { name: /check answer/i }));
+    // Choosing answers outright, the same as multiple choice — no confirm step.
+    await user.click(screen.getByRole('radio', { name: /day/ }));
+
+    expect(lastResult(onSubmit).correct).toBe(true);
+  });
+
+  it('numbers its options and answers on the matching number key', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    render(
+      <ListeningExercise {...defaults} exercise={fixtures.listeningChoice} onSubmit={onSubmit} />,
+    );
+
+    const options = fixtures.listeningChoice.options ?? [];
+    expect(screen.getByText(`Press 1–${options.length} to answer.`)).toBeInTheDocument();
+
+    const correct = (fixtures.listeningChoice.correctIndex ?? 0) + 1;
+    await user.keyboard(String(correct));
 
     expect(lastResult(onSubmit).correct).toBe(true);
   });

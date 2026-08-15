@@ -149,7 +149,7 @@ export default function ProgressPage(): ReactNode {
         <StatCard
           label="First-attempt accuracy"
           value={percent(stats.firstAttemptAccuracy)}
-          hint="No hint, no retry"
+          hint="No hint used"
         />
         <StatCard
           label="Average response"

@@ -29,7 +29,7 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   // here would find real results instead of exercising the not-found path.
   { path: '/results/no-such-session', heading: /results not found/i },
   { path: '/vocabulary', heading: /^vocabulary$/i },
-  { path: '/word/a1-0003-sein', heading: /sein/i },
+  { path: '/word/a1-0662-sein', heading: /sein/i },
   { path: '/progress', heading: /^progress$/i },
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },

@@ -152,6 +152,7 @@ export async function resetAllProgress(database: VocabularyLearningDatabase = db
       database.achievements,
       database.settings,
       database.xpEvents,
+      database.metadata,
     ],
     async () => {
       await Promise.all([
@@ -161,6 +162,9 @@ export async function resetAllProgress(database: VocabularyLearningDatabase = db
         database.achievements.clear(),
         database.settings.clear(),
         database.xpEvents.clear(),
+        // The stream's spacing counts exercises the learner has answered, so it goes with
+        // them. `metadata` is not cleared wholesale: the schema version has to survive.
+        database.metadata.delete('stream-schedule'),
       ]);
     },
   );

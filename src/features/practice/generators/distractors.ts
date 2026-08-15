@@ -102,3 +102,54 @@ export function selectDistractors<T>(options: DistractorOptions<T>): T[] {
 
   return results;
 }
+
+/**
+ * Letters a slipped keystroke could produce. No ß: it cannot start a word or follow a
+ * consonant, so a stray one is a giveaway rather than a believable mistake.
+ */
+const LETTERS = [...'abcdefghijklmnopqrstuvwxyzäöü'];
+
+/**
+ * The correct answer with exactly one letter changed, added or removed — never the first or
+ * the last letter of a word, so the option still reads as an attempt at the same word (§15).
+ *
+ * One option per question is built this way: a learner who only half-remembers the spelling
+ * should not be able to pass on the shape of the word alone.
+ *
+ * Null when the answer has nowhere to take an edit — a single letter, or a string with no
+ * two adjacent letters — or when every edit collides with a value in `taken`. The accepted
+ * answers belong in `taken`, or a "wrong" option could turn out to be right.
+ */
+export function nearMiss(
+  correct: string,
+  random: Random,
+  taken: readonly string[] = [],
+): string | null {
+  const blocked = new Set(taken.map((value) => value.toLowerCase()));
+  blocked.add(correct.toLowerCase());
+
+  const candidates: string[] = [];
+  const isLetter = (char: string | undefined): boolean => char !== undefined && /\p{L}/u.test(char);
+
+  for (let i = 1; i < correct.length; i += 1) {
+    const char = correct[i] as string;
+    // Both tests are per word, not per string: in a phrase, the first and last letter of
+    // every word are protected, so "Guten Morgen" never becomes "Guten Torgen".
+    const canAdd = isLetter(correct[i - 1]) && isLetter(char);
+    const canEdit = canAdd && isLetter(correct[i + 1]);
+
+    for (const letter of LETTERS) {
+      const cased = char === char.toLowerCase() ? letter : letter.toUpperCase();
+      // Added: between two letters, so the new one is neither first nor last.
+      if (canAdd) candidates.push(correct.slice(0, i) + cased + correct.slice(i));
+      // Changed.
+      if (canEdit && cased !== char) {
+        candidates.push(correct.slice(0, i) + cased + correct.slice(i + 1));
+      }
+    }
+    // Removed.
+    if (canEdit) candidates.push(correct.slice(0, i) + correct.slice(i + 1));
+  }
+
+  return random.pick(candidates.filter((value) => !blocked.has(value.toLowerCase()))) ?? null;
+}

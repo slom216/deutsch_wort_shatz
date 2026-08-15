@@ -8,9 +8,11 @@
  * Deviations from the literal type listing in §10, all driven by the shipped datasets:
  *   - `requiredCase` additionally allows `'dative+accusative'` (ditransitive verbs such
  *     as `geben`), which §10 does not enumerate.
- *   - `article` and `pluralArticle` are nullable; a small number of source nouns are
- *     genuinely article-less (proper nouns, festivals) or plural-less. These are
- *     surfaced by `audit:examples` as editorial-review items rather than hard errors.
+ *   - `article` and `pluralArticle` are nullable, and the verb form set is optional: the
+ *     current datasets record a checked headword, gloss, word class and topic and nothing
+ *     more. An entry without those fields simply generates fewer exercise formats (§15) —
+ *     the alternative was shipping generated grammar nobody had verified.
+ *   - `exampleSentences` may be empty for the same reason.
  *   - Datasets carry provenance fields (`sourceMetadata`, `editorialReview`,
  *     `alternateForms`, `alternateArticles`, `numberUsage`) that §10 omits.
  */
@@ -140,7 +142,9 @@ const baseShape = {
   difficultyWeight: z.number().min(0).max(1),
   searchableForms: z.array(z.string().min(1)).min(1),
   tags: z.array(z.string()),
-  exampleSentences: z.array(exampleSentenceSchema).min(1),
+  exampleSentences: z.array(exampleSentenceSchema),
+  /** Rank within the level, as the dataset authored it. The `rank` above is global. */
+  sourceRank: z.number().int().min(1).optional(),
   exerciseConfig: exerciseConfigSchema,
   /** Raw dataset topic labels before normalization onto the controlled registry. */
   sourceTopics: z.array(z.string()).optional(),
@@ -153,10 +157,10 @@ const baseShape = {
 export const nounEntrySchema = z.object({
   ...baseShape,
   wordClass: z.literal('noun'),
-  article: z.enum(['der', 'die', 'das']).nullable(),
+  article: z.enum(['der', 'die', 'das']).nullable().default(null),
   alternateArticles: z.array(z.enum(['der', 'die', 'das'])).optional(),
-  plural: z.string().nullable(),
-  pluralArticle: z.literal('die').nullable(),
+  plural: z.string().nullable().default(null),
+  pluralArticle: z.literal('die').nullable().default(null),
   numberUsage: z.enum(['both', 'singularOnly', 'pluralOnly', 'unspecified']).optional(),
   genitiveSingular: z.string().nullable().optional(),
 });
@@ -165,12 +169,14 @@ export const verbEntrySchema = z.object({
   ...baseShape,
   wordClass: z.literal('verb'),
   infinitive: z.string().min(1),
-  thirdPersonPresent: z.string().min(1),
-  simplePast: z.string().min(1),
-  pastParticiple: z.string().min(1),
-  auxiliary: z.enum(['haben', 'sein', 'haben/sein']),
-  separable: z.boolean(),
-  reflexive: z.boolean(),
+  // The conjugation is optional: the datasets record the infinitive and its gloss, and a
+  // verb without recorded forms is never asked to produce one (§15).
+  thirdPersonPresent: z.string().min(1).optional(),
+  simplePast: z.string().min(1).optional(),
+  pastParticiple: z.string().min(1).optional(),
+  auxiliary: z.enum(['haben', 'sein', 'haben/sein']).optional(),
+  separable: z.boolean().optional(),
+  reflexive: z.boolean().optional(),
   reflexiveCase: grammaticalCaseSchema.nullable().optional(),
   // `dative+accusative` covers ditransitive verbs and is not listed in §10.
   requiredCase: z

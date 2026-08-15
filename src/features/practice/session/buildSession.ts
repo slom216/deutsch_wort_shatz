@@ -23,7 +23,7 @@ import { availableMatchingVariants, generateMatching } from '../generators/match
  * The builder is deterministic given a seed, so a session survives a page refresh.
  */
 
-export type SessionMode = 'new' | 'review' | 'topic' | 'free';
+export type SessionMode = 'new' | 'review' | 'topic' | 'free' | 'continuous';
 
 export interface BuildSessionOptions {
   readonly mode: SessionMode;
@@ -163,13 +163,29 @@ function countTrailing(items: readonly Exercise[], predicate: (e: Exercise) => b
 }
 
 /**
- * Picks exercises for one entry, preferring a recognition exercise before a production
- * one so a newly introduced word is always recognised before it must be produced.
+ * Picks exercises for one entry, recognition before production, so a newly introduced word
+ * is always recognised before it must be produced.
+ *
+ * Multiple choice leads within the recognition group, because a word is now met in its
+ * first exercise rather than on an explanation card: the answer has to be *on screen* to
+ * be learnable. "Type the English translation" for a word never seen is unanswerable;
+ * the same word as a choice of six teaches it in one step.
  */
-function orderRecognitionFirst(exercises: readonly Exercise[]): Exercise[] {
-  const recognition = exercises.filter((e) => !e.isProduction);
-  const production = exercises.filter((e) => e.isProduction);
-  return [...recognition, ...production];
+export function orderRecognitionFirst(exercises: readonly Exercise[]): Exercise[] {
+  /** Lower comes first. */
+  const rank = (exercise: Exercise): number => {
+    if (exercise.isProduction) return 3;
+    if (exercise.type !== 'multipleChoice') return 2;
+    // "What does this mean?" teaches the word; "what kind of word is this?" does not, so
+    // the meaning question is the one a learner meets first.
+    return exercise.variant === 'germanToEnglish' ? 0 : 1;
+  };
+
+  // Stable, so the caller's shuffle survives within each rank.
+  return exercises
+    .map((exercise, index) => ({ exercise, index }))
+    .sort((a, b) => rank(a.exercise) - rank(b.exercise) || a.index - b.index)
+    .map((entry) => entry.exercise);
 }
 
 /**
@@ -269,7 +285,7 @@ function enforceRatios(
  * strict checking off (§16). Article, plural and word order are left alone: those decide
  * *what* an exercise asks for, not how exactly the answer is compared.
  */
-function relaxStrictness(exercise: Exercise): Exercise {
+export function relaxStrictness(exercise: Exercise): Exercise {
   return {
     ...exercise,
     strictness: {
@@ -323,8 +339,19 @@ export function buildSession(options: BuildSessionOptions): BuiltSession {
     };
   }
 
+  // When a session is restricted to particular formats, only entries that enable one of
+  // them are worth picking. Without this, a session limited to a format few entries
+  // support — word ordering needs a multi-word phrase — fills its working set with
+  // entries that generate nothing and comes out empty.
+  const candidates =
+    options.allowedTypes && options.allowedTypes.length > 0
+      ? entries.filter((entry) =>
+          entry.exerciseConfig.enabledTypes.some((type) => allowedTypes.includes(type)),
+        )
+      : entries;
+
   const sessionEntries = pickEntries(
-    entries,
+    candidates.length > 0 ? candidates : entries,
     mode,
     random,
     options.newWordEntryCount ?? NEW_WORD_ENTRIES,

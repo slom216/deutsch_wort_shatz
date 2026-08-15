@@ -9,7 +9,7 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
  * second source of truth. Instead this selects a deterministic 100-entry slice of the
  * real A1 vocabulary that satisfies the stated composition:
  *
- *   - 60 words and 20 phrases (plus 20 further entries to reach 100);
+ *   - 60 words and every A1 phrase the dataset has (10 of them);
  *   - at least 10 nouns and at least 10 verbs;
  *   - entries drawn from multiple topics.
  *
@@ -18,7 +18,7 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 
 export const PILOT_SIZE = 100;
 export const PILOT_MIN_WORDS = 60;
-export const PILOT_MIN_PHRASES = 20;
+export const PILOT_MIN_PHRASES = 10;
 export const PILOT_MIN_NOUNS = 10;
 export const PILOT_MIN_VERBS = 10;
 

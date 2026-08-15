@@ -40,42 +40,19 @@ describe('ExerciseRunner', () => {
     expect(outcome.responseMs).toBeGreaterThanOrEqual(0);
   });
 
-  it('offers one retry after a wrong answer, then locks', async () => {
+  it('locks a wrong answer with no second try', async () => {
     const user = userEvent.setup();
     const onComplete = vi.fn();
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
 
     await user.click(screen.getByRole('radio', { name: 'night' }));
 
-    // First wrong answer: a retry is offered and the exercise is not yet locked.
-    const retry = screen.getByRole('button', { name: /try again/i });
-    expect(retry).toBeInTheDocument();
-
-    await user.click(retry);
-    await user.click(screen.getByRole('radio', { name: 'year' }));
-
-    // Second wrong answer: no further retry.
     expect(screen.queryByRole('button', { name: /try again/i })).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /continue/i }));
     const outcome = lastOutcome(onComplete);
     expect(outcome.result.correct).toBe(false);
-    expect(outcome.attempts).toBe(2);
-  });
-
-  it('records a correct second attempt with attempts = 2', async () => {
-    const user = userEvent.setup();
-    const onComplete = vi.fn();
-    render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={onComplete} />);
-
-    await user.click(screen.getByRole('radio', { name: 'night' }));
-    await user.click(screen.getByRole('button', { name: /try again/i }));
-    await user.click(screen.getByRole('radio', { name: 'day' }));
-    await user.click(screen.getByRole('button', { name: /continue/i }));
-
-    const outcome = lastOutcome(onComplete);
-    expect(outcome.result.correct).toBe(true);
-    expect(outcome.attempts).toBe(2);
+    expect(outcome.attempts).toBe(1);
   });
 
   it('marks a revealed answer as incorrect', async () => {

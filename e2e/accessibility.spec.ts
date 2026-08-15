@@ -17,7 +17,7 @@ const SCREENS = [
   '/review',
   '/practice',
   '/vocabulary',
-  '/word/a1-0003-sein',
+  '/word/a1-0662-sein',
   '/progress',
   '/achievements',
   '/settings',
@@ -128,9 +128,9 @@ test('achievement lock state is stated in words', async ({ page }) => {
   await expect(page.getByText('Locked').first()).toBeVisible();
 });
 
-test('the vocabulary list virtualizes 10,000 rows without mounting them all', async ({ page }) => {
+test('the vocabulary list virtualizes the whole vocabulary without mounting them all', async ({ page }) => {
   await page.goto('/vocabulary');
-  await expect(page.getByText(/10,000 matches of/)).toBeVisible();
+  await expect(page.getByText(/3,460 matches of/)).toBeVisible();
 
   // Virtualization means the DOM holds a window, not the whole result set (§16).
   const rows = await page.locator('.entry-row').count();
@@ -140,11 +140,11 @@ test('the vocabulary list virtualizes 10,000 rows without mounting them all', as
 
 test('a typical search responds quickly', async ({ page }) => {
   await page.goto('/vocabulary');
-  await expect(page.getByText(/10,000 matches of/)).toBeVisible();
+  await expect(page.getByText(/3,460 matches of/)).toBeVisible();
 
   const started = Date.now();
   await page.getByLabel('Search', { exact: true }).fill('haus');
-  await expect(page.getByText(/matches of 10,000/)).toBeVisible();
+  await expect(page.getByText(/matches of 3,460/)).toBeVisible();
   expect(Date.now() - started).toBeLessThan(3_000);
 });
 

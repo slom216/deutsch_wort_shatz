@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { StatCard } from '@/components/common/StatCard';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
 import { isTopic, topicSlug } from '@/content/vocabulary/topics';
 import { progressByLevel, weakestTopics } from '@/features/progress/analytics';
+import { continuousSessionPath } from '@/features/practice/session/endless';
 import { useContentManifest } from '@/features/learning/useContentManifest';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { useGamification } from '@/features/gamification/useGamification';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
+import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
 import './SettingsPage.css';
 import './AchievementsPage.css';
@@ -27,6 +29,10 @@ export default function DashboardPage(): ReactNode {
   const settings = useSettingsStore((state) => state.settings);
   const { loading, counts, hardest, progress, error: progressError } = useReviewState();
   const { snapshot: game } = useGamification();
+  const navigate = useNavigate();
+  const startStream = (): void => {
+    void navigate(continuousSessionPath());
+  };
 
   const started = counts.learning + counts.review + counts.mastered;
   const hardestFive = hardest.slice(0, 5);
@@ -79,6 +85,35 @@ export default function DashboardPage(): ReactNode {
         </p>
       ) : null}
 
+      {/*
+        The single obvious next action, above the statistics. One button starts the endless
+        stream, which mixes due reviews with new words itself — the dashboard does not have
+        to decide which of the two the learner needs.
+      */}
+      <section className="settings-section" aria-labelledby="dash-continue">
+        <h2 id="dash-continue">Continue learning</h2>
+        <p>
+          {loading
+            ? 'Checking what is waiting for you…'
+            : counts.due > 0
+              ? `${counts.due} word${counts.due === 1 ? '' : 's'} due for review${counts.overdue > 0 ? `, ${counts.overdue} overdue` : ''}, and new words in between. Stop whenever you like.`
+              : started === 0
+                ? 'Nothing started yet. Words arrive one after another — stop whenever you like.'
+                : 'Nothing due right now, so the stream will bring new words. Stop whenever you like.'}
+        </p>
+        <button type="button" className="exercise__submit" onClick={startStream}>
+          {started === 0 ? 'Start learning' : 'Continue learning'}
+        </button>
+        {counts.due > 0 ? (
+          <button type="button" className="page-action" onClick={() => void navigate('/review')}>
+            Review only ({counts.due})
+          </button>
+        ) : null}
+        <button type="button" className="page-action" onClick={() => void navigate('/practice')}>
+          Practise
+        </button>
+      </section>
+
       <dl className="stat-grid">
         <StatCard
           label="Reviews due"
@@ -88,7 +123,7 @@ export default function DashboardPage(): ReactNode {
         <StatCard
           label="Words started"
           value={loading ? '—' : started}
-          hint={`of ${manifest ? manifest.totalEntries.toLocaleString('en-US') : '10,000'}`}
+          hint={`of ${manifest ? manifest.totalEntries.toLocaleString('en-US') : '—'}`}
         />
         <StatCard
           label="In learning"
@@ -145,25 +180,6 @@ export default function DashboardPage(): ReactNode {
             {game.level.level + 1}
           </p>
         ) : null}
-      </section>
-
-      <section className="settings-section" aria-labelledby="dash-continue">
-        <h2 id="dash-continue">Continue learning</h2>
-        {counts.due > 0 ? (
-          <p>
-            You have <strong>{counts.due}</strong> word{counts.due === 1 ? '' : 's'} to review.{' '}
-            <Link to="/review">Start reviewing</Link>.
-          </p>
-        ) : started === 0 ? (
-          <p>
-            You have not started any words yet. <Link to="/learn">Learn your first five</Link>.
-          </p>
-        ) : (
-          <p>
-            Nothing is due right now. <Link to="/learn">Learn new words</Link> or{' '}
-            <Link to="/practice">practise freely</Link>.
-          </p>
-        )}
       </section>
 
       <div className="dashboard-columns">

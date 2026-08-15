@@ -15,9 +15,9 @@ import './exercises.css';
 /**
  * Exercise runner.
  *
- * Owns the attempt lifecycle that the automatic grading in §20 depends on:
- * a first wrong answer offers one retry, a second wrong answer locks the exercise, and
- * the learner may reveal the answer at any point (which scores zero, §23).
+ * Owns the answer lifecycle that the automatic grading in §20 depends on:
+ * one try per word — the answer locks the exercise whether it was right or wrong, and a
+ * wrong answer costs XP (§23). The learner may reveal the answer instead, which scores zero.
  *
  * The hint is owned here too, and is opt-in. §20 caps a hinted answer at grade 1 and §21
  * weights hint usage at 10% of difficulty, neither of which means anything if the hint is
@@ -27,6 +27,7 @@ import './exercises.css';
 export interface ExerciseOutcome {
   readonly exercise: Exercise;
   readonly result: EvaluationResult;
+  /** Always 1: there is no second try. Kept because the SRS grades on it (§20). */
   readonly attempts: number;
   readonly revealed: boolean;
   readonly hintUsed: boolean;
@@ -38,8 +39,6 @@ interface ExerciseRunnerProps {
   readonly onComplete: (outcome: ExerciseOutcome) => void;
   readonly progressLabel?: string;
 }
-
-const MAX_ATTEMPTS = 2;
 
 function renderExercise(props: ExerciseComponentProps): ReactNode {
   const { exercise } = props;
@@ -73,7 +72,6 @@ export function ExerciseRunner({
   onComplete,
   progressLabel,
 }: ExerciseRunnerProps): ReactNode {
-  const [attempt, setAttempt] = useState(1);
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const [locked, setLocked] = useState(false);
   const [revealed, setRevealed] = useState(false);
@@ -81,7 +79,6 @@ export function ExerciseRunner({
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
-    setAttempt(1);
     setResult(null);
     setLocked(false);
     setRevealed(false);
@@ -89,20 +86,10 @@ export function ExerciseRunner({
     startedAt.current = Date.now();
   }, [exercise.id]);
 
-  const handleSubmit = useCallback(
-    (submitted: EvaluationResult) => {
-      setResult(submitted);
-      // Correct, out of attempts, or already revealed: this exercise is finished.
-      if (submitted.correct || attempt >= MAX_ATTEMPTS || revealed) {
-        setLocked(true);
-      }
-    },
-    [attempt, revealed],
-  );
-
-  const retry = useCallback((): void => {
-    setAttempt((current) => current + 1);
-    setResult(null);
+  const handleSubmit = useCallback((submitted: EvaluationResult) => {
+    // One try per word: right or wrong, the exercise is finished.
+    setResult(submitted);
+    setLocked(true);
   }, []);
 
   const reveal = (): void => {
@@ -121,19 +108,16 @@ export function ExerciseRunner({
     onComplete({
       exercise,
       result: revealed ? { ...result, correct: false } : result,
-      attempts: attempt,
+      attempts: 1,
       revealed,
       hintUsed: hintShown,
       responseMs: Date.now() - startedAt.current,
     });
-  }, [result, onComplete, exercise, revealed, attempt, hintShown]);
+  }, [result, onComplete, exercise, revealed, hintShown]);
 
-  const canRetry = result !== null && !result.correct && !revealed && attempt < MAX_ATTEMPTS;
-
-  // Enter takes whichever step the exercise is waiting for, so a whole session runs from
-  // the keyboard: continue once it is answered, or try again after a first wrong answer.
+  // Enter continues once the exercise is answered, so a whole session runs from the keyboard.
   useEffect(() => {
-    if (!locked && !canRetry) return undefined;
+    if (!locked) return undefined;
 
     const onKeyDown = (event: KeyboardEvent): void => {
       if (event.key !== 'Enter' || event.altKey || event.ctrlKey || event.metaKey) return;
@@ -144,15 +128,14 @@ export function ExerciseRunner({
       if (target instanceof HTMLInputElement && target.type !== 'radio') return;
       if (target instanceof HTMLTextAreaElement) return;
       event.preventDefault();
-      if (locked) advance();
-      else retry();
+      advance();
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [locked, canRetry, advance, retry]);
+  }, [locked, advance]);
 
   return (
     <section className="runner" aria-label="Exercise">
@@ -162,7 +145,6 @@ export function ExerciseRunner({
         exercise,
         onSubmit: handleSubmit,
         locked,
-        attempt,
         revealed,
       })}
 
@@ -181,12 +163,6 @@ export function ExerciseRunner({
       ) : null}
 
       <div className="runner__actions">
-        {canRetry ? (
-          <button type="button" className="runner__retry" onClick={retry}>
-            Try again
-          </button>
-        ) : null}
-
         {exercise.hint && !hintShown && !locked ? (
           <button
             type="button"

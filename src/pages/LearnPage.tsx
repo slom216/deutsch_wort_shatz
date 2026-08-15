@@ -7,9 +7,11 @@ import { loadSearchIndex } from '@/content/vocabulary/registry';
 import { isTopic, topicSlug } from '@/content/vocabulary/topics';
 import { progressByBand, progressByLevel, progressByTopic } from '@/features/progress/analytics';
 import { useContentManifest } from '@/features/learning/useContentManifest';
+import { continuousSessionPath } from '@/features/practice/session/endless';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
+import '@/components/exercises/exercises.css';
 import './LearnPage.css';
 import './SettingsPage.css';
 
@@ -86,6 +88,10 @@ export default function LearnPage(): ReactNode {
     CEFR_LEVELS[0] ??
     'A1';
 
+  const startStream = (): void => {
+    void navigate(continuousSessionPath());
+  };
+
   const startNewBatch = (): void => {
     const sessionId = `new-${Date.now().toString(36)}`;
     void navigate(
@@ -107,24 +113,27 @@ export default function LearnPage(): ReactNode {
       ) : null}
 
       <section className="settings-section" aria-labelledby="learn-next">
-        <h2 id="learn-next">Recommended next lesson</h2>
+        <h2 id="learn-next">Keep learning</h2>
         {loading ? (
           <p className="band-summary">Checking what you have already started…</p>
         ) : (
           <>
             <p>
               {counts.newAvailable > 0
-                ? `Learn ${batchSize} new ${nextLevel} words, taken in frequency order from the highest-ranked entries you have not met yet.`
-                : 'You have introduced every entry in the vocabulary.'}
+                ? `New ${nextLevel} words in frequency order, mixed with whatever is due for review. The stream does not end — stop whenever you like.`
+                : 'You have met every entry in the vocabulary. The stream now keeps your existing words in rotation.'}
             </p>
             <p className="band-summary">
               {counts.learning + counts.review + counts.mastered} started ·{' '}
               {counts.newAvailable.toLocaleString('en-US')} still new
               {counts.due > 0 ? ` · ${counts.due} due for review` : ''}
             </p>
+            <button type="button" className="exercise__submit" onClick={startStream}>
+              Start learning
+            </button>
             {counts.newAvailable > 0 ? (
-              <button type="button" className="exercise__submit" onClick={startNewBatch}>
-                Learn {batchSize} new words
+              <button type="button" className="page-action" onClick={startNewBatch}>
+                A fixed batch of {batchSize} instead
               </button>
             ) : null}
           </>

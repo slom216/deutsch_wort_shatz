@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { ExerciseRunner, type ExerciseOutcome } from '@/components/exercises/ExerciseRunner';
-import { VocabularyCard } from '@/components/vocabulary/VocabularyCard';
 import {
   bandBySlug,
   bandsForLevel,
@@ -52,13 +51,10 @@ export default function PracticeSessionPage(): ReactNode {
   const strictAnswerChecking = useSettingsStore((state) => state.settings.strictAnswerChecking);
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState<string | null>(null);
-  const [sessionEntries, setSessionEntries] = useState<Map<string, VocabularyEntry>>(new Map());
-  /**
-   * Entries whose explanation card the learner has already read (§18). A new word is
-   * shown and explained before it is ever graded — being tested on a word you have not
-   * met is not learning.
-   */
-  const [explained, setExplained] = useState<ReadonlySet<string>>(new Set());
+  // A word is met in its own first exercise rather than on an explanation card before it:
+  // the first question for a new entry is a recognition one, and its feedback names the
+  // answer. This departs from §18's "explain, then practise" — reading a card for every
+  // new word costs more time than it teaches.
 
   useEffect(() => {
     if (!sessionId) return;
@@ -147,14 +143,24 @@ export default function PracticeSessionPage(): ReactNode {
       return [...loaded.values()].sort((a, b) => a.rank - b.rank);
     };
 
-    /** Free-practice topic and word-class filters (§18). */
+    /** Free-practice topic, word-class and exercise-type filters (§18). */
     const applyFilters = (candidates: readonly VocabularyEntry[]): VocabularyEntry[] => {
       const topic = topicFromSlug(params.get('topic') ?? '');
       const wordClass = params.get('class');
-      return candidates.filter(
+      const filtered = candidates.filter(
         (entry) =>
           (!topic || entry.primaryTopic === topic) && (!wordClass || entry.wordClass === wordClass),
       );
+
+      // The working set is sampled from these, so entries that cannot produce any of the
+      // chosen formats have to go now — sampling first and filtering later is how a
+      // session restricted to a rare format (word ordering needs a multi-word phrase)
+      // ends up empty.
+      if (!allowedTypes || allowedTypes.length === 0) return filtered;
+      const supported = filtered.filter((entry) =>
+        entry.exerciseConfig.enabledTypes.some((type) => allowedTypes.includes(type)),
+      );
+      return supported.length > 0 ? supported : filtered;
     };
 
     const load = async (): Promise<void> => {
@@ -188,8 +194,6 @@ export default function PracticeSessionPage(): ReactNode {
       }
 
       if (cancelled) return;
-
-      setSessionEntries(new Map(entries.map((entry) => [entry.id, entry])));
 
       // A new-word session introduces its entries before they can be scheduled (§18).
       if (mode === 'new') {
@@ -269,32 +273,6 @@ export default function PracticeSessionPage(): ReactNode {
         <p>
           <Link to={`/results/${sessionId}`}>See your results</Link>
         </p>
-      </>
-    );
-  }
-
-  // §18: a new-word batch is one explanation card, then recognition, then production.
-  // The card appears once per entry, immediately before its first exercise.
-  const introducing = sessionEntries.get(exercise.entryId);
-  if (mode === 'new' && introducing && !explained.has(exercise.entryId)) {
-    return (
-      <>
-        <PageHeader title="New word" />
-        <p className="runner__progress">
-          Word {explained.size + 1} of {new Set(exercises.map((e) => e.entryId)).size}
-        </p>
-        <VocabularyCard entry={introducing} linkToEntry={false} />
-        <div className="runner__actions">
-          <button
-            type="button"
-            className="runner__next"
-            onClick={() => {
-              setExplained((current) => new Set(current).add(exercise.entryId));
-            }}
-          >
-            Practise this word
-          </button>
-        </div>
       </>
     );
   }

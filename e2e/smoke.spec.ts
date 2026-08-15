@@ -20,7 +20,7 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   // No session with this id exists, so the results screen correctly reports that.
   { path: '/results/demo', heading: /results not found/i },
   { path: '/vocabulary', heading: /^vocabulary$/i },
-  { path: '/word/a1-0003-sein', heading: /sein/i },
+  { path: '/word/a1-0662-sein', heading: /sein/i },
   { path: '/progress', heading: /^progress$/i },
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },
@@ -46,27 +46,28 @@ test('dashboard reports the vocabulary size and the review queue', async ({ page
   // The dashboard now leads with SRS figures; the dataset size appears as the
   // denominator of "Words started".
   await expect(page.getByText('Words started', { exact: true })).toBeVisible();
-  await expect(page.getByText('of 10,000', { exact: true })).toBeVisible();
+  await expect(page.getByText('of 3,460', { exact: true })).toBeVisible();
   await expect(page.getByText('Reviews due', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: /continue learning/i })).toBeVisible();
 });
 
-test('vocabulary search finds an entry by an inflected form', async ({ page }) => {
+test('vocabulary search finds an entry by its German headword', async ({ page }) => {
   await page.goto('/vocabulary');
-  await page.getByLabel('Search', { exact: true }).fill('gewesen');
+  await page.getByLabel('Search', { exact: true }).fill('Tisch');
 
-  // `gewesen` is only the participle of `sein`, so this proves searchableForms are used.
-  await expect(page.getByRole('link', { name: 'sein' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tisch' }).first()).toBeVisible();
 });
 
-test('a noun entry is never shown without its article and plural', async ({ page }) => {
+test('an entry page shows only grammar the dataset actually records', async ({ page }) => {
   await page.goto('/vocabulary');
   await page.getByLabel('Search', { exact: true }).fill('Tisch');
   await page.getByRole('link', { name: 'Tisch' }).first().click();
 
-  await expect(page.getByRole('heading', { level: 1 })).toContainText(/der Tisch/i);
-  await expect(page.getByRole('heading', { name: 'Noun forms' })).toBeVisible();
-  await expect(page.getByText('die Tische')).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(/Tisch/i);
+  // No article or plural is recorded, so the noun-forms panel stays away rather than
+  // printing placeholders — and nothing on the page claims a form that was never checked.
+  await expect(page.getByRole('heading', { name: 'Noun forms' })).toHaveCount(0);
+  await expect(page.getByText(/pending editorial review/i)).toHaveCount(0);
 });
 
 test('settings persist across a reload', async ({ page }) => {

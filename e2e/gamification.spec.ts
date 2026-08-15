@@ -16,13 +16,6 @@ async function revealThroughSession(page: Page): Promise<void> {
   for (let i = 0; i < 80; i += 1) {
     if (page.url().includes('/results/')) break;
 
-    // A new-word session shows each entry's explanation card before its exercises (§18).
-    const card = page.getByRole('button', { name: /practise this word/i });
-    if (await card.isVisible().catch(() => false)) {
-      await card.click({ timeout: 2_000 }).catch(() => {});
-      continue;
-    }
-
     const reveal = page.getByRole('button', { name: /show answer/i });
     if (await reveal.isVisible().catch(() => false))
       await reveal.click({ timeout: 2_000 }).catch(() => {});
@@ -82,8 +75,8 @@ test('the achievements page has no leaderboard or paid currency', async ({ page 
 
 test('revealed answers earn no XP', async ({ page }) => {
   await page.goto('/learn');
-  await page.getByRole('button', { name: /learn \d+ new words/i }).click();
-  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
+  await page.getByRole('button', { name: /a fixed batch of \d+ instead/i }).click();
+  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 
   await revealThroughSession(page);
   expect(await totalXp(page)).toBe(0);
@@ -135,8 +128,8 @@ test('the dashboard shows XP, level, streak and daily-goal progress', async ({ p
 test('resetting progress clears gamification, but only after confirmation', async ({ page }) => {
   // Earn something first.
   await page.goto('/learn');
-  await page.getByRole('button', { name: /learn \d+ new words/i }).click();
-  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toBeVisible();
+  await page.getByRole('button', { name: /a fixed batch of \d+ instead/i }).click();
+  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
   await revealThroughSession(page);
 
   await page.goto('/data');

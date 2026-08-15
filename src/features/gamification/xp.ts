@@ -13,7 +13,8 @@ import type { Exercise } from '@/schemas/exerciseSchema';
  *   Complete frequency band   +100
  *   Complete CEFR level       +500
  *
- * A second-attempt answer earns 50%; a revealed answer earns nothing.
+ * There is no second try: a wrong answer costs the same as a right one would have earned.
+ * A revealed answer earns nothing — asking to see the answer is not guessing.
  */
 
 export const XP_BY_TYPE: Record<Exercise['type'], number> = {
@@ -38,23 +39,18 @@ export const PERFECT_SESSION_MIN_EXERCISES = 20;
 export interface ExerciseXpInput {
   readonly exerciseType: Exercise['type'];
   readonly correct: boolean;
-  readonly attempts: number;
   readonly revealed: boolean;
 }
 
 /**
- * XP for a single answered exercise.
- *
- * Revealed answers score zero even when the learner then picks the right option, and a
- * correct second attempt is halved — both are Phase 7 acceptance criteria.
+ * XP for a single answered exercise: the type's award if right, the same amount deducted
+ * if wrong. Revealed answers score zero even when the learner then picks the right option.
  */
 export function exerciseXp(input: ExerciseXpInput): number {
-  if (input.revealed || !input.correct) return 0;
+  if (input.revealed) return 0;
 
   const base = XP_BY_TYPE[input.exerciseType] ?? 0;
-  if (input.attempts <= 1) return base;
-  // Rounded down so a halved award can never exceed the full one.
-  return Math.floor(base * 0.5);
+  return input.correct ? base : -base;
 }
 
 /**

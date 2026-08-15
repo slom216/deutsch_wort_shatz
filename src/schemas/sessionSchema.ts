@@ -5,7 +5,8 @@ import { exerciseTypeSchema } from './vocabularySchema';
 
 /** Practice sessions (§19, §24). Populated by the session engine in Phase 1. */
 
-export const sessionModeSchema = z.enum(['new', 'review', 'topic', 'free']);
+/** `continuous` is the endless stream: no planned length, words keep arriving until you stop. */
+export const sessionModeSchema = z.enum(['new', 'review', 'topic', 'free', 'continuous']);
 
 export const sessionStatusSchema = z.enum(['active', 'completed', 'abandoned']);
 

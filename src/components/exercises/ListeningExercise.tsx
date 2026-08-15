@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { evaluateAnswer, evaluateChoice } from '@/features/practice/evaluation/evaluateAnswer';
 import { useSpeechSynthesis } from '@/features/speech/useSpeechSynthesis';
+import { usePlayShortcut } from '@/features/speech/usePlayShortcut';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { ListeningExercise as ListeningExerciseType } from '@/schemas/exerciseSchema';
+import { ChoiceOptions } from './ChoiceOptions';
 import { GermanCharacterHelper } from './GermanCharacterHelper';
 import { handleGermanCharacterShortcut } from './germanCharacters';
 import type { ExerciseComponentProps } from './exerciseProps';
@@ -20,7 +22,6 @@ export function ListeningExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
   revealed,
 }: ExerciseComponentProps<ListeningExerciseType>): ReactNode {
   const speechRate = useSettingsStore((state) => state.settings.speechRate);
@@ -35,28 +36,34 @@ export function ListeningExercise({
     setSelected(null);
     setValue('');
     setPlayCount(0);
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
-  const play = (): void => {
+  const play = useCallback((): void => {
     speak(exercise.spokenText);
     setPlayCount((count) => count + 1);
-  };
+  }, [speak, exercise.spokenText]);
+
+  usePlayShortcut(play, supported);
+
+  /** Answers a choice question outright, matching multiple choice (§15). */
+  const answerChoice = useCallback(
+    (index: number): void => {
+      if (locked || exercise.correctIndex === undefined || !exercise.options) return;
+      setSelected(index);
+      onSubmit(
+        evaluateChoice(
+          index,
+          exercise.correctIndex,
+          exercise.options[exercise.correctIndex] as string,
+          exercise.options[index] as string,
+        ),
+      );
+    },
+    [locked, onSubmit, exercise.correctIndex, exercise.options],
+  );
 
   const submit = (): void => {
     if (locked) return;
-
-    if (exercise.mode === 'chooseEnglish') {
-      if (selected === null || exercise.correctIndex === undefined || !exercise.options) return;
-      onSubmit(
-        evaluateChoice(
-          selected,
-          exercise.correctIndex,
-          exercise.options[exercise.correctIndex] as string,
-          exercise.options[selected] as string,
-        ),
-      );
-      return;
-    }
 
     onSubmit(
       evaluateAnswer(value, exercise.acceptedAnswers ?? [exercise.canonicalAnswer], {
@@ -77,7 +84,8 @@ export function ListeningExercise({
 
       <div className="listening__controls">
         <button type="button" className="listening__play" onClick={play} disabled={!supported}>
-          {speaking ? 'Playing…' : playCount === 0 ? 'Play audio' : 'Play again'}
+          {speaking ? 'Playing…' : playCount === 0 ? 'Play audio' : 'Play again'}{' '}
+          <span aria-hidden="true">(P)</span>
         </button>
         {playCount > 0 ? <span className="exercise__hint">Played {playCount}×</span> : null}
       </div>
@@ -99,41 +107,16 @@ export function ListeningExercise({
       ) : null}
 
       {exercise.mode === 'chooseEnglish' && exercise.options ? (
-        <>
-          <fieldset className="exercise__options" disabled={locked}>
-            <legend className="visually-hidden">{exercise.prompt}</legend>
-            {exercise.options.map((option, index) => {
-              const isCorrect = index === exercise.correctIndex;
-              return (
-                <label
-                  key={option}
-                  className={`option ${locked && isCorrect ? 'option--correct' : ''} ${
-                    locked && selected === index && !isCorrect ? 'option--wrong' : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={`listen-${exercise.id}-${attempt}`}
-                    checked={selected === index}
-                    disabled={locked}
-                    onChange={() => setSelected(index)}
-                  />
-                  <span>{option}</span>
-                </label>
-              );
-            })}
-          </fieldset>
-          {!locked ? (
-            <button
-              type="button"
-              className="exercise__submit"
-              onClick={submit}
-              disabled={selected === null}
-            >
-              Check answer
-            </button>
-          ) : null}
-        </>
+        <ChoiceOptions
+          options={exercise.options}
+          correctIndex={exercise.correctIndex ?? -1}
+          name={`listen-${exercise.id}`}
+          selected={selected}
+          locked={locked}
+          revealed={revealed}
+          legend={exercise.prompt}
+          onAnswer={answerChoice}
+        />
       ) : (
         <form
           onSubmit={(event) => {

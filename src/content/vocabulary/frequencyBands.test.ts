@@ -47,14 +47,12 @@ describe('frequency band registry', () => {
   });
 
   it('maps boundary ranks to the correct band', () => {
-    expect(bandForRank(1)?.id).toBe('A1 Core 1');
-    expect(bandForRank(250)?.id).toBe('A1 Core 1');
-    expect(bandForRank(251)?.id).toBe('A1 Core 2');
-    expect(bandForRank(1000)?.id).toBe('A1 Core 4');
-    expect(bandForRank(1001)?.id).toBe('A2 High 1');
-    expect(bandForRank(4000)?.id).toBe('A2 Medium 2');
-    expect(bandForRank(4001)?.id).toBe('B1 High 1');
-    expect(bandForRank(10_000)?.id).toBe('B1 Medium 2');
+    // Both ends of every band, and the rank either side of each boundary.
+    for (const band of FREQUENCY_BANDS) {
+      expect(bandForRank(band.from)?.id).toBe(band.id);
+      expect(bandForRank(band.to)?.id).toBe(band.id);
+    }
+    expect(bandForRank(FREQUENCY_BANDS[0]!.to + 1)?.id).toBe(FREQUENCY_BANDS[1]!.id);
   });
 
   it('returns null for ranks outside the dataset', () => {

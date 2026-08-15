@@ -20,10 +20,9 @@ export default function AboutPage(): ReactNode {
       <section className="settings-section" aria-labelledby="about-app">
         <h2 id="about-app">What this is</h2>
         <p>
-          Deutsch Wort Shatz teaches 10,000 German words and phrases — 1,000 at A1, 3,000 at A2 and
-          6,000 at B1 — ordered by frequency and grouped by topic. Nouns are always taught with
-          their article and plural, verbs with their full conjugation, and phrases as complete
-          chunks.
+          Deutsch Wort Shatz teaches 3,460 German words and phrases — 800 at A1, 693 at A2 and
+          1,967 at B1 — ordered by frequency and grouped by topic. Every entry is a curated
+          headword with its English meaning, word class and topic; nothing is generated.
         </p>
         <p>
           Reviews are scheduled automatically using spaced repetition. You are never asked to rate

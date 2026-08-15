@@ -184,7 +184,9 @@ export async function loadGamification(
 
   const exerciseXpTotal = history.reduce((sum, row) => sum + row.xpAwarded, 0);
   const bonusXpTotal = events.reduce((sum, event) => sum + event.amount, 0);
-  const totalXp = exerciseXpTotal + bonusXpTotal;
+  // Wrong answers deduct XP, so the running sum can dip below zero; a negative lifetime
+  // total would mean negative levels and negative progress bars.
+  const totalXp = Math.max(0, exerciseXpTotal + bonusXpTotal);
 
   const unlockedAt = new Map(unlockedRows.map((row) => [row.id, row.unlockedAt]));
   const streak = computeStreak(history, now, freezes);

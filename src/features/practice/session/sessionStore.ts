@@ -10,7 +10,7 @@ import {
   awardSessionBonuses,
   awardDailyGoalBonus,
 } from '@/features/gamification/repository';
-import { exerciseXp } from '@/features/gamification/xp';
+import { exerciseXp, XP_MASTER_ENTRY } from '@/features/gamification/xp';
 import type { PracticeSessionRecord } from '@/schemas/sessionSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { buildSession, type SessionMode } from './buildSession';
@@ -52,6 +52,12 @@ interface SessionState {
   readonly answers: readonly AnsweredExercise[];
   readonly status: 'idle' | 'active' | 'completed';
   readonly startedAt: string;
+  /**
+   * Bonus XP awarded during this session — currently mastery bonuses, which are written
+   * to `xpEvents` rather than to an exercise row. Tracked here so a running session can
+   * show a live total without recomputing the lifetime total from stored history.
+   */
+  readonly bonusXp: number;
 
   readonly start: (options: {
     sessionId: string;
@@ -65,6 +71,14 @@ interface SessionState {
   }) => Promise<void>;
   readonly recordAnswer: (answer: AnsweredExercise) => Promise<void>;
   readonly advance: () => Promise<void>;
+  /**
+   * Appends one exercise and makes it current. Continuous mode builds its stream this
+   * way — the exercise after next depends on how the last one was answered, so it cannot
+   * be planned in advance the way a fixed session is.
+   */
+  readonly serve: (exercise: Exercise) => Promise<void>;
+  /** Closes the session and awards its end-of-session bonuses. Safe to call twice. */
+  readonly finish: () => Promise<void>;
   readonly reset: () => void;
 }
 
@@ -106,6 +120,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   answers: [],
   status: 'idle',
   startedAt: new Date().toISOString(),
+  bonusXp: 0,
 
   start: async ({
     sessionId,
@@ -166,7 +181,10 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     }
 
     const startedAt = existingRecord?.startedAt ?? new Date().toISOString();
-    const finished = exercises.length === 0 || answered.length >= exercises.length;
+    // A continuous session has no planned end: running out of exercises means the next one
+    // has not been chosen yet, not that the session is over (§ continuous mode).
+    const finished =
+      mode !== 'continuous' && (exercises.length === 0 || answered.length >= exercises.length);
 
     set({
       sessionId,
@@ -176,6 +194,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       answers: answered,
       status: finished ? 'completed' : 'active',
       startedAt,
+      bonusXp: 0,
     });
 
     await db.sessions.put(summarize(sessionId, mode, exercises, answered, startedAt, finished));
@@ -217,7 +236,6 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       xpAwarded = exerciseXp({
         exerciseType: exercise.type,
         correct: answer.result.correct,
-        attempts: answer.attempts,
         revealed: answer.revealed,
       });
     }
@@ -245,30 +263,49 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     });
 
     // Mastering an entry is worth a one-off bonus, awarded by entry id so it cannot repeat.
-    if (mastered) await awardMasteryBonus(answer.entryId);
+    if (mastered) {
+      await awardMasteryBonus(answer.entryId);
+      set({ bonusXp: get().bonusXp + XP_MASTER_ENTRY });
+    }
 
     await db.sessions.put(summarize(sessionId, mode, exercises, next, startedAt, false));
   },
 
   advance: async () => {
-    const { sessionId, mode, exercises, answers, currentIndex, startedAt } = get();
+    const { exercises, currentIndex } = get();
     const nextIndex = currentIndex + 1;
 
     if (nextIndex >= exercises.length) {
-      set({ currentIndex: exercises.length, status: 'completed' });
-      if (sessionId) {
-        await db.sessions.put(summarize(sessionId, mode, exercises, answers, startedAt, true));
-        // Perfect-session and daily-goal bonuses, both keyed so they cannot repeat (§23).
-        await awardSessionBonuses(sessionId);
-        const settings = await db.settings.get('user-settings');
-        await awardDailyGoalBonus(settings?.dailyGoal ?? 20);
-        // Band and level completion, checked once per session rather than per answer.
-        await awardCompletionBonuses();
-      }
+      await get().finish();
       return;
     }
 
     set({ currentIndex: nextIndex });
+  },
+
+  serve: async (exercise) => {
+    const { sessionId, mode, exercises, answers, startedAt } = get();
+    if (!sessionId) return;
+
+    const next = [...exercises, exercise];
+    set({ exercises: next, currentIndex: next.length - 1, status: 'active' });
+    await db.sessions.put(summarize(sessionId, mode, next, answers, startedAt, false));
+  },
+
+  finish: async () => {
+    const { sessionId, mode, exercises, answers, startedAt, status } = get();
+    if (status === 'completed') return;
+
+    set({ currentIndex: exercises.length, status: 'completed' });
+    if (!sessionId) return;
+
+    await db.sessions.put(summarize(sessionId, mode, exercises, answers, startedAt, true));
+    // Perfect-session and daily-goal bonuses, both keyed so they cannot repeat (§23).
+    await awardSessionBonuses(sessionId);
+    const settings = await db.settings.get('user-settings');
+    await awardDailyGoalBonus(settings?.dailyGoal ?? 20);
+    // Band and level completion, checked once per session rather than per answer.
+    await awardCompletionBonuses();
   },
 
   reset: () => {
@@ -278,6 +315,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       currentIndex: 0,
       answers: [],
       status: 'idle',
+      bonusXp: 0,
     });
   },
 }));

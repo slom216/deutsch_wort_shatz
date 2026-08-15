@@ -110,6 +110,9 @@ export function generateTypedTranslation(
 
     case 'verbForm': {
       if (!isVerbEntry(entry)) return null;
+      const participle = entry.pastParticiple;
+      // Datasets that record no conjugation cannot ask for one.
+      if (!participle) return null;
       return {
         ...base,
         isProduction: true,
@@ -118,8 +121,8 @@ export function generateTypedTranslation(
         strictness: strictnessFor(entry),
         question: entry.infinitive,
         answerLanguage: 'de',
-        acceptedAnswers: [entry.pastParticiple],
-        canonicalAnswer: entry.pastParticiple,
+        acceptedAnswers: [participle],
+        canonicalAnswer: participle,
       };
     }
 
@@ -151,7 +154,7 @@ export function availableTypedTranslationVariants(
     variants.push('nounWithArticle');
     if (pluralForm(entry)) variants.push('nounWithArticleAndPlural');
   }
-  if (isVerbEntry(entry)) variants.push('verbForm');
+  if (isVerbEntry(entry) && entry.pastParticiple) variants.push('verbForm');
   if (isPhraseEntry(entry)) variants.push('fullPhrase');
   return variants;
 }

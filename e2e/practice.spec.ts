@@ -9,10 +9,10 @@ import { expect, test, type Page } from '@playwright/test';
  */
 
 /** Starts a free-practice session restricted to one exercise type. */
-async function startSession(page: Page, types: string, length = 10): Promise<void> {
+async function startSession(page: Page, types: string, length = 10, level = 'A1'): Promise<void> {
   const sessionId = `e2e-${types}-${Date.now().toString(36)}`;
   await page.goto(
-    `/practice/session/${sessionId}?mode=free&level=A1&band=all&length=${length}&types=${types}`,
+    `/practice/session/${sessionId}?mode=free&level=${level}&band=all&length=${length}&types=${types}`,
   );
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 }
@@ -45,11 +45,8 @@ test('multiple choice can be answered and gives feedback', async ({ page }) => {
   await page.getByRole('radio').first().check();
 
   await expect(page.getByRole('status')).toBeVisible();
-  await expect(
-    page
-      .getByRole('button', { name: /continue/i })
-      .or(page.getByRole('button', { name: /try again/i })),
-  ).toBeVisible();
+  // Right or wrong, the answer locks: the only way on is Continue.
+  await expect(page.getByRole('button', { name: /continue/i })).toBeVisible();
 });
 
 test('a number key answers, and Enter moves on', async ({ page }) => {
@@ -58,13 +55,7 @@ test('a number key answers, and Enter moves on', async ({ page }) => {
   await page.keyboard.press('1');
   await expect(page.getByRole('status')).toBeVisible();
 
-  // Option 1 may or may not be the right answer. A wrong first answer offers a retry, so
-  // reveal to reach the locked state either way; then Enter continues.
-  await page
-    .getByRole('button', { name: /show answer/i })
-    .click({ timeout: 2_000 })
-    .catch(() => {});
-
+  // Option 1 may or may not be the right answer; either way the exercise is now locked.
   await page.keyboard.press('Enter');
   await expect(page.getByText(/Exercise 2 of/)).toBeVisible();
 });
@@ -82,15 +73,24 @@ test('typed translation enforces strict German spelling', async ({ page }) => {
 });
 
 test('the German character helper inserts into the answer field', async ({ page }) => {
-  // Sentence completion always asks for German, so the helper is always present. A
-  // typed-translation session can open on a German-to-English item, where the helper is
-  // correctly absent because the answer is English.
-  await startSession(page, 'sentenceCompletion');
+  // The helper appears wherever the answer is German. A typed-translation session mixes
+  // both directions, so walk it until an English-to-German item comes up.
+  await startSession(page, 'typedTranslation', 20);
 
-  const input = page.getByLabel('Missing word in the sentence');
+  const insert = page.getByRole('button', { name: 'Insert eszett ß' });
+  for (let step = 0; step < 20 && !(await insert.isVisible().catch(() => false)); step += 1) {
+    const reveal = page.getByRole('button', { name: /show answer/i });
+    if (await reveal.isVisible().catch(() => false))
+      await reveal.click({ timeout: 2_000 }).catch(() => {});
+    const next = page.getByRole('button', { name: /continue/i });
+    if (await next.isVisible().catch(() => false))
+      await next.click({ timeout: 2_000 }).catch(() => {});
+  }
+
+  const input = page.getByLabel('Your answer');
   await input.click();
   await input.fill('Stra');
-  await page.getByRole('button', { name: 'Insert eszett ß' }).click();
+  await insert.click();
 
   await expect(input).toHaveValue('Straß');
   // Focus must stay in the field so typing can continue (§17).
@@ -98,7 +98,9 @@ test('the German character helper inserts into the answer field', async ({ page 
 });
 
 test('word ordering can be solved with the move buttons alone', async ({ page }) => {
-  await startSession(page, 'wordOrdering');
+  // Word ordering needs a phrase of at least four tokens, and the datasets have only a
+  // few — all at B1.
+  await startSession(page, 'wordOrdering', 10, 'B1');
 
   const moveRight = page.getByRole('button', { name: /move .* right/i }).first();
   await moveRight.click();
@@ -156,10 +158,6 @@ test('a completed session persists its results across a reload', async ({ page }
   for (let i = 0; i < 3; i += 1) {
     await expect(page.getByText(new RegExp(`Exercise ${i + 1} of 3`))).toBeVisible();
     await page.getByRole('radio').first().check();
-    const retry = page.getByRole('button', { name: /try again/i });
-    if (await retry.isVisible().catch(() => false)) {
-      await page.getByRole('button', { name: /show answer/i }).click();
-    }
     await page.getByRole('button', { name: /continue/i }).click();
   }
 

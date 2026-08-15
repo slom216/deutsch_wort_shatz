@@ -124,14 +124,19 @@ export default function VocabularyEntryPage(): ReactNode {
         ) : null}
       </dl>
 
-      {isNounEntry(entry) ? (
+      {/* The panels below appear only for entries whose dataset records the grammar. The
+          current sources record a checked headword, gloss, word class and topic; a page of
+          "not recorded" rows would be noise, not information. */}
+      {isNounEntry(entry) && (entry.article || entry.plural) ? (
         <section aria-labelledby="noun-forms" className="entry-panel">
           <h2 id="noun-forms">Noun forms</h2>
           <dl className="entry-detail">
-            <div>
-              <dt>Article</dt>
-              <dd>{entry.article ?? 'Not recorded — pending editorial review'}</dd>
-            </div>
+            {entry.article ? (
+              <div>
+                <dt>Article</dt>
+                <dd>{entry.article}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>Plural</dt>
               <dd>
@@ -139,7 +144,7 @@ export default function VocabularyEntryPage(): ReactNode {
                   ? `${entry.pluralArticle ?? 'die'} ${entry.plural}`
                   : entry.numberUsage === 'singularOnly'
                     ? 'Singular only'
-                    : 'Not recorded — pending editorial review'}
+                    : 'Not recorded'}
               </dd>
             </div>
             {entry.genitiveSingular ? (
@@ -152,7 +157,7 @@ export default function VocabularyEntryPage(): ReactNode {
         </section>
       ) : null}
 
-      {isVerbEntry(entry) ? (
+      {isVerbEntry(entry) && entry.thirdPersonPresent ? (
         <section aria-labelledby="verb-forms" className="entry-panel">
           <h2 id="verb-forms">Verb forms</h2>
           <dl className="entry-detail">
@@ -174,10 +179,12 @@ export default function VocabularyEntryPage(): ReactNode {
                 {entry.auxiliary === 'sein' ? 'ist' : 'hat'} {entry.pastParticiple}
               </dd>
             </div>
-            <div>
-              <dt>Auxiliary</dt>
-              <dd>{entry.auxiliary}</dd>
-            </div>
+            {entry.auxiliary ? (
+              <div>
+                <dt>Auxiliary</dt>
+                <dd>{entry.auxiliary}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>Separable</dt>
               <dd>{entry.separable ? 'Separable' : 'Inseparable'}</dd>
@@ -229,6 +236,11 @@ export default function VocabularyEntryPage(): ReactNode {
 
       <section aria-labelledby="examples" className="entry-panel">
         <h2 id="examples">Example sentences</h2>
+        {entry.exampleSentences.length === 0 ? (
+          <p className="band-summary">
+            None recorded for this entry — the datasets carry only checked material.
+          </p>
+        ) : null}
         <ul className="example-list">
           {entry.exampleSentences.map((example) => (
             <li key={example.id}>

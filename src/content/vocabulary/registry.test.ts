@@ -8,7 +8,13 @@ import {
   loadSearchIndex,
   resetContentCache,
 } from './registry';
-import { FREQUENCY_BANDS } from './frequencyBands';
+import {
+  bandById,
+  bandEntryCount,
+  FREQUENCY_BANDS,
+  LEVEL_ENTRY_COUNTS,
+  TOTAL_ENTRY_COUNT,
+} from './frequencyBands';
 import { isTopic } from './topics';
 import { vocabularyEntrySchema } from '@/schemas/vocabularySchema';
 
@@ -25,19 +31,20 @@ describe('vocabulary registry', () => {
     expect(hasGeneratedContent()).toBe(true);
   });
 
-  it('reports 10,000 entries split 1,000 / 3,000 / 6,000 across levels', async () => {
+  it('reports the dataset totals, split across levels', async () => {
     const manifest = await loadManifest();
-    expect(manifest.totalEntries).toBe(10_000);
-    expect(manifest.entriesByLevel).toEqual({ A1: 1000, A2: 3000, B1: 6000 });
+    expect(manifest.totalEntries).toBe(TOTAL_ENTRY_COUNT);
+    expect(manifest.entriesByLevel).toEqual(LEVEL_ENTRY_COUNTS);
     expect(manifest.bands).toHaveLength(FREQUENCY_BANDS.length);
   });
 
   it('loads a band with exactly the entries its rank range allows', async () => {
-    const entries = await loadBand('A1 Core 1');
-    expect(entries).toHaveLength(250);
+    const band = bandById('A1 Core 1')!;
+    const entries = await loadBand(band.id);
+    expect(entries).toHaveLength(bandEntryCount(band));
     for (const entry of entries) {
-      expect(entry.rank).toBeGreaterThanOrEqual(1);
-      expect(entry.rank).toBeLessThanOrEqual(250);
+      expect(entry.rank).toBeGreaterThanOrEqual(band.from);
+      expect(entry.rank).toBeLessThanOrEqual(band.to);
       expect(entry.level).toBe('A1');
       expect(entry.frequencyBand).toBe('A1 Core 1');
     }
@@ -72,16 +79,18 @@ describe('vocabulary registry', () => {
     }
   });
 
-  it('exposes a search index covering all 10,000 entries with unique ids', async () => {
+  it('exposes a search index covering every entry with unique ids', async () => {
     const index = await loadSearchIndex();
-    expect(index).toHaveLength(10_000);
-    expect(new Set(index.map((r) => r.id)).size).toBe(10_000);
+    expect(index).toHaveLength(TOTAL_ENTRY_COUNT);
+    expect(new Set(index.map((r) => r.id)).size).toBe(TOTAL_ENTRY_COUNT);
   });
 
   it('finds a single entry by id, loading only its band', async () => {
-    const entry = await loadEntry('a1-0003-sein');
+    const index = await loadSearchIndex();
+    const wanted = index.find((record) => record.wordClass === 'verb');
+    const entry = await loadEntry(wanted!.id);
     expect(entry).not.toBeNull();
-    expect(entry?.german).toBe('sein');
+    expect(entry?.german).toBe(wanted!.german);
     expect(entry?.wordClass).toBe('verb');
   });
 

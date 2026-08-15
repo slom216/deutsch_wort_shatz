@@ -1,0 +1,9074 @@
+[
+  {
+    "rank": 1,
+    "level": "A1",
+    "kind": "word",
+    "german": "eins",
+    "english": [
+      "one"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 2,
+    "level": "A1",
+    "kind": "word",
+    "german": "zwei",
+    "english": [
+      "two"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 3,
+    "level": "A1",
+    "kind": "word",
+    "german": "drei",
+    "english": [
+      "three"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 4,
+    "level": "A1",
+    "kind": "word",
+    "german": "vier",
+    "english": [
+      "four"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 5,
+    "level": "A1",
+    "kind": "word",
+    "german": "fünf",
+    "english": [
+      "five"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 6,
+    "level": "A1",
+    "kind": "word",
+    "german": "sechs",
+    "english": [
+      "six"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 7,
+    "level": "A1",
+    "kind": "word",
+    "german": "sieben",
+    "english": [
+      "seven"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 8,
+    "level": "A1",
+    "kind": "word",
+    "german": "acht",
+    "english": [
+      "eight"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 9,
+    "level": "A1",
+    "kind": "word",
+    "german": "neun",
+    "english": [
+      "nine"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 10,
+    "level": "A1",
+    "kind": "word",
+    "german": "zehn",
+    "english": [
+      "ten"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 11,
+    "level": "A1",
+    "kind": "word",
+    "german": "elf",
+    "english": [
+      "eleven"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 12,
+    "level": "A1",
+    "kind": "word",
+    "german": "zwölf",
+    "english": [
+      "twelve"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 13,
+    "level": "A1",
+    "kind": "word",
+    "german": "dreizehn",
+    "english": [
+      "thirteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 14,
+    "level": "A1",
+    "kind": "word",
+    "german": "vierzehn",
+    "english": [
+      "fourteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 15,
+    "level": "A1",
+    "kind": "word",
+    "german": "fünfzehn",
+    "english": [
+      "fifteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 16,
+    "level": "A1",
+    "kind": "word",
+    "german": "sechzehn",
+    "english": [
+      "sixteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 17,
+    "level": "A1",
+    "kind": "word",
+    "german": "siebzehn",
+    "english": [
+      "seventeen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 18,
+    "level": "A1",
+    "kind": "word",
+    "german": "achtzehn",
+    "english": [
+      "eighteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 19,
+    "level": "A1",
+    "kind": "word",
+    "german": "neunzehn",
+    "english": [
+      "nineteen"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 20,
+    "level": "A1",
+    "kind": "word",
+    "german": "zwanzig",
+    "english": [
+      "twenty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 21,
+    "level": "A1",
+    "kind": "word",
+    "german": "einundzwanzig",
+    "english": [
+      "twenty-one"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 22,
+    "level": "A1",
+    "kind": "word",
+    "german": "dreißig",
+    "english": [
+      "thirty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 23,
+    "level": "A1",
+    "kind": "word",
+    "german": "vierzig",
+    "english": [
+      "forty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 24,
+    "level": "A1",
+    "kind": "word",
+    "german": "fünfzig",
+    "english": [
+      "fifty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 25,
+    "level": "A1",
+    "kind": "word",
+    "german": "sechzig",
+    "english": [
+      "sixty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 26,
+    "level": "A1",
+    "kind": "word",
+    "german": "siebzig",
+    "english": [
+      "seventy"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 27,
+    "level": "A1",
+    "kind": "word",
+    "german": "achtzig",
+    "english": [
+      "eighty"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 28,
+    "level": "A1",
+    "kind": "word",
+    "german": "neunzig",
+    "english": [
+      "ninety"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 29,
+    "level": "A1",
+    "kind": "word",
+    "german": "hundert",
+    "english": [
+      "hundred"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 30,
+    "level": "A1",
+    "kind": "word",
+    "german": "hunderteins",
+    "english": [
+      "one hundred and one"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 31,
+    "level": "A1",
+    "kind": "word",
+    "german": "zweihundert",
+    "english": [
+      "two hundred"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 32,
+    "level": "A1",
+    "kind": "word",
+    "german": "tausend",
+    "english": [
+      "thousand"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 33,
+    "level": "A1",
+    "kind": "word",
+    "german": "Million",
+    "english": [
+      "million"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 34,
+    "level": "A1",
+    "kind": "word",
+    "german": "Milliarde",
+    "english": [
+      "billion"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 35,
+    "level": "A1",
+    "kind": "word",
+    "german": "erste",
+    "english": [
+      "first"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 36,
+    "level": "A1",
+    "kind": "word",
+    "german": "zweite",
+    "english": [
+      "second"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 37,
+    "level": "A1",
+    "kind": "word",
+    "german": "dritte",
+    "english": [
+      "third"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 38,
+    "level": "A1",
+    "kind": "word",
+    "german": "vierte",
+    "english": [
+      "fourth"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 39,
+    "level": "A1",
+    "kind": "word",
+    "german": "halb",
+    "english": [
+      "half"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 40,
+    "level": "A1",
+    "kind": "word",
+    "german": "Viertel",
+    "english": [
+      "quarter"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 41,
+    "level": "A1",
+    "kind": "word",
+    "german": "null",
+    "english": [
+      "zero"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 42,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sekunde",
+    "english": [
+      "second"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 43,
+    "level": "A1",
+    "kind": "word",
+    "german": "Minute",
+    "english": [
+      "minute"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 44,
+    "level": "A1",
+    "kind": "word",
+    "german": "Stunde",
+    "english": [
+      "hour"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 45,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tag",
+    "english": [
+      "day"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 46,
+    "level": "A1",
+    "kind": "word",
+    "german": "Woche",
+    "english": [
+      "week"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 47,
+    "level": "A1",
+    "kind": "word",
+    "german": "Jahr",
+    "english": [
+      "year"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 48,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wochentag",
+    "english": [
+      "weekday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 49,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sonntag",
+    "english": [
+      "Sunday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 50,
+    "level": "A1",
+    "kind": "word",
+    "german": "Montag",
+    "english": [
+      "Monday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 51,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dienstag",
+    "english": [
+      "Tuesday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 52,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mittwoch",
+    "english": [
+      "Wednesday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 53,
+    "level": "A1",
+    "kind": "word",
+    "german": "Donnerstag",
+    "english": [
+      "Thursday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 54,
+    "level": "A1",
+    "kind": "word",
+    "german": "Freitag",
+    "english": [
+      "Friday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 55,
+    "level": "A1",
+    "kind": "word",
+    "german": "Samstag",
+    "english": [
+      "Saturday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 56,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sonnabend",
+    "english": [
+      "Saturday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 57,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wochenende",
+    "english": [
+      "weekend"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 58,
+    "level": "A1",
+    "kind": "word",
+    "german": "Morgen",
+    "english": [
+      "morning"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 59,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vormittag",
+    "english": [
+      "late morning"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 60,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mittag",
+    "english": [
+      "noon",
+      "midday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 61,
+    "level": "A1",
+    "kind": "word",
+    "german": "Nachmittag",
+    "english": [
+      "afternoon"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 62,
+    "level": "A1",
+    "kind": "word",
+    "german": "Abend",
+    "english": [
+      "evening"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 63,
+    "level": "A1",
+    "kind": "word",
+    "german": "Nacht",
+    "english": [
+      "night"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 64,
+    "level": "A1",
+    "kind": "word",
+    "german": "Januar",
+    "english": [
+      "January"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 65,
+    "level": "A1",
+    "kind": "word",
+    "german": "Februar",
+    "english": [
+      "February"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 66,
+    "level": "A1",
+    "kind": "word",
+    "german": "März",
+    "english": [
+      "March"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 67,
+    "level": "A1",
+    "kind": "word",
+    "german": "April",
+    "english": [
+      "April"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 68,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mai",
+    "english": [
+      "May"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 69,
+    "level": "A1",
+    "kind": "word",
+    "german": "Juni",
+    "english": [
+      "June"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 70,
+    "level": "A1",
+    "kind": "word",
+    "german": "Juli",
+    "english": [
+      "July"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 71,
+    "level": "A1",
+    "kind": "word",
+    "german": "August",
+    "english": [
+      "August"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 72,
+    "level": "A1",
+    "kind": "word",
+    "german": "September",
+    "english": [
+      "September"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 73,
+    "level": "A1",
+    "kind": "word",
+    "german": "Oktober",
+    "english": [
+      "October"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 74,
+    "level": "A1",
+    "kind": "word",
+    "german": "November",
+    "english": [
+      "November"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 75,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dezember",
+    "english": [
+      "December"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 76,
+    "level": "A1",
+    "kind": "word",
+    "german": "Frühling",
+    "english": [
+      "spring"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 77,
+    "level": "A1",
+    "kind": "word",
+    "german": "Frühjahr",
+    "english": [
+      "spring"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 78,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sommer",
+    "english": [
+      "summer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 79,
+    "level": "A1",
+    "kind": "word",
+    "german": "Herbst",
+    "english": [
+      "autumn",
+      "fall"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 80,
+    "level": "A1",
+    "kind": "word",
+    "german": "Winter",
+    "english": [
+      "winter"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 81,
+    "level": "A1",
+    "kind": "word",
+    "german": "Euro",
+    "english": [
+      "euro"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 82,
+    "level": "A1",
+    "kind": "word",
+    "german": "Cent",
+    "english": [
+      "cent"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 83,
+    "level": "A1",
+    "kind": "word",
+    "german": "Meter",
+    "english": [
+      "meter",
+      "metre"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 84,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zentimeter",
+    "english": [
+      "centimeter",
+      "centimetre"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 85,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kilometer",
+    "english": [
+      "kilometer",
+      "kilometre"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 86,
+    "level": "A1",
+    "kind": "word",
+    "german": "Quadratmeter",
+    "english": [
+      "square meter",
+      "square metre"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 87,
+    "level": "A1",
+    "kind": "word",
+    "german": "Grad",
+    "english": [
+      "degree"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 88,
+    "level": "A1",
+    "kind": "word",
+    "german": "Prozent",
+    "english": [
+      "percent"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 89,
+    "level": "A1",
+    "kind": "word",
+    "german": "Liter",
+    "english": [
+      "liter",
+      "litre"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 90,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gramm",
+    "english": [
+      "gram"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 91,
+    "level": "A1",
+    "kind": "word",
+    "german": "Pfund",
+    "english": [
+      "pound"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 92,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kilo",
+    "english": [
+      "kilogram",
+      "kilo"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 93,
+    "level": "A1",
+    "kind": "word",
+    "german": "Deutschland",
+    "english": [
+      "Germany"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 94,
+    "level": "A1",
+    "kind": "word",
+    "german": "Deutsche",
+    "english": [
+      "German person"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 95,
+    "level": "A1",
+    "kind": "word",
+    "german": "deutsch",
+    "english": [
+      "German"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 96,
+    "level": "A1",
+    "kind": "word",
+    "german": "Europa",
+    "english": [
+      "Europe"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 97,
+    "level": "A1",
+    "kind": "word",
+    "german": "Europäer",
+    "english": [
+      "European"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 98,
+    "level": "A1",
+    "kind": "word",
+    "german": "europäisch",
+    "english": [
+      "European"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 99,
+    "level": "A1",
+    "kind": "word",
+    "german": "Türkei",
+    "english": [
+      "Turkey"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 100,
+    "level": "A1",
+    "kind": "word",
+    "german": "Türke",
+    "english": [
+      "Turkish man",
+      "Turk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 101,
+    "level": "A1",
+    "kind": "word",
+    "german": "türkisch",
+    "english": [
+      "Turkish"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 102,
+    "level": "A1",
+    "kind": "word",
+    "german": "Finnland",
+    "english": [
+      "Finland"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 103,
+    "level": "A1",
+    "kind": "word",
+    "german": "Finne",
+    "english": [
+      "Finnish man",
+      "Finn"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 104,
+    "level": "A1",
+    "kind": "word",
+    "german": "finnisch",
+    "english": [
+      "Finnish"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 105,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mexiko",
+    "english": [
+      "Mexico"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 106,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mexikaner",
+    "english": [
+      "Mexican person"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 107,
+    "level": "A1",
+    "kind": "word",
+    "german": "mexikanisch",
+    "english": [
+      "Mexican"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 108,
+    "level": "A1",
+    "kind": "word",
+    "german": "schwarz",
+    "english": [
+      "black"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 109,
+    "level": "A1",
+    "kind": "word",
+    "german": "grau",
+    "english": [
+      "gray",
+      "grey"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 110,
+    "level": "A1",
+    "kind": "word",
+    "german": "blau",
+    "english": [
+      "blue"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 111,
+    "level": "A1",
+    "kind": "word",
+    "german": "grün",
+    "english": [
+      "green"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 112,
+    "level": "A1",
+    "kind": "word",
+    "german": "weiß",
+    "english": [
+      "white"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 113,
+    "level": "A1",
+    "kind": "word",
+    "german": "rot",
+    "english": [
+      "red"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 114,
+    "level": "A1",
+    "kind": "word",
+    "german": "gelb",
+    "english": [
+      "yellow"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 115,
+    "level": "A1",
+    "kind": "word",
+    "german": "braun",
+    "english": [
+      "brown"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 116,
+    "level": "A1",
+    "kind": "word",
+    "german": "Norden",
+    "english": [
+      "north"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 117,
+    "level": "A1",
+    "kind": "word",
+    "german": "Süden",
+    "english": [
+      "south"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 118,
+    "level": "A1",
+    "kind": "word",
+    "german": "Westen",
+    "english": [
+      "west"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 119,
+    "level": "A1",
+    "kind": "word",
+    "german": "Osten",
+    "english": [
+      "east"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 120,
+    "level": "A1",
+    "kind": "word",
+    "german": "ab",
+    "english": [
+      "from",
+      "starting from"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 121,
+    "level": "A1",
+    "kind": "word",
+    "german": "aber",
+    "english": [
+      "but"
+    ],
+    "wordClass": "conjunction",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 122,
+    "level": "A1",
+    "kind": "word",
+    "german": "abfahren",
+    "english": [
+      "to depart",
+      "to leave"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 123,
+    "level": "A1",
+    "kind": "word",
+    "german": "Abfahrt",
+    "english": [
+      "departure"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 124,
+    "level": "A1",
+    "kind": "word",
+    "german": "abgeben",
+    "english": [
+      "to hand in",
+      "to give back"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 125,
+    "level": "A1",
+    "kind": "word",
+    "german": "abholen",
+    "english": [
+      "to pick up",
+      "to collect"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 126,
+    "level": "A1",
+    "kind": "word",
+    "german": "Absender",
+    "english": [
+      "sender"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 127,
+    "level": "A1",
+    "kind": "word",
+    "german": "Achtung",
+    "english": [
+      "attention",
+      "caution"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 128,
+    "level": "A1",
+    "kind": "word",
+    "german": "Adresse",
+    "english": [
+      "address"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 129,
+    "level": "A1",
+    "kind": "word",
+    "german": "all-",
+    "english": [
+      "all"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 130,
+    "level": "A1",
+    "kind": "word",
+    "german": "allein",
+    "english": [
+      "alone"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 131,
+    "level": "A1",
+    "kind": "word",
+    "german": "also",
+    "english": [
+      "so",
+      "therefore"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 132,
+    "level": "A1",
+    "kind": "word",
+    "german": "alt",
+    "english": [
+      "old"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 133,
+    "level": "A1",
+    "kind": "word",
+    "german": "Alter",
+    "english": [
+      "age"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 134,
+    "level": "A1",
+    "kind": "word",
+    "german": "an",
+    "english": [
+      "at",
+      "on",
+      "to"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 135,
+    "level": "A1",
+    "kind": "word",
+    "german": "anbieten",
+    "english": [
+      "to offer"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 136,
+    "level": "A1",
+    "kind": "word",
+    "german": "Angebot",
+    "english": [
+      "offer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 137,
+    "level": "A1",
+    "kind": "word",
+    "german": "ander-",
+    "english": [
+      "other"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 138,
+    "level": "A1",
+    "kind": "word",
+    "german": "anfangen",
+    "english": [
+      "to begin",
+      "to start"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 139,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anfang",
+    "english": [
+      "beginning",
+      "start"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 140,
+    "level": "A1",
+    "kind": "word",
+    "german": "anklicken",
+    "english": [
+      "to click"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 141,
+    "level": "A1",
+    "kind": "word",
+    "german": "ankommen",
+    "english": [
+      "to arrive"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 142,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ankunft",
+    "english": [
+      "arrival"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 143,
+    "level": "A1",
+    "kind": "word",
+    "german": "ankreuzen",
+    "english": [
+      "to tick",
+      "to check"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 144,
+    "level": "A1",
+    "kind": "word",
+    "german": "anmachen",
+    "english": [
+      "to switch on",
+      "to turn on"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 145,
+    "level": "A1",
+    "kind": "word",
+    "german": "anmelden",
+    "english": [
+      "to register",
+      "to sign up"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 146,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anmeldung",
+    "english": [
+      "registration"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 147,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anrede",
+    "english": [
+      "salutation",
+      "form of address"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 148,
+    "level": "A1",
+    "kind": "word",
+    "german": "anrufen",
+    "english": [
+      "to call",
+      "to phone"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 149,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anruf",
+    "english": [
+      "call"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 150,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anrufbeantworter",
+    "english": [
+      "answering machine",
+      "voicemail"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 151,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ansage",
+    "english": [
+      "announcement"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 152,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anschluss",
+    "english": [
+      "connection",
+      "connecting service"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 153,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "an sein",
+    "english": [
+      "to be on"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 154,
+    "level": "A1",
+    "kind": "word",
+    "german": "antworten",
+    "english": [
+      "to answer"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 155,
+    "level": "A1",
+    "kind": "word",
+    "german": "Antwort",
+    "english": [
+      "answer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 156,
+    "level": "A1",
+    "kind": "word",
+    "german": "Anzeige",
+    "english": [
+      "advertisement",
+      "notice"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 157,
+    "level": "A1",
+    "kind": "word",
+    "german": "anziehen",
+    "english": [
+      "to get dressed",
+      "to put on"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 158,
+    "level": "A1",
+    "kind": "word",
+    "german": "Apartment",
+    "english": [
+      "apartment"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 159,
+    "level": "A1",
+    "kind": "word",
+    "german": "Apfel",
+    "english": [
+      "apple"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 160,
+    "level": "A1",
+    "kind": "word",
+    "german": "Appetit",
+    "english": [
+      "appetite"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 161,
+    "level": "A1",
+    "kind": "word",
+    "german": "arbeiten",
+    "english": [
+      "to work"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 162,
+    "level": "A1",
+    "kind": "word",
+    "german": "Arbeit",
+    "english": [
+      "work"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 163,
+    "level": "A1",
+    "kind": "word",
+    "german": "arbeitslos",
+    "english": [
+      "unemployed"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 164,
+    "level": "A1",
+    "kind": "word",
+    "german": "Arbeitsplatz",
+    "english": [
+      "workplace"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 165,
+    "level": "A1",
+    "kind": "word",
+    "german": "Arm",
+    "english": [
+      "arm"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 166,
+    "level": "A1",
+    "kind": "word",
+    "german": "Arzt",
+    "english": [
+      "doctor"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 167,
+    "level": "A1",
+    "kind": "word",
+    "german": "auch",
+    "english": [
+      "also"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 168,
+    "level": "A1",
+    "kind": "word",
+    "german": "auf",
+    "english": [
+      "on",
+      "at"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 169,
+    "level": "A1",
+    "kind": "word",
+    "german": "Aufgabe",
+    "english": [
+      "task",
+      "exercise"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 170,
+    "level": "A1",
+    "kind": "word",
+    "german": "aufhören",
+    "english": [
+      "to stop",
+      "to finish"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 171,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "auf sein",
+    "english": [
+      "to be open"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 172,
+    "level": "A1",
+    "kind": "word",
+    "german": "aufstehen",
+    "english": [
+      "to get up"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 173,
+    "level": "A1",
+    "kind": "word",
+    "german": "Aufzug",
+    "english": [
+      "elevator",
+      "lift"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 174,
+    "level": "A1",
+    "kind": "word",
+    "german": "Auge",
+    "english": [
+      "eye"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 175,
+    "level": "A1",
+    "kind": "word",
+    "german": "aus",
+    "english": [
+      "from"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 176,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ausflug",
+    "english": [
+      "excursion",
+      "day trip"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 177,
+    "level": "A1",
+    "kind": "word",
+    "german": "ausfüllen",
+    "english": [
+      "to fill out"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 178,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ausgang",
+    "english": [
+      "exit"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 179,
+    "level": "A1",
+    "kind": "word",
+    "german": "Auskunft",
+    "english": [
+      "information",
+      "information desk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 180,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ausland",
+    "english": [
+      "abroad",
+      "foreign country"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 181,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ausländer",
+    "english": [
+      "foreigner"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 182,
+    "level": "A1",
+    "kind": "word",
+    "german": "ausmachen",
+    "english": [
+      "to switch off",
+      "to turn off"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 183,
+    "level": "A1",
+    "kind": "word",
+    "german": "Aussage",
+    "english": [
+      "statement"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 184,
+    "level": "A1",
+    "kind": "word",
+    "german": "aussehen",
+    "english": [
+      "to look (like)",
+      "to look"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 185,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "aus sein",
+    "english": [
+      "to be off",
+      "to be over"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 186,
+    "level": "A1",
+    "kind": "word",
+    "german": "aussteigen",
+    "english": [
+      "to get off",
+      "to get out"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 187,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ausweis",
+    "english": [
+      "ID card"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 188,
+    "level": "A1",
+    "kind": "word",
+    "german": "ausziehen",
+    "english": [
+      "to take off",
+      "to undress",
+      "to move out"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 189,
+    "level": "A1",
+    "kind": "word",
+    "german": "Auto",
+    "english": [
+      "car"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 190,
+    "level": "A1",
+    "kind": "word",
+    "german": "Autobahn",
+    "english": [
+      "motorway",
+      "highway"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 191,
+    "level": "A1",
+    "kind": "word",
+    "german": "Automat",
+    "english": [
+      "machine",
+      "vending machine"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 192,
+    "level": "A1",
+    "kind": "word",
+    "german": "automatisch",
+    "english": [
+      "automatic",
+      "automatically"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 193,
+    "level": "A1",
+    "kind": "word",
+    "german": "Baby",
+    "english": [
+      "baby"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 194,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bäckerei",
+    "english": [
+      "bakery"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 195,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bad",
+    "english": [
+      "bathroom"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 196,
+    "level": "A1",
+    "kind": "word",
+    "german": "baden",
+    "english": [
+      "to bathe",
+      "to have a bath"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 197,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bahn",
+    "english": [
+      "railway",
+      "train"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 198,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bahnhof",
+    "english": [
+      "station"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 199,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bahnsteig",
+    "english": [
+      "platform"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 200,
+    "level": "A1",
+    "kind": "word",
+    "german": "bald",
+    "english": [
+      "soon"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 201,
+    "level": "A1",
+    "kind": "word",
+    "german": "Balkon",
+    "english": [
+      "balcony"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 202,
+    "level": "A1",
+    "kind": "word",
+    "german": "Banane",
+    "english": [
+      "banana"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 203,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bank",
+    "english": [
+      "bank",
+      "bench"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 204,
+    "level": "A1",
+    "kind": "word",
+    "german": "bar",
+    "english": [
+      "in cash",
+      "cash"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 205,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bauch",
+    "english": [
+      "stomach",
+      "tummy"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 206,
+    "level": "A1",
+    "kind": "word",
+    "german": "Baum",
+    "english": [
+      "tree"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 207,
+    "level": "A1",
+    "kind": "word",
+    "german": "Beamte",
+    "english": [
+      "civil servant",
+      "official"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 208,
+    "level": "A1",
+    "kind": "word",
+    "german": "bedeuten",
+    "english": [
+      "to mean"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 209,
+    "level": "A1",
+    "kind": "word",
+    "german": "beginnen",
+    "english": [
+      "to begin",
+      "to start"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 210,
+    "level": "A1",
+    "kind": "word",
+    "german": "bei",
+    "english": [
+      "at",
+      "with",
+      "near"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 211,
+    "level": "A1",
+    "kind": "word",
+    "german": "beide",
+    "english": [
+      "both"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 212,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bein",
+    "english": [
+      "leg"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 213,
+    "level": "A1",
+    "kind": "word",
+    "german": "Beispiel",
+    "english": [
+      "example"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 214,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "zum Beispiel",
+    "english": [
+      "for example"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 215,
+    "level": "A1",
+    "kind": "word",
+    "german": "bekannt",
+    "english": [
+      "known",
+      "well-known"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 216,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bekannte",
+    "english": [
+      "acquaintance"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 217,
+    "level": "A1",
+    "kind": "word",
+    "german": "bekommen",
+    "english": [
+      "to get",
+      "to receive"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 218,
+    "level": "A1",
+    "kind": "word",
+    "german": "benutzen",
+    "english": [
+      "to use"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 219,
+    "level": "A1",
+    "kind": "word",
+    "german": "Beruf",
+    "english": [
+      "profession",
+      "occupation",
+      "job"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 220,
+    "level": "A1",
+    "kind": "word",
+    "german": "besetzt",
+    "english": [
+      "occupied",
+      "busy",
+      "engaged"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 221,
+    "level": "A1",
+    "kind": "word",
+    "german": "besichtigen",
+    "english": [
+      "to visit",
+      "to tour",
+      "to inspect"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 222,
+    "level": "A1",
+    "kind": "word",
+    "german": "besser",
+    "english": [
+      "better"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 223,
+    "level": "A1",
+    "kind": "word",
+    "german": "best-",
+    "english": [
+      "best"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 224,
+    "level": "A1",
+    "kind": "word",
+    "german": "bestellen",
+    "english": [
+      "to order"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 225,
+    "level": "A1",
+    "kind": "word",
+    "german": "besuchen",
+    "english": [
+      "to visit"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 226,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bett",
+    "english": [
+      "bed"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 227,
+    "level": "A1",
+    "kind": "word",
+    "german": "bezahlen",
+    "english": [
+      "to pay"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 228,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bier",
+    "english": [
+      "beer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 229,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bild",
+    "english": [
+      "picture"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 230,
+    "level": "A1",
+    "kind": "word",
+    "german": "billig",
+    "english": [
+      "cheap",
+      "inexpensive"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 231,
+    "level": "A1",
+    "kind": "word",
+    "german": "Birne",
+    "english": [
+      "pear"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 232,
+    "level": "A1",
+    "kind": "word",
+    "german": "bis",
+    "english": [
+      "until",
+      "as far as"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 233,
+    "level": "A1",
+    "kind": "word",
+    "german": "bisschen",
+    "english": [
+      "a little",
+      "a bit"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 234,
+    "level": "A1",
+    "kind": "word",
+    "german": "bitte",
+    "english": [
+      "please"
+    ],
+    "wordClass": "particle",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 235,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bitte",
+    "english": [
+      "request",
+      "please"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 236,
+    "level": "A1",
+    "kind": "word",
+    "german": "bitten",
+    "english": [
+      "to request",
+      "to ask for"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 237,
+    "level": "A1",
+    "kind": "word",
+    "german": "bitter",
+    "english": [
+      "bitter"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 238,
+    "level": "A1",
+    "kind": "word",
+    "german": "bleiben",
+    "english": [
+      "to stay"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 239,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bleistift",
+    "english": [
+      "pencil"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 240,
+    "level": "A1",
+    "kind": "word",
+    "german": "Blick",
+    "english": [
+      "view",
+      "glance"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 241,
+    "level": "A1",
+    "kind": "word",
+    "german": "Blume",
+    "english": [
+      "flower"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 242,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bogen",
+    "english": [
+      "sheet",
+      "form"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 243,
+    "level": "A1",
+    "kind": "word",
+    "german": "böse",
+    "english": [
+      "angry",
+      "mean"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 244,
+    "level": "A1",
+    "kind": "word",
+    "german": "brauchen",
+    "english": [
+      "to need"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 245,
+    "level": "A1",
+    "kind": "word",
+    "german": "breit",
+    "english": [
+      "wide"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 246,
+    "level": "A1",
+    "kind": "word",
+    "german": "Brief",
+    "english": [
+      "letter"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 247,
+    "level": "A1",
+    "kind": "word",
+    "german": "Briefmarke",
+    "english": [
+      "stamp"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 248,
+    "level": "A1",
+    "kind": "word",
+    "german": "bringen",
+    "english": [
+      "to bring"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 249,
+    "level": "A1",
+    "kind": "word",
+    "german": "Brot",
+    "english": [
+      "bread"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 250,
+    "level": "A1",
+    "kind": "word",
+    "german": "Brötchen",
+    "english": [
+      "bread roll"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 251,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bruder",
+    "english": [
+      "brother"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 252,
+    "level": "A1",
+    "kind": "word",
+    "german": "Buch",
+    "english": [
+      "book"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 253,
+    "level": "A1",
+    "kind": "word",
+    "german": "Buchstabe",
+    "english": [
+      "letter",
+      "character"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 254,
+    "level": "A1",
+    "kind": "word",
+    "german": "buchstabieren",
+    "english": [
+      "to spell"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 255,
+    "level": "A1",
+    "kind": "word",
+    "german": "Bus",
+    "english": [
+      "bus"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 256,
+    "level": "A1",
+    "kind": "word",
+    "german": "Butter",
+    "english": [
+      "butter"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 257,
+    "level": "A1",
+    "kind": "word",
+    "german": "Café",
+    "english": [
+      "café"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 258,
+    "level": "A1",
+    "kind": "word",
+    "german": "CD",
+    "english": [
+      "CD",
+      "compact disc"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 259,
+    "level": "A1",
+    "kind": "word",
+    "german": "Chef",
+    "english": [
+      "boss"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 260,
+    "level": "A1",
+    "kind": "word",
+    "german": "circa",
+    "english": [
+      "approximately"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 261,
+    "level": "A1",
+    "kind": "word",
+    "german": "Computer",
+    "english": [
+      "computer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 262,
+    "level": "A1",
+    "kind": "word",
+    "german": "da",
+    "english": [
+      "there"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 263,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dame",
+    "english": [
+      "lady"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 264,
+    "level": "A1",
+    "kind": "word",
+    "german": "daneben",
+    "english": [
+      "next to it",
+      "beside it"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 265,
+    "level": "A1",
+    "kind": "word",
+    "german": "danken",
+    "english": [
+      "to thank"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 266,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dank",
+    "english": [
+      "thanks",
+      "gratitude"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 267,
+    "level": "A1",
+    "kind": "word",
+    "german": "danke",
+    "english": [
+      "thank you",
+      "thanks"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 268,
+    "level": "A1",
+    "kind": "word",
+    "german": "dann",
+    "english": [
+      "then"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 269,
+    "level": "A1",
+    "kind": "word",
+    "german": "Datum",
+    "english": [
+      "date"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 270,
+    "level": "A1",
+    "kind": "word",
+    "german": "dauern",
+    "english": [
+      "to last"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 271,
+    "level": "A1",
+    "kind": "word",
+    "german": "dein-",
+    "english": [
+      "your"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 272,
+    "level": "A1",
+    "kind": "word",
+    "german": "denn",
+    "english": [
+      "because",
+      "for"
+    ],
+    "wordClass": "conjunction",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 273,
+    "level": "A1",
+    "kind": "word",
+    "german": "der",
+    "english": [
+      "the"
+    ],
+    "wordClass": "article",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 274,
+    "level": "A1",
+    "kind": "word",
+    "german": "dich",
+    "english": [
+      "you (informal accusative)"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 275,
+    "level": "A1",
+    "kind": "word",
+    "german": "dies-",
+    "english": [
+      "this"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 276,
+    "level": "A1",
+    "kind": "word",
+    "german": "dir",
+    "english": [
+      "you (informal dative)"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 277,
+    "level": "A1",
+    "kind": "word",
+    "german": "Disco",
+    "english": [
+      "disco",
+      "nightclub"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 278,
+    "level": "A1",
+    "kind": "word",
+    "german": "Doktor",
+    "english": [
+      "doctor (Dr.)",
+      "doctor"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 279,
+    "level": "A1",
+    "kind": "word",
+    "german": "Doppelzimmer",
+    "english": [
+      "double room"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 280,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dorf",
+    "english": [
+      "village"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 281,
+    "level": "A1",
+    "kind": "word",
+    "german": "dort",
+    "english": [
+      "there"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 282,
+    "level": "A1",
+    "kind": "word",
+    "german": "draußen",
+    "english": [
+      "outside"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 283,
+    "level": "A1",
+    "kind": "word",
+    "german": "drucken",
+    "english": [
+      "to print"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 284,
+    "level": "A1",
+    "kind": "word",
+    "german": "Drucker",
+    "english": [
+      "printer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 285,
+    "level": "A1",
+    "kind": "word",
+    "german": "drücken",
+    "english": [
+      "to press",
+      "to push"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 286,
+    "level": "A1",
+    "kind": "word",
+    "german": "durch",
+    "english": [
+      "through"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 287,
+    "level": "A1",
+    "kind": "word",
+    "german": "Durchsage",
+    "english": [
+      "announcement"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 288,
+    "level": "A1",
+    "kind": "word",
+    "german": "dürfen",
+    "english": [
+      "to be allowed to"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 289,
+    "level": "A1",
+    "kind": "word",
+    "german": "Durst",
+    "english": [
+      "thirst"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 290,
+    "level": "A1",
+    "kind": "word",
+    "german": "duschen",
+    "english": [
+      "to shower"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 291,
+    "level": "A1",
+    "kind": "word",
+    "german": "Dusche",
+    "english": [
+      "shower"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 292,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ecke",
+    "english": [
+      "corner"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 293,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ehefrau",
+    "english": [
+      "wife"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 294,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ehemann",
+    "english": [
+      "husband"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 295,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ei",
+    "english": [
+      "egg"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 296,
+    "level": "A1",
+    "kind": "word",
+    "german": "eilig",
+    "english": [
+      "in a hurry",
+      "urgent"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 297,
+    "level": "A1",
+    "kind": "word",
+    "german": "ein-",
+    "english": [
+      "a"
+    ],
+    "wordClass": "article",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 298,
+    "level": "A1",
+    "kind": "word",
+    "german": "einfach",
+    "english": [
+      "simple",
+      "easy",
+      "one-way"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 299,
+    "level": "A1",
+    "kind": "word",
+    "german": "Eingang",
+    "english": [
+      "entrance"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 300,
+    "level": "A1",
+    "kind": "word",
+    "german": "einkaufen",
+    "english": [
+      "to shop"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 301,
+    "level": "A1",
+    "kind": "word",
+    "german": "einladen",
+    "english": [
+      "to invite"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 302,
+    "level": "A1",
+    "kind": "word",
+    "german": "Einladung",
+    "english": [
+      "invitation"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 303,
+    "level": "A1",
+    "kind": "word",
+    "german": "einmal",
+    "english": [
+      "once",
+      "one time"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 304,
+    "level": "A1",
+    "kind": "word",
+    "german": "einsteigen",
+    "english": [
+      "to get in",
+      "to board"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 305,
+    "level": "A1",
+    "kind": "word",
+    "german": "Eintritt",
+    "english": [
+      "entrance",
+      "admission"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 306,
+    "level": "A1",
+    "kind": "word",
+    "german": "Einzelzimmer",
+    "english": [
+      "single room"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 307,
+    "level": "A1",
+    "kind": "word",
+    "german": "Eltern",
+    "english": [
+      "parents"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 308,
+    "level": "A1",
+    "kind": "word",
+    "german": "E-Mail",
+    "english": [
+      "email"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 309,
+    "level": "A1",
+    "kind": "word",
+    "german": "Empfänger",
+    "english": [
+      "recipient"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 310,
+    "level": "A1",
+    "kind": "word",
+    "german": "empfehlen",
+    "english": [
+      "to recommend"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 311,
+    "level": "A1",
+    "kind": "word",
+    "german": "enden",
+    "english": [
+      "to finish"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 312,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ende",
+    "english": [
+      "end"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 313,
+    "level": "A1",
+    "kind": "word",
+    "german": "entschuldigen",
+    "english": [
+      "to excuse"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 314,
+    "level": "A1",
+    "kind": "word",
+    "german": "Entschuldigung",
+    "english": [
+      "excuse me",
+      "sorry",
+      "apology"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 315,
+    "level": "A1",
+    "kind": "word",
+    "german": "er",
+    "english": [
+      "he"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 316,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ergebnis",
+    "english": [
+      "result"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 317,
+    "level": "A1",
+    "kind": "word",
+    "german": "erklären",
+    "english": [
+      "to explain"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 318,
+    "level": "A1",
+    "kind": "word",
+    "german": "erlauben",
+    "english": [
+      "to allow",
+      "to permit"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 319,
+    "level": "A1",
+    "kind": "word",
+    "german": "Erwachsene",
+    "english": [
+      "adult"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 320,
+    "level": "A1",
+    "kind": "word",
+    "german": "erzählen",
+    "english": [
+      "to tell a story",
+      "to relate"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 321,
+    "level": "A1",
+    "kind": "word",
+    "german": "es",
+    "english": [
+      "it"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 322,
+    "level": "A1",
+    "kind": "word",
+    "german": "essen",
+    "english": [
+      "to eat"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 323,
+    "level": "A1",
+    "kind": "word",
+    "german": "Essen",
+    "english": [
+      "food"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 324,
+    "level": "A1",
+    "kind": "word",
+    "german": "euer",
+    "english": [
+      "your"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 325,
+    "level": "A1",
+    "kind": "word",
+    "german": "fahren",
+    "english": [
+      "to drive",
+      "to travel",
+      "to go"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 326,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fahrer",
+    "english": [
+      "driver"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 327,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fahrkarte",
+    "english": [
+      "ticket",
+      "travel ticket"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 328,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fahrrad",
+    "english": [
+      "bicycle"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 329,
+    "level": "A1",
+    "kind": "word",
+    "german": "falsch",
+    "english": [
+      "incorrect"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 330,
+    "level": "A1",
+    "kind": "word",
+    "german": "Familie",
+    "english": [
+      "family"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 331,
+    "level": "A1",
+    "kind": "word",
+    "german": "Familienname",
+    "english": [
+      "surname"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 332,
+    "level": "A1",
+    "kind": "word",
+    "german": "Familienstand",
+    "english": [
+      "marital status"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 333,
+    "level": "A1",
+    "kind": "word",
+    "german": "Farbe",
+    "english": [
+      "color",
+      "colour"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 334,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fax",
+    "english": [
+      "fax"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 335,
+    "level": "A1",
+    "kind": "word",
+    "german": "Feier-",
+    "english": [
+      "celebration-",
+      "holiday-"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 336,
+    "level": "A1",
+    "kind": "word",
+    "german": "feiern",
+    "english": [
+      "to celebrate"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 337,
+    "level": "A1",
+    "kind": "word",
+    "german": "fehlen",
+    "english": [
+      "to be missing",
+      "to be absent"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 338,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fehler",
+    "english": [
+      "mistake",
+      "error"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 339,
+    "level": "A1",
+    "kind": "word",
+    "german": "fernsehen",
+    "english": [
+      "to watch television"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 340,
+    "level": "A1",
+    "kind": "word",
+    "german": "fertig",
+    "english": [
+      "finished",
+      "ready"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 341,
+    "level": "A1",
+    "kind": "word",
+    "german": "Feuer",
+    "english": [
+      "fire"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 342,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fieber",
+    "english": [
+      "fever"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 343,
+    "level": "A1",
+    "kind": "word",
+    "german": "Film",
+    "english": [
+      "film"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 344,
+    "level": "A1",
+    "kind": "word",
+    "german": "finden",
+    "english": [
+      "to find"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 345,
+    "level": "A1",
+    "kind": "word",
+    "german": "Firma",
+    "english": [
+      "company",
+      "firm"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 346,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fisch",
+    "english": [
+      "fish"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 347,
+    "level": "A1",
+    "kind": "word",
+    "german": "Flasche",
+    "english": [
+      "bottle"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 348,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fleisch",
+    "english": [
+      "meat"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 349,
+    "level": "A1",
+    "kind": "word",
+    "german": "fliegen",
+    "english": [
+      "to fly"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 350,
+    "level": "A1",
+    "kind": "word",
+    "german": "abfliegen",
+    "english": [
+      "to depart by plane",
+      "to take off"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 351,
+    "level": "A1",
+    "kind": "word",
+    "german": "Abflug",
+    "english": [
+      "departure",
+      "flight departure"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 352,
+    "level": "A1",
+    "kind": "word",
+    "german": "Flughafen",
+    "english": [
+      "airport"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 353,
+    "level": "A1",
+    "kind": "word",
+    "german": "Flugzeug",
+    "english": [
+      "airplane",
+      "aeroplane"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 354,
+    "level": "A1",
+    "kind": "word",
+    "german": "Formular",
+    "english": [
+      "form"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 355,
+    "level": "A1",
+    "kind": "word",
+    "german": "Foto",
+    "english": [
+      "photo"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 356,
+    "level": "A1",
+    "kind": "word",
+    "german": "fragen",
+    "english": [
+      "to ask"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 357,
+    "level": "A1",
+    "kind": "word",
+    "german": "Frage",
+    "english": [
+      "question"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 358,
+    "level": "A1",
+    "kind": "word",
+    "german": "Frau",
+    "english": [
+      "woman",
+      "Mrs",
+      "Ms"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 359,
+    "level": "A1",
+    "kind": "word",
+    "german": "frei",
+    "english": [
+      "free"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 360,
+    "level": "A1",
+    "kind": "word",
+    "german": "Freizeit",
+    "english": [
+      "free time",
+      "leisure time"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 361,
+    "level": "A1",
+    "kind": "word",
+    "german": "fremd",
+    "english": [
+      "foreign",
+      "unfamiliar"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 362,
+    "level": "A1",
+    "kind": "word",
+    "german": "freuen",
+    "english": [
+      "to be glad",
+      "to look forward to"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 363,
+    "level": "A1",
+    "kind": "word",
+    "german": "Freund",
+    "english": [
+      "friend",
+      "boyfriend"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 364,
+    "level": "A1",
+    "kind": "word",
+    "german": "früher",
+    "english": [
+      "earlier",
+      "formerly"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 365,
+    "level": "A1",
+    "kind": "word",
+    "german": "frühstücken",
+    "english": [
+      "to have breakfast"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 366,
+    "level": "A1",
+    "kind": "word",
+    "german": "Frühstück",
+    "english": [
+      "breakfast"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 367,
+    "level": "A1",
+    "kind": "word",
+    "german": "Führung",
+    "english": [
+      "guided tour"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 368,
+    "level": "A1",
+    "kind": "word",
+    "german": "für",
+    "english": [
+      "for"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 369,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fuß",
+    "english": [
+      "foot"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 370,
+    "level": "A1",
+    "kind": "word",
+    "german": "Fußball",
+    "english": [
+      "football"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 371,
+    "level": "A1",
+    "kind": "word",
+    "german": "Garten",
+    "english": [
+      "garden"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 372,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gast",
+    "english": [
+      "guest"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 373,
+    "level": "A1",
+    "kind": "word",
+    "german": "geben",
+    "english": [
+      "to give",
+      "there is / there are"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 374,
+    "level": "A1",
+    "kind": "word",
+    "german": "geboren",
+    "english": [
+      "born"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 375,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geburtsjahr",
+    "english": [
+      "year of birth"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 376,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geburtsort",
+    "english": [
+      "place of birth"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 377,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geburtstag",
+    "english": [
+      "birthday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 378,
+    "level": "A1",
+    "kind": "word",
+    "german": "gefallen",
+    "english": [
+      "to please",
+      "to be liked"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 379,
+    "level": "A1",
+    "kind": "word",
+    "german": "gegen",
+    "english": [
+      "against",
+      "around"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 380,
+    "level": "A1",
+    "kind": "word",
+    "german": "gehen",
+    "english": [
+      "to go",
+      "to work",
+      "to function"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 381,
+    "level": "A1",
+    "kind": "word",
+    "german": "gehören",
+    "english": [
+      "to belong"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 382,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geld",
+    "english": [
+      "money"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 383,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gemüse",
+    "english": [
+      "vegetables"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 384,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gepäck",
+    "english": [
+      "luggage",
+      "baggage"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 385,
+    "level": "A1",
+    "kind": "word",
+    "german": "gerade",
+    "english": [
+      "just",
+      "right now",
+      "straight"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 386,
+    "level": "A1",
+    "kind": "word",
+    "german": "geradeaus",
+    "english": [
+      "straight ahead"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 387,
+    "level": "A1",
+    "kind": "word",
+    "german": "gern",
+    "english": [
+      "gladly",
+      "like to"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 388,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geschäft",
+    "english": [
+      "shop",
+      "business"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 389,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geschenk",
+    "english": [
+      "gift",
+      "present"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 390,
+    "level": "A1",
+    "kind": "word",
+    "german": "Geschwister",
+    "english": [
+      "siblings"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 391,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gespräch",
+    "english": [
+      "conversation",
+      "meeting"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 392,
+    "level": "A1",
+    "kind": "word",
+    "german": "gestern",
+    "english": [
+      "yesterday"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 393,
+    "level": "A1",
+    "kind": "word",
+    "german": "gestorben",
+    "english": [
+      "dead",
+      "died"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 394,
+    "level": "A1",
+    "kind": "word",
+    "german": "Getränk",
+    "english": [
+      "drink"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 395,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gewicht",
+    "english": [
+      "weight"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 396,
+    "level": "A1",
+    "kind": "word",
+    "german": "gewinnen",
+    "english": [
+      "to win"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 397,
+    "level": "A1",
+    "kind": "word",
+    "german": "Glas",
+    "english": [
+      "glass"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 398,
+    "level": "A1",
+    "kind": "word",
+    "german": "glauben",
+    "english": [
+      "to think (so), to believe",
+      "to think, to believe",
+      "to think",
+      "to believe"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 399,
+    "level": "A1",
+    "kind": "word",
+    "german": "gleich",
+    "english": [
+      "same",
+      "right away",
+      "soon"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 400,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gleis",
+    "english": [
+      "track",
+      "platform track"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 401,
+    "level": "A1",
+    "kind": "word",
+    "german": "Glück",
+    "english": [
+      "luck"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 402,
+    "level": "A1",
+    "kind": "word",
+    "german": "glücklich",
+    "english": [
+      "happy",
+      "lucky"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 403,
+    "level": "A1",
+    "kind": "word",
+    "german": "Glückwunsch",
+    "english": [
+      "congratulations"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 404,
+    "level": "A1",
+    "kind": "word",
+    "german": "gratulieren",
+    "english": [
+      "to congratulate"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 405,
+    "level": "A1",
+    "kind": "word",
+    "german": "grillen",
+    "english": [
+      "to grill",
+      "to barbecue"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 406,
+    "level": "A1",
+    "kind": "word",
+    "german": "groß",
+    "english": [
+      "big",
+      "large",
+      "tall"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 407,
+    "level": "A1",
+    "kind": "word",
+    "german": "Größe",
+    "english": [
+      "size",
+      "height"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 408,
+    "level": "A1",
+    "kind": "word",
+    "german": "Großeltern",
+    "english": [
+      "grandparents"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 409,
+    "level": "A1",
+    "kind": "word",
+    "german": "Großmutter",
+    "english": [
+      "grandmother"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 410,
+    "level": "A1",
+    "kind": "word",
+    "german": "Großvater",
+    "english": [
+      "grandfather"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 411,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gruppe",
+    "english": [
+      "group"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 412,
+    "level": "A1",
+    "kind": "word",
+    "german": "Gruß",
+    "english": [
+      "greeting",
+      "regards"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 413,
+    "level": "A1",
+    "kind": "word",
+    "german": "gültig",
+    "english": [
+      "valid"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 414,
+    "level": "A1",
+    "kind": "word",
+    "german": "günstig",
+    "english": [
+      "inexpensive",
+      "favorable"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 415,
+    "level": "A1",
+    "kind": "word",
+    "german": "gut",
+    "english": [
+      "good"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 416,
+    "level": "A1",
+    "kind": "word",
+    "german": "Haar",
+    "english": [
+      "hair"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 417,
+    "level": "A1",
+    "kind": "word",
+    "german": "haben",
+    "english": [
+      "to have"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 418,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hähnchen",
+    "english": [
+      "chicken"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 419,
+    "level": "A1",
+    "kind": "word",
+    "german": "Halle",
+    "english": [
+      "hall"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 420,
+    "level": "A1",
+    "kind": "word",
+    "german": "hallo",
+    "english": [
+      "Hello!"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 421,
+    "level": "A1",
+    "kind": "word",
+    "german": "halten",
+    "english": [
+      "to stop",
+      "to hold"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 422,
+    "level": "A1",
+    "kind": "word",
+    "german": "Haltestelle",
+    "english": [
+      "stop"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 423,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hand",
+    "english": [
+      "hand"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 424,
+    "level": "A1",
+    "kind": "word",
+    "german": "Handy",
+    "english": [
+      "mobile phone"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 425,
+    "level": "A1",
+    "kind": "word",
+    "german": "Haus",
+    "english": [
+      "house"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 426,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hausaufgabe",
+    "english": [
+      "homework"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 427,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hausfrau",
+    "english": [
+      "housewife"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 428,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hausmann",
+    "english": [
+      "househusband"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 429,
+    "level": "A1",
+    "kind": "word",
+    "german": "Heimat",
+    "english": [
+      "home",
+      "homeland"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 430,
+    "level": "A1",
+    "kind": "word",
+    "german": "heiraten",
+    "english": [
+      "to marry"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 431,
+    "level": "A1",
+    "kind": "word",
+    "german": "heißen",
+    "english": [
+      "to be named"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 432,
+    "level": "A1",
+    "kind": "word",
+    "german": "helfen",
+    "english": [
+      "to help"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 433,
+    "level": "A1",
+    "kind": "word",
+    "german": "hell",
+    "english": [
+      "light"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 434,
+    "level": "A1",
+    "kind": "word",
+    "german": "Herd",
+    "english": [
+      "stove",
+      "cooker"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 435,
+    "level": "A1",
+    "kind": "word",
+    "german": "Herr",
+    "english": [
+      "Mr"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 436,
+    "level": "A1",
+    "kind": "word",
+    "german": "herzlich",
+    "english": [
+      "warm",
+      "cordial",
+      "heartfelt"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 437,
+    "level": "A1",
+    "kind": "word",
+    "german": "heute",
+    "english": [
+      "today"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 438,
+    "level": "A1",
+    "kind": "word",
+    "german": "hier",
+    "english": [
+      "here"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 439,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hilfe",
+    "english": [
+      "help"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 440,
+    "level": "A1",
+    "kind": "word",
+    "german": "hinten",
+    "english": [
+      "at the back",
+      "behind"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 441,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hobby",
+    "english": [
+      "hobby"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 442,
+    "level": "A1",
+    "kind": "word",
+    "german": "hoch",
+    "english": [
+      "high"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 443,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hochzeit",
+    "english": [
+      "wedding"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 444,
+    "level": "A1",
+    "kind": "word",
+    "german": "holen",
+    "english": [
+      "to fetch"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 445,
+    "level": "A1",
+    "kind": "word",
+    "german": "hören",
+    "english": [
+      "to hear",
+      "to listen"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 446,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hotel",
+    "english": [
+      "hotel"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 447,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hund",
+    "english": [
+      "dog"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 448,
+    "level": "A1",
+    "kind": "word",
+    "german": "Hunger",
+    "english": [
+      "hunger"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 449,
+    "level": "A1",
+    "kind": "word",
+    "german": "ich",
+    "english": [
+      "I"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 450,
+    "level": "A1",
+    "kind": "word",
+    "german": "ihr/ihm/ihn",
+    "english": [
+      "her / him / him"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 451,
+    "level": "A1",
+    "kind": "word",
+    "german": "immer",
+    "english": [
+      "always"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 452,
+    "level": "A1",
+    "kind": "word",
+    "german": "in",
+    "english": [
+      "in"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 453,
+    "level": "A1",
+    "kind": "word",
+    "german": "Information",
+    "english": [
+      "information"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 454,
+    "level": "A1",
+    "kind": "word",
+    "german": "international",
+    "english": [
+      "international"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 455,
+    "level": "A1",
+    "kind": "word",
+    "german": "Internet",
+    "english": [
+      "Internet"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 456,
+    "level": "A1",
+    "kind": "word",
+    "german": "ja",
+    "english": [
+      "yes"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 457,
+    "level": "A1",
+    "kind": "word",
+    "german": "Jacke",
+    "english": [
+      "jacket"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 458,
+    "level": "A1",
+    "kind": "word",
+    "german": "jed-",
+    "english": [
+      "every",
+      "each"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 459,
+    "level": "A1",
+    "kind": "word",
+    "german": "jetzt",
+    "english": [
+      "now"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 460,
+    "level": "A1",
+    "kind": "word",
+    "german": "Job",
+    "english": [
+      "job"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 461,
+    "level": "A1",
+    "kind": "word",
+    "german": "Jugendliche",
+    "english": [
+      "young person",
+      "adolescent"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 462,
+    "level": "A1",
+    "kind": "word",
+    "german": "jung",
+    "english": [
+      "young"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 463,
+    "level": "A1",
+    "kind": "word",
+    "german": "Junge",
+    "english": [
+      "boy"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 464,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kaffee",
+    "english": [
+      "coffee"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 465,
+    "level": "A1",
+    "kind": "word",
+    "german": "kaputt",
+    "english": [
+      "broken"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 466,
+    "level": "A1",
+    "kind": "word",
+    "german": "Karte",
+    "english": [
+      "card",
+      "map",
+      "menu",
+      "ticket"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 467,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kreditkarte",
+    "english": [
+      "credit card"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 468,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kartoffel",
+    "english": [
+      "potato"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 469,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kasse",
+    "english": [
+      "checkout"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 470,
+    "level": "A1",
+    "kind": "word",
+    "german": "kaufen",
+    "english": [
+      "to buy"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 471,
+    "level": "A1",
+    "kind": "word",
+    "german": "kein",
+    "english": [
+      "no"
+    ],
+    "wordClass": "article",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 472,
+    "level": "A1",
+    "kind": "word",
+    "german": "kennen",
+    "english": [
+      "to know",
+      "to be familiar with"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 473,
+    "level": "A1",
+    "kind": "word",
+    "german": "kennenlernen",
+    "english": [
+      "to get to know",
+      "to meet"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 474,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kind",
+    "english": [
+      "child"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 475,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kindergarten",
+    "english": [
+      "kindergarten"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 476,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kino",
+    "english": [
+      "cinema"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 477,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kiosk",
+    "english": [
+      "kiosk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 478,
+    "level": "A1",
+    "kind": "word",
+    "german": "klar",
+    "english": [
+      "clear",
+      "sure",
+      "of course"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 479,
+    "level": "A1",
+    "kind": "word",
+    "german": "Klasse",
+    "english": [
+      "class",
+      "grade",
+      "year group"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 480,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kleidung",
+    "english": [
+      "clothing",
+      "clothes"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 481,
+    "level": "A1",
+    "kind": "word",
+    "german": "klein",
+    "english": [
+      "small"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 482,
+    "level": "A1",
+    "kind": "word",
+    "german": "kochen",
+    "english": [
+      "to cook"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 483,
+    "level": "A1",
+    "kind": "word",
+    "german": "Koffer",
+    "english": [
+      "suitcase"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 484,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kollege",
+    "english": [
+      "colleague"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 485,
+    "level": "A1",
+    "kind": "word",
+    "german": "kommen",
+    "english": [
+      "to come"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 486,
+    "level": "A1",
+    "kind": "word",
+    "german": "können",
+    "english": [
+      "can (to be able to)",
+      "can"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 487,
+    "level": "A1",
+    "kind": "word",
+    "german": "Konto",
+    "english": [
+      "account",
+      "bank account"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 488,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kopf",
+    "english": [
+      "head"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 489,
+    "level": "A1",
+    "kind": "word",
+    "german": "kosten",
+    "english": [
+      "to cost"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 490,
+    "level": "A1",
+    "kind": "word",
+    "german": "krank",
+    "english": [
+      "ill",
+      "sick"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 491,
+    "level": "A1",
+    "kind": "word",
+    "german": "kriegen",
+    "english": [
+      "to get",
+      "to receive"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 492,
+    "level": "A1",
+    "kind": "word",
+    "german": "Küche",
+    "english": [
+      "kitchen"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 493,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kuchen",
+    "english": [
+      "cake"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 494,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kugelschreiber",
+    "english": [
+      "ballpoint pen"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 495,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kühlschrank",
+    "english": [
+      "refrigerator",
+      "fridge"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 496,
+    "level": "A1",
+    "kind": "word",
+    "german": "kulturell",
+    "english": [
+      "cultural"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 497,
+    "level": "A1",
+    "kind": "word",
+    "german": "kümmern",
+    "english": [
+      "to take care of"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 498,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kunde",
+    "english": [
+      "customer",
+      "client"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 499,
+    "level": "A1",
+    "kind": "word",
+    "german": "Kurs",
+    "english": [
+      "course"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 500,
+    "level": "A1",
+    "kind": "word",
+    "german": "kurz",
+    "english": [
+      "short",
+      "brief"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 501,
+    "level": "A1",
+    "kind": "word",
+    "german": "lachen",
+    "english": [
+      "to laugh"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 502,
+    "level": "A1",
+    "kind": "word",
+    "german": "Laden",
+    "english": [
+      "shop"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 503,
+    "level": "A1",
+    "kind": "word",
+    "german": "Land",
+    "english": [
+      "country",
+      "land"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 504,
+    "level": "A1",
+    "kind": "word",
+    "german": "lang",
+    "english": [
+      "long"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 505,
+    "level": "A1",
+    "kind": "word",
+    "german": "lange",
+    "english": [
+      "long",
+      "for a long time"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 506,
+    "level": "A1",
+    "kind": "word",
+    "german": "langsam",
+    "english": [
+      "slow"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 507,
+    "level": "A1",
+    "kind": "word",
+    "german": "laufen",
+    "english": [
+      "to run",
+      "to walk"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 508,
+    "level": "A1",
+    "kind": "word",
+    "german": "laut",
+    "english": [
+      "loud"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 509,
+    "level": "A1",
+    "kind": "word",
+    "german": "leben",
+    "english": [
+      "to live"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 510,
+    "level": "A1",
+    "kind": "word",
+    "german": "Leben",
+    "english": [
+      "life"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 511,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lebensmittel",
+    "english": [
+      "food",
+      "groceries"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 512,
+    "level": "A1",
+    "kind": "word",
+    "german": "ledig",
+    "english": [
+      "single (not married)",
+      "single"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 513,
+    "level": "A1",
+    "kind": "word",
+    "german": "legen",
+    "english": [
+      "to put",
+      "to lay"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 514,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lehrer",
+    "english": [
+      "teacher"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 515,
+    "level": "A1",
+    "kind": "word",
+    "german": "leicht",
+    "english": [
+      "easy",
+      "light"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 516,
+    "level": "A1",
+    "kind": "word",
+    "german": "leider",
+    "english": [
+      "unfortunately"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 517,
+    "level": "A1",
+    "kind": "word",
+    "german": "leise",
+    "english": [
+      "quiet",
+      "quietly"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 518,
+    "level": "A1",
+    "kind": "word",
+    "german": "lernen",
+    "english": [
+      "to learn"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 519,
+    "level": "A1",
+    "kind": "word",
+    "german": "lesen",
+    "english": [
+      "to read"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 520,
+    "level": "A1",
+    "kind": "word",
+    "german": "letzt-",
+    "english": [
+      "last"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 521,
+    "level": "A1",
+    "kind": "word",
+    "german": "Leute",
+    "english": [
+      "people"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 522,
+    "level": "A1",
+    "kind": "word",
+    "german": "Licht",
+    "english": [
+      "light"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 523,
+    "level": "A1",
+    "kind": "word",
+    "german": "lieb-",
+    "english": [
+      "dear",
+      "lovely"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 524,
+    "level": "A1",
+    "kind": "word",
+    "german": "lieben",
+    "english": [
+      "to love"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 525,
+    "level": "A1",
+    "kind": "word",
+    "german": "lieber",
+    "english": [
+      "rather (here: to prefer)",
+      "rather"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 526,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lieblings-",
+    "english": [
+      "favorite",
+      "favourite"
+    ],
+    "wordClass": "other",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 527,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lied",
+    "english": [
+      "song"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 528,
+    "level": "A1",
+    "kind": "word",
+    "german": "liegen",
+    "english": [
+      "to lie",
+      "to be located"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 529,
+    "level": "A1",
+    "kind": "word",
+    "german": "links",
+    "english": [
+      "left",
+      "on the left"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 530,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lkw",
+    "english": [
+      "truck",
+      "lorry"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 531,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lokal",
+    "english": [
+      "restaurant",
+      "pub",
+      "local venue"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 532,
+    "level": "A1",
+    "kind": "word",
+    "german": "Lösung",
+    "english": [
+      "solution",
+      "answer"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 533,
+    "level": "A1",
+    "kind": "word",
+    "german": "lustig",
+    "english": [
+      "funny",
+      "cheerful"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 534,
+    "level": "A1",
+    "kind": "word",
+    "german": "machen",
+    "english": [
+      "to do",
+      "to make"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 535,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mädchen",
+    "english": [
+      "girl"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 536,
+    "level": "A1",
+    "kind": "word",
+    "german": "man",
+    "english": [
+      "one",
+      "people",
+      "you (general)"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 537,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mann",
+    "english": [
+      "man",
+      "husband"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 538,
+    "level": "A1",
+    "kind": "word",
+    "german": "männlich",
+    "english": [
+      "male"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 539,
+    "level": "A1",
+    "kind": "word",
+    "german": "Maschine",
+    "english": [
+      "machine"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 540,
+    "level": "A1",
+    "kind": "word",
+    "german": "Meer",
+    "english": [
+      "sea"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 541,
+    "level": "A1",
+    "kind": "word",
+    "german": "mehr",
+    "english": [
+      "more"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 542,
+    "level": "A1",
+    "kind": "word",
+    "german": "mein",
+    "english": [
+      "my"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 543,
+    "level": "A1",
+    "kind": "word",
+    "german": "meist-",
+    "english": [
+      "most"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 544,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mensch",
+    "english": [
+      "person",
+      "people"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 545,
+    "level": "A1",
+    "kind": "word",
+    "german": "mieten",
+    "english": [
+      "to rent"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 546,
+    "level": "A1",
+    "kind": "word",
+    "german": "Miete",
+    "english": [
+      "rent"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 547,
+    "level": "A1",
+    "kind": "word",
+    "german": "Milch",
+    "english": [
+      "milk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 548,
+    "level": "A1",
+    "kind": "word",
+    "german": "mit",
+    "english": [
+      "with"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 549,
+    "level": "A1",
+    "kind": "word",
+    "german": "mitbringen",
+    "english": [
+      "to bring along"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 550,
+    "level": "A1",
+    "kind": "word",
+    "german": "mitkommen",
+    "english": [
+      "to come along"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 551,
+    "level": "A1",
+    "kind": "word",
+    "german": "mitmachen",
+    "english": [
+      "to take part",
+      "to join in"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 552,
+    "level": "A1",
+    "kind": "word",
+    "german": "mitnehmen",
+    "english": [
+      "to take (along)",
+      "to take"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 553,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mitte",
+    "english": [
+      "middle",
+      "center"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 554,
+    "level": "A1",
+    "kind": "word",
+    "german": "Möbel",
+    "english": [
+      "furniture"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 555,
+    "level": "A1",
+    "kind": "word",
+    "german": "möchten",
+    "english": [
+      "would like"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 556,
+    "level": "A1",
+    "kind": "word",
+    "german": "mögen",
+    "english": [
+      "to like"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 557,
+    "level": "A1",
+    "kind": "word",
+    "german": "möglich",
+    "english": [
+      "possible"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 558,
+    "level": "A1",
+    "kind": "word",
+    "german": "Moment",
+    "english": [
+      "moment"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 559,
+    "level": "A1",
+    "kind": "word",
+    "german": "morgen",
+    "english": [
+      "tomorrow"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 560,
+    "level": "A1",
+    "kind": "word",
+    "german": "müde",
+    "english": [
+      "tired"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 561,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mund",
+    "english": [
+      "mouth"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 562,
+    "level": "A1",
+    "kind": "word",
+    "german": "müssen",
+    "english": [
+      "to have to",
+      "must"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 563,
+    "level": "A1",
+    "kind": "word",
+    "german": "Mutter",
+    "english": [
+      "mother"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 564,
+    "level": "A1",
+    "kind": "word",
+    "german": "nach",
+    "english": [
+      "after",
+      "to",
+      "past"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 565,
+    "level": "A1",
+    "kind": "word",
+    "german": "nächst-",
+    "english": [
+      "next"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 566,
+    "level": "A1",
+    "kind": "word",
+    "german": "Name",
+    "english": [
+      "name"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 567,
+    "level": "A1",
+    "kind": "word",
+    "german": "nehmen",
+    "english": [
+      "to take"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 568,
+    "level": "A1",
+    "kind": "word",
+    "german": "nein",
+    "english": [
+      "no"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 569,
+    "level": "A1",
+    "kind": "word",
+    "german": "neu",
+    "english": [
+      "new"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 570,
+    "level": "A1",
+    "kind": "word",
+    "german": "nicht",
+    "english": [
+      "not"
+    ],
+    "wordClass": "particle",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 571,
+    "level": "A1",
+    "kind": "word",
+    "german": "nichts",
+    "english": [
+      "nothing"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 572,
+    "level": "A1",
+    "kind": "word",
+    "german": "nie",
+    "english": [
+      "never"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 573,
+    "level": "A1",
+    "kind": "word",
+    "german": "noch",
+    "english": [
+      "still",
+      "yet",
+      "another",
+      "more"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 574,
+    "level": "A1",
+    "kind": "word",
+    "german": "normal",
+    "english": [
+      "normal"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 575,
+    "level": "A1",
+    "kind": "word",
+    "german": "Nummer",
+    "english": [
+      "number"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 576,
+    "level": "A1",
+    "kind": "word",
+    "german": "nur",
+    "english": [
+      "only"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 577,
+    "level": "A1",
+    "kind": "word",
+    "german": "oben",
+    "english": [
+      "upstairs",
+      "above",
+      "at the top"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 578,
+    "level": "A1",
+    "kind": "word",
+    "german": "Obst",
+    "english": [
+      "fruit"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 579,
+    "level": "A1",
+    "kind": "word",
+    "german": "oder",
+    "english": [
+      "or"
+    ],
+    "wordClass": "conjunction",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 580,
+    "level": "A1",
+    "kind": "word",
+    "german": "öffnen",
+    "english": [
+      "to open"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 581,
+    "level": "A1",
+    "kind": "word",
+    "german": "geöffnet",
+    "english": [
+      "open"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 582,
+    "level": "A1",
+    "kind": "word",
+    "german": "oft",
+    "english": [
+      "often"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 583,
+    "level": "A1",
+    "kind": "word",
+    "german": "ohne",
+    "english": [
+      "without"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 584,
+    "level": "A1",
+    "kind": "word",
+    "german": "Öl",
+    "english": [
+      "oil"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 585,
+    "level": "A1",
+    "kind": "word",
+    "german": "Oma",
+    "english": [
+      "grandmother",
+      "grandma"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 586,
+    "level": "A1",
+    "kind": "word",
+    "german": "Opa",
+    "english": [
+      "grandpa"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 587,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ordnung",
+    "english": [
+      "order"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 588,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ort",
+    "english": [
+      "place",
+      "town"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 589,
+    "level": "A1",
+    "kind": "word",
+    "german": "Papier",
+    "english": [
+      "paper"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 590,
+    "level": "A1",
+    "kind": "word",
+    "german": "Papiere",
+    "english": [
+      "papers",
+      "documents"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 591,
+    "level": "A1",
+    "kind": "word",
+    "german": "Partner",
+    "english": [
+      "partner"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 592,
+    "level": "A1",
+    "kind": "word",
+    "german": "Partnerin",
+    "english": [
+      "female partner",
+      "partner"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 593,
+    "level": "A1",
+    "kind": "word",
+    "german": "Party",
+    "english": [
+      "party"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 594,
+    "level": "A1",
+    "kind": "word",
+    "german": "Pass",
+    "english": [
+      "passport"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 595,
+    "level": "A1",
+    "kind": "word",
+    "german": "Pause",
+    "english": [
+      "break"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 596,
+    "level": "A1",
+    "kind": "word",
+    "german": "Plan",
+    "english": [
+      "plan",
+      "map"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 597,
+    "level": "A1",
+    "kind": "word",
+    "german": "Platz",
+    "english": [
+      "place",
+      "seat",
+      "space"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 598,
+    "level": "A1",
+    "kind": "word",
+    "german": "Polizei",
+    "english": [
+      "police"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 599,
+    "level": "A1",
+    "kind": "word",
+    "german": "Pommes frites",
+    "english": [
+      "fries",
+      "chips"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 600,
+    "level": "A1",
+    "kind": "word",
+    "german": "Post",
+    "english": [
+      "post office",
+      "mail"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 601,
+    "level": "A1",
+    "kind": "word",
+    "german": "Postleitzahl",
+    "english": [
+      "postal code",
+      "postcode"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 602,
+    "level": "A1",
+    "kind": "word",
+    "german": "Praktikum",
+    "english": [
+      "work placement"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 603,
+    "level": "A1",
+    "kind": "word",
+    "german": "Praxis",
+    "english": [
+      "practice",
+      "doctor's office"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 604,
+    "level": "A1",
+    "kind": "word",
+    "german": "Preis",
+    "english": [
+      "price"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 605,
+    "level": "A1",
+    "kind": "word",
+    "german": "Problem",
+    "english": [
+      "problem"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 606,
+    "level": "A1",
+    "kind": "word",
+    "german": "Prospekt",
+    "english": [
+      "brochure",
+      "leaflet"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 607,
+    "level": "A1",
+    "kind": "word",
+    "german": "Prüfung",
+    "english": [
+      "exam",
+      "examination"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 608,
+    "level": "A1",
+    "kind": "word",
+    "german": "pünktlich",
+    "english": [
+      "punctual",
+      "on time"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 609,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "Rad fahren",
+    "english": [
+      "to ride a bike",
+      "to cycle"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 610,
+    "level": "A1",
+    "kind": "word",
+    "german": "rauchen",
+    "english": [
+      "to smoke"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 611,
+    "level": "A1",
+    "kind": "word",
+    "german": "Raum",
+    "english": [
+      "room",
+      "space"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 612,
+    "level": "A1",
+    "kind": "word",
+    "german": "Rechnung",
+    "english": [
+      "bill"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 613,
+    "level": "A1",
+    "kind": "word",
+    "german": "rechts",
+    "english": [
+      "right",
+      "on the right"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 614,
+    "level": "A1",
+    "kind": "word",
+    "german": "regnen",
+    "english": [
+      "to rain"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 615,
+    "level": "A1",
+    "kind": "word",
+    "german": "Regen",
+    "english": [
+      "rain"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 616,
+    "level": "A1",
+    "kind": "word",
+    "german": "Reis",
+    "english": [
+      "rice"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 617,
+    "level": "A1",
+    "kind": "word",
+    "german": "reisen",
+    "english": [
+      "to travel"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 618,
+    "level": "A1",
+    "kind": "word",
+    "german": "Reise",
+    "english": [
+      "trip",
+      "journey"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 619,
+    "level": "A1",
+    "kind": "word",
+    "german": "Reisebüro",
+    "english": [
+      "travel agency"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 620,
+    "level": "A1",
+    "kind": "word",
+    "german": "Reiseführer",
+    "english": [
+      "travel guide",
+      "guide"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 621,
+    "level": "A1",
+    "kind": "word",
+    "german": "reparieren",
+    "english": [
+      "to repair"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 622,
+    "level": "A1",
+    "kind": "word",
+    "german": "Reparatur",
+    "english": [
+      "repair"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 623,
+    "level": "A1",
+    "kind": "word",
+    "german": "Restaurant",
+    "english": [
+      "restaurant"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 624,
+    "level": "A1",
+    "kind": "word",
+    "german": "Rezeption",
+    "english": [
+      "reception",
+      "front desk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 625,
+    "level": "A1",
+    "kind": "word",
+    "german": "richtig",
+    "english": [
+      "correct"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 626,
+    "level": "A1",
+    "kind": "word",
+    "german": "riechen",
+    "english": [
+      "to smell"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 627,
+    "level": "A1",
+    "kind": "word",
+    "german": "ruhig",
+    "english": [
+      "quiet",
+      "calm"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 628,
+    "level": "A1",
+    "kind": "word",
+    "german": "Saft",
+    "english": [
+      "juice"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 629,
+    "level": "A1",
+    "kind": "word",
+    "german": "sagen",
+    "english": [
+      "to say",
+      "to tell"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 630,
+    "level": "A1",
+    "kind": "word",
+    "german": "Salat",
+    "english": [
+      "salad"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 631,
+    "level": "A1",
+    "kind": "word",
+    "german": "Salz",
+    "english": [
+      "salt"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 632,
+    "level": "A1",
+    "kind": "word",
+    "german": "Satz",
+    "english": [
+      "sentence"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 633,
+    "level": "A1",
+    "kind": "word",
+    "german": "S-Bahn",
+    "english": [
+      "suburban train",
+      "commuter rail"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 634,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schalter",
+    "english": [
+      "counter",
+      "desk"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 635,
+    "level": "A1",
+    "kind": "word",
+    "german": "scheinen",
+    "english": [
+      "to shine",
+      "to seem"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 636,
+    "level": "A1",
+    "kind": "word",
+    "german": "schicken",
+    "english": [
+      "to send"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 637,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schild",
+    "english": [
+      "sign"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 638,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schinken",
+    "english": [
+      "ham"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 639,
+    "level": "A1",
+    "kind": "word",
+    "german": "schlafen",
+    "english": [
+      "to sleep"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 640,
+    "level": "A1",
+    "kind": "word",
+    "german": "schlecht",
+    "english": [
+      "bad",
+      "poor",
+      "unwell"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 641,
+    "level": "A1",
+    "kind": "word",
+    "german": "schließen",
+    "english": [
+      "to close",
+      "to shut"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 642,
+    "level": "A1",
+    "kind": "word",
+    "german": "geschlossen",
+    "english": [
+      "closed"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 643,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schluss",
+    "english": [
+      "end",
+      "finish"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 644,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schlüssel",
+    "english": [
+      "key"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 645,
+    "level": "A1",
+    "kind": "word",
+    "german": "schmecken",
+    "english": [
+      "to taste (good)",
+      "to taste"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 646,
+    "level": "A1",
+    "kind": "word",
+    "german": "schnell",
+    "english": [
+      "fast",
+      "quick"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 647,
+    "level": "A1",
+    "kind": "word",
+    "german": "schon",
+    "english": [
+      "already"
+    ],
+    "wordClass": "particle",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 648,
+    "level": "A1",
+    "kind": "word",
+    "german": "schön",
+    "english": [
+      "beautiful",
+      "nice"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 649,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schrank",
+    "english": [
+      "cupboard",
+      "wardrobe"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 650,
+    "level": "A1",
+    "kind": "word",
+    "german": "schreiben",
+    "english": [
+      "to write"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 651,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schuh",
+    "english": [
+      "shoe"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 652,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schule",
+    "english": [
+      "school"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 653,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schüler",
+    "english": [
+      "(male) school pupil",
+      "school pupil"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 654,
+    "level": "A1",
+    "kind": "word",
+    "german": "schwer",
+    "english": [
+      "difficult"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 655,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schwester",
+    "english": [
+      "sister"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 656,
+    "level": "A1",
+    "kind": "word",
+    "german": "schwimmen",
+    "english": [
+      "to swim"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 657,
+    "level": "A1",
+    "kind": "word",
+    "german": "Schwimmbad",
+    "english": [
+      "swimming pool"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 658,
+    "level": "A1",
+    "kind": "word",
+    "german": "See",
+    "english": [
+      "lake"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 659,
+    "level": "A1",
+    "kind": "word",
+    "german": "sehen",
+    "english": [
+      "to see"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 660,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sehenswürdigkeit",
+    "english": [
+      "attraction"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 661,
+    "level": "A1",
+    "kind": "word",
+    "german": "sehr",
+    "english": [
+      "very"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 662,
+    "level": "A1",
+    "kind": "word",
+    "german": "sein",
+    "english": [
+      "to be"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 663,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "weg sein",
+    "english": [
+      "to be away",
+      "to be gone"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 664,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "zu sein",
+    "english": [
+      "to be closed"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 665,
+    "level": "A1",
+    "kind": "word",
+    "german": "seit",
+    "english": [
+      "since",
+      "for"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 666,
+    "level": "A1",
+    "kind": "word",
+    "german": "selbstständig",
+    "english": [
+      "self-employed",
+      "independent"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 667,
+    "level": "A1",
+    "kind": "word",
+    "german": "sich",
+    "english": [
+      "oneself"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 668,
+    "level": "A1",
+    "kind": "word",
+    "german": "sie",
+    "english": [
+      "she",
+      "they"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 669,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sie",
+    "english": [
+      "you (formal)"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 670,
+    "level": "A1",
+    "kind": "word",
+    "german": "sitzen",
+    "english": [
+      "to sit"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 671,
+    "level": "A1",
+    "kind": "word",
+    "german": "so",
+    "english": [
+      "so"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 672,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sofa",
+    "english": [
+      "sofa"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 673,
+    "level": "A1",
+    "kind": "word",
+    "german": "sofort",
+    "english": [
+      "immediately"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 674,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sohn",
+    "english": [
+      "son"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 675,
+    "level": "A1",
+    "kind": "word",
+    "german": "sollen",
+    "english": [
+      "should",
+      "to be supposed to"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 676,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sonne",
+    "english": [
+      "sun"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 677,
+    "level": "A1",
+    "kind": "word",
+    "german": "spät",
+    "english": [
+      "late"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 678,
+    "level": "A1",
+    "kind": "word",
+    "german": "später",
+    "english": [
+      "later"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 679,
+    "level": "A1",
+    "kind": "word",
+    "german": "Speisekarte",
+    "english": [
+      "menu"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 680,
+    "level": "A1",
+    "kind": "word",
+    "german": "spielen",
+    "english": [
+      "to play"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 681,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sport",
+    "english": [
+      "sport"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 682,
+    "level": "A1",
+    "kind": "word",
+    "german": "Sprache",
+    "english": [
+      "language"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 683,
+    "level": "A1",
+    "kind": "word",
+    "german": "sprechen",
+    "english": [
+      "to speak"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 684,
+    "level": "A1",
+    "kind": "word",
+    "german": "Stadt",
+    "english": [
+      "city",
+      "town"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 685,
+    "level": "A1",
+    "kind": "word",
+    "german": "stehen",
+    "english": [
+      "to stand"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 686,
+    "level": "A1",
+    "kind": "word",
+    "german": "Stelle",
+    "english": [
+      "position",
+      "job",
+      "place"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 687,
+    "level": "A1",
+    "kind": "word",
+    "german": "stellen",
+    "english": [
+      "to put",
+      "to place"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 688,
+    "level": "A1",
+    "kind": "word",
+    "german": "Stock",
+    "english": [
+      "floor"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 689,
+    "level": "A1",
+    "kind": "word",
+    "german": "Straße",
+    "english": [
+      "street"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 690,
+    "level": "A1",
+    "kind": "word",
+    "german": "Straßenbahn",
+    "english": [
+      "tram",
+      "streetcar"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 691,
+    "level": "A1",
+    "kind": "word",
+    "german": "studieren",
+    "english": [
+      "to study"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 692,
+    "level": "A1",
+    "kind": "word",
+    "german": "Studium",
+    "english": [
+      "studies",
+      "university studies"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 693,
+    "level": "A1",
+    "kind": "word",
+    "german": "Student",
+    "english": [
+      "student"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 694,
+    "level": "A1",
+    "kind": "word",
+    "german": "suchen",
+    "english": [
+      "to search"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 695,
+    "level": "A1",
+    "kind": "word",
+    "german": "tanzen",
+    "english": [
+      "to dance"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 696,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tasche",
+    "english": [
+      "bag"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 697,
+    "level": "A1",
+    "kind": "word",
+    "german": "Taxi",
+    "english": [
+      "taxi"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 698,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tee",
+    "english": [
+      "tea"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 699,
+    "level": "A1",
+    "kind": "word",
+    "german": "Teil",
+    "english": [
+      "part"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 700,
+    "level": "A1",
+    "kind": "word",
+    "german": "telefonieren",
+    "english": [
+      "to telephone"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 701,
+    "level": "A1",
+    "kind": "word",
+    "german": "Telefon",
+    "english": [
+      "telephone"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 702,
+    "level": "A1",
+    "kind": "word",
+    "german": "Termin",
+    "english": [
+      "appointment",
+      "date"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 703,
+    "level": "A1",
+    "kind": "word",
+    "german": "Test",
+    "english": [
+      "test"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 704,
+    "level": "A1",
+    "kind": "word",
+    "german": "teuer",
+    "english": [
+      "expensive"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 705,
+    "level": "A1",
+    "kind": "word",
+    "german": "Text",
+    "english": [
+      "text"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 706,
+    "level": "A1",
+    "kind": "word",
+    "german": "Thema",
+    "english": [
+      "topic",
+      "subject"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 707,
+    "level": "A1",
+    "kind": "word",
+    "german": "Ticket",
+    "english": [
+      "ticket"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 708,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tisch",
+    "english": [
+      "table"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 709,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tochter",
+    "english": [
+      "daughter"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 710,
+    "level": "A1",
+    "kind": "word",
+    "german": "Toilette",
+    "english": [
+      "toilet"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 711,
+    "level": "A1",
+    "kind": "word",
+    "german": "Tomate",
+    "english": [
+      "tomato"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 712,
+    "level": "A1",
+    "kind": "word",
+    "german": "tot",
+    "english": [
+      "dead"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 713,
+    "level": "A1",
+    "kind": "word",
+    "german": "treffen",
+    "english": [
+      "to meet"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 714,
+    "level": "A1",
+    "kind": "word",
+    "german": "Treppe",
+    "english": [
+      "stairs",
+      "staircase"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 715,
+    "level": "A1",
+    "kind": "word",
+    "german": "trinken",
+    "english": [
+      "to drink"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 716,
+    "level": "A1",
+    "kind": "word",
+    "german": "tschüss",
+    "english": [
+      "bye",
+      "goodbye"
+    ],
+    "wordClass": "interjection",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 717,
+    "level": "A1",
+    "kind": "word",
+    "german": "tun",
+    "english": [
+      "to do"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Health"
+  },
+  {
+    "rank": 718,
+    "level": "A1",
+    "kind": "word",
+    "german": "über",
+    "english": [
+      "over"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 719,
+    "level": "A1",
+    "kind": "word",
+    "german": "übernachten",
+    "english": [
+      "to stay overnight"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 720,
+    "level": "A1",
+    "kind": "word",
+    "german": "überweisen",
+    "english": [
+      "to transfer",
+      "to bank transfer"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 721,
+    "level": "A1",
+    "kind": "word",
+    "german": "Uhr",
+    "english": [
+      "o'clock",
+      "clock"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 722,
+    "level": "A1",
+    "kind": "word",
+    "german": "um",
+    "english": [
+      "at"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 723,
+    "level": "A1",
+    "kind": "word",
+    "german": "umziehen",
+    "english": [
+      "to move house",
+      "to change clothes"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 724,
+    "level": "A1",
+    "kind": "word",
+    "german": "und",
+    "english": [
+      "and"
+    ],
+    "wordClass": "conjunction",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 725,
+    "level": "A1",
+    "kind": "word",
+    "german": "unser-",
+    "english": [
+      "our"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 726,
+    "level": "A1",
+    "kind": "word",
+    "german": "unten",
+    "english": [
+      "downstairs",
+      "below",
+      "at the bottom"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 727,
+    "level": "A1",
+    "kind": "word",
+    "german": "unter",
+    "english": [
+      "under",
+      "below"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 728,
+    "level": "A1",
+    "kind": "word",
+    "german": "Unterricht",
+    "english": [
+      "lesson",
+      "class",
+      "instruction"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 729,
+    "level": "A1",
+    "kind": "word",
+    "german": "unterschreiben",
+    "english": [
+      "to sign"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 730,
+    "level": "A1",
+    "kind": "word",
+    "german": "Unterschrift",
+    "english": [
+      "signature"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 731,
+    "level": "A1",
+    "kind": "word",
+    "german": "Urlaub",
+    "english": [
+      "holiday"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 732,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vater",
+    "english": [
+      "father"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 733,
+    "level": "A1",
+    "kind": "word",
+    "german": "verboten",
+    "english": [
+      "forbidden"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 734,
+    "level": "A1",
+    "kind": "word",
+    "german": "verdienen",
+    "english": [
+      "to earn"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Work"
+  },
+  {
+    "rank": 735,
+    "level": "A1",
+    "kind": "word",
+    "german": "Verein",
+    "english": [
+      "club",
+      "association"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 736,
+    "level": "A1",
+    "kind": "word",
+    "german": "verheiratet",
+    "english": [
+      "married"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 737,
+    "level": "A1",
+    "kind": "word",
+    "german": "verkaufen",
+    "english": [
+      "to sell"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 738,
+    "level": "A1",
+    "kind": "word",
+    "german": "Verkäufer",
+    "english": [
+      "salesman"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 739,
+    "level": "A1",
+    "kind": "word",
+    "german": "vermieten",
+    "english": [
+      "to rent out"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 740,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vermieter",
+    "english": [
+      "landlord"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 741,
+    "level": "A1",
+    "kind": "word",
+    "german": "verstehen",
+    "english": [
+      "to understand"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 742,
+    "level": "A1",
+    "kind": "word",
+    "german": "Verwandte",
+    "english": [
+      "relative"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 743,
+    "level": "A1",
+    "kind": "word",
+    "german": "viel",
+    "english": [
+      "much",
+      "many",
+      "a lot"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 744,
+    "level": "A1",
+    "kind": "word",
+    "german": "vielleicht",
+    "english": [
+      "maybe",
+      "perhaps"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 745,
+    "level": "A1",
+    "kind": "word",
+    "german": "von",
+    "english": [
+      "from",
+      "of"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 746,
+    "level": "A1",
+    "kind": "word",
+    "german": "vor",
+    "english": [
+      "before",
+      "in front of"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 747,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vorname",
+    "english": [
+      "first name"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 748,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vorsicht",
+    "english": [
+      "caution",
+      "careful"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 749,
+    "level": "A1",
+    "kind": "word",
+    "german": "vorstellen",
+    "english": [
+      "to introduce",
+      "to introduce oneself"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 750,
+    "level": "A1",
+    "kind": "word",
+    "german": "Vorwahl",
+    "english": [
+      "area code",
+      "dialing code"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 751,
+    "level": "A1",
+    "kind": "word",
+    "german": "wandern",
+    "english": [
+      "to hike",
+      "to walk"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Leisure"
+  },
+  {
+    "rank": 752,
+    "level": "A1",
+    "kind": "word",
+    "german": "wann",
+    "english": [
+      "when?"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 753,
+    "level": "A1",
+    "kind": "word",
+    "german": "warten",
+    "english": [
+      "to wait"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 754,
+    "level": "A1",
+    "kind": "word",
+    "german": "warum",
+    "english": [
+      "why?"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 755,
+    "level": "A1",
+    "kind": "word",
+    "german": "was",
+    "english": [
+      "what?"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 756,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "was für ein",
+    "english": [
+      "what kind of",
+      "what sort of"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 757,
+    "level": "A1",
+    "kind": "word",
+    "german": "waschen",
+    "english": [
+      "to wash"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 758,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wasser",
+    "english": [
+      "water"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 759,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "weh tun",
+    "english": [
+      "to hurt"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 760,
+    "level": "A1",
+    "kind": "word",
+    "german": "weiblich",
+    "english": [
+      "female"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "Personal information"
+  },
+  {
+    "rank": 761,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wein",
+    "english": [
+      "wine"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Food and drink"
+  },
+  {
+    "rank": 762,
+    "level": "A1",
+    "kind": "word",
+    "german": "weit",
+    "english": [
+      "far"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 763,
+    "level": "A1",
+    "kind": "word",
+    "german": "weiter",
+    "english": [
+      "further",
+      "on"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 764,
+    "level": "A1",
+    "kind": "word",
+    "german": "welch-",
+    "english": [
+      "which?"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 765,
+    "level": "A1",
+    "kind": "word",
+    "german": "Welt",
+    "english": [
+      "world"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 766,
+    "level": "A1",
+    "kind": "word",
+    "german": "wenig",
+    "english": [
+      "little",
+      "few"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 767,
+    "level": "A1",
+    "kind": "word",
+    "german": "wer",
+    "english": [
+      "who?"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 768,
+    "level": "A1",
+    "kind": "word",
+    "german": "werden",
+    "english": [
+      "to become"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 769,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wetter",
+    "english": [
+      "weather"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 770,
+    "level": "A1",
+    "kind": "word",
+    "german": "wichtig",
+    "english": [
+      "important"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 771,
+    "level": "A1",
+    "kind": "word",
+    "german": "wie",
+    "english": [
+      "how?"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 772,
+    "level": "A1",
+    "kind": "word",
+    "german": "wiederholen",
+    "english": [
+      "to repeat"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 773,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wiederhören",
+    "english": [
+      "hearing again",
+      "goodbye on the phone"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 774,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wiedersehen",
+    "english": [
+      "seeing again",
+      "goodbye"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Communication"
+  },
+  {
+    "rank": 775,
+    "level": "A1",
+    "kind": "phrase",
+    "german": "wie viel",
+    "english": [
+      "how much?"
+    ],
+    "wordClass": "phrase",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 776,
+    "level": "A1",
+    "kind": "word",
+    "german": "willkommen",
+    "english": [
+      "welcome"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 777,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wind",
+    "english": [
+      "wind"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Nature and weather"
+  },
+  {
+    "rank": 778,
+    "level": "A1",
+    "kind": "word",
+    "german": "wir",
+    "english": [
+      "we"
+    ],
+    "wordClass": "pronoun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 779,
+    "level": "A1",
+    "kind": "word",
+    "german": "wissen",
+    "english": [
+      "to know"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 780,
+    "level": "A1",
+    "kind": "word",
+    "german": "wo",
+    "english": [
+      "where?"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 781,
+    "level": "A1",
+    "kind": "word",
+    "german": "woher",
+    "english": [
+      "from where?"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 782,
+    "level": "A1",
+    "kind": "word",
+    "german": "wohin",
+    "english": [
+      "where … to"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 783,
+    "level": "A1",
+    "kind": "word",
+    "german": "wohnen",
+    "english": [
+      "to live"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 784,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wohnung",
+    "english": [
+      "apartment",
+      "flat"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 785,
+    "level": "A1",
+    "kind": "word",
+    "german": "wollen",
+    "english": [
+      "to want"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 786,
+    "level": "A1",
+    "kind": "word",
+    "german": "Wort",
+    "english": [
+      "word"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Education"
+  },
+  {
+    "rank": 787,
+    "level": "A1",
+    "kind": "word",
+    "german": "wunderbar",
+    "english": [
+      "wonderful"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 788,
+    "level": "A1",
+    "kind": "word",
+    "german": "zahlen",
+    "english": [
+      "to pay"
+    ],
+    "wordClass": "verb",
+    "primaryTopic": "Shopping"
+  },
+  {
+    "rank": 789,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zeit",
+    "english": [
+      "time"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 790,
+    "level": "A1",
+    "kind": "word",
+    "german": "zurzeit",
+    "english": [
+      "currently",
+      "at present"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Numbers and time"
+  },
+  {
+    "rank": 791,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zeitung",
+    "english": [
+      "newspaper"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 792,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zigarette",
+    "english": [
+      "cigarette"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 793,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zimmer",
+    "english": [
+      "room"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Home"
+  },
+  {
+    "rank": 794,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zoll",
+    "english": [
+      "customs"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Services and bureaucracy"
+  },
+  {
+    "rank": 795,
+    "level": "A1",
+    "kind": "word",
+    "german": "zu",
+    "english": [
+      "to",
+      "at",
+      "too"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 796,
+    "level": "A1",
+    "kind": "word",
+    "german": "zufrieden",
+    "english": [
+      "satisfied",
+      "content"
+    ],
+    "wordClass": "adjective",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 797,
+    "level": "A1",
+    "kind": "word",
+    "german": "Zug",
+    "english": [
+      "train"
+    ],
+    "wordClass": "noun",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 798,
+    "level": "A1",
+    "kind": "word",
+    "german": "zurück",
+    "english": [
+      "back"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "Travel and transport"
+  },
+  {
+    "rank": 799,
+    "level": "A1",
+    "kind": "word",
+    "german": "zusammen",
+    "english": [
+      "together"
+    ],
+    "wordClass": "adverb",
+    "primaryTopic": "General"
+  },
+  {
+    "rank": 800,
+    "level": "A1",
+    "kind": "word",
+    "german": "zwischen",
+    "english": [
+      "between"
+    ],
+    "wordClass": "preposition",
+    "primaryTopic": "General"
+  }
+]

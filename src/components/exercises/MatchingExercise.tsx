@@ -19,7 +19,6 @@ export function MatchingExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
 }: ExerciseComponentProps<MatchingExerciseType>): ReactNode {
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
   /** pair id → chosen right-hand value */
@@ -28,7 +27,7 @@ export function MatchingExercise({
   useEffect(() => {
     setSelectedLeft(null);
     setMatches({});
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
   const usedRight = new Set(Object.values(matches));
   const allMatched = Object.keys(matches).length === exercise.pairs.length;

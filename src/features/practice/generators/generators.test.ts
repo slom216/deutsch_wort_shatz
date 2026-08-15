@@ -14,20 +14,131 @@ import {
   generateTypedTranslation,
   generateWordOrdering,
   headword,
+  nearMiss,
   pluralForm,
 } from './index';
 import { exerciseSchema } from '@/schemas/exerciseSchema';
 import { isNounEntry, isPhraseEntry, isVerbEntry } from '@/schemas/vocabularySchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
-import { loadPilotDataset, PILOT_SIZE } from '@/test/fixtures/pilotDataset';
+import {
+  loadPilotDataset,
+  PILOT_MIN_NOUNS,
+  PILOT_MIN_PHRASES,
+  PILOT_MIN_VERBS,
+  PILOT_MIN_WORDS,
+  PILOT_SIZE,
+} from '@/test/fixtures/pilotDataset';
 
 let pilot: readonly VocabularyEntry[];
 const random = () => createRandom('test-seed');
+
+/**
+ * True when `option` is `correct` with exactly one letter changed, added or removed, and
+ * the edit touched neither the first nor the last letter. Every position is tried rather
+ * than the first difference, since a repeated letter can be edited at more than one index.
+ */
+function isNearMiss(correct: string, option: string): boolean {
+  if (option === correct) return false;
+
+  if (option.length === correct.length) {
+    return [...correct].some(
+      (_, i) =>
+        i > 0 &&
+        i < correct.length - 1 &&
+        correct.slice(0, i) + option[i] + correct.slice(i + 1) === option,
+    );
+  }
+
+  const [longer, shorter] = correct.length > option.length ? [correct, option] : [option, correct];
+  if (longer.length !== shorter.length + 1) return false;
+  return [...longer].some(
+    (_, i) => i > 0 && i < longer.length - 1 && longer.slice(0, i) + longer.slice(i + 1) === shorter,
+  );
+}
 
 function find(predicate: (entry: VocabularyEntry) => boolean): VocabularyEntry {
   const entry = pilot.find(predicate);
   if (!entry) throw new Error('No matching entry in the pilot dataset');
   return entry;
+}
+
+/**
+ * Hand-written entries carrying grammar the datasets do not.
+ *
+ * `data/*.json` records a checked headword, gloss, word class and topic and nothing else,
+ * so no shipped entry has an article, a plural, a conjugation or an example sentence. The
+ * generators still support all four, and the formats that need them are covered here
+ * rather than dropped — this is the fixture those tests draw on.
+ */
+const NOUN_FORMS: ReadonlyArray<[string, string, string, 'der' | 'die' | 'das']> = [
+  ['Hund', 'dog', 'Hunde', 'der'],
+  ['Katze', 'cat', 'Katzen', 'die'],
+  ['Haus', 'house', 'Häuser', 'das'],
+  ['Buch', 'book', 'Bücher', 'das'],
+  ['Stadt', 'city', 'Städte', 'die'],
+  ['Tisch', 'table', 'Tische', 'der'],
+  ['Blume', 'flower', 'Blumen', 'die'],
+  ['Kind', 'child', 'Kinder', 'das'],
+];
+
+/** Nouns with article and plural, built on the shape of a real dataset noun. */
+function grammarNouns(): VocabularyEntry[] {
+  const base = find((entry) => entry.wordClass === 'noun');
+  return NOUN_FORMS.map(([german, english, plural, article], index) => ({
+    ...base,
+    id: `test-${String(index + 1).padStart(4, '0')}-${german.toLowerCase()}`,
+    german,
+    english: [english],
+    searchableForms: [german, plural],
+    article,
+    plural,
+    pluralArticle: 'die',
+  })) as VocabularyEntry[];
+}
+
+/** A verb with the full form set §10 describes. */
+function grammarVerb(): VocabularyEntry {
+  const base = find((entry) => entry.wordClass === 'verb');
+  return {
+    ...base,
+    id: 'test-0100-gehen',
+    german: 'gehen',
+    english: ['to go'],
+    infinitive: 'gehen',
+    thirdPersonPresent: 'geht',
+    simplePast: 'ging',
+    pastParticiple: 'gegangen',
+    auxiliary: 'sein',
+    separable: false,
+    reflexive: false,
+    fixedPrepositions: [],
+  } as VocabularyEntry;
+}
+
+/** An entry carrying one example sentence, for the sentence-based formats. */
+function entryWithExample(german: string, english: string, targetToken: string): VocabularyEntry {
+  const base = find((entry) => entry.wordClass === 'noun');
+  return {
+    ...base,
+    id: 'test-0200-example',
+    german: targetToken,
+    english: ['house'],
+    // The datasets enable only the formats they can feed; an entry with a sentence can
+    // feed the other two.
+    exerciseConfig: {
+      ...base.exerciseConfig,
+      enabledTypes: [...base.exerciseConfig.enabledTypes, 'sentenceCompletion', 'wordOrdering'],
+    },
+    exampleSentences: [
+      {
+        id: 'test-example-1',
+        german,
+        english,
+        level: base.level,
+        targetTokens: [targetToken],
+      },
+    ],
+  } as VocabularyEntry;
 }
 
 beforeAll(async () => {
@@ -37,16 +148,58 @@ beforeAll(async () => {
 describe('pilot dataset', () => {
   it('contains exactly 100 entries with the required composition', () => {
     expect(pilot).toHaveLength(PILOT_SIZE);
-    expect(pilot.filter((e) => e.wordClass === 'noun').length).toBeGreaterThanOrEqual(10);
-    expect(pilot.filter((e) => e.wordClass === 'verb').length).toBeGreaterThanOrEqual(10);
-    expect(pilot.filter((e) => e.kind === 'phrase').length).toBeGreaterThanOrEqual(20);
-    expect(pilot.filter((e) => e.kind === 'word').length).toBeGreaterThanOrEqual(60);
+    expect(pilot.filter((e) => e.wordClass === 'noun').length).toBeGreaterThanOrEqual(
+      PILOT_MIN_NOUNS,
+    );
+    expect(pilot.filter((e) => e.wordClass === 'verb').length).toBeGreaterThanOrEqual(
+      PILOT_MIN_VERBS,
+    );
+    expect(pilot.filter((e) => e.kind === 'phrase').length).toBeGreaterThanOrEqual(
+      PILOT_MIN_PHRASES,
+    );
+    expect(pilot.filter((e) => e.kind === 'word').length).toBeGreaterThanOrEqual(PILOT_MIN_WORDS);
     expect(new Set(pilot.map((e) => e.primaryTopic)).size).toBeGreaterThan(1);
   });
 
   it('is deterministic across loads', async () => {
     const again = await loadPilotDataset();
     expect(again.map((e) => e.id)).toEqual(pilot.map((e) => e.id));
+  });
+});
+
+describe('near miss', () => {
+  it('changes, adds or removes one letter, never the first or the last', () => {
+    const words = pilot.flatMap((entry) => [entry.german, ...entry.english]);
+    for (const word of words) {
+      const miss = nearMiss(word, random());
+      if (miss === null) continue;
+      expect(isNearMiss(word, miss)).toBe(true);
+
+      // Per word, not just per answer: in a phrase every word keeps its outer letters.
+      const parts = word.split(/\s+/);
+      const edited = miss.split(/\s+/);
+      expect(edited).toHaveLength(parts.length);
+      edited.forEach((part, i) => {
+        expect(part[0]).toBe(parts[i]?.[0]);
+        expect(part.at(-1)).toBe(parts[i]?.at(-1));
+      });
+    }
+  });
+
+  it('gives up when there is nowhere to edit', () => {
+    // A two-letter word has no interior letter to change or remove, but one can still be
+    // added between its two letters: 'ja' → 'jla'.
+    expect(nearMiss('ja', random())).not.toBeNull();
+    expect(nearMiss('a', random())).toBeNull();
+    expect(nearMiss('', random())).toBeNull();
+  });
+
+  it('never returns an excluded value', () => {
+    const blocked = ['Tag', 'Tg', 'Taag', 'Tng'];
+    for (let i = 0; i < 50; i += 1) {
+      const miss = nearMiss('Tag', createRandom(`near-${i}`), blocked);
+      if (miss !== null) expect(blocked).not.toContain(miss);
+    }
   });
 });
 
@@ -62,6 +215,57 @@ describe('multiple choice', () => {
     expect(exercise?.options).toHaveLength(OPTION_COUNT);
     expect(new Set(exercise?.options).size).toBe(OPTION_COUNT);
     expect(exercise?.options[exercise.correctIndex]).toBe(entry.english[0]);
+  });
+
+  it('offers the right answer misspelled by one interior letter, but only sometimes', () => {
+    let withMiss = 0;
+    let total = 0;
+
+    for (const entry of pilot) {
+      const exercise = generateMultipleChoice(
+        { entry, pool: pilot, random: createRandom(`mc-near-${entry.id}`), id: `mc-near-${entry.id}` },
+        'englishToGerman',
+      );
+      if (!exercise) continue;
+
+      const correct = exercise.options[exercise.correctIndex] as string;
+      const misses = exercise.options.filter((option) => isNearMiss(correct, option));
+      // Never more than one: a second would make the pair meaningless.
+      expect(misses.length).toBeLessThanOrEqual(1);
+      total += 1;
+      if (misses.length === 1) withMiss += 1;
+    }
+
+    // Roughly half, not all and not none. Loose bounds — this is a coin flip per question.
+    expect(withMiss).toBeGreaterThan(total * 0.2);
+    expect(withMiss).toBeLessThan(total * 0.8);
+  });
+
+  it('never misspells an English gloss', () => {
+    for (const entry of pilot) {
+      const exercise = generateMultipleChoice(
+        { entry, pool: pilot, random: createRandom(`mc-gloss-${entry.id}`), id: `mc-gloss-${entry.id}` },
+        'germanToEnglish',
+      );
+      if (!exercise) continue;
+
+      const correct = exercise.options[exercise.correctIndex] as string;
+      expect(exercise.options.filter((option) => isNearMiss(correct, option))).toHaveLength(0);
+    }
+  });
+
+  it('never offers a near miss that is also an accepted answer', () => {
+    for (const entry of pilot) {
+      const exercise = generateMultipleChoice(
+        { entry, pool: pilot, random: createRandom(`mc-acc-${entry.id}`), id: `mc-acc-${entry.id}` },
+        'englishToGerman',
+      );
+      if (!exercise) continue;
+
+      const correct = exercise.options[exercise.correctIndex] as string;
+      const misses = exercise.options.filter((option) => isNearMiss(correct, option));
+      for (const miss of misses) expect(entry.searchableForms).not.toContain(miss);
+    }
   });
 
   it('draws distractors with a similar English gloss length', () => {
@@ -80,10 +284,15 @@ describe('multiple choice', () => {
         .filter((option) => option !== entry.english[0])
         .map((option) => Math.abs(option.length - target));
 
-      // ±2 is the goal; the window widens only when too few candidates qualify, and the
-      // pilot dataset is 100 entries, so a few options legitimately fall outside it.
+      // ±2 is the goal; the window widens only when too few candidates qualify. With a
+      // 100-entry pool a short gloss can have no near-length neighbour at all, so the
+      // requirement is conditional on the pool actually containing one.
       const within = deltas.filter((delta) => delta <= 2).length;
-      expect(within).toBeGreaterThan(0);
+      const poolHasNearLength = pilot.some(
+        (other) =>
+          other.id !== entry.id && Math.abs((other.english[0] ?? '').length - target) <= 2,
+      );
+      if (poolHasNearLength) expect(within).toBeGreaterThan(0);
       // Nothing wildly off: an obviously long option among short ones is a free answer.
       expect(Math.max(...deltas)).toBeLessThanOrEqual(20);
       expect(glossByEnglish.size).toBeGreaterThan(0);
@@ -105,9 +314,9 @@ describe('multiple choice', () => {
   });
 
   it('asks for the article of a noun with all three articles as options', () => {
-    const entry = find((e) => isNounEntry(e) && e.article !== null);
+    const entry = grammarNouns()[0] as VocabularyEntry;
     const exercise = generateMultipleChoice(
-      { entry, pool: pilot, random: random(), id: 'mc-2' },
+      { entry, pool: grammarNouns(), random: random(), id: 'mc-2' },
       'article',
     );
 
@@ -134,9 +343,10 @@ describe('multiple choice', () => {
   });
 
   it('asks for the plural with other plurals as distractors', () => {
-    const entry = find((e) => pluralForm(e) !== null);
+    const nouns = grammarNouns();
+    const entry = nouns[0] as VocabularyEntry;
     const exercise = generateMultipleChoice(
-      { entry, pool: pilot, random: random(), id: 'mc-5' },
+      { entry, pool: nouns, random: random(), id: 'mc-5' },
       'plural',
     );
     expect(exercise?.options[exercise.correctIndex]).toBe(pluralForm(entry));
@@ -157,9 +367,9 @@ describe('multiple choice', () => {
 
 describe('typed translation', () => {
   it('accepts the noun with its article', () => {
-    const entry = find((e) => isNounEntry(e) && e.article !== null);
+    const entry = grammarNouns()[0] as VocabularyEntry;
     const exercise = generateTypedTranslation(
-      { entry, pool: pilot, random: random(), id: 'tt-1' },
+      { entry, pool: grammarNouns(), random: random(), id: 'tt-1' },
       'nounWithArticle',
     );
 
@@ -170,12 +380,20 @@ describe('typed translation', () => {
   });
 
   it('asks for the past participle of a verb', () => {
-    const entry = find((e) => e.wordClass === 'verb');
+    const entry = grammarVerb();
     const exercise = generateTypedTranslation(
       { entry, pool: pilot, random: random(), id: 'tt-2' },
       'verbForm',
     );
     expect(exercise?.acceptedAnswers).toEqual([isVerbEntry(entry) ? entry.pastParticiple : '']);
+  });
+
+  it('produces no verb-form question when the dataset records no conjugation', () => {
+    const entry = find((e) => e.wordClass === 'verb');
+    expect(isVerbEntry(entry) ? entry.pastParticiple : 'x').toBeUndefined();
+    expect(
+      generateTypedTranslation({ entry, pool: pilot, random: random(), id: 'tt-2b' }, 'verbForm'),
+    ).toBeNull();
   });
 
   it('marks German production but not English recognition', () => {
@@ -203,14 +421,8 @@ describe('typed translation', () => {
 });
 
 describe('sentence completion', () => {
-  it('splits a real example sentence around its target token', () => {
-    const entry = find((e) => {
-      const example = e.exampleSentences[0];
-      const token = example?.targetTokens[0];
-      return Boolean(
-        example && token && example.german.toLowerCase().includes(token.toLowerCase()),
-      );
-    });
+  it('splits an example sentence around its target token', () => {
+    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
 
     const exercise = generateSentenceCompletion(
       { entry, pool: pilot, random: random(), id: 'sc-1' },
@@ -225,13 +437,7 @@ describe('sentence completion', () => {
   });
 
   it('shows the full corrected sentence for feedback', () => {
-    const entry = find((e) => {
-      const example = e.exampleSentences[0];
-      const token = example?.targetTokens[0];
-      return Boolean(
-        example && token && example.german.toLowerCase().includes(token.toLowerCase()),
-      );
-    });
+    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
     const exercise = generateSentenceCompletion(
       { entry, pool: pilot, random: random(), id: 'sc-2' },
       'vocabularyGap',
@@ -294,17 +500,15 @@ describe('matching', () => {
   });
 
   it('offers a noun-to-plural variant when enough nouns are present', () => {
-    const nouns = pilot.filter((e) => pluralForm(e) !== null).slice(0, 8);
+    const nouns = grammarNouns();
+    expect(nouns.every((entry) => pluralForm(entry) !== null)).toBe(true);
     expect(availableMatchingVariants(nouns)).toContain('nounToPlural');
   });
 });
 
 describe('word ordering', () => {
   it('produces 4 to 12 shuffled tokens that rebuild the sentence', () => {
-    const entry = find((e) => {
-      const count = e.exampleSentences[0]?.german.split(/\s+/).length ?? 0;
-      return count >= 4 && count <= 12;
-    });
+    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
 
     const exercise = generateWordOrdering(
       { entry, pool: pilot, random: random(), id: 'wo-1' },
@@ -318,10 +522,11 @@ describe('word ordering', () => {
   });
 
   it('does not present the tokens already in the correct order', () => {
-    const entry = find((e) => {
-      const count = e.exampleSentences[0]?.german.split(/\s+/).length ?? 0;
-      return count >= 4 && count <= 12;
-    });
+    const entry = entryWithExample(
+      'Das Haus ist sehr alt und schön',
+      'The house is very old and beautiful',
+      'Haus',
+    );
     const exercise = generateWordOrdering(
       { entry, pool: pilot, random: random(), id: 'wo-2' },
       'sentenceReconstruction',
@@ -425,7 +630,7 @@ describe('generateAllForEntry', () => {
     expect(exercises.every((e) => e.type === 'multipleChoice')).toBe(true);
   });
 
-  it('covers all six single-entry formats across the pilot set', () => {
+  it('covers every format the dataset can feed, across the pilot set', () => {
     const types = new Set<string>();
     for (const entry of pilot) {
       for (const exercise of generateAllForEntry({
@@ -437,16 +642,24 @@ describe('generateAllForEntry', () => {
         types.add(exercise.type);
       }
     }
-    expect(types).toEqual(
-      new Set([
-        'multipleChoice',
-        'typedTranslation',
-        'sentenceCompletion',
-        'wordOrdering',
-        'listening',
-        'speaking',
-      ]),
+    // Sentence completion and word ordering need example sentences, which the datasets do
+    // not carry (word ordering also runs on a long enough phrase, of which A1 has none).
+    expect(types).toEqual(new Set(['multipleChoice', 'typedTranslation', 'listening', 'speaking']));
+  });
+
+  it('adds the sentence-based formats for an entry that has an example', () => {
+    const entry = entryWithExample(
+      'Das Haus ist sehr alt und schön',
+      'The house is very old and beautiful',
+      'Haus',
     );
+    const types = new Set(
+      generateAllForEntry({ entry, pool: pilot, random: random(), id: 'cover-example' }).map(
+        (exercise) => exercise.type,
+      ),
+    );
+    expect(types).toContain('sentenceCompletion');
+    expect(types).toContain('wordOrdering');
   });
 
   it('is deterministic for a given seed', () => {
@@ -462,7 +675,9 @@ describe('generateAllForEntry', () => {
   });
 
   it('reports which types an entry can support', () => {
-    const noun = find((e) => isNounEntry(e) && e.article !== null);
+    const noun = find((e) => isNounEntry(e));
     expect(canGenerate(noun, 'multipleChoice', pilot, random())).toBe(true);
+    // No example sentences in the datasets, so no gap-fill for a shipped entry.
+    expect(canGenerate(noun, 'sentenceCompletion', pilot, random())).toBe(false);
   });
 });

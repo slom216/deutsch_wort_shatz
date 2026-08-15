@@ -170,9 +170,13 @@
   cursor: not-allowed;
 }
 
+/* `.page-action` is the same secondary button outside a running exercise — the dashboard's
+   and the learn screen's second-choice actions. Sharing the rule keeps one look; sharing
+   the class name would make a page button answer to the exercise runner's selectors. */
 .runner__retry,
 .runner__hint,
-.runner__reveal {
+.runner__reveal,
+.page-action {
   padding: var(--space-2) var(--space-4);
   background: transparent;
   border: 1px solid var(--color-border-strong);
@@ -183,7 +187,8 @@
 
 .runner__retry:hover,
 .runner__hint:hover,
-.runner__reveal:hover {
+.runner__reveal:hover,
+.page-action:hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
 }

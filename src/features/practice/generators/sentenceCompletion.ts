@@ -127,7 +127,7 @@ export function generateSentenceCompletion(
         entry.thirdPersonPresent,
         entry.simplePast,
         entry.infinitive,
-      ]) {
+      ].filter((value): value is string => Boolean(value))) {
         const split = splitAroundToken(example.german, form);
         if (!split) continue;
         return {
@@ -160,6 +160,6 @@ export function availableSentenceCompletionVariants(
   const variants: SentenceCompletionVariant[] = ['vocabularyGap'];
   if (isNounEntry(entry) && entry.article) variants.push('articleGap');
   if (pluralForm(entry)) variants.push('pluralGap');
-  if (isVerbEntry(entry)) variants.push('verbFormGap');
+  if (isVerbEntry(entry) && entry.pastParticiple) variants.push('verbFormGap');
   return variants;
 }

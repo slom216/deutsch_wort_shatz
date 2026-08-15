@@ -96,7 +96,7 @@ export default function ResultsPage(): ReactNode {
 
       <dl className="stat-grid">
         <StatCard label="Accuracy" value={`${accuracy}%`} hint={`${correct} of ${answered}`} />
-        <StatCard label="Correct first time" value={firstAttempt} hint="No hint, no retry" />
+        <StatCard label="Correct first time" value={firstAttempt} hint="No hint used" />
         <StatCard
           label="XP earned"
           value={record.xpEarned}

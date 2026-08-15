@@ -84,7 +84,6 @@ export function WordOrderingExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
   revealed,
 }: ExerciseComponentProps<WordOrderingExerciseType>): ReactNode {
   const initial = (): TokenSlot[] =>
@@ -96,7 +95,7 @@ export function WordOrderingExercise({
   useEffect(() => {
     setSlots(initial);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

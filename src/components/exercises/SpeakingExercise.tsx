@@ -1,6 +1,7 @@
-import { useEffect, type ReactNode } from 'react';
+import { useCallback, useEffect, type ReactNode } from 'react';
 
 import { fullyNormalize } from '@/features/practice/evaluation/normalize';
+import { usePlayShortcut } from '@/features/speech/usePlayShortcut';
 import { useSpeechRecognition } from '@/features/speech/useSpeechRecognition';
 import { useSpeechSynthesis } from '@/features/speech/useSpeechSynthesis';
 import { useSettingsStore } from '@/features/settings/settingsStore';
@@ -26,16 +27,20 @@ export function SpeakingExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
 }: ExerciseComponentProps<SpeakingExerciseType>): ReactNode {
   const speechRate = useSettingsStore((state) => state.settings.speechRate);
   const synthesis = useSpeechSynthesis(speechRate);
   const recognition = useSpeechRecognition();
 
+  const play = useCallback(() => {
+    synthesis.speak(exercise.targetText);
+  }, [synthesis, exercise.targetText]);
+  usePlayShortcut(play, synthesis.supported);
+
   useEffect(() => {
     recognition.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
   const transcriptMatches =
     recognition.transcript.length > 0 &&
@@ -70,10 +75,10 @@ export function SpeakingExercise({
         <button
           type="button"
           className="speaking__listen"
-          onClick={() => synthesis.speak(exercise.targetText)}
+          onClick={play}
           disabled={!synthesis.supported}
         >
-          Hear it first
+          Hear it first <span aria-hidden="true">(P)</span>
         </button>
 
         {recognition.supported ? (

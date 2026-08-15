@@ -19,7 +19,6 @@ export function TypedTranslationExercise({
   exercise,
   onSubmit,
   locked,
-  attempt,
   revealed,
 }: ExerciseComponentProps<TypedTranslationExerciseType>): ReactNode {
   const [value, setValue] = useState('');
@@ -28,7 +27,7 @@ export function TypedTranslationExercise({
   useEffect(() => {
     setValue('');
     inputRef.current?.focus();
-  }, [attempt, exercise.id]);
+  }, [exercise.id]);
 
   const submit = (): void => {
     if (locked) return;

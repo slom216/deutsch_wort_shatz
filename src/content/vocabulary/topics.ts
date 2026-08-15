@@ -128,6 +128,12 @@ export const TOPIC_ALIASES: Readonly<Record<string, Topic>> = {
   'Sport and leisure': 'Sport',
   'Travel and transport': 'Travel',
   'Work and professions': 'Work',
+
+  // Labels used by the current a1/a2/b1 datasets.
+  General: 'Abstract concepts',
+  'Nature and weather': 'Nature',
+  'Numbers and time': 'Numbers and quantities',
+  'Services and bureaucracy': 'Bureaucracy',
 };
 
 const ALIAS_LOOKUP: ReadonlyMap<string, Topic> = new Map(

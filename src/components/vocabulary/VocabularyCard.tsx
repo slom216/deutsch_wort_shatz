@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
+import { useCallback, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import { usePlayShortcut } from '@/features/speech/usePlayShortcut';
 import { useSpeechSynthesis } from '@/features/speech/useSpeechSynthesis';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import {
@@ -16,6 +17,11 @@ interface VocabularyCardProps {
   /** Shown as the explanation card when a new entry is introduced (§18). */
   readonly showExample?: boolean;
   readonly linkToEntry?: boolean;
+  /**
+   * Binds P to the pronunciation button. Only for a screen showing a single card — a list
+   * of cards would give one key several meanings.
+   */
+  readonly playShortcut?: boolean;
 }
 
 /**
@@ -28,9 +34,15 @@ export function VocabularyCard({
   entry,
   showExample = true,
   linkToEntry = true,
+  playShortcut = false,
 }: VocabularyCardProps): ReactNode {
   const speechRate = useSettingsStore((state) => state.settings.speechRate);
   const { supported, speak } = useSpeechSynthesis(speechRate);
+
+  const play = useCallback(() => {
+    speak(entry.german);
+  }, [speak, entry.german]);
+  usePlayShortcut(play, playShortcut && supported);
 
   const headword =
     isNounEntry(entry) && entry.article ? `${entry.article} ${entry.german}` : entry.german;
@@ -60,18 +72,17 @@ export function VocabularyCard({
         {entry.primaryTopic}
       </p>
 
-      {isNounEntry(entry) ? (
+      {/* Grammar lines appear only when the dataset records the grammar. An entry that
+          carries a checked headword and gloss and nothing else says so by staying silent,
+          rather than printing a row of "not recorded" placeholders. */}
+      {isNounEntry(entry) && (entry.plural || entry.numberUsage === 'singularOnly') ? (
         <p className="vocab-card__forms" lang="de">
           Plural:{' '}
-          {entry.plural
-            ? `${entry.pluralArticle ?? 'die'} ${entry.plural}`
-            : entry.numberUsage === 'singularOnly'
-              ? '— (singular only)'
-              : '— (not recorded)'}
+          {entry.plural ? `${entry.pluralArticle ?? 'die'} ${entry.plural}` : '— (singular only)'}
         </p>
       ) : null}
 
-      {isVerbEntry(entry) ? (
+      {isVerbEntry(entry) && entry.thirdPersonPresent ? (
         <p className="vocab-card__forms" lang="de">
           er {entry.thirdPersonPresent} · {entry.simplePast} ·{' '}
           {entry.auxiliary === 'sein' ? 'ist' : 'hat'} {entry.pastParticiple}
