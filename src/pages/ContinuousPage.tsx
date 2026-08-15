@@ -4,10 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { ExerciseRunner } from '@/components/exercises/ExerciseRunner';
+import { CEFR_LEVELS } from '@/content/vocabulary/frequencyBands';
 import { useGamification } from '@/features/gamification/useGamification';
 import { levelProgress } from '@/features/gamification/xp';
 import { useSessionStore } from '@/features/practice/session/sessionStore';
 import { useContinuousSession } from '@/features/practice/session/useContinuousSession';
+import { levelCompletion } from '@/features/progress/analytics';
+import { useReviewState } from '@/features/srs/useReviewState';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
 // `.meter` lives with the achievements screen, which is where it was first needed.
@@ -46,6 +49,20 @@ export default function ContinuousPage(): ReactNode {
   );
   const correct = answers.filter((answer) => answer.result.correct).length;
   const lastXp = answers[answers.length - 1]?.xpAwarded ?? 0;
+
+  /**
+   * How far through each CEFR level the learner is, by mastery points rather than by words
+   * met: a word seen once counts a fifth of a word answered cleanly five times.
+   *
+   * Re-read after every answer so the figure moves with the stream — this is the number the
+   * learner watches while working, and a stale one defeats the point.
+   */
+  const { progress, refresh: refreshProgress } = useReviewState();
+  useEffect(() => {
+    // ponytail: full entryProgress read per answer. Apply the answer's delta locally if it drags.
+    if (answers.length > 0) void refreshProgress();
+  }, [answers.length, refreshProgress]);
+  const completion = useMemo(() => levelCompletion(progress), [progress]);
 
   /** Lifetime XP before this session, captured from the first snapshot that arrives. */
   const [baseXp, setBaseXp] = useState<number | null>(null);
@@ -103,6 +120,36 @@ export default function ContinuousPage(): ReactNode {
             <span style={{ width: `${level.fraction * 100}%` }} />
           </div>
           <span className="stream-bar__hint">{level.xpForNextLevel} XP to next level</span>
+        </div>
+
+        {/*
+          All three levels, always — the stream mixes reviews from any level with new words,
+          so a single figure following the word on screen would jump about for no reason.
+        */}
+        <div className="stream-bar__vocab">
+          <span className="stream-bar__hint">Vocabulary</span>
+          <ul className="stream-vocab">
+            {CEFR_LEVELS.map((cefr) => {
+              const percent = completion[cefr].fraction * 100;
+              return (
+                <li key={cefr}>
+                  <span className="stream-vocab__label">
+                    {cefr} <strong>{percent.toFixed(1)}%</strong>
+                  </span>
+                  <div
+                    className="meter"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(percent)}
+                    aria-label={`${cefr} complete`}
+                  >
+                    <span style={{ width: `${percent}%` }} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
         <dl className="stream-bar__stats">

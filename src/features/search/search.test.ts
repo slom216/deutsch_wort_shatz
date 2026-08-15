@@ -18,6 +18,7 @@ import {
   activitySummary,
   errorCategoryStats,
   exerciseTypePerformance,
+  levelCompletion,
   overallStats,
   progressByLevel,
   progressByTopic,
@@ -162,6 +163,7 @@ function makeProgress(
   entryId: string,
   status: EntryProgress['srs']['status'],
   difficulty: number,
+  masteryScore = 0,
 ): EntryProgress {
   return {
     entryId,
@@ -183,7 +185,7 @@ function makeProgress(
     firstAttemptCorrect: 5,
     hintsUsed: 0,
     errorCounts: {},
-    masteryScore: 0,
+    masteryScore,
     totalResponseMs: 0,
   };
 }
@@ -246,6 +248,52 @@ describe('progress analytics (§16)', () => {
     expect(a1?.total).toBe(LEVEL_ENTRY_COUNTS.A1);
     expect(a1?.introduced).toBe(2);
     expect(a1?.mastered).toBe(1);
+  });
+
+  it('weights level progress by mastery points, not by words met', () => {
+    const [first, second] = [index[0] as SearchableRecord, index[1] as SearchableRecord];
+    const scored = new Map<string, EntryProgress>([
+      [first.id, makeProgress(first.id, 'review', 0.2, 2)],
+      [second.id, makeProgress(second.id, 'review', 0.2, 3)],
+    ]);
+
+    const a1 = progressByLevel(index, scored).find((row) => row.key === 'A1');
+    expect(a1?.points).toBe(5);
+    expect(a1?.pointsFraction).toBeCloseTo(5 / (LEVEL_ENTRY_COUNTS.A1 * 5), 10);
+    // Two words met counts as 0.25% complete, not the 0.25% *started* the old figure gave.
+    expect(a1?.fraction).toBeCloseTo(2 / LEVEL_ENTRY_COUNTS.A1, 10);
+  });
+
+  it('caps each entry at the target so completion never passes 100%', () => {
+    const everything = new Map(
+      index.map((record) => [record.id, makeProgress(record.id, 'mastered', 0.1, 99)]),
+    );
+    for (const row of progressByLevel(index, everything)) {
+      expect(row.pointsFraction).toBe(1);
+    }
+  });
+
+  it('reports level completion straight from progress records', () => {
+    const empty = levelCompletion([]);
+    expect(empty.A1).toEqual({ points: 0, max: LEVEL_ENTRY_COUNTS.A1 * 5, fraction: 0 });
+    expect(empty.B1.fraction).toBe(0);
+
+    const scored = levelCompletion([
+      makeProgress('a1-0001-eins', 'review', 0.2, 4),
+      makeProgress('a1-0002-zwei', 'review', 0.2, 7), // above the target: capped at 5
+      makeProgress('xx-0001-nonsense', 'review', 0.2, 5), // unknown level: ignored
+    ]);
+    expect(scored.A1.points).toBe(9);
+    expect(scored.A1.fraction).toBeCloseTo(9 / (LEVEL_ENTRY_COUNTS.A1 * 5), 10);
+    expect(scored.A2.points).toBe(0);
+  });
+
+  it('agrees with the index-based breakdown for A1', () => {
+    const a1 = progressByLevel(index, progress).find((row) => row.key === 'A1');
+    expect(levelCompletion([...progress.values()]).A1.fraction).toBeCloseTo(
+      a1?.pointsFraction ?? -1,
+      10,
+    );
   });
 
   it('breaks progress down by topic', () => {

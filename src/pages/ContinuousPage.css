@@ -28,6 +28,34 @@
   color: var(--color-text-muted);
 }
 
+/* Points-weighted completion for A1/A2/B1, side by side. */
+.stream-bar__vocab {
+  flex: 1 1 16rem;
+  min-width: 13rem;
+}
+
+.stream-vocab {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stream-vocab li {
+  flex: 1 1 0;
+}
+
+.stream-vocab__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.stream-vocab .meter {
+  margin-top: var(--space-1);
+}
+
 .stream-bar__stats {
   display: flex;
   flex-wrap: wrap;

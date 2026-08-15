@@ -193,7 +193,7 @@ export default function DashboardPage(): ReactNode {
                 <li key={level}>
                   <Link to={`/learn/${level.toLowerCase()}`}>{level}</Link> —{' '}
                   {row
-                    ? `${row.introduced.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} introduced · ${row.mastered.toLocaleString('en-US')} mastered`
+                    ? `${row.introduced.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} introduced · ${row.mastered.toLocaleString('en-US')} mastered · ${(row.pointsFraction * 100).toFixed(1)}% complete`
                     : `${total ? total.toLocaleString('en-US') : '—'} entries`}
                 </li>
               );

@@ -1,7 +1,13 @@
-import { FREQUENCY_BANDS, type CefrLevel } from '@/content/vocabulary/frequencyBands';
+import {
+  CEFR_LEVELS,
+  FREQUENCY_BANDS,
+  LEVEL_ENTRY_COUNTS,
+  type CefrLevel,
+} from '@/content/vocabulary/frequencyBands';
 import type { EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
 import { localDateKey } from '@/features/srs/localDate';
+import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 
 /**
  * Progress analytics (§6, §16).
@@ -19,6 +25,20 @@ export interface Breakdown {
   readonly mastered: number;
   /** Introduced share, 0–1. */
   readonly fraction: number;
+  /** Sum of mastery points, each entry capped at `MASTERY_SCORE_TARGET`. */
+  readonly points: number;
+  /** Points share of the maximum, 0–1 — how far through this group the learner is. */
+  readonly pointsFraction: number;
+}
+
+/**
+ * Mastery points for one entry.
+ *
+ * Capped because `nextMasteryScore` only floors at zero — nothing stops a score climbing
+ * past the target, and an uncapped sum would report more than 100%.
+ */
+function pointsOf(progress: EntryProgress): number {
+  return Math.min(progress.masteryScore, MASTERY_SCORE_TARGET);
 }
 
 function buildBreakdown(
@@ -27,16 +47,20 @@ function buildBreakdown(
   keyOf: (record: VocabularyIndexRecord) => string,
   labelOf: (key: string) => string = (key) => key,
 ): Breakdown[] {
-  const totals = new Map<string, { total: number; introduced: number; mastered: number }>();
+  const totals = new Map<
+    string,
+    { total: number; introduced: number; mastered: number; points: number }
+  >();
 
   for (const record of records) {
     const key = keyOf(record);
-    const bucket = totals.get(key) ?? { total: 0, introduced: 0, mastered: 0 };
+    const bucket = totals.get(key) ?? { total: 0, introduced: 0, mastered: 0, points: 0 };
     bucket.total += 1;
     const progress = progressByEntry.get(record.id);
     if (progress) {
       bucket.introduced += 1;
       if (progress.srs.status === 'mastered') bucket.mastered += 1;
+      bucket.points += pointsOf(progress);
     }
     totals.set(key, bucket);
   }
@@ -49,6 +73,9 @@ function buildBreakdown(
       introduced: bucket.introduced,
       mastered: bucket.mastered,
       fraction: bucket.total === 0 ? 0 : bucket.introduced / bucket.total,
+      points: bucket.points,
+      pointsFraction:
+        bucket.total === 0 ? 0 : bucket.points / (bucket.total * MASTERY_SCORE_TARGET),
     }))
     .sort((a, b) => b.introduced - a.introduced || a.label.localeCompare(b.label));
 }
@@ -60,6 +87,40 @@ export function progressByLevel(
   return buildBreakdown(records, progressByEntry, (record) => record.level).sort((a, b) =>
     a.key.localeCompare(b.key),
   );
+}
+
+export interface LevelCompletion {
+  readonly points: number;
+  readonly max: number;
+  /** Points share of the maximum, 0–1. */
+  readonly fraction: number;
+}
+
+/**
+ * Points-weighted completion per CEFR level, read straight from progress records.
+ *
+ * The index-free twin of `progressByLevel(…).pointsFraction`: entry ids carry the level
+ * (`a1-0001-eins`, §12) and the totals are static, so the learning stream can show how far
+ * through each level the learner is without loading the vocabulary index for it.
+ */
+export function levelCompletion(
+  progress: readonly EntryProgress[],
+): Record<CefrLevel, LevelCompletion> {
+  const points: Record<CefrLevel, number> = { A1: 0, A2: 0, B1: 0 };
+
+  for (const record of progress) {
+    const level = record.entryId.slice(0, 2).toUpperCase() as CefrLevel;
+    // Ids the datasets never produced — imported or hand-edited — are simply skipped.
+    if (!(level in points)) continue;
+    points[level] += pointsOf(record);
+  }
+
+  return Object.fromEntries(
+    CEFR_LEVELS.map((level) => {
+      const max = LEVEL_ENTRY_COUNTS[level] * MASTERY_SCORE_TARGET;
+      return [level, { points: points[level], max, fraction: max === 0 ? 0 : points[level] / max }];
+    }),
+  ) as Record<CefrLevel, LevelCompletion>;
 }
 
 export function progressByBand(

@@ -164,7 +164,8 @@ export default function LearnPage(): ReactNode {
                 <p className="band-summary">
                   {levelProgress.introduced.toLocaleString('en-US')} introduced ·{' '}
                   {levelProgress.mastered.toLocaleString('en-US')} mastered ·{' '}
-                  {Math.round(levelProgress.fraction * 100)}% started
+                  {Math.round(levelProgress.fraction * 100)}% started ·{' '}
+                  {(levelProgress.pointsFraction * 100).toFixed(1)}% complete
                 </p>
               ) : null}
 
@@ -178,7 +179,7 @@ export default function LearnPage(): ReactNode {
                         <span className="band-chip__name">{band.id}</span>
                         <span className="band-chip__range">
                           {bandProgress
-                            ? `${bandProgress.introduced}/${bandProgress.total} introduced · ${bandProgress.mastered} mastered`
+                            ? `${bandProgress.introduced}/${bandProgress.total} introduced · ${bandProgress.mastered} mastered · ${(bandProgress.pointsFraction * 100).toFixed(1)}% complete`
                             : `${band.from.toLocaleString('en-US')}–${band.to.toLocaleString('en-US')}`}
                         </span>
                       </Link>

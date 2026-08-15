@@ -335,12 +335,13 @@ function BreakdownSection({
               aria-valuemin={0}
               aria-valuemax={row.total}
               aria-valuenow={row.introduced}
-              aria-label={`${row.label}: ${row.introduced} of ${row.total} introduced`}
+              aria-label={`${row.label}: ${row.introduced} of ${row.total} introduced, ${(row.pointsFraction * 100).toFixed(1)}% complete`}
             >
               <span style={{ width: `${row.fraction * 100}%` }} />
             </span>
+            {/* The bar stays on words met; the percentage weights them by mastery points. */}
             <span className="breakdown__count">
-              {row.introduced} / {row.total}
+              {row.introduced} / {row.total} · {(row.pointsFraction * 100).toFixed(1)}%
             </span>
           </li>
         ))}
