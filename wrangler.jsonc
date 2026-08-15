@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "deutsch-wort-shatz",
+  "compatibility_date": "2026-08-15",
+  "observability": { "enabled": true },
+  "assets": {
+    // The app uses real paths (/learn, /word/:id); deep links must serve index.html.
+    // Workers' own SPA fallback — a `_redirects` wildcard is rejected as a loop here.
+    "not_found_handling": "single-page-application"
+  }
+}
