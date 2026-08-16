@@ -26,6 +26,9 @@
   --color-surface-sunken: light-dark(#eaf2f4, #17363f);
   --color-border: light-dark(#285f7426, #ffffff26);
   --color-border-strong: light-dark(#285f7459, #ffffff4d);
+  /* Progress-bar track. Translucent rather than a surface colour, so the unfilled part of a
+     bar stays visible on raised cards too — `--color-surface-sunken` matches them exactly. */
+  --color-meter-track: color-mix(in oklab, var(--color-text) 18%, transparent);
 
   --color-text: light-dark(#285f74, #eaf2f4);
   --color-text-muted: light-dark(#4a7a8b, #a3c0c9);

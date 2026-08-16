@@ -194,7 +194,7 @@
   max-width: 32rem;
   height: 0.75rem;
   margin-top: var(--space-3);
-  background: var(--color-surface-sunken);
+  background: var(--color-meter-track);
   border-radius: var(--radius-pill);
   overflow: hidden;
 }

@@ -81,7 +81,7 @@
 
 .meter {
   height: 0.6rem;
-  background: var(--color-surface-sunken);
+  background: var(--color-meter-track);
   border-radius: var(--radius-pill);
   overflow: hidden;
   margin-top: var(--space-2);

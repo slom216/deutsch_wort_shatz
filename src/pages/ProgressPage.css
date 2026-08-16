@@ -22,7 +22,7 @@
 
 .breakdown__bar {
   height: 0.55rem;
-  background: var(--color-surface-sunken);
+  background: var(--color-meter-track);
   border-radius: var(--radius-pill);
   overflow: hidden;
   display: block;
@@ -56,7 +56,7 @@
   height: 100%;
   display: flex;
   align-items: flex-end;
-  background: var(--color-surface-sunken);
+  background: var(--color-meter-track);
   border-radius: var(--radius-sm);
   overflow: hidden;
   min-width: 4px;
