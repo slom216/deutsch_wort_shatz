@@ -24,6 +24,13 @@ import './AchievementsPage.css';
  * Every figure is derived from what is stored in IndexedDB — SRS state, exercise history
  * and XP events. Nothing is shown as a fabricated zero (§34).
  */
+/**
+ * Highest `public/img/avatar/level-N.png` that exists. The level number is drawn into the
+ * artwork, so a learner above this keeps the top card rather than being shown a wrong one —
+ * raise this as cards for levels 7–20 are added.
+ */
+const MAX_AVATAR_LEVEL = 6;
+
 export default function DashboardPage(): ReactNode {
   const { manifest, error: contentError } = useContentManifest();
   const settings = useSettingsStore((state) => state.settings);
@@ -175,10 +182,18 @@ export default function DashboardPage(): ReactNode {
           </div>
         ) : null}
         {game ? (
-          <p className="band-summary" style={{ marginTop: 'var(--space-3)' }}>
-            Level {game.level.level} · {game.level.xpForNextLevel} XP to level{' '}
-            {game.level.level + 1}
-          </p>
+          <div className="level-avatar">
+            <img
+              src={`/img/avatar/level-${Math.min(game.level.level, MAX_AVATAR_LEVEL)}.png`}
+              alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
+              width={320}
+              height={320}
+            />
+            <p className="band-summary">
+              Level {game.level.level} · {game.level.xpForNextLevel} XP to level{' '}
+              {game.level.level + 1}
+            </p>
+          </div>
         ) : null}
       </section>
 

@@ -70,27 +70,40 @@ describe('XP rules (§23)', () => {
 });
 
 describe('learner levels (§23)', () => {
-  it('uses the documented formula', () => {
-    expect(xpRequiredForLevel(1)).toBe(100);
-    expect(xpRequiredForLevel(2)).toBe(400);
-    expect(xpRequiredForLevel(5)).toBe(2500);
+  it('makes each level cost 50% more than the one before', () => {
+    expect(xpRequiredForLevel(1)).toBe(0);
+    expect(xpRequiredForLevel(2)).toBe(45);
+    for (let level = 2; level < 20; level += 1) {
+      const previousStep = xpRequiredForLevel(level) - xpRequiredForLevel(level - 1);
+      const step = xpRequiredForLevel(level + 1) - xpRequiredForLevel(level);
+      // Rounding to whole XP wobbles the ratio on the cheapest levels (45 → 68 is 1.51).
+      expect(step / previousStep).toBeCloseTo(1.5, 1);
+    }
+  });
+
+  // The whole 3,460-entry corpus yields roughly 200,000 XP once mastered; the curve is
+  // tuned so that lands on level 20 rather than somewhere arbitrary.
+  it('puts level 20 within reach of a fully mastered corpus', () => {
+    expect(xpRequiredForLevel(20)).toBeLessThanOrEqual(200_000);
+    expect(xpRequiredForLevel(21)).toBeGreaterThan(200_000);
+    expect(levelForXp(200_000)).toBe(20);
   });
 
   it('starts every learner at level 1', () => {
     expect(levelForXp(0)).toBe(1);
-    expect(levelForXp(399)).toBe(1);
+    expect(levelForXp(44)).toBe(1);
   });
 
   it('advances a level once the threshold is reached', () => {
-    expect(levelForXp(400)).toBe(2);
-    expect(levelForXp(900)).toBe(3);
-    expect(levelForXp(2500)).toBe(5);
+    expect(levelForXp(45)).toBe(2);
+    expect(levelForXp(113)).toBe(3);
+    expect(levelForXp(366)).toBe(5);
   });
 
   it('reports progress towards the next level', () => {
-    const progress = levelProgress(650);
-    expect(progress.level).toBe(2);
-    expect(progress.xpForNextLevel).toBe(250);
+    const progress = levelProgress(150);
+    expect(progress.level).toBe(3);
+    expect(progress.xpForNextLevel).toBe(64);
     expect(progress.fraction).toBeGreaterThan(0);
     expect(progress.fraction).toBeLessThan(1);
   });

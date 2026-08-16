@@ -54,15 +54,29 @@ export function exerciseXp(input: ExerciseXpInput): number {
 }
 
 /**
- * Learner level from total XP: `xpRequiredForLevel(level) = 100 * level * level` (§23).
- * Level 1 starts at 0 XP; level 2 needs 400, level 3 needs 900, and so on.
+ * Learner levels (§23).
+ *
+ * Each level costs 50% more XP than the one before it, so reaching level 2 is 50% easier
+ * than reaching level 3, and so on. `LEVEL_XP_BASE` is tuned so that a learner who works
+ * the whole corpus to mastery lands on level 20: the 3,460 entries yield roughly 200,000
+ * XP in exercises, mastery bonuses and band/level completions, and
+ * `xpRequiredForLevel(20)` sits just under that. Levels past 20 keep the same curve —
+ * streak and daily-goal bonuses carry the learner beyond.
+ *
+ * Retune by moving `LEVEL_XP_BASE` alone; the curve's shape is `LEVEL_XP_GROWTH`.
  */
+const LEVEL_XP_GROWTH = 1.5;
+const LEVEL_XP_BASE = 45;
+
+/** Cumulative XP needed to *be* this level. Level 1 starts at 0. */
 export function xpRequiredForLevel(level: number): number {
-  return 100 * level * level;
+  if (level <= 1) return 0;
+  return Math.round(
+    (LEVEL_XP_BASE * (LEVEL_XP_GROWTH ** (level - 1) - 1)) / (LEVEL_XP_GROWTH - 1),
+  );
 }
 
 export function levelForXp(totalXp: number): number {
-  if (totalXp < xpRequiredForLevel(2)) return 1;
   let level = 1;
   while (xpRequiredForLevel(level + 1) <= totalXp) level += 1;
   return level;
@@ -78,7 +92,7 @@ export interface LevelProgress {
 
 export function levelProgress(totalXp: number): LevelProgress {
   const level = levelForXp(totalXp);
-  const floor = level === 1 ? 0 : xpRequiredForLevel(level);
+  const floor = xpRequiredForLevel(level);
   const ceiling = xpRequiredForLevel(level + 1);
   const span = Math.max(1, ceiling - floor);
   const into = Math.max(0, totalXp - floor);

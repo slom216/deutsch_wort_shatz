@@ -141,6 +141,22 @@
   color: var(--color-text-muted);
 }
 
+/* Word Wizard rank card next to the level line on the dashboard. */
+.level-avatar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.level-avatar img {
+  width: 9rem;
+  max-width: 40vw;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
 .dashboard-columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
