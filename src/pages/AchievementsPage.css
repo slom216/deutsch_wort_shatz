@@ -96,3 +96,46 @@
 .meter--goal span {
   background: var(--color-success);
 }
+
+/* Two nested shares in one track: mastered is a subset of practised, so it is drawn
+   on top of it rather than beside it. */
+.meter--stack {
+  position: relative;
+}
+
+.meter--stack span {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+}
+
+.meter__practised,
+.meter-legend__practised {
+  background: color-mix(in oklab, var(--color-primary) 40%, transparent);
+}
+
+.meter__mastered,
+.meter-legend__mastered {
+  background: var(--color-primary);
+}
+
+.meter-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-3);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.meter-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.meter-legend i {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radius-pill);
+}

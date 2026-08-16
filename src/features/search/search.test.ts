@@ -250,6 +250,20 @@ describe('progress analytics (§16)', () => {
     expect(a1?.mastered).toBe(1);
   });
 
+  it('counts a word as practised once its score passes zero, and never below mastered', () => {
+    const [first, second] = [index[0] as SearchableRecord, index[1] as SearchableRecord];
+    const scored = new Map<string, EntryProgress>([
+      // Mastered on §22 evidence alone — score still zero, but it must count as practised.
+      [first.id, makeProgress(first.id, 'mastered', 0.2, 0)],
+      [second.id, makeProgress(second.id, 'review', 0.2, 1)],
+    ]);
+    const a1 = progressByLevel(index, scored).find((row) => row.key === 'A1');
+    expect(a1?.practised).toBe(2);
+    expect(a1?.mastered).toBe(1);
+    expect(a1?.practisedFraction).toBeCloseTo(2 / LEVEL_ENTRY_COUNTS.A1);
+    expect(a1?.masteredFraction).toBeCloseTo(1 / LEVEL_ENTRY_COUNTS.A1);
+  });
+
   it('weights level progress by mastery points, not by words met', () => {
     const [first, second] = [index[0] as SearchableRecord, index[1] as SearchableRecord];
     const scored = new Map<string, EntryProgress>([

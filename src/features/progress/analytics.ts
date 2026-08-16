@@ -22,9 +22,15 @@ export interface Breakdown {
   readonly label: string;
   readonly total: number;
   readonly introduced: number;
+  /** Entries answered correctly at least once — mastery score above zero. */
+  readonly practised: number;
   readonly mastered: number;
   /** Introduced share, 0–1. */
   readonly fraction: number;
+  /** Practised share, 0–1. Always at least `masteredFraction`. */
+  readonly practisedFraction: number;
+  /** Mastered share, 0–1. */
+  readonly masteredFraction: number;
   /** Sum of mastery points, each entry capped at `MASTERY_SCORE_TARGET`. */
   readonly points: number;
   /** Points share of the maximum, 0–1 — how far through this group the learner is. */
@@ -49,17 +55,27 @@ function buildBreakdown(
 ): Breakdown[] {
   const totals = new Map<
     string,
-    { total: number; introduced: number; mastered: number; points: number }
+    { total: number; introduced: number; practised: number; mastered: number; points: number }
   >();
 
   for (const record of records) {
     const key = keyOf(record);
-    const bucket = totals.get(key) ?? { total: 0, introduced: 0, mastered: 0, points: 0 };
+    const bucket = totals.get(key) ?? {
+      total: 0,
+      introduced: 0,
+      practised: 0,
+      mastered: 0,
+      points: 0,
+    };
     bucket.total += 1;
     const progress = progressByEntry.get(record.id);
     if (progress) {
       bucket.introduced += 1;
-      if (progress.srs.status === 'mastered') bucket.mastered += 1;
+      const mastered = progress.srs.status === 'mastered';
+      // Mastered entries count as practised even when §22 evidence, not the score, got
+      // them there — otherwise the stacked meter could show mastery beyond practice.
+      if (progress.masteryScore > 0 || mastered) bucket.practised += 1;
+      if (mastered) bucket.mastered += 1;
       bucket.points += pointsOf(progress);
     }
     totals.set(key, bucket);
@@ -71,8 +87,11 @@ function buildBreakdown(
       label: labelOf(key),
       total: bucket.total,
       introduced: bucket.introduced,
+      practised: bucket.practised,
       mastered: bucket.mastered,
       fraction: bucket.total === 0 ? 0 : bucket.introduced / bucket.total,
+      practisedFraction: bucket.total === 0 ? 0 : bucket.practised / bucket.total,
+      masteredFraction: bucket.total === 0 ? 0 : bucket.mastered / bucket.total,
       points: bucket.points,
       pointsFraction:
         bucket.total === 0 ? 0 : bucket.points / (bucket.total * MASTERY_SCORE_TARGET),

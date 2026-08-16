@@ -223,12 +223,36 @@ export default function DashboardPage(): ReactNode {
                 <li key={level}>
                   <Link to={`/learn/${level.toLowerCase()}`}>{level}</Link> —{' '}
                   {row
-                    ? `${row.introduced.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} introduced · ${row.mastered.toLocaleString('en-US')} mastered · ${(row.pointsFraction * 100).toFixed(1)}% complete`
+                    ? `${(row.practisedFraction * 100).toFixed(1)}% practised · ${(row.masteredFraction * 100).toFixed(1)}% mastered · ${row.introduced.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} introduced`
                     : `${total ? total.toLocaleString('en-US') : '—'} entries`}
+                  {row ? (
+                    <div
+                      className="meter meter--stack"
+                      role="img"
+                      aria-label={`${level}: ${row.practised.toLocaleString('en-US')} of ${row.total.toLocaleString('en-US')} words practised, ${row.mastered.toLocaleString('en-US')} mastered`}
+                    >
+                      <span
+                        className="meter__practised"
+                        style={{ width: `${row.practisedFraction * 100}%` }}
+                      />
+                      <span
+                        className="meter__mastered"
+                        style={{ width: `${row.masteredFraction * 100}%` }}
+                      />
+                    </div>
+                  ) : null}
                 </li>
               );
             })}
           </ul>
+          <p className="meter-legend">
+            <span>
+              <i className="meter-legend__practised" /> Practised — score above zero
+            </span>
+            <span>
+              <i className="meter-legend__mastered" /> Mastered
+            </span>
+          </p>
         </section>
 
         <section className="settings-section" aria-labelledby="dash-hardest">
