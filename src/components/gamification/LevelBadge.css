@@ -83,6 +83,101 @@
   }
 }
 
+/* The promotion, announced: old card, arrow, new card. */
+.level-up {
+  max-width: min(32rem, 92vw);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  animation: level-up-enter 300ms ease-out;
+}
+
+.level-up::backdrop {
+  background: rgb(0 0 0 / 55%);
+}
+
+.level-up__eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--text-sm);
+}
+
+.level-up__cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.level-up__card {
+  width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* The card being left behind fades back so the new one reads as the arrival. */
+.level-up__card:not(.level-up__card--new) {
+  opacity: 0.55;
+  filter: grayscale(0.4);
+}
+
+.level-up__card--new {
+  animation: level-up-card 700ms 200ms ease-out backwards;
+}
+
+.level-up__arrow {
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+}
+
+.level-up__title {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-xl);
+}
+
+.level-up__confirm {
+  min-height: 48px;
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+}
+
+.level-up__confirm:hover {
+  background: var(--color-primary-hover);
+}
+
+@keyframes level-up-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes level-up-card {
+  from {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+
+  60% {
+    transform: scale(1.12) rotate(2deg);
+  }
+}
+
 /* A learner who has asked for less motion still gets the figures, just not the movement. */
 @media (prefers-reduced-motion: reduce) {
   .level-badge__meter span {
