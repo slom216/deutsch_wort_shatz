@@ -1137,16 +1137,16 @@ Revealed answer:
 
 ### Learner Level Formula
 
-Each level costs 50% more XP than the one before it, so reaching level 2 is 50% easier than
+Each level costs 30% more XP than the one before it, so reaching level 2 is 30% easier than
 reaching level 3, and so on:
 
 ```ts
-xpRequiredForLevel(level) = round((45 * (1.5 ** (level - 1) - 1)) / 0.5); // level 1 = 0
+xpRequiredForLevel(level) = round((413 * (1.3 ** (level - 1) - 1)) / 0.3); // level 1 = 0
 ```
 
-The base (45) is tuned so that the ~200,000 XP the full 3,460-entry corpus yields — exercises,
+The base (413) is tuned so that the ~200,000 XP the full 3,460-entry corpus yields — exercises,
 mastery bonuses and band/level completions — lands the learner on level 20
-(`xpRequiredForLevel(20) = 199,425`). Levels past 20 follow the same curve.
+(`xpRequiredForLevel(20) = 199,881`). Levels past 20 follow the same curve.
 
 ### Daily Goal
 

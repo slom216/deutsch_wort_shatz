@@ -56,17 +56,20 @@ export function exerciseXp(input: ExerciseXpInput): number {
 /**
  * Learner levels (§23).
  *
- * Each level costs 50% more XP than the one before it, so reaching level 2 is 50% easier
+ * Each level costs 30% more XP than the one before it, so reaching level 2 is 30% easier
  * than reaching level 3, and so on. `LEVEL_XP_BASE` is tuned so that a learner who works
  * the whole corpus to mastery lands on level 20: the 3,460 entries yield roughly 200,000
  * XP in exercises, mastery bonuses and band/level completions, and
  * `xpRequiredForLevel(20)` sits just under that. Levels past 20 keep the same curve —
  * streak and daily-goal bonuses carry the learner beyond.
  *
+ * The gentler 30% curve spreads the cost more evenly than the old 50% one: the late levels
+ * are far cheaper, so the base has to carry more and the first levels cost more.
+ *
  * Retune by moving `LEVEL_XP_BASE` alone; the curve's shape is `LEVEL_XP_GROWTH`.
  */
-const LEVEL_XP_GROWTH = 1.5;
-const LEVEL_XP_BASE = 45;
+const LEVEL_XP_GROWTH = 1.3;
+const LEVEL_XP_BASE = 413;
 
 /** Cumulative XP needed to *be* this level. Level 1 starts at 0. */
 export function xpRequiredForLevel(level: number): number {
