@@ -3,15 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1d24" media="(prefers-color-scheme: dark)" />
     <meta
       name="description"
-      content="Deutsch Wort Shatz — learn German vocabulary for CEFR levels A1, A2 and B1. Runs entirely in your browser."
+      content="DeuLern Deutsch Wortschatz — learn German vocabulary for CEFR levels A1, A2 and B1. Runs entirely in your browser."
     />
-    <title>Deutsch Wort Shatz</title>
+    <title>DeuLern Deutsch Wortschatz</title>
+    <script>
+      // Applies the saved theme before the first paint, so an explicit choice never
+      // flashes the other theme. The key must stay in step with THEME_STORAGE_KEY in
+      // src/components/layout/ThemeToggle.tsx.
+      try {
+        var theme = localStorage.getItem('deulernTheme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch (error) {
+        // Unreadable storage: fall back to the system theme.
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Public+Sans:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap"
       rel="stylesheet"
     />
   </head>

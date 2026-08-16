@@ -98,7 +98,7 @@ test('focus is visible when tabbing', async ({ page }) => {
   expect(outline?.outlineStyle).not.toBe('none');
 });
 
-test('the whole app is reachable by keyboard from the sidebar', async ({ page }) => {
+test('the whole app is reachable by keyboard from the header', async ({ page }) => {
   await page.goto('/');
   // Tab past the skip link into the navigation, then walk with the keyboard.
   await page.keyboard.press('Tab');
@@ -128,7 +128,9 @@ test('achievement lock state is stated in words', async ({ page }) => {
   await expect(page.getByText('Locked').first()).toBeVisible();
 });
 
-test('the vocabulary list virtualizes the whole vocabulary without mounting them all', async ({ page }) => {
+test('the vocabulary list virtualizes the whole vocabulary without mounting them all', async ({
+  page,
+}) => {
   await page.goto('/vocabulary');
   await expect(page.getByText(/3,460 matches of/)).toBeVisible();
 

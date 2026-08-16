@@ -13,20 +13,39 @@ export default function AboutPage(): ReactNode {
   return (
     <>
       <PageHeader
-        title="About Deutsch Wort Shatz"
+        title="About Deutsch Wortschatz"
         description="A German vocabulary trainer for CEFR levels A1, A2 and B1 that runs entirely in your browser."
       />
 
       <section className="settings-section" aria-labelledby="about-app">
         <h2 id="about-app">What this is</h2>
         <p>
-          Deutsch Wort Shatz teaches 3,460 German words and phrases — 800 at A1, 693 at A2 and
-          1,967 at B1 — ordered by frequency and grouped by topic. Every entry is a curated
-          headword with its English meaning, word class and topic; nothing is generated.
+          Deutsch Wortschatz teaches 3,460 German words and phrases — 800 at A1, 693 at A2 and 1,967
+          at B1 — ordered by frequency and grouped by topic. Every entry is a curated headword with
+          its English meaning, word class and topic; nothing is generated.
         </p>
         <p>
           Reviews are scheduled automatically using spaced repetition. You are never asked to rate
           how well you know a word.
+        </p>
+      </section>
+
+      <section className="settings-section" aria-labelledby="about-deulern">
+        <h2 id="about-deulern">Part of DeuLern</h2>
+        <p>
+          This app is one of the free German learning apps at{' '}
+          <a href="https://deulern.com" rel="noopener">
+            deulern.com
+          </a>
+          . The others are{' '}
+          <a href="https://grammatik.deulern.com" rel="noopener">
+            Grammatik mit System
+          </a>{' '}
+          for grammar and{' '}
+          <a href="https://verben.deulern.com" rel="noopener">
+            Verben Meistern
+          </a>{' '}
+          for verbs. They share this design, and each keeps its progress in your browser only.
         </p>
       </section>
 

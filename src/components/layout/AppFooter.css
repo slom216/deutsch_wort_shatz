@@ -1,0 +1,62 @@
+/* The footer is a solid brand band in both themes, so it re-points the text tokens it
+   uses rather than fighting them per rule. */
+.app-footer {
+  --color-text: #ffffff;
+  --color-text-muted: var(--color-accent-cyan);
+  --color-primary: var(--color-tertiary);
+  --focus-ring: 2px solid var(--color-tertiary);
+
+  margin-top: auto;
+  background: var(--color-brand);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.app-footer__inner {
+  display: grid;
+  gap: var(--space-6);
+  max-width: var(--shell-max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--container-padding);
+}
+
+.app-footer__groups {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+.app-footer__group {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+
+.app-footer__heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.app-footer a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.app-footer__note {
+  max-width: var(--reading-max-width);
+  color: var(--color-text-muted);
+}
+
+.app-footer__note a {
+  color: var(--color-text);
+  text-decoration: underline;
+}

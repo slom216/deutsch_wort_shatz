@@ -1,48 +1,56 @@
 /**
- * Design tokens — Junior Achievement SoCal system (see design.md).
+ * Design tokens — DeuLern suite (Junior Achievement SoCal system, see design.md).
  *
- * All colour, spacing, type and motion values used by the application resolve to a
- * token defined here. Components must not hard-code raw values.
+ * Values are kept in step with the other DeuLern apps (deulern.com, grammatik.deulern.com,
+ * verben.deulern.com) so the suite reads as one product. Retheme here only; components
+ * must not hard-code raw values.
  *
- * Contrast: every `--color-text*` on its matching `--color-surface*` meets WCAG AA (§30).
- * Where the brand hex fails AA as text (secondary #00A0AF, error #D64545) the token holds
- * the nearest AA-passing shade of the same brand colour and the raw hex stays for fills.
+ * Light and dark both come from `light-dark()`, driven by `color-scheme`. No attribute on
+ * <html> means "follow the OS"; the theme toggle pins it with `data-theme`.
  */
 
 :root {
-  /* ---- palette (design.md · colors) ---- */
-  --color-bg: #f6fbfc; /* surface */
-  --color-surface: #ffffff; /* neutral */
-  --color-surface-raised: #ffffff;
-  --color-surface-sunken: #eaf2f4; /* primary-10 */
-  --color-border: #d5e5ea;
-  --color-border-strong: #5f8f9f; /* primary-60 */
+  color-scheme: light dark;
 
-  --color-text: #285f74; /* on-surface */
-  --color-text-muted: #476f7d; /* primary-60, darkened to AA at 14px */
-  --color-text-inverse: #ffffff;
-
-  --color-primary: #285f74;
-  --color-primary-hover: #1c4655;
-  --color-primary-subtle: #eaf2f4; /* primary-10 */
-  --color-on-primary: #ffffff;
-
-  /* Brand accents. Lime is reserved for the primary call to action; cyan supports
-     airy fills only, never text (design.md · Do's and Don'ts). */
-  --color-cta: #e6e33c; /* tertiary */
-  --color-cta-hover: #d3d02c;
-  --color-on-cta: #285f74;
+  /* ---- brand palette (fixed in both themes) ---- */
+  --color-brand: #285f74; /* primary */
+  --color-secondary: #00a0af;
+  --color-tertiary: #e6e33c;
   --color-accent-cyan: #a7e8ea;
   --color-accent-lime: #dceb4a;
 
-  --color-success: #00707c; /* secondary, darkened to AA */
-  --color-success-subtle: #e0f5f6;
-  --color-warning: #7a6b00; /* tertiary, darkened to AA */
-  --color-warning-subtle: #fbf9da;
-  --color-danger: #c1403f; /* error, darkened to AA */
-  --color-danger-subtle: #f9e7e7;
+  /* ---- surfaces ---- */
+  --color-bg: light-dark(#f6fbfc, #0b1d24);
+  --color-surface: light-dark(#ffffff, #102a33);
+  --color-surface-raised: light-dark(#ffffff, #17363f);
+  --color-surface-sunken: light-dark(#eaf2f4, #17363f);
+  --color-border: light-dark(#285f7426, #ffffff26);
+  --color-border-strong: light-dark(#285f7459, #ffffff4d);
 
-  /* ---- spacing scale (design.md · spacing 6 / 14 / 28 / 40 / 88) ---- */
+  --color-text: light-dark(#285f74, #eaf2f4);
+  --color-text-muted: light-dark(#4a7a8b, #a3c0c9);
+  --color-text-inverse: light-dark(#ffffff, #285f74);
+
+  /* Interactive colour. Cyan in the dark theme, deep teal in the light one — both AA
+     against their own surface. */
+  --color-primary: light-dark(#007f8b, #5fd6e2);
+  --color-primary-hover: light-dark(#00646e, #8ae4ec);
+  --color-primary-subtle: color-mix(in oklab, var(--color-secondary) 12%, var(--color-surface));
+  --color-on-primary: light-dark(#ffffff, #0b1d24);
+
+  /* Lime is reserved for the single primary call to action on a screen. */
+  --color-cta: var(--color-tertiary);
+  --color-cta-hover: color-mix(in oklab, var(--color-tertiary) 88%, var(--color-brand));
+  --color-on-cta: var(--color-brand);
+
+  --color-success: var(--color-primary);
+  --color-success-subtle: var(--color-primary-subtle);
+  --color-warning: light-dark(#6b6a12, var(--color-accent-lime));
+  --color-warning-subtle: color-mix(in oklab, var(--color-tertiary) 24%, var(--color-surface));
+  --color-danger: light-dark(#c93b3b, #f08585);
+  --color-danger-subtle: color-mix(in oklab, #d64545 12%, var(--color-surface));
+
+  /* ---- spacing scale (design.md · 6 / 14 / 28 / 40 / 88) ---- */
   --space-1: 6px;
   --space-2: 10px;
   --space-3: 14px;
@@ -53,10 +61,10 @@
   --space-8: 88px;
 
   /* ---- typography ---- */
-  --font-display: 'Archivo', ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
   --font-sans:
-    'Public Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+    'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-display: var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   --text-xs: 0.75rem; /* 12px · label-sm */
@@ -65,10 +73,10 @@
   --text-lg: 1.0625rem; /* 17px · label-lg, button-text */
   --text-xl: 1.25rem; /* 20px · body-lg */
   --text-2xl: 1.75rem; /* 28px · headline-sm */
-  --text-3xl: 2.25rem; /* 36px · headline-md */
-  --text-4xl: 3.375rem; /* 54px · headline-lg */
+  --text-3xl: clamp(1.625rem, 5vw, 2.25rem); /* headline-md */
+  --text-4xl: clamp(2rem, 7vw, 3.375rem); /* headline-lg */
 
-  --leading-tight: 1.22;
+  --leading-tight: 1.2;
   --leading-normal: 1.53;
   --leading-relaxed: 1.7;
 
@@ -78,6 +86,8 @@
   --weight-bold: 700;
   --weight-display: 800;
 
+  --tracking-label: 0.04em;
+
   /* ---- radii, depth, layout ---- */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -85,54 +95,32 @@
   --radius-xl: 28px;
   --radius-pill: 9999px;
 
-  /* Depth is carried by borders and colour blocking, not material surfaces
-     (design.md · Elevation & Depth). Only dragging keeps a lift. */
-  --shadow-sm: none;
-  --shadow-md: 0 2px 8px rgb(40 95 116 / 18%);
+  --shadow-sm: 0 1px 2px light-dark(rgb(40 95 116 / 8%), rgb(0 0 0 / 40%));
+  --shadow-md: 0 8px 24px light-dark(rgb(40 95 116 / 12%), rgb(0 0 0 / 50%));
 
-  --sidebar-width: 15rem;
-  --content-max-width: 72rem;
+  --shell-max-width: 80rem;
+  --content-max-width: 75rem;
+  --reading-max-width: 43rem;
+  --container-padding: 20px;
+  --header-height: 72px;
+  --tap-target: 44px;
 
   /* ---- motion (§30: reduced motion honoured below) ---- */
-  --duration-fast: 120ms;
-  --duration-normal: 200ms;
-  --easing-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --duration-fast: 160ms;
+  --duration-normal: 220ms;
+  --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
 
   --focus-ring: 2px solid var(--color-primary);
   --focus-ring-offset: 2px;
-
-  color-scheme: light dark;
 }
 
-/* The brand is a light system; at night it keeps its identity by inverting into the
-   deep teal rather than a neutral grey. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #12262e;
-    --color-surface: #1b3b47;
-    --color-surface-raised: #234754;
-    --color-surface-sunken: #0d1d23;
-    --color-border: #2f5a68;
-    --color-border-strong: #5f8f9f;
-
-    --color-text: #eaf2f4;
-    --color-text-muted: #9fc4ce;
-    --color-text-inverse: #12262e;
-
-    --color-primary: #a7e8ea;
-    --color-primary-hover: #c6f1f2;
-    --color-primary-subtle: #23505d;
-    --color-on-primary: #12262e;
-
-    --color-success: #7fd8de;
-    --color-success-subtle: #143a3f;
-    --color-warning: #dceb4a;
-    --color-warning-subtle: #33341a;
-    --color-danger: #f0908e;
-    --color-danger-subtle: #3c1e1e;
-
-    --shadow-md: 0 2px 8px rgb(0 0 0 / 45%);
-  }
+/* The toggle pins `color-scheme`, and with it every `light-dark()` above. Without the
+   attribute the OS decides — the page still themes correctly with JS disabled. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: reduce) {

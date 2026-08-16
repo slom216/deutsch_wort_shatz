@@ -25,7 +25,7 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },
   { path: '/data', heading: /^data$/i },
-  { path: '/about', heading: /about deutsch wort shatz/i },
+  { path: '/about', heading: /about deutsch wortschatz/i },
 ];
 
 test.describe('routes', () => {
@@ -117,7 +117,8 @@ test('the app is navigable by keyboard alone', async ({ page }) => {
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: /skip to main content/i })).toBeFocused();
 
-  // Tab into the navigation and follow a link with the keyboard.
+  // Tab past the wordmark and Dashboard into the navigation, then follow a link.
+  await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Tab');
   await page.keyboard.press('Enter');

@@ -1,12 +1,12 @@
 .app-shell {
-  display: grid;
-  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 .app-shell__main {
   min-width: 0;
-  padding: var(--space-6) var(--space-6) var(--space-8);
+  padding: var(--space-6) var(--container-padding) var(--space-8);
 }
 
 .app-shell__main:focus {
@@ -18,13 +18,8 @@
   margin: 0 auto;
 }
 
-/* The app is desktop-first (§1); this keeps it usable on a narrow window. */
 @media (max-width: 60rem) {
-  .app-shell {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .app-shell__main {
-    padding: var(--space-4);
+    padding: var(--space-4) var(--container-padding) var(--space-6);
   }
 }

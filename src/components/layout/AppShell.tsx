@@ -2,15 +2,16 @@ import type { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/app/ErrorBoundary';
-import { Sidebar } from './Sidebar';
+import { AppHeader } from './AppHeader';
+import { AppFooter } from './AppFooter';
 import './AppShell.css';
 
 /**
- * Desktop-first application shell (Phase 0 deliverables 13–14).
+ * Application shell, laid out like the rest of the DeuLern suite: sticky top bar, one
+ * `<main>` landmark, brand-band footer.
  *
- * A persistent sidebar plus a single `<main>` landmark. The inner error boundary keeps
- * a crashing page from taking down navigation, so the learner can always move away
- * from a broken screen.
+ * The inner error boundary keeps a crashing page from taking down navigation, so the
+ * learner can always move away from a broken screen.
  */
 export function AppShell(): ReactNode {
   return (
@@ -18,7 +19,7 @@ export function AppShell(): ReactNode {
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
-      <Sidebar />
+      <AppHeader />
       <main id="main-content" className="app-shell__main" tabIndex={-1}>
         <div className="app-shell__content">
           <ErrorBoundary>
@@ -26,6 +27,7 @@ export function AppShell(): ReactNode {
           </ErrorBoundary>
         </div>
       </main>
+      <AppFooter />
     </div>
   );
 }
