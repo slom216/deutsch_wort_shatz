@@ -24,7 +24,7 @@
   padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   font-size: var(--text-base);
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--easing-standard);

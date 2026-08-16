@@ -1,82 +1,94 @@
 /**
- * Design tokens (Phase 0 deliverable 16).
+ * Design tokens — Junior Achievement SoCal system (see design.md).
  *
  * All colour, spacing, type and motion values used by the application resolve to a
  * token defined here. Components must not hard-code raw values.
  *
  * Contrast: every `--color-text*` on its matching `--color-surface*` meets WCAG AA (§30).
+ * Where the brand hex fails AA as text (secondary #00A0AF, error #D64545) the token holds
+ * the nearest AA-passing shade of the same brand colour and the raw hex stays for fills.
  */
 
 :root {
-  /* ---- palette ---- */
-  --color-bg: #f6f7f9;
-  --color-surface: #ffffff;
+  /* ---- palette (design.md · colors) ---- */
+  --color-bg: #f6fbfc; /* surface */
+  --color-surface: #ffffff; /* neutral */
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #eef0f4;
-  --color-border: #d8dce4;
-  --color-border-strong: #b6bcc9;
+  --color-surface-sunken: #eaf2f4; /* primary-10 */
+  --color-border: #d5e5ea;
+  --color-border-strong: #5f8f9f; /* primary-60 */
 
-  --color-text: #16191f;
-  --color-text-muted: #5a6273;
+  --color-text: #285f74; /* on-surface */
+  --color-text-muted: #476f7d; /* primary-60, darkened to AA at 14px */
   --color-text-inverse: #ffffff;
 
-  --color-primary: #2f5bd7;
-  --color-primary-hover: #2648ab;
-  --color-primary-subtle: #e6ecfb;
+  --color-primary: #285f74;
+  --color-primary-hover: #1c4655;
+  --color-primary-subtle: #eaf2f4; /* primary-10 */
   --color-on-primary: #ffffff;
 
-  --color-success: #1c7a4a;
-  --color-success-subtle: #e3f4ea;
-  --color-warning: #8a5a00;
-  --color-warning-subtle: #fdf1dc;
-  --color-danger: #b3261e;
-  --color-danger-subtle: #fce9e8;
+  /* Brand accents. Lime is reserved for the primary call to action; cyan supports
+     airy fills only, never text (design.md · Do's and Don'ts). */
+  --color-cta: #e6e33c; /* tertiary */
+  --color-cta-hover: #d3d02c;
+  --color-on-cta: #285f74;
+  --color-accent-cyan: #a7e8ea;
+  --color-accent-lime: #dceb4a;
 
-  /* CEFR level accents — always paired with a text label, never colour alone (§30). */
-  --color-level-a1: #1c7a4a;
-  --color-level-a2: #2f5bd7;
-  --color-level-b1: #7a3fb8;
+  --color-success: #00707c; /* secondary, darkened to AA */
+  --color-success-subtle: #e0f5f6;
+  --color-warning: #7a6b00; /* tertiary, darkened to AA */
+  --color-warning-subtle: #fbf9da;
+  --color-danger: #c1403f; /* error, darkened to AA */
+  --color-danger-subtle: #f9e7e7;
 
-  /* ---- spacing scale ---- */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-8: 4rem;
+  /* ---- spacing scale (design.md · spacing 6 / 14 / 28 / 40 / 88) ---- */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 20px;
+  --space-5: 28px;
+  --space-6: 40px;
+  --space-7: 56px;
+  --space-8: 88px;
 
   /* ---- typography ---- */
+  --font-display: 'Archivo', ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    'Public Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.375rem;
-  --text-2xl: 1.75rem;
-  --text-3xl: 2.25rem;
+  --text-xs: 0.75rem; /* 12px · label-sm */
+  --text-sm: 0.875rem; /* 14px · body-sm, nav-link */
+  --text-base: 0.9375rem; /* 15px · body-md */
+  --text-lg: 1.0625rem; /* 17px · label-lg, button-text */
+  --text-xl: 1.25rem; /* 20px · body-lg */
+  --text-2xl: 1.75rem; /* 28px · headline-sm */
+  --text-3xl: 2.25rem; /* 36px · headline-md */
+  --text-4xl: 3.375rem; /* 54px · headline-lg */
 
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
+  --leading-tight: 1.22;
+  --leading-normal: 1.53;
   --leading-relaxed: 1.7;
 
-  --weight-normal: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
+  --weight-normal: 500;
+  --weight-medium: 600;
+  --weight-semibold: 700;
   --weight-bold: 700;
+  --weight-display: 800;
 
-  /* ---- radii, shadow, layout ---- */
+  /* ---- radii, depth, layout ---- */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-pill: 999px;
+  --radius-lg: 16px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
 
-  --shadow-sm: 0 1px 2px rgb(16 20 30 / 8%);
-  --shadow-md: 0 2px 8px rgb(16 20 30 / 10%);
+  /* Depth is carried by borders and colour blocking, not material surfaces
+     (design.md · Elevation & Depth). Only dragging keeps a lift. */
+  --shadow-sm: none;
+  --shadow-md: 0 2px 8px rgb(40 95 116 / 18%);
 
   --sidebar-width: 15rem;
   --content-max-width: 72rem;
@@ -92,36 +104,33 @@
   color-scheme: light dark;
 }
 
+/* The brand is a light system; at night it keeps its identity by inverting into the
+   deep teal rather than a neutral grey. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #12141a;
-    --color-surface: #1a1d25;
-    --color-surface-raised: #222630;
-    --color-surface-sunken: #0e1015;
-    --color-border: #333846;
-    --color-border-strong: #4a5162;
+    --color-bg: #12262e;
+    --color-surface: #1b3b47;
+    --color-surface-raised: #234754;
+    --color-surface-sunken: #0d1d23;
+    --color-border: #2f5a68;
+    --color-border-strong: #5f8f9f;
 
-    --color-text: #eef0f5;
-    --color-text-muted: #a5adbf;
-    --color-text-inverse: #12141a;
+    --color-text: #eaf2f4;
+    --color-text-muted: #9fc4ce;
+    --color-text-inverse: #12262e;
 
-    --color-primary: #8aa8f5;
-    --color-primary-hover: #a5bcf8;
-    --color-primary-subtle: #1e2740;
-    --color-on-primary: #10131c;
+    --color-primary: #a7e8ea;
+    --color-primary-hover: #c6f1f2;
+    --color-primary-subtle: #23505d;
+    --color-on-primary: #12262e;
 
-    --color-success: #67d09a;
-    --color-success-subtle: #14291f;
-    --color-warning: #e8b866;
-    --color-warning-subtle: #2d2416;
-    --color-danger: #f19a94;
-    --color-danger-subtle: #2e1817;
+    --color-success: #7fd8de;
+    --color-success-subtle: #143a3f;
+    --color-warning: #dceb4a;
+    --color-warning-subtle: #33341a;
+    --color-danger: #f0908e;
+    --color-danger-subtle: #3c1e1e;
 
-    --color-level-a1: #67d09a;
-    --color-level-a2: #8aa8f5;
-    --color-level-b1: #c39ae8;
-
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
     --shadow-md: 0 2px 8px rgb(0 0 0 / 45%);
   }
 }

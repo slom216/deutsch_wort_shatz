@@ -57,7 +57,7 @@
 .exercise__gap-input {
   padding: var(--space-3);
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background: var(--color-surface);
   font-size: var(--text-lg);
   width: 100%;
@@ -147,14 +147,17 @@
   letter-spacing: 0.04em;
 }
 
+/* button-primary (design.md): lime pill, teal label, the page's one conversion action. */
 .exercise__submit,
 .runner__next {
   align-self: flex-start;
+  min-height: 56px;
   padding: var(--space-3) var(--space-5);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-md);
+  background: var(--color-cta);
+  color: var(--color-on-cta);
+  border: 1px solid var(--color-cta);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
   cursor: pointer;
   margin-top: var(--space-2);
@@ -162,7 +165,8 @@
 
 .exercise__submit:hover:not(:disabled),
 .runner__next:hover {
-  background: var(--color-primary-hover);
+  background: var(--color-cta-hover);
+  border-color: var(--color-cta-hover);
 }
 
 .exercise__submit:disabled {
@@ -177,12 +181,14 @@
 .runner__hint,
 .runner__reveal,
 .page-action {
+  min-height: 48px;
   padding: var(--space-2) var(--space-4);
-  background: transparent;
+  background: var(--color-surface);
+  color: var(--color-primary);
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
 }
 
 .runner__retry:hover,

@@ -24,12 +24,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Headlines are heavy, compact and confident — 800 weight, tight leading (design.md). */
 h1,
 h2,
 h3,
 h4 {
+  font-family: var(--font-display);
   line-height: var(--leading-tight);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-display);
   text-wrap: balance;
 }
 
@@ -37,10 +39,16 @@ h1 {
   font-size: var(--text-3xl);
 }
 h2 {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
 }
 h3 {
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
+}
+
+@media (min-width: 60rem) {
+  h1 {
+    font-size: var(--text-4xl);
+  }
 }
 
 p {
@@ -104,8 +112,8 @@ svg {
   padding: var(--space-2) var(--space-4);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: var(--radius-md);
-  font-weight: var(--weight-medium);
+  border-radius: var(--radius-pill);
+  font-weight: var(--weight-semibold);
   transform: translateY(-200%);
   transition: transform var(--duration-fast) var(--easing-standard);
 }
@@ -144,12 +152,13 @@ svg {
 }
 
 .error-boundary__actions button {
+  min-height: 48px;
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: var(--radius-md);
-  font-weight: var(--weight-medium);
+  border-radius: var(--radius-pill);
+  font-weight: var(--weight-semibold);
   cursor: pointer;
 }
 
