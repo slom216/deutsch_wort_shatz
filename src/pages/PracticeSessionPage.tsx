@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { ExerciseRunner, type ExerciseOutcome } from '@/components/exercises/ExerciseRunner';
+import { LevelBadge } from '@/components/gamification/LevelBadge';
 import {
   bandBySlug,
   bandsForLevel,
@@ -280,6 +281,9 @@ export default function PracticeSessionPage(): ReactNode {
   return (
     <>
       <PageHeader title="Practice session" />
+      <div className="level-badge-bar">
+        <LevelBadge />
+      </div>
       <ExerciseRunner
         key={exercise.id}
         exercise={exercise}

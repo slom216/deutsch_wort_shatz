@@ -12,6 +12,7 @@ import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { useGamification } from '@/features/gamification/useGamification';
+import { avatarSrc, MAX_AVATAR_LEVEL } from '@/features/gamification/xp';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
@@ -24,13 +25,6 @@ import './AchievementsPage.css';
  * Every figure is derived from what is stored in IndexedDB — SRS state, exercise history
  * and XP events. Nothing is shown as a fabricated zero (§34).
  */
-/**
- * Highest `public/img/avatar/level-N.png` that exists. The level number is drawn into the
- * artwork, so a learner above this keeps the top card rather than being shown a wrong one —
- * raise this as cards for levels 7–20 are added.
- */
-const MAX_AVATAR_LEVEL = 6;
-
 export default function DashboardPage(): ReactNode {
   const { manifest, error: contentError } = useContentManifest();
   const settings = useSettingsStore((state) => state.settings);
@@ -121,6 +115,41 @@ export default function DashboardPage(): ReactNode {
         </button>
       </section>
 
+      {/* The rank card, at the size the artwork was drawn for. */}
+      {game ? (
+        <section className="wizard-card" aria-labelledby="dash-wizard">
+          <img
+            className="wizard-card__art"
+            src={avatarSrc(game.level.level)}
+            alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
+            width={1254}
+            height={1254}
+          />
+          <div className="wizard-card__body">
+            <h2 id="dash-wizard">Word Wizard</h2>
+            <p className="wizard-card__level">Level {game.level.level}</p>
+            <p className="wizard-card__xp">
+              {game.totalXp.toLocaleString('en-US')} <span>XP</span>
+            </p>
+            <div
+              className="wizard-card__meter"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(game.level.fraction * 100)}
+              aria-label={`Progress to level ${game.level.level + 1}`}
+            >
+              <span style={{ width: `${game.level.fraction * 100}%` }} />
+            </div>
+            <p className="wizard-card__hint">
+              {game.level.xpIntoLevel.toLocaleString('en-US')} XP into this level ·{' '}
+              <strong>{game.level.xpForNextLevel.toLocaleString('en-US')} XP</strong> to level{' '}
+              {game.level.level + 1}
+            </p>
+          </div>
+        </section>
+      ) : null}
+
       <dl className="stat-grid">
         <StatCard
           label="Reviews due"
@@ -179,20 +208,6 @@ export default function DashboardPage(): ReactNode {
             aria-label="Daily goal progress"
           >
             <span style={{ width: `${game.dailyGoal.fraction * 100}%` }} />
-          </div>
-        ) : null}
-        {game ? (
-          <div className="level-avatar">
-            <img
-              src={`/img/avatar/level-${Math.min(game.level.level, MAX_AVATAR_LEVEL)}.png`}
-              alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
-              width={320}
-              height={320}
-            />
-            <p className="band-summary">
-              Level {game.level.level} · {game.level.xpForNextLevel} XP to level{' '}
-              {game.level.level + 1}
-            </p>
           </div>
         ) : null}
       </section>

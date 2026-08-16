@@ -90,6 +90,18 @@ export interface LevelProgress {
   readonly fraction: number;
 }
 
+/**
+ * Highest `public/img/avatar/level-N.png` that exists. The level number is drawn into the
+ * artwork, so a learner above this keeps the top card rather than being shown a wrong one —
+ * raise this as cards for levels 7–20 are added.
+ */
+export const MAX_AVATAR_LEVEL = 7;
+
+/** Word Wizard rank card for a level. */
+export function avatarSrc(level: number): string {
+  return `/img/avatar/level-${Math.min(Math.max(1, level), MAX_AVATAR_LEVEL)}.png`;
+}
+
 export function levelProgress(totalXp: number): LevelProgress {
   const level = levelForXp(totalXp);
   const floor = xpRequiredForLevel(level);

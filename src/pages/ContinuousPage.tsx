@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { ExerciseRunner } from '@/components/exercises/ExerciseRunner';
+import { LevelBadge } from '@/components/gamification/LevelBadge';
 import { CEFR_LEVELS } from '@/content/vocabulary/frequencyBands';
-import { useGamification } from '@/features/gamification/useGamification';
-import { levelProgress } from '@/features/gamification/xp';
+import { useLiveLevel } from '@/features/gamification/useLiveLevel';
 import { useSessionStore } from '@/features/practice/session/sessionStore';
 import { useContinuousSession } from '@/features/practice/session/useContinuousSession';
 import { levelCompletion } from '@/features/progress/analytics';
@@ -28,27 +28,19 @@ const LEVEL_UP_MS = 8000;
  * (`endless.ts`). Every answer is already saved when it is given, so "stop" is just the
  * Finish button — or closing the tab.
  *
- * XP is shown as it is earned. The lifetime total is derived from stored history (§23) and
- * recomputing it after every answer would mean re-reading the whole history table, so the
- * bar adds this session's XP to the total read once at the start.
+ * XP is shown as it is earned — see `useLiveLevel` for how the running total is kept.
  */
 export default function ContinuousPage(): ReactNode {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
-  const { snapshot: game } = useGamification();
 
   const stream = useContinuousSession(sessionId ?? 'continuous');
 
   const answers = useSessionStore((state) => state.answers);
-  const bonusXp = useSessionStore((state) => state.bonusXp);
   const finish = useSessionStore((state) => state.finish);
 
-  const sessionXp = useMemo(
-    () => answers.reduce((sum, answer) => sum + (answer.xpAwarded ?? 0), 0) + bonusXp,
-    [answers, bonusXp],
-  );
+  const { totalXp, sessionXp, level, ready } = useLiveLevel();
   const correct = answers.filter((answer) => answer.result.correct).length;
-  const lastXp = answers[answers.length - 1]?.xpAwarded ?? 0;
 
   /**
    * How far through each CEFR level the learner is, by mastery points rather than by words
@@ -64,21 +56,10 @@ export default function ContinuousPage(): ReactNode {
   }, [answers.length, refreshProgress]);
   const completion = useMemo(() => levelCompletion(progress), [progress]);
 
-  /** Lifetime XP before this session, captured from the first snapshot that arrives. */
-  const [baseXp, setBaseXp] = useState<number | null>(null);
-  useEffect(() => {
-    if (baseXp !== null || !game) return;
-    // Answers given before the snapshot loaded are already inside its total.
-    setBaseXp(Math.max(0, game.totalXp - sessionXp));
-  }, [game, baseXp, sessionXp]);
-
-  const totalXp = (baseXp ?? 0) + sessionXp;
-  const level = levelProgress(totalXp);
-
   const [levelUp, setLevelUp] = useState<number | null>(null);
   const previousLevel = useRef<number | null>(null);
   useEffect(() => {
-    if (baseXp === null) return undefined;
+    if (!ready) return undefined;
 
     const seen = previousLevel.current;
     previousLevel.current = level.level;
@@ -89,7 +70,7 @@ export default function ContinuousPage(): ReactNode {
     return () => {
       clearTimeout(timer);
     };
-  }, [level.level, baseXp]);
+  }, [level.level, ready]);
 
   const stop = async (): Promise<void> => {
     await finish();
@@ -108,18 +89,7 @@ export default function ContinuousPage(): ReactNode {
 
       <div className="stream-bar">
         <div className="stream-bar__level">
-          <span className="stream-bar__badge">Level {level.level}</span>
-          <div
-            className="meter meter--goal"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(level.fraction * 100)}
-            aria-label={`Progress to level ${level.level + 1}`}
-          >
-            <span style={{ width: `${level.fraction * 100}%` }} />
-          </div>
-          <span className="stream-bar__hint">{level.xpForNextLevel} XP to next level</span>
+          <LevelBadge />
         </div>
 
         {/*
@@ -154,18 +124,9 @@ export default function ContinuousPage(): ReactNode {
 
         <dl className="stream-bar__stats">
           <div>
+            {/* The XP just earned is announced by the level badge, not repeated here. */}
             <dt>XP this session</dt>
-            <dd>
-              {sessionXp}
-              {lastXp !== 0 ? (
-                <span
-                  className={lastXp > 0 ? 'stream-bar__gain' : 'stream-bar__gain stream-bar__loss'}
-                  key={answers.length}
-                >
-                  {lastXp > 0 ? `+${lastXp}` : lastXp}
-                </span>
-              ) : null}
-            </dd>
+            <dd>{sessionXp}</dd>
           </div>
           <div>
             <dt>Answered</dt>

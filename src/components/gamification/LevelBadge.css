@@ -1,0 +1,96 @@
+/* The learner's rank, shown beside the exercise they are answering. */
+
+.level-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Standalone strip on screens that have no status bar of their own. */
+.level-badge-bar {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.level-badge__avatar {
+  width: 6rem;
+  height: 6rem;
+  flex: none;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.level-badge__body {
+  flex: 1 1 10rem;
+  min-width: 9rem;
+  max-width: 28rem;
+}
+
+.level-badge__title {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+
+.level-badge__hint {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Styled here rather than reusing `.meter`, so any screen can drop the badge in without
+   also having to import the achievements stylesheet. */
+.level-badge__meter {
+  height: 0.6rem;
+  margin-top: var(--space-2);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.level-badge__meter span {
+  display: block;
+  height: 100%;
+  background: var(--color-success);
+  transition: width 700ms ease-out;
+}
+
+/* The XP just earned, floating up out of the level line. */
+.level-badge__gain {
+  margin-left: var(--space-2);
+  color: var(--color-success);
+  font-variant-numeric: tabular-nums;
+  animation: level-badge-gain 1.4s ease-out forwards;
+}
+
+.level-badge__gain--loss {
+  color: var(--color-danger);
+}
+
+@keyframes level-badge-gain {
+  from {
+    opacity: 1;
+    transform: translateY(0.4rem) scale(1.15);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-0.8rem) scale(1);
+  }
+}
+
+/* A learner who has asked for less motion still gets the figures, just not the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .level-badge__meter span {
+    transition: none;
+  }
+
+  .level-badge__gain {
+    animation: none;
+    opacity: 1;
+  }
+}
