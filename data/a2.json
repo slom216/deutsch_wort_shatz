@@ -39,7 +39,7 @@
     "rank": 4,
     "level": "A2",
     "kind": "word",
-    "german": "PC",
+    "german": "der PC",
     "english": [
       "PC",
       "personal computer"
@@ -51,7 +51,7 @@
     "rank": 5,
     "level": "A2",
     "kind": "word",
-    "german": "SMS",
+    "german": "die SMS",
     "english": [
       "text message",
       "SMS"
@@ -75,7 +75,7 @@
     "rank": 7,
     "level": "A2",
     "kind": "word",
-    "german": "WC",
+    "german": "das WC",
     "english": [
       "toilet, WC",
       "toilet",
@@ -100,7 +100,7 @@
     "rank": 9,
     "level": "A2",
     "kind": "word",
-    "german": "Antwortbogen",
+    "german": "der Antwortbogen",
     "english": [
       "answer sheet"
     ],
@@ -123,7 +123,7 @@
     "rank": 11,
     "level": "A2",
     "kind": "word",
-    "german": "Prüfer",
+    "german": "der Prüfer",
     "english": [
       "examiner"
     ],
@@ -134,7 +134,7 @@
     "rank": 12,
     "level": "A2",
     "kind": "word",
-    "german": "Prüferin",
+    "german": "die Prüferin",
     "english": [
       "female examiner",
       "examiner"
@@ -146,7 +146,7 @@
     "rank": 13,
     "level": "A2",
     "kind": "word",
-    "german": "Punkt",
+    "german": "der Punkt",
     "english": [
       "point"
     ],
@@ -157,7 +157,7 @@
     "rank": 14,
     "level": "A2",
     "kind": "word",
-    "german": "Wörterbuch",
+    "german": "das Wörterbuch",
     "english": [
       "dictionary"
     ],
@@ -168,7 +168,7 @@
     "rank": 15,
     "level": "A2",
     "kind": "word",
-    "german": "Angestellter",
+    "german": "der Angestellter",
     "english": [
       "employee"
     ],
@@ -179,7 +179,7 @@
     "rank": 16,
     "level": "A2",
     "kind": "word",
-    "german": "Angestellte",
+    "german": "die Angestellte",
     "english": [
       "employee"
     ],
@@ -190,7 +190,7 @@
     "rank": 17,
     "level": "A2",
     "kind": "word",
-    "german": "Ärztin",
+    "german": "die Ärztin",
     "english": [
       "female doctor",
       "doctor"
@@ -202,7 +202,7 @@
     "rank": 18,
     "level": "A2",
     "kind": "word",
-    "german": "Auszubildender",
+    "german": "der Auszubildender",
     "english": [
       "trainee",
       "apprentice"
@@ -214,7 +214,7 @@
     "rank": 19,
     "level": "A2",
     "kind": "word",
-    "german": "Auszubildende",
+    "german": "die Auszubildende",
     "english": [
       "trainee"
     ],
@@ -225,7 +225,7 @@
     "rank": 20,
     "level": "A2",
     "kind": "word",
-    "german": "Autor",
+    "german": "der Autor",
     "english": [
       "author"
     ],
@@ -236,7 +236,7 @@
     "rank": 21,
     "level": "A2",
     "kind": "word",
-    "german": "Autorin",
+    "german": "die Autorin",
     "english": [
       "female author",
       "author"
@@ -248,7 +248,7 @@
     "rank": 22,
     "level": "A2",
     "kind": "word",
-    "german": "Babysitter",
+    "german": "der Babysitter",
     "english": [
       "babysitter"
     ],
@@ -259,7 +259,7 @@
     "rank": 23,
     "level": "A2",
     "kind": "word",
-    "german": "Bäcker",
+    "german": "der Bäcker",
     "english": [
       "baker"
     ],
@@ -270,7 +270,7 @@
     "rank": 24,
     "level": "A2",
     "kind": "word",
-    "german": "Bäckerin",
+    "german": "die Bäckerin",
     "english": [
       "female baker",
       "baker"
@@ -282,7 +282,7 @@
     "rank": 25,
     "level": "A2",
     "kind": "word",
-    "german": "Doktorin",
+    "german": "die Doktorin",
     "english": [
       "female doctor",
       "doctor"
@@ -294,7 +294,7 @@
     "rank": 26,
     "level": "A2",
     "kind": "word",
-    "german": "Fahrerin",
+    "german": "die Fahrerin",
     "english": [
       "female driver",
       "driver"
@@ -306,7 +306,7 @@
     "rank": 27,
     "level": "A2",
     "kind": "word",
-    "german": "Friseur",
+    "german": "der Friseur",
     "english": [
       "hairdresser"
     ],
@@ -317,7 +317,7 @@
     "rank": 28,
     "level": "A2",
     "kind": "word",
-    "german": "Friseurin",
+    "german": "die Friseurin",
     "english": [
       "female hairdresser",
       "hairdresser"
@@ -329,7 +329,7 @@
     "rank": 29,
     "level": "A2",
     "kind": "word",
-    "german": "Handwerker",
+    "german": "der Handwerker",
     "english": [
       "tradesman",
       "craftsman"
@@ -341,7 +341,7 @@
     "rank": 30,
     "level": "A2",
     "kind": "word",
-    "german": "Handwerkerin",
+    "german": "die Handwerkerin",
     "english": [
       "tradeswoman",
       "craftswoman"
@@ -353,7 +353,7 @@
     "rank": 31,
     "level": "A2",
     "kind": "word",
-    "german": "Journalist",
+    "german": "der Journalist",
     "english": [
       "journalist"
     ],
@@ -364,7 +364,7 @@
     "rank": 32,
     "level": "A2",
     "kind": "word",
-    "german": "Journalistin",
+    "german": "die Journalistin",
     "english": [
       "female journalist",
       "journalist"
@@ -376,7 +376,7 @@
     "rank": 33,
     "level": "A2",
     "kind": "word",
-    "german": "Kaufmann",
+    "german": "der Kaufmann",
     "english": [
       "clerk, administrative assistant",
       "clerk",
@@ -389,7 +389,7 @@
     "rank": 34,
     "level": "A2",
     "kind": "word",
-    "german": "Kauffrau",
+    "german": "die Kauffrau",
     "english": [
       "businesswoman",
       "merchant"
@@ -401,7 +401,7 @@
     "rank": 35,
     "level": "A2",
     "kind": "word",
-    "german": "Kellner",
+    "german": "der Kellner",
     "english": [
       "waiter"
     ],
@@ -412,7 +412,7 @@
     "rank": 36,
     "level": "A2",
     "kind": "word",
-    "german": "Kellnerin",
+    "german": "die Kellnerin",
     "english": [
       "waitress"
     ],
@@ -423,7 +423,7 @@
     "rank": 37,
     "level": "A2",
     "kind": "word",
-    "german": "Koch",
+    "german": "der Koch",
     "english": [
       "chef"
     ],
@@ -434,7 +434,7 @@
     "rank": 38,
     "level": "A2",
     "kind": "word",
-    "german": "Köchin",
+    "german": "die Köchin",
     "english": [
       "female cook",
       "cook"
@@ -446,7 +446,7 @@
     "rank": 39,
     "level": "A2",
     "kind": "word",
-    "german": "Krankenpfleger",
+    "german": "der Krankenpfleger",
     "english": [
       "nurse"
     ],
@@ -457,7 +457,7 @@
     "rank": 40,
     "level": "A2",
     "kind": "word",
-    "german": "Krankenschwester",
+    "german": "die Krankenschwester",
     "english": [
       "nurse"
     ],
@@ -468,7 +468,7 @@
     "rank": 41,
     "level": "A2",
     "kind": "word",
-    "german": "Künstler",
+    "german": "der Künstler",
     "english": [
       "artist"
     ],
@@ -479,7 +479,7 @@
     "rank": 42,
     "level": "A2",
     "kind": "word",
-    "german": "Künstlerin",
+    "german": "die Künstlerin",
     "english": [
       "female artist"
     ],
@@ -490,7 +490,7 @@
     "rank": 43,
     "level": "A2",
     "kind": "word",
-    "german": "Lehrerin",
+    "german": "die Lehrerin",
     "english": [
       "female teacher",
       "teacher"
@@ -502,7 +502,7 @@
     "rank": 44,
     "level": "A2",
     "kind": "word",
-    "german": "Mechaniker",
+    "german": "der Mechaniker",
     "english": [
       "mechanic"
     ],
@@ -513,7 +513,7 @@
     "rank": 45,
     "level": "A2",
     "kind": "word",
-    "german": "Mechanikerin",
+    "german": "die Mechanikerin",
     "english": [
       "female mechanic",
       "mechanic"
@@ -525,7 +525,7 @@
     "rank": 46,
     "level": "A2",
     "kind": "word",
-    "german": "Model",
+    "german": "das Model",
     "english": [
       "model"
     ],
@@ -536,7 +536,7 @@
     "rank": 47,
     "level": "A2",
     "kind": "word",
-    "german": "Musiker",
+    "german": "der Musiker",
     "english": [
       "musician"
     ],
@@ -547,7 +547,7 @@
     "rank": 48,
     "level": "A2",
     "kind": "word",
-    "german": "Musikerin",
+    "german": "die Musikerin",
     "english": [
       "female musician",
       "musician"
@@ -559,7 +559,7 @@
     "rank": 49,
     "level": "A2",
     "kind": "word",
-    "german": "Polizist",
+    "german": "der Polizist",
     "english": [
       "police officer"
     ],
@@ -570,7 +570,7 @@
     "rank": 50,
     "level": "A2",
     "kind": "word",
-    "german": "Polizistin",
+    "german": "die Polizistin",
     "english": [
       "female police officer",
       "police officer"
@@ -582,7 +582,7 @@
     "rank": 51,
     "level": "A2",
     "kind": "word",
-    "german": "Rentner",
+    "german": "der Rentner",
     "english": [
       "pensioner"
     ],
@@ -593,7 +593,7 @@
     "rank": 52,
     "level": "A2",
     "kind": "word",
-    "german": "Rentnerin",
+    "german": "die Rentnerin",
     "english": [
       "female retiree",
       "retiree"
@@ -605,7 +605,7 @@
     "rank": 53,
     "level": "A2",
     "kind": "word",
-    "german": "Sänger",
+    "german": "der Sänger",
     "english": [
       "singer"
     ],
@@ -616,7 +616,7 @@
     "rank": 54,
     "level": "A2",
     "kind": "word",
-    "german": "Sängerin",
+    "german": "die Sängerin",
     "english": [
       "female singer",
       "singer"
@@ -628,7 +628,7 @@
     "rank": 55,
     "level": "A2",
     "kind": "word",
-    "german": "Schauspieler",
+    "german": "der Schauspieler",
     "english": [
       "actor"
     ],
@@ -639,7 +639,7 @@
     "rank": 56,
     "level": "A2",
     "kind": "word",
-    "german": "Schauspielerin",
+    "german": "die Schauspielerin",
     "english": [
       "actress",
       "female actor"
@@ -651,7 +651,7 @@
     "rank": 57,
     "level": "A2",
     "kind": "word",
-    "german": "Techniker",
+    "german": "der Techniker",
     "english": [
       "technician"
     ],
@@ -662,7 +662,7 @@
     "rank": 58,
     "level": "A2",
     "kind": "word",
-    "german": "Technikerin",
+    "german": "die Technikerin",
     "english": [
       "female technician",
       "technician"
@@ -674,7 +674,7 @@
     "rank": 59,
     "level": "A2",
     "kind": "word",
-    "german": "Verkäuferin",
+    "german": "die Verkäuferin",
     "english": [
       "saleswoman",
       "salesperson"
@@ -686,7 +686,7 @@
     "rank": 60,
     "level": "A2",
     "kind": "word",
-    "german": "Cousin",
+    "german": "der Cousin",
     "english": [
       "cousin"
     ],
@@ -697,7 +697,7 @@
     "rank": 61,
     "level": "A2",
     "kind": "word",
-    "german": "Cousine",
+    "german": "die Cousine",
     "english": [
       "female cousin",
       "cousin"
@@ -709,7 +709,7 @@
     "rank": 62,
     "level": "A2",
     "kind": "word",
-    "german": "Enkel",
+    "german": "der Enkel",
     "english": [
       "grandson, granddaughter",
       "grandson",
@@ -722,7 +722,7 @@
     "rank": 63,
     "level": "A2",
     "kind": "word",
-    "german": "Enkelin",
+    "german": "die Enkelin",
     "english": [
       "granddaughter"
     ],
@@ -733,7 +733,7 @@
     "rank": 64,
     "level": "A2",
     "kind": "word",
-    "german": "Mama",
+    "german": "die Mama",
     "english": [
       "mom",
       "mum"
@@ -745,7 +745,7 @@
     "rank": 65,
     "level": "A2",
     "kind": "word",
-    "german": "Onkel",
+    "german": "der Onkel",
     "english": [
       "uncle"
     ],
@@ -756,7 +756,7 @@
     "rank": 66,
     "level": "A2",
     "kind": "word",
-    "german": "Tante",
+    "german": "die Tante",
     "english": [
       "aunt"
     ],
@@ -767,7 +767,7 @@
     "rank": 67,
     "level": "A2",
     "kind": "word",
-    "german": "Papa",
+    "german": "der Papa",
     "english": [
       "dad"
     ],
@@ -845,7 +845,7 @@
     "rank": 74,
     "level": "A2",
     "kind": "word",
-    "german": "Österreicher",
+    "german": "der Österreicher",
     "english": [
       "Austrian man",
       "Austrian"
@@ -857,7 +857,7 @@
     "rank": 75,
     "level": "A2",
     "kind": "word",
-    "german": "Österreicherin",
+    "german": "die Österreicherin",
     "english": [
       "Austrian woman",
       "Austrian"
@@ -891,7 +891,7 @@
     "rank": 78,
     "level": "A2",
     "kind": "word",
-    "german": "Schweizer",
+    "german": "der Schweizer",
     "english": [
       "Swiss person"
     ],
@@ -902,7 +902,7 @@
     "rank": 79,
     "level": "A2",
     "kind": "word",
-    "german": "Schweizerin",
+    "german": "die Schweizerin",
     "english": [
       "Swiss woman",
       "Swiss"
@@ -936,7 +936,7 @@
     "rank": 82,
     "level": "A2",
     "kind": "word",
-    "german": "Luxemburger",
+    "german": "der Luxemburger",
     "english": [
       "Luxembourger"
     ],
@@ -947,7 +947,7 @@
     "rank": 83,
     "level": "A2",
     "kind": "word",
-    "german": "Luxemburgerin",
+    "german": "die Luxemburgerin",
     "english": [
       "Luxembourgish woman",
       "Luxembourger"
@@ -970,7 +970,7 @@
     "rank": 85,
     "level": "A2",
     "kind": "word",
-    "german": "Europäerin",
+    "german": "die Europäerin",
     "english": [
       "European woman",
       "European"
@@ -982,7 +982,7 @@
     "rank": 86,
     "level": "A2",
     "kind": "word",
-    "german": "Franke",
+    "german": "der Franke",
     "english": [
       "franc"
     ],
@@ -993,7 +993,7 @@
     "rank": 87,
     "level": "A2",
     "kind": "word",
-    "german": "Rappen",
+    "german": "der Rappen",
     "english": [
       "rappen",
       "centime"
@@ -1005,7 +1005,7 @@
     "rank": 88,
     "level": "A2",
     "kind": "word",
-    "german": "Kilogramm",
+    "german": "das Kilogramm",
     "english": [
       "kilogram"
     ],
@@ -1016,7 +1016,7 @@
     "rank": 89,
     "level": "A2",
     "kind": "word",
-    "german": "Abitur",
+    "german": "das Abitur",
     "english": [
       "Abitur, school-leaving examination, A levels",
       "Abitur",
@@ -1030,7 +1030,7 @@
     "rank": 90,
     "level": "A2",
     "kind": "word",
-    "german": "Direktor",
+    "german": "der Direktor",
     "english": [
       "director",
       "headteacher"
@@ -1042,7 +1042,7 @@
     "rank": 91,
     "level": "A2",
     "kind": "word",
-    "german": "Klassenfahrt",
+    "german": "die Klassenfahrt",
     "english": [
       "class trip",
       "school trip"
@@ -1054,7 +1054,7 @@
     "rank": 92,
     "level": "A2",
     "kind": "word",
-    "german": "Sekretariat",
+    "german": "das Sekretariat",
     "english": [
       "administrative office"
     ],
@@ -1065,7 +1065,7 @@
     "rank": 93,
     "level": "A2",
     "kind": "word",
-    "german": "Stundenplan",
+    "german": "der Stundenplan",
     "english": [
       "timetable"
     ],
@@ -1076,7 +1076,7 @@
     "rank": 94,
     "level": "A2",
     "kind": "word",
-    "german": "Biologie",
+    "german": "die Biologie",
     "english": [
       "biology"
     ],
@@ -1087,7 +1087,7 @@
     "rank": 95,
     "level": "A2",
     "kind": "word",
-    "german": "Chemie",
+    "german": "die Chemie",
     "english": [
       "chemistry"
     ],
@@ -1098,7 +1098,7 @@
     "rank": 96,
     "level": "A2",
     "kind": "word",
-    "german": "Englisch",
+    "german": "das Englisch",
     "english": [
       "English"
     ],
@@ -1109,7 +1109,7 @@
     "rank": 97,
     "level": "A2",
     "kind": "word",
-    "german": "Französisch",
+    "german": "das Französisch",
     "english": [
       "French"
     ],
@@ -1120,7 +1120,7 @@
     "rank": 98,
     "level": "A2",
     "kind": "word",
-    "german": "Geografie",
+    "german": "die Geografie",
     "english": [
       "geography"
     ],
@@ -1131,7 +1131,7 @@
     "rank": 99,
     "level": "A2",
     "kind": "word",
-    "german": "Geschichte",
+    "german": "die Geschichte",
     "english": [
       "history"
     ],
@@ -1142,7 +1142,7 @@
     "rank": 100,
     "level": "A2",
     "kind": "word",
-    "german": "Kunsterziehung",
+    "german": "die Kunsterziehung",
     "english": [
       "art education",
       "art"
@@ -1154,7 +1154,7 @@
     "rank": 101,
     "level": "A2",
     "kind": "word",
-    "german": "Latein",
+    "german": "das Latein",
     "english": [
       "Latin"
     ],
@@ -1165,7 +1165,7 @@
     "rank": 102,
     "level": "A2",
     "kind": "word",
-    "german": "Mathematik",
+    "german": "die Mathematik",
     "english": [
       "mathematics",
       "math"
@@ -1177,7 +1177,7 @@
     "rank": 103,
     "level": "A2",
     "kind": "word",
-    "german": "Musik",
+    "german": "die Musik",
     "english": [
       "music"
     ],
@@ -1188,7 +1188,7 @@
     "rank": 104,
     "level": "A2",
     "kind": "word",
-    "german": "Physik",
+    "german": "die Physik",
     "english": [
       "physics"
     ],
@@ -1199,7 +1199,7 @@
     "rank": 105,
     "level": "A2",
     "kind": "word",
-    "german": "Religion",
+    "german": "die Religion",
     "english": [
       "Religious Education"
     ],
@@ -1210,7 +1210,7 @@
     "rank": 106,
     "level": "A2",
     "kind": "word",
-    "german": "Sozialkunde",
+    "german": "die Sozialkunde",
     "english": [
       "social studies",
       "civics"
@@ -1222,7 +1222,7 @@
     "rank": 107,
     "level": "A2",
     "kind": "word",
-    "german": "Karneval",
+    "german": "der Karneval",
     "english": [
       "carnival"
     ],
@@ -1233,7 +1233,7 @@
     "rank": 108,
     "level": "A2",
     "kind": "word",
-    "german": "Ostern",
+    "german": "das Ostern",
     "english": [
       "Easter"
     ],
@@ -1244,7 +1244,7 @@
     "rank": 109,
     "level": "A2",
     "kind": "word",
-    "german": "Weihnachten",
+    "german": "das Weihnachten",
     "english": [
       "Christmas"
     ],
@@ -1255,7 +1255,7 @@
     "rank": 110,
     "level": "A2",
     "kind": "word",
-    "german": "Neujahr",
+    "german": "das Neujahr",
     "english": [
       "New Year"
     ],
@@ -1266,7 +1266,7 @@
     "rank": 111,
     "level": "A2",
     "kind": "word",
-    "german": "Silvester",
+    "german": "das Silvester",
     "english": [
       "New Year"
     ],
@@ -1277,7 +1277,7 @@
     "rank": 112,
     "level": "A2",
     "kind": "word",
-    "german": "Mitternacht",
+    "german": "die Mitternacht",
     "english": [
       "midnight"
     ],
@@ -1542,7 +1542,7 @@
     "rank": 136,
     "level": "A2",
     "kind": "word",
-    "german": "Arbeitstag",
+    "german": "der Arbeitstag",
     "english": [
       "working day"
     ],
@@ -1553,7 +1553,7 @@
     "rank": 137,
     "level": "A2",
     "kind": "word",
-    "german": "Werktag",
+    "german": "der Werktag",
     "english": [
       "weekday",
       "working day"
@@ -1565,7 +1565,7 @@
     "rank": 138,
     "level": "A2",
     "kind": "word",
-    "german": "Feiertag",
+    "german": "der Feiertag",
     "english": [
       "holiday"
     ],
@@ -1587,7 +1587,7 @@
     "rank": 140,
     "level": "A2",
     "kind": "word",
-    "german": "Ahnung",
+    "german": "die Ahnung",
     "english": [
       "idea",
       "clue"
@@ -1632,7 +1632,7 @@
     "rank": 144,
     "level": "A2",
     "kind": "word",
-    "german": "Ampel",
+    "german": "die Ampel",
     "english": [
       "traffic light"
     ],
@@ -1665,7 +1665,7 @@
     "rank": 147,
     "level": "A2",
     "kind": "word",
-    "german": "Angst",
+    "german": "die Angst",
     "english": [
       "fear"
     ],
@@ -1687,7 +1687,7 @@
     "rank": 149,
     "level": "A2",
     "kind": "word",
-    "german": "Anzug",
+    "german": "der Anzug",
     "english": [
       "suit"
     ],
@@ -1698,7 +1698,7 @@
     "rank": 150,
     "level": "A2",
     "kind": "word",
-    "german": "Apotheke",
+    "german": "die Apotheke",
     "english": [
       "chemist, pharmacy",
       "chemist",
@@ -1723,7 +1723,7 @@
     "rank": 152,
     "level": "A2",
     "kind": "word",
-    "german": "Artikel",
+    "german": "der Artikel",
     "english": [
       "article",
       "item"
@@ -1801,7 +1801,7 @@
     "rank": 159,
     "level": "A2",
     "kind": "word",
-    "german": "Ausbildung",
+    "german": "die Ausbildung",
     "english": [
       "course, training",
       "course",
@@ -1903,7 +1903,7 @@
     "rank": 168,
     "level": "A2",
     "kind": "word",
-    "german": "Ausstellung",
+    "german": "die Ausstellung",
     "english": [
       "exhibition"
     ],
@@ -1937,7 +1937,7 @@
     "rank": 171,
     "level": "A2",
     "kind": "word",
-    "german": "Ball",
+    "german": "der Ball",
     "english": [
       "ball"
     ],
@@ -1948,7 +1948,7 @@
     "rank": 172,
     "level": "A2",
     "kind": "word",
-    "german": "Band",
+    "german": "die Band",
     "english": [
       "band"
     ],
@@ -1959,7 +1959,7 @@
     "rank": 173,
     "level": "A2",
     "kind": "word",
-    "german": "Basketball",
+    "german": "der Basketball",
     "english": [
       "basketball"
     ],
@@ -1994,7 +1994,7 @@
     "rank": 176,
     "level": "A2",
     "kind": "word",
-    "german": "Baustelle",
+    "german": "die Baustelle",
     "english": [
       "construction site, roadworks",
       "construction site",
@@ -2086,7 +2086,7 @@
     "rank": 184,
     "level": "A2",
     "kind": "word",
-    "german": "Berg",
+    "german": "der Berg",
     "english": [
       "mountain"
     ],
@@ -2122,7 +2122,7 @@
     "rank": 187,
     "level": "A2",
     "kind": "word",
-    "german": "Bescheid",
+    "german": "der Bescheid",
     "english": [
       "information",
       "notice"
@@ -2189,7 +2189,7 @@
     "rank": 193,
     "level": "A2",
     "kind": "word",
-    "german": "Besuch",
+    "german": "der Besuch",
     "english": [
       "visit"
     ],
@@ -2211,7 +2211,7 @@
     "rank": 195,
     "level": "A2",
     "kind": "word",
-    "german": "Bewerbung",
+    "german": "die Bewerbung",
     "english": [
       "job application"
     ],
@@ -2233,7 +2233,7 @@
     "rank": 197,
     "level": "A2",
     "kind": "word",
-    "german": "Wolke",
+    "german": "die Wolke",
     "english": [
       "cloud"
     ],
@@ -2244,7 +2244,7 @@
     "rank": 198,
     "level": "A2",
     "kind": "word",
-    "german": "Bibliothek",
+    "german": "die Bibliothek",
     "english": [
       "library"
     ],
@@ -2255,7 +2255,7 @@
     "rank": 199,
     "level": "A2",
     "kind": "word",
-    "german": "Blatt",
+    "german": "das Blatt",
     "english": [
       "leaf"
     ],
@@ -2277,7 +2277,7 @@
     "rank": 201,
     "level": "A2",
     "kind": "word",
-    "german": "Blog",
+    "german": "der/das Blog",
     "english": [
       "blog"
     ],
@@ -2299,7 +2299,7 @@
     "rank": 203,
     "level": "A2",
     "kind": "word",
-    "german": "Bluse",
+    "german": "die Bluse",
     "english": [
       "blouse"
     ],
@@ -2310,7 +2310,7 @@
     "rank": 204,
     "level": "A2",
     "kind": "word",
-    "german": "Bohne",
+    "german": "die Bohne",
     "english": [
       "bean"
     ],
@@ -2332,7 +2332,7 @@
     "rank": 206,
     "level": "A2",
     "kind": "word",
-    "german": "Brille",
+    "german": "die Brille",
     "english": [
       "glasses, spectacles",
       "glasses",
@@ -2345,7 +2345,7 @@
     "rank": 207,
     "level": "A2",
     "kind": "word",
-    "german": "Brücke",
+    "german": "die Brücke",
     "english": [
       "bridge"
     ],
@@ -2378,7 +2378,7 @@
     "rank": 210,
     "level": "A2",
     "kind": "word",
-    "german": "Büro",
+    "german": "das Büro",
     "english": [
       "office"
     ],
@@ -2389,7 +2389,7 @@
     "rank": 211,
     "level": "A2",
     "kind": "word",
-    "german": "Cafeteria",
+    "german": "die Cafeteria",
     "english": [
       "cafeteria"
     ],
@@ -2411,7 +2411,7 @@
     "rank": 213,
     "level": "A2",
     "kind": "word",
-    "german": "Chefin",
+    "german": "die Chefin",
     "english": [
       "female boss",
       "boss"
@@ -2423,7 +2423,7 @@
     "rank": 214,
     "level": "A2",
     "kind": "word",
-    "german": "Club",
+    "german": "der Club",
     "english": [
       "club"
     ],
@@ -2434,7 +2434,7 @@
     "rank": 215,
     "level": "A2",
     "kind": "word",
-    "german": "Comic",
+    "german": "der/das Comic",
     "english": [
       "comic",
       "comic book"
@@ -2446,7 +2446,7 @@
     "rank": 216,
     "level": "A2",
     "kind": "word",
-    "german": "Creme",
+    "german": "die Creme",
     "english": [
       "cream"
     ],
@@ -2490,7 +2490,7 @@
     "rank": 220,
     "level": "A2",
     "kind": "word",
-    "german": "Datei",
+    "german": "die Datei",
     "english": [
       "file"
     ],
@@ -2548,7 +2548,7 @@
     "rank": 225,
     "level": "A2",
     "kind": "word",
-    "german": "Ding",
+    "german": "das Ding",
     "english": [
       "thing"
     ],
@@ -2571,7 +2571,7 @@
     "rank": 227,
     "level": "A2",
     "kind": "word",
-    "german": "Disko",
+    "german": "die Disko",
     "english": [
       "disco",
       "nightclub"
@@ -2674,7 +2674,7 @@
     "rank": 236,
     "level": "A2",
     "kind": "word",
-    "german": "E-Book",
+    "german": "das E-Book",
     "english": [
       "e-book"
     ],
@@ -2709,7 +2709,7 @@
     "rank": 239,
     "level": "A2",
     "kind": "word",
-    "german": "Ehepartner",
+    "german": "der Ehepartner",
     "english": [
       "spouse"
     ],
@@ -2813,7 +2813,7 @@
     "rank": 248,
     "level": "A2",
     "kind": "word",
-    "german": "Eis",
+    "german": "das Eis",
     "english": [
       "ice cream"
     ],
@@ -2846,7 +2846,7 @@
     "rank": 251,
     "level": "A2",
     "kind": "word",
-    "german": "Erfahrung",
+    "german": "die Erfahrung",
     "english": [
       "experience"
     ],
@@ -2869,7 +2869,7 @@
     "rank": 253,
     "level": "A2",
     "kind": "word",
-    "german": "Erlaubnis",
+    "german": "die Erlaubnis",
     "english": [
       "permission"
     ],
@@ -2880,7 +2880,7 @@
     "rank": 254,
     "level": "A2",
     "kind": "word",
-    "german": "Ermäßigung",
+    "german": "die Ermäßigung",
     "english": [
       "reduction"
     ],
@@ -2925,7 +2925,7 @@
     "rank": 258,
     "level": "A2",
     "kind": "word",
-    "german": "Fach",
+    "german": "das Fach",
     "english": [
       "subject",
       "field"
@@ -2937,7 +2937,7 @@
     "rank": 259,
     "level": "A2",
     "kind": "word",
-    "german": "Fahrplan",
+    "german": "der Fahrplan",
     "english": [
       "timetable, departure schedule",
       "timetable",
@@ -2950,7 +2950,7 @@
     "rank": 260,
     "level": "A2",
     "kind": "word",
-    "german": "Rad",
+    "german": "das Rad",
     "english": [
       "wheel"
     ],
@@ -2972,7 +2972,7 @@
     "rank": 262,
     "level": "A2",
     "kind": "word",
-    "german": "Fan",
+    "german": "der Fan",
     "english": [
       "fan"
     ],
@@ -3016,7 +3016,7 @@
     "rank": 266,
     "level": "A2",
     "kind": "word",
-    "german": "Feier",
+    "german": "die Feier",
     "english": [
       "celebration"
     ],
@@ -3027,7 +3027,7 @@
     "rank": 267,
     "level": "A2",
     "kind": "word",
-    "german": "Fenster",
+    "german": "das Fenster",
     "english": [
       "window"
     ],
@@ -3038,7 +3038,7 @@
     "rank": 268,
     "level": "A2",
     "kind": "word",
-    "german": "Ferien",
+    "german": "die Ferien",
     "english": [
       "holiday(s)"
     ],
@@ -3049,7 +3049,7 @@
     "rank": 269,
     "level": "A2",
     "kind": "word",
-    "german": "Fernseher",
+    "german": "der Fernseher",
     "english": [
       "television"
     ],
@@ -3073,7 +3073,7 @@
     "rank": 271,
     "level": "A2",
     "kind": "word",
-    "german": "Festival",
+    "german": "das Festival",
     "english": [
       "festival"
     ],
@@ -3108,7 +3108,7 @@
     "rank": 274,
     "level": "A2",
     "kind": "word",
-    "german": "Flohmarkt",
+    "german": "der Flohmarkt",
     "english": [
       "flea market"
     ],
@@ -3119,7 +3119,7 @@
     "rank": 275,
     "level": "A2",
     "kind": "word",
-    "german": "Flug",
+    "german": "der Flug",
     "english": [
       "flight"
     ],
@@ -3130,7 +3130,7 @@
     "rank": 276,
     "level": "A2",
     "kind": "word",
-    "german": "Fluss",
+    "german": "der Fluss",
     "english": [
       "river"
     ],
@@ -3141,7 +3141,7 @@
     "rank": 277,
     "level": "A2",
     "kind": "word",
-    "german": "Fotoapparat",
+    "german": "der Fotoapparat",
     "english": [
       "camera"
     ],
@@ -3175,7 +3175,7 @@
     "rank": 280,
     "level": "A2",
     "kind": "word",
-    "german": "Freundin",
+    "german": "die Freundin",
     "english": [
       "female friend",
       "girlfriend"
@@ -3242,7 +3242,7 @@
     "rank": 286,
     "level": "A2",
     "kind": "word",
-    "german": "Führerschein",
+    "german": "der Führerschein",
     "english": [
       "driving licence"
     ],
@@ -3253,7 +3253,7 @@
     "rank": 287,
     "level": "A2",
     "kind": "word",
-    "german": "Fundsachen",
+    "german": "die Fundsachen",
     "english": [
       "lost property",
       "lost and found items"
@@ -3276,7 +3276,7 @@
     "rank": 289,
     "level": "A2",
     "kind": "word",
-    "german": "Gabel",
+    "german": "die Gabel",
     "english": [
       "fork"
     ],
@@ -3298,7 +3298,7 @@
     "rank": 291,
     "level": "A2",
     "kind": "word",
-    "german": "Garage",
+    "german": "die Garage",
     "english": [
       "garage"
     ],
@@ -3343,7 +3343,7 @@
     "rank": 295,
     "level": "A2",
     "kind": "word",
-    "german": "Gehalt",
+    "german": "das Gehalt",
     "english": [
       "salary"
     ],
@@ -3354,7 +3354,7 @@
     "rank": 296,
     "level": "A2",
     "kind": "word",
-    "german": "Geldbörse",
+    "german": "die Geldbörse",
     "english": [
       "wallet"
     ],
@@ -3387,7 +3387,7 @@
     "rank": 299,
     "level": "A2",
     "kind": "word",
-    "german": "Gerät",
+    "german": "das Gerät",
     "english": [
       "device"
     ],
@@ -3398,7 +3398,7 @@
     "rank": 300,
     "level": "A2",
     "kind": "word",
-    "german": "Gericht",
+    "german": "das Gericht",
     "english": [
       "dish",
       "court"
@@ -3410,7 +3410,7 @@
     "rank": 301,
     "level": "A2",
     "kind": "word",
-    "german": "Geschirr",
+    "german": "das Geschirr",
     "english": [
       "crockery"
     ],
@@ -3421,7 +3421,7 @@
     "rank": 302,
     "level": "A2",
     "kind": "word",
-    "german": "Gesicht",
+    "german": "das Gesicht",
     "english": [
       "face"
     ],
@@ -3443,7 +3443,7 @@
     "rank": 304,
     "level": "A2",
     "kind": "word",
-    "german": "Gesundheit",
+    "german": "die Gesundheit",
     "english": [
       "health"
     ],
@@ -3454,7 +3454,7 @@
     "rank": 305,
     "level": "A2",
     "kind": "word",
-    "german": "Gewitter",
+    "german": "das Gewitter",
     "english": [
       "thunderstorm"
     ],
@@ -3465,7 +3465,7 @@
     "rank": 306,
     "level": "A2",
     "kind": "word",
-    "german": "Gitarre",
+    "german": "die Gitarre",
     "english": [
       "guitar"
     ],
@@ -3476,7 +3476,7 @@
     "rank": 307,
     "level": "A2",
     "kind": "word",
-    "german": "Grippe",
+    "german": "die Grippe",
     "english": [
       "flu"
     ],
@@ -3487,7 +3487,7 @@
     "rank": 308,
     "level": "A2",
     "kind": "word",
-    "german": "Hals",
+    "german": "der Hals",
     "english": [
       "neck",
       "throat"
@@ -3499,7 +3499,7 @@
     "rank": 309,
     "level": "A2",
     "kind": "word",
-    "german": "Hamburger",
+    "german": "der Hamburger",
     "english": [
       "beefburger"
     ],
@@ -3510,7 +3510,7 @@
     "rank": 310,
     "level": "A2",
     "kind": "word",
-    "german": "Handtuch",
+    "german": "das Handtuch",
     "english": [
       "hand towel"
     ],
@@ -3556,7 +3556,7 @@
     "rank": 314,
     "level": "A2",
     "kind": "word",
-    "german": "Hauptstadt",
+    "german": "die Hauptstadt",
     "english": [
       "capital city"
     ],
@@ -3567,7 +3567,7 @@
     "rank": 315,
     "level": "A2",
     "kind": "word",
-    "german": "Haushalt",
+    "german": "der Haushalt",
     "english": [
       "household"
     ],
@@ -3578,7 +3578,7 @@
     "rank": 316,
     "level": "A2",
     "kind": "word",
-    "german": "Heft",
+    "german": "das Heft",
     "english": [
       "exercise book"
     ],
@@ -3600,7 +3600,7 @@
     "rank": 318,
     "level": "A2",
     "kind": "word",
-    "german": "Heizung",
+    "german": "die Heizung",
     "english": [
       "heating"
     ],
@@ -3611,7 +3611,7 @@
     "rank": 319,
     "level": "A2",
     "kind": "word",
-    "german": "Hemd",
+    "german": "das Hemd",
     "english": [
       "shirt"
     ],
@@ -3669,7 +3669,7 @@
     "rank": 324,
     "level": "A2",
     "kind": "word",
-    "german": "Himmel",
+    "german": "der Himmel",
     "english": [
       "sky"
     ],
@@ -3725,7 +3725,7 @@
     "rank": 329,
     "level": "A2",
     "kind": "word",
-    "german": "Homepage",
+    "german": "die Homepage",
     "english": [
       "website, homepage",
       "website",
@@ -3738,7 +3738,7 @@
     "rank": 330,
     "level": "A2",
     "kind": "word",
-    "german": "Hose",
+    "german": "die Hose",
     "english": [
       "trousers"
     ],
@@ -3760,7 +3760,7 @@
     "rank": 332,
     "level": "A2",
     "kind": "word",
-    "german": "Idee",
+    "german": "die Idee",
     "english": [
       "idea"
     ],
@@ -3782,7 +3782,7 @@
     "rank": 334,
     "level": "A2",
     "kind": "word",
-    "german": "Insel",
+    "german": "die Insel",
     "english": [
       "island"
     ],
@@ -3793,7 +3793,7 @@
     "rank": 335,
     "level": "A2",
     "kind": "word",
-    "german": "Instrument",
+    "german": "das Instrument",
     "english": [
       "instrument"
     ],
@@ -3815,7 +3815,7 @@
     "rank": 337,
     "level": "A2",
     "kind": "word",
-    "german": "Interesse",
+    "german": "das Interesse",
     "english": [
       "interest"
     ],
@@ -3838,7 +3838,7 @@
     "rank": 339,
     "level": "A2",
     "kind": "word",
-    "german": "Interview",
+    "german": "das Interview",
     "english": [
       "interview"
     ],
@@ -3849,7 +3849,7 @@
     "rank": 340,
     "level": "A2",
     "kind": "word",
-    "german": "Jeans",
+    "german": "die Jeans",
     "english": [
       "jeans"
     ],
@@ -3884,7 +3884,7 @@
     "rank": 343,
     "level": "A2",
     "kind": "word",
-    "german": "Jugendherberge",
+    "german": "die Jugendherberge",
     "english": [
       "youth hostel"
     ],
@@ -3895,7 +3895,7 @@
     "rank": 344,
     "level": "A2",
     "kind": "word",
-    "german": "Kalender",
+    "german": "der Kalender",
     "english": [
       "diary, calendar",
       "diary",
@@ -3919,7 +3919,7 @@
     "rank": 346,
     "level": "A2",
     "kind": "word",
-    "german": "Kamera",
+    "german": "die Kamera",
     "english": [
       "camera"
     ],
@@ -3930,7 +3930,7 @@
     "rank": 347,
     "level": "A2",
     "kind": "word",
-    "german": "Käse",
+    "german": "der Käse",
     "english": [
       "cheese"
     ],
@@ -3941,7 +3941,7 @@
     "rank": 348,
     "level": "A2",
     "kind": "word",
-    "german": "Katze",
+    "german": "die Katze",
     "english": [
       "cat"
     ],
@@ -3952,7 +3952,7 @@
     "rank": 349,
     "level": "A2",
     "kind": "word",
-    "german": "Kaufhaus",
+    "german": "das Kaufhaus",
     "english": [
       "department store"
     ],
@@ -3963,7 +3963,7 @@
     "rank": 350,
     "level": "A2",
     "kind": "word",
-    "german": "Keller",
+    "german": "der Keller",
     "english": [
       "cellar, basement",
       "cellar",
@@ -3976,7 +3976,7 @@
     "rank": 351,
     "level": "A2",
     "kind": "word",
-    "german": "Kenntnisse",
+    "german": "die Kenntnisse",
     "english": [
       "knowledge",
       "skills"
@@ -3988,7 +3988,7 @@
     "rank": 352,
     "level": "A2",
     "kind": "word",
-    "german": "Kette",
+    "german": "die Kette",
     "english": [
       "chain",
       "necklace"
@@ -4000,7 +4000,7 @@
     "rank": 353,
     "level": "A2",
     "kind": "word",
-    "german": "Kirche",
+    "german": "die Kirche",
     "english": [
       "church"
     ],
@@ -4022,7 +4022,7 @@
     "rank": 355,
     "level": "A2",
     "kind": "word",
-    "german": "Klavier",
+    "german": "das Klavier",
     "english": [
       "piano"
     ],
@@ -4033,7 +4033,7 @@
     "rank": 356,
     "level": "A2",
     "kind": "word",
-    "german": "Kleid",
+    "german": "das Kleid",
     "english": [
       "dress"
     ],
@@ -4056,7 +4056,7 @@
     "rank": 358,
     "level": "A2",
     "kind": "word",
-    "german": "Kollegin",
+    "german": "die Kollegin",
     "english": [
       "female colleague",
       "colleague"
@@ -4081,7 +4081,7 @@
     "rank": 360,
     "level": "A2",
     "kind": "word",
-    "german": "Kontakt",
+    "german": "der Kontakt",
     "english": [
       "contact"
     ],
@@ -4104,7 +4104,7 @@
     "rank": 362,
     "level": "A2",
     "kind": "word",
-    "german": "Konzert",
+    "german": "das Konzert",
     "english": [
       "concert"
     ],
@@ -4115,7 +4115,7 @@
     "rank": 363,
     "level": "A2",
     "kind": "word",
-    "german": "Körper",
+    "german": "der Körper",
     "english": [
       "body"
     ],
@@ -4126,7 +4126,7 @@
     "rank": 364,
     "level": "A2",
     "kind": "word",
-    "german": "Kosmetik",
+    "german": "die Kosmetik",
     "english": [
       "cosmetics"
     ],
@@ -4137,7 +4137,7 @@
     "rank": 365,
     "level": "A2",
     "kind": "word",
-    "german": "Krankenhaus",
+    "german": "das Krankenhaus",
     "english": [
       "hospital"
     ],
@@ -4148,7 +4148,7 @@
     "rank": 366,
     "level": "A2",
     "kind": "word",
-    "german": "Krankenkasse",
+    "german": "die Krankenkasse",
     "english": [
       "health insurance fund"
     ],
@@ -4159,7 +4159,7 @@
     "rank": 367,
     "level": "A2",
     "kind": "word",
-    "german": "Krankheit",
+    "german": "die Krankheit",
     "english": [
       "illness"
     ],
@@ -4170,7 +4170,7 @@
     "rank": 368,
     "level": "A2",
     "kind": "word",
-    "german": "Kredit",
+    "german": "der Kredit",
     "english": [
       "loan",
       "credit"
@@ -4182,7 +4182,7 @@
     "rank": 369,
     "level": "A2",
     "kind": "word",
-    "german": "Kreuzung",
+    "german": "die Kreuzung",
     "english": [
       "junction"
     ],
@@ -4193,7 +4193,7 @@
     "rank": 370,
     "level": "A2",
     "kind": "word",
-    "german": "Krimi",
+    "german": "der Krimi",
     "english": [
       "crime thriller"
     ],
@@ -4215,7 +4215,7 @@
     "rank": 372,
     "level": "A2",
     "kind": "word",
-    "german": "Kultur",
+    "german": "die Kultur",
     "english": [
       "culture"
     ],
@@ -4226,7 +4226,7 @@
     "rank": 373,
     "level": "A2",
     "kind": "word",
-    "german": "Kundin",
+    "german": "die Kundin",
     "english": [
       "female customer",
       "customer"
@@ -4251,7 +4251,7 @@
     "rank": 375,
     "level": "A2",
     "kind": "word",
-    "german": "Kunst",
+    "german": "die Kunst",
     "english": [
       "art"
     ],
@@ -4262,7 +4262,7 @@
     "rank": 376,
     "level": "A2",
     "kind": "word",
-    "german": "Lampe",
+    "german": "die Lampe",
     "english": [
       "lamp"
     ],
@@ -4273,7 +4273,7 @@
     "rank": 377,
     "level": "A2",
     "kind": "word",
-    "german": "Landschaft",
+    "german": "die Landschaft",
     "english": [
       "scenery"
     ],
@@ -4295,7 +4295,7 @@
     "rank": 379,
     "level": "A2",
     "kind": "word",
-    "german": "Laptop",
+    "german": "der/das Laptop",
     "english": [
       "laptop"
     ],
@@ -4350,7 +4350,7 @@
     "rank": 384,
     "level": "A2",
     "kind": "word",
-    "german": "Löffel",
+    "german": "der Löffel",
     "english": [
       "spoon"
     ],
@@ -4361,7 +4361,7 @@
     "rank": 385,
     "level": "A2",
     "kind": "word",
-    "german": "Lüge",
+    "german": "die Lüge",
     "english": [
       "lie"
     ],
@@ -4383,7 +4383,7 @@
     "rank": 387,
     "level": "A2",
     "kind": "word",
-    "german": "Lust",
+    "german": "die Lust",
     "english": [
       "desire",
       "inclination"
@@ -4395,7 +4395,7 @@
     "rank": 388,
     "level": "A2",
     "kind": "word",
-    "german": "Magen",
+    "german": "der Magen",
     "english": [
       "stomach"
     ],
@@ -4406,7 +4406,7 @@
     "rank": 389,
     "level": "A2",
     "kind": "word",
-    "german": "Mailbox",
+    "german": "die Mailbox",
     "english": [
       "voicemail"
     ],
@@ -4417,7 +4417,7 @@
     "rank": 390,
     "level": "A2",
     "kind": "word",
-    "german": "mal",
+    "german": "das mal",
     "english": [
       "time"
     ],
@@ -4462,7 +4462,7 @@
     "rank": 394,
     "level": "A2",
     "kind": "word",
-    "german": "Mannschaft",
+    "german": "die Mannschaft",
     "english": [
       "team"
     ],
@@ -4473,7 +4473,7 @@
     "rank": 395,
     "level": "A2",
     "kind": "word",
-    "german": "Mantel",
+    "german": "der Mantel",
     "english": [
       "coat"
     ],
@@ -4484,7 +4484,7 @@
     "rank": 396,
     "level": "A2",
     "kind": "word",
-    "german": "Markt",
+    "german": "der Markt",
     "english": [
       "market"
     ],
@@ -4495,7 +4495,7 @@
     "rank": 397,
     "level": "A2",
     "kind": "word",
-    "german": "Medikament",
+    "german": "das Medikament",
     "english": [
       "medication"
     ],
@@ -4517,7 +4517,7 @@
     "rank": 399,
     "level": "A2",
     "kind": "word",
-    "german": "Meinung",
+    "german": "die Meinung",
     "english": [
       "opinion"
     ],
@@ -4528,7 +4528,7 @@
     "rank": 400,
     "level": "A2",
     "kind": "word",
-    "german": "Menge",
+    "german": "die Menge",
     "english": [
       "crowd"
     ],
@@ -4550,7 +4550,7 @@
     "rank": 402,
     "level": "A2",
     "kind": "word",
-    "german": "Messe",
+    "german": "die Messe",
     "english": [
       "trade fair",
       "exhibition"
@@ -4562,7 +4562,7 @@
     "rank": 403,
     "level": "A2",
     "kind": "word",
-    "german": "Messer",
+    "german": "das Messer",
     "english": [
       "knife"
     ],
@@ -4584,7 +4584,7 @@
     "rank": 405,
     "level": "A2",
     "kind": "word",
-    "german": "Mineralwasser",
+    "german": "das Mineralwasser",
     "english": [
       "mineral water"
     ],
@@ -4595,7 +4595,7 @@
     "rank": 406,
     "level": "A2",
     "kind": "word",
-    "german": "Mitarbeiter",
+    "german": "der Mitarbeiter",
     "english": [
       "staff"
     ],
@@ -4606,7 +4606,7 @@
     "rank": 407,
     "level": "A2",
     "kind": "word",
-    "german": "Mittagessen",
+    "german": "das Mittagessen",
     "english": [
       "lunch"
     ],
@@ -4617,7 +4617,7 @@
     "rank": 408,
     "level": "A2",
     "kind": "word",
-    "german": "Mittel",
+    "german": "das Mittel",
     "english": [
       "means",
       "remedy",
@@ -4630,7 +4630,7 @@
     "rank": 409,
     "level": "A2",
     "kind": "word",
-    "german": "Mobiltelefon",
+    "german": "das Mobiltelefon",
     "english": [
       "mobile phone"
     ],
@@ -4641,7 +4641,7 @@
     "rank": 410,
     "level": "A2",
     "kind": "word",
-    "german": "Mode",
+    "german": "die Mode",
     "english": [
       "fashion modern"
     ],
@@ -4663,7 +4663,7 @@
     "rank": 412,
     "level": "A2",
     "kind": "word",
-    "german": "Motor",
+    "german": "der Motor",
     "english": [
       "engine"
     ],
@@ -4674,7 +4674,7 @@
     "rank": 413,
     "level": "A2",
     "kind": "word",
-    "german": "Motorroller",
+    "german": "der Motorroller",
     "english": [
       "scooter",
       "motor scooter"
@@ -4686,7 +4686,7 @@
     "rank": 414,
     "level": "A2",
     "kind": "word",
-    "german": "Müll",
+    "german": "der Müll",
     "english": [
       "rubbish"
     ],
@@ -4697,7 +4697,7 @@
     "rank": 415,
     "level": "A2",
     "kind": "word",
-    "german": "Museum",
+    "german": "das Museum",
     "english": [
       "museum"
     ],
@@ -4708,7 +4708,7 @@
     "rank": 416,
     "level": "A2",
     "kind": "word",
-    "german": "Mütze",
+    "german": "die Mütze",
     "english": [
       "hat"
     ],
@@ -4719,7 +4719,7 @@
     "rank": 417,
     "level": "A2",
     "kind": "word",
-    "german": "Nachbar",
+    "german": "der Nachbar",
     "english": [
       "neighbour"
     ],
@@ -4730,7 +4730,7 @@
     "rank": 418,
     "level": "A2",
     "kind": "word",
-    "german": "Nachbarin",
+    "german": "die Nachbarin",
     "english": [
       "female neighbour",
       "neighbor"
@@ -4742,7 +4742,7 @@
     "rank": 419,
     "level": "A2",
     "kind": "word",
-    "german": "Nachricht",
+    "german": "die Nachricht",
     "english": [
       "message"
     ],
@@ -4753,7 +4753,7 @@
     "rank": 420,
     "level": "A2",
     "kind": "word",
-    "german": "Nähe",
+    "german": "die Nähe",
     "english": [
       "in der Nähe = nearby"
     ],
@@ -4775,7 +4775,7 @@
     "rank": 422,
     "level": "A2",
     "kind": "word",
-    "german": "Natur",
+    "german": "die Natur",
     "english": [
       "nature"
     ],
@@ -4887,7 +4887,7 @@
     "rank": 432,
     "level": "A2",
     "kind": "word",
-    "german": "Note",
+    "german": "die Note",
     "english": [
       "grade, mark",
       "grade",
@@ -4911,7 +4911,7 @@
     "rank": 434,
     "level": "A2",
     "kind": "word",
-    "german": "Notiz",
+    "german": "die Notiz",
     "english": [
       "note"
     ],
@@ -4933,7 +4933,7 @@
     "rank": 436,
     "level": "A2",
     "kind": "word",
-    "german": "Nudel",
+    "german": "die Nudel",
     "english": [
       "noodles"
     ],
@@ -4955,7 +4955,7 @@
     "rank": 438,
     "level": "A2",
     "kind": "word",
-    "german": "Ohr",
+    "german": "das Ohr",
     "english": [
       "ear"
     ],
@@ -4988,7 +4988,7 @@
     "rank": 441,
     "level": "A2",
     "kind": "word",
-    "german": "Paar",
+    "german": "das Paar",
     "english": [
       "couple",
       "pair"
@@ -5022,7 +5022,7 @@
     "rank": 444,
     "level": "A2",
     "kind": "word",
-    "german": "Paket",
+    "german": "das Paket",
     "english": [
       "parcel, package",
       "parcel",
@@ -5035,7 +5035,7 @@
     "rank": 445,
     "level": "A2",
     "kind": "word",
-    "german": "Parfüm",
+    "german": "das Parfüm",
     "english": [
       "scent"
     ],
@@ -5046,7 +5046,7 @@
     "rank": 446,
     "level": "A2",
     "kind": "word",
-    "german": "Park",
+    "german": "der Park",
     "english": [
       "park"
     ],
@@ -5090,7 +5090,7 @@
     "rank": 450,
     "level": "A2",
     "kind": "word",
-    "german": "Person",
+    "german": "die Person",
     "english": [
       "person"
     ],
@@ -5101,7 +5101,7 @@
     "rank": 451,
     "level": "A2",
     "kind": "word",
-    "german": "Pferd",
+    "german": "das Pferd",
     "english": [
       "horse"
     ],
@@ -5112,7 +5112,7 @@
     "rank": 452,
     "level": "A2",
     "kind": "word",
-    "german": "Pflanze",
+    "german": "die Pflanze",
     "english": [
       "plant"
     ],
@@ -5123,7 +5123,7 @@
     "rank": 453,
     "level": "A2",
     "kind": "word",
-    "german": "Pizza",
+    "german": "die Pizza",
     "english": [
       "pizza"
     ],
@@ -5134,7 +5134,7 @@
     "rank": 454,
     "level": "A2",
     "kind": "word",
-    "german": "Plakat",
+    "german": "das Plakat",
     "english": [
       "poster",
       "placard"
@@ -5168,7 +5168,7 @@
     "rank": 457,
     "level": "A2",
     "kind": "word",
-    "german": "Portion",
+    "german": "die Portion",
     "english": [
       "portion"
     ],
@@ -5179,7 +5179,7 @@
     "rank": 458,
     "level": "A2",
     "kind": "word",
-    "german": "Poster",
+    "german": "das Poster",
     "english": [
       "poster"
     ],
@@ -5190,7 +5190,7 @@
     "rank": 459,
     "level": "A2",
     "kind": "word",
-    "german": "Postkarte",
+    "german": "die Postkarte",
     "english": [
       "postcard"
     ],
@@ -5257,7 +5257,7 @@
     "rank": 465,
     "level": "A2",
     "kind": "word",
-    "german": "Produkt",
+    "german": "das Produkt",
     "english": [
       "product"
     ],
@@ -5268,7 +5268,7 @@
     "rank": 466,
     "level": "A2",
     "kind": "word",
-    "german": "Programm",
+    "german": "das Programm",
     "english": [
       "programme"
     ],
@@ -5290,7 +5290,7 @@
     "rank": 468,
     "level": "A2",
     "kind": "word",
-    "german": "Pullover",
+    "german": "der Pullover",
     "english": [
       "pullover"
     ],
@@ -5312,7 +5312,7 @@
     "rank": 470,
     "level": "A2",
     "kind": "word",
-    "german": "Qualität",
+    "german": "die Qualität",
     "english": [
       "quality"
     ],
@@ -5323,7 +5323,7 @@
     "rank": 471,
     "level": "A2",
     "kind": "word",
-    "german": "Quiz",
+    "german": "das Quiz",
     "english": [
       "quiz"
     ],
@@ -5334,7 +5334,7 @@
     "rank": 472,
     "level": "A2",
     "kind": "word",
-    "german": "Radio",
+    "german": "das Radio",
     "english": [
       "radio"
     ],
@@ -5357,7 +5357,7 @@
     "rank": 474,
     "level": "A2",
     "kind": "word",
-    "german": "Rathaus",
+    "german": "das Rathaus",
     "english": [
       "town hall"
     ],
@@ -5368,7 +5368,7 @@
     "rank": 475,
     "level": "A2",
     "kind": "word",
-    "german": "Rätsel",
+    "german": "das Rätsel",
     "english": [
       "riddle",
       "puzzle"
@@ -5413,7 +5413,7 @@
     "rank": 479,
     "level": "A2",
     "kind": "word",
-    "german": "Reifen",
+    "german": "der Reifen",
     "english": [
       "hoop"
     ],
@@ -5424,7 +5424,7 @@
     "rank": 480,
     "level": "A2",
     "kind": "word",
-    "german": "Reihe",
+    "german": "die Reihe",
     "english": [
       "row",
       "series",
@@ -5437,7 +5437,7 @@
     "rank": 481,
     "level": "A2",
     "kind": "word",
-    "german": "Reinigung",
+    "german": "die Reinigung",
     "english": [
       "cleaning",
       "dry cleaner's"
@@ -5485,7 +5485,7 @@
     "rank": 485,
     "level": "A2",
     "kind": "word",
-    "german": "Rest",
+    "german": "der Rest",
     "english": [
       "rest",
       "remainder"
@@ -5497,7 +5497,7 @@
     "rank": 486,
     "level": "A2",
     "kind": "word",
-    "german": "Rezept",
+    "german": "das Rezept",
     "english": [
       "recipe",
       "prescription"
@@ -5509,7 +5509,7 @@
     "rank": 487,
     "level": "A2",
     "kind": "word",
-    "german": "Rind",
+    "german": "das Rind",
     "english": [
       "beef",
       "cattle"
@@ -5521,7 +5521,7 @@
     "rank": 488,
     "level": "A2",
     "kind": "word",
-    "german": "Ring",
+    "german": "der Ring",
     "english": [
       "ring"
     ],
@@ -5532,7 +5532,7 @@
     "rank": 489,
     "level": "A2",
     "kind": "word",
-    "german": "Rock",
+    "german": "der Rock",
     "english": [
       "skirt"
     ],
@@ -5554,7 +5554,7 @@
     "rank": 491,
     "level": "A2",
     "kind": "word",
-    "german": "Rose",
+    "german": "die Rose",
     "english": [
       "rose"
     ],
@@ -5565,7 +5565,7 @@
     "rank": 492,
     "level": "A2",
     "kind": "word",
-    "german": "Rücken",
+    "german": "der Rücken",
     "english": [
       "back"
     ],
@@ -5576,7 +5576,7 @@
     "rank": 493,
     "level": "A2",
     "kind": "word",
-    "german": "Rucksack",
+    "german": "der Rucksack",
     "english": [
       "rucksack"
     ],
@@ -5600,7 +5600,7 @@
     "rank": 495,
     "level": "A2",
     "kind": "word",
-    "german": "Ruhe",
+    "german": "die Ruhe",
     "english": [
       "peace (and quiet)"
     ],
@@ -5611,7 +5611,7 @@
     "rank": 496,
     "level": "A2",
     "kind": "word",
-    "german": "Rundgang",
+    "german": "der Rundgang",
     "english": [
       "tour",
       "walk-around"
@@ -5623,7 +5623,7 @@
     "rank": 497,
     "level": "A2",
     "kind": "word",
-    "german": "Sache",
+    "german": "die Sache",
     "english": [
       "thing",
       "matter"
@@ -5726,7 +5726,7 @@
     "rank": 506,
     "level": "A2",
     "kind": "word",
-    "german": "Schere",
+    "german": "die Schere",
     "english": [
       "scissors"
     ],
@@ -5737,7 +5737,7 @@
     "rank": 507,
     "level": "A2",
     "kind": "word",
-    "german": "Schiff",
+    "german": "das Schiff",
     "english": [
       "ship"
     ],
@@ -5760,7 +5760,7 @@
     "rank": 509,
     "level": "A2",
     "kind": "word",
-    "german": "Schirm",
+    "german": "der Schirm",
     "english": [
       "umbrella"
     ],
@@ -5782,7 +5782,7 @@
     "rank": 511,
     "level": "A2",
     "kind": "word",
-    "german": "Schloss",
+    "german": "das Schloss",
     "english": [
       "castle",
       "lock"
@@ -5794,7 +5794,7 @@
     "rank": 512,
     "level": "A2",
     "kind": "word",
-    "german": "Schmerz",
+    "german": "der Schmerz",
     "english": [
       "pain"
     ],
@@ -5816,7 +5816,7 @@
     "rank": 514,
     "level": "A2",
     "kind": "word",
-    "german": "Schnee",
+    "german": "der Schnee",
     "english": [
       "snow"
     ],
@@ -5849,7 +5849,7 @@
     "rank": 517,
     "level": "A2",
     "kind": "word",
-    "german": "Schokolade",
+    "german": "die Schokolade",
     "english": [
       "chocolate"
     ],
@@ -5904,7 +5904,7 @@
     "rank": 522,
     "level": "A2",
     "kind": "word",
-    "german": "Schwein",
+    "german": "das Schwein",
     "english": [
       "pig"
     ],
@@ -5926,7 +5926,7 @@
     "rank": 524,
     "level": "A2",
     "kind": "word",
-    "german": "Seife",
+    "german": "die Seife",
     "english": [
       "soap"
     ],
@@ -5937,7 +5937,7 @@
     "rank": 525,
     "level": "A2",
     "kind": "word",
-    "german": "Seite",
+    "german": "die Seite",
     "english": [
       "side"
     ],
@@ -5959,7 +5959,7 @@
     "rank": 527,
     "level": "A2",
     "kind": "word",
-    "german": "Sendung",
+    "german": "die Sendung",
     "english": [
       "broadcast"
     ],
@@ -5970,7 +5970,7 @@
     "rank": 528,
     "level": "A2",
     "kind": "word",
-    "german": "Service",
+    "german": "der Service",
     "english": [
       "service"
     ],
@@ -6005,7 +6005,7 @@
     "rank": 531,
     "level": "A2",
     "kind": "word",
-    "german": "Situation",
+    "german": "die Situation",
     "english": [
       "situation"
     ],
@@ -6016,7 +6016,7 @@
     "rank": 532,
     "level": "A2",
     "kind": "word",
-    "german": "Ski",
+    "german": "der Ski",
     "english": [
       "ski"
     ],
@@ -6083,7 +6083,7 @@
     "rank": 538,
     "level": "A2",
     "kind": "word",
-    "german": "Spaß",
+    "german": "der Spaß",
     "english": [
       "fun"
     ],
@@ -6105,7 +6105,7 @@
     "rank": 540,
     "level": "A2",
     "kind": "word",
-    "german": "Spaziergang",
+    "german": "der Spaziergang",
     "english": [
       "walk, stroll",
       "walk",
@@ -6131,7 +6131,7 @@
     "rank": 542,
     "level": "A2",
     "kind": "word",
-    "german": "Spiel",
+    "german": "das Spiel",
     "english": [
       "game"
     ],
@@ -6153,7 +6153,7 @@
     "rank": 544,
     "level": "A2",
     "kind": "word",
-    "german": "Sportplatz",
+    "german": "der Sportplatz",
     "english": [
       "sports field, pitch",
       "sports field",
@@ -6166,7 +6166,7 @@
     "rank": 545,
     "level": "A2",
     "kind": "word",
-    "german": "Sprechstunde",
+    "german": "die Sprechstunde",
     "english": [
       "consultation hours"
     ],
@@ -6177,7 +6177,7 @@
     "rank": 546,
     "level": "A2",
     "kind": "word",
-    "german": "Stadtplan",
+    "german": "der Stadtplan",
     "english": [
       "city map"
     ],
@@ -6188,7 +6188,7 @@
     "rank": 547,
     "level": "A2",
     "kind": "word",
-    "german": "Star",
+    "german": "der Star",
     "english": [
       "star",
       "celebrity"
@@ -6233,7 +6233,7 @@
     "rank": 551,
     "level": "A2",
     "kind": "word",
-    "german": "Stiefel",
+    "german": "der Stiefel",
     "english": [
       "boot"
     ],
@@ -6244,7 +6244,7 @@
     "rank": 552,
     "level": "A2",
     "kind": "word",
-    "german": "Stift",
+    "german": "der Stift",
     "english": [
       "pen, pencil",
       "pen",
@@ -6257,7 +6257,7 @@
     "rank": 553,
     "level": "A2",
     "kind": "word",
-    "german": "Stipendium",
+    "german": "das Stipendium",
     "english": [
       "scholarship",
       "grant"
@@ -6269,7 +6269,7 @@
     "rank": 554,
     "level": "A2",
     "kind": "word",
-    "german": "Stockwerk",
+    "german": "das Stockwerk",
     "english": [
       "floor",
       "storey"
@@ -6293,7 +6293,7 @@
     "rank": 556,
     "level": "A2",
     "kind": "word",
-    "german": "Strand",
+    "german": "der Strand",
     "english": [
       "beach"
     ],
@@ -6315,7 +6315,7 @@
     "rank": 558,
     "level": "A2",
     "kind": "word",
-    "german": "Stress",
+    "german": "der Stress",
     "english": [
       "stress"
     ],
@@ -6337,7 +6337,7 @@
     "rank": 560,
     "level": "A2",
     "kind": "word",
-    "german": "Stück",
+    "german": "das Stück",
     "english": [
       "a little"
     ],
@@ -6348,7 +6348,7 @@
     "rank": 561,
     "level": "A2",
     "kind": "word",
-    "german": "Studentin",
+    "german": "die Studentin",
     "english": [
       "female student",
       "student"
@@ -6360,7 +6360,7 @@
     "rank": 562,
     "level": "A2",
     "kind": "word",
-    "german": "Stuhl",
+    "german": "der Stuhl",
     "english": [
       "chair"
     ],
@@ -6383,7 +6383,7 @@
     "rank": 564,
     "level": "A2",
     "kind": "word",
-    "german": "Supermarkt",
+    "german": "der Supermarkt",
     "english": [
       "supermarket"
     ],
@@ -6394,7 +6394,7 @@
     "rank": 565,
     "level": "A2",
     "kind": "word",
-    "german": "Suppe",
+    "german": "die Suppe",
     "english": [
       "soup"
     ],
@@ -6429,7 +6429,7 @@
     "rank": 568,
     "level": "A2",
     "kind": "word",
-    "german": "Süßigkeiten",
+    "german": "die Süßigkeiten",
     "english": [
       "sweets"
     ],
@@ -6453,7 +6453,7 @@
     "rank": 570,
     "level": "A2",
     "kind": "word",
-    "german": "Tablet",
+    "german": "das Tablet",
     "english": [
       "tablet"
     ],
@@ -6464,7 +6464,7 @@
     "rank": 571,
     "level": "A2",
     "kind": "word",
-    "german": "Tablette",
+    "german": "die Tablette",
     "english": [
       "tablet/pill"
     ],
@@ -6475,7 +6475,7 @@
     "rank": 572,
     "level": "A2",
     "kind": "word",
-    "german": "Tafel",
+    "german": "die Tafel",
     "english": [
       "board",
       "blackboard"
@@ -6487,7 +6487,7 @@
     "rank": 573,
     "level": "A2",
     "kind": "word",
-    "german": "Taschengeld",
+    "german": "das Taschengeld",
     "english": [
       "pocket money"
     ],
@@ -6498,7 +6498,7 @@
     "rank": 574,
     "level": "A2",
     "kind": "word",
-    "german": "Tasse",
+    "german": "die Tasse",
     "english": [
       "cup"
     ],
@@ -6534,7 +6534,7 @@
     "rank": 577,
     "level": "A2",
     "kind": "word",
-    "german": "Team",
+    "german": "das Team",
     "english": [
       "team"
     ],
@@ -6568,7 +6568,7 @@
     "rank": 580,
     "level": "A2",
     "kind": "word",
-    "german": "Teller",
+    "german": "der Teller",
     "english": [
       "plate"
     ],
@@ -6579,7 +6579,7 @@
     "rank": 581,
     "level": "A2",
     "kind": "word",
-    "german": "Tennis",
+    "german": "das Tennis",
     "english": [
       "tennis"
     ],
@@ -6590,7 +6590,7 @@
     "rank": 582,
     "level": "A2",
     "kind": "word",
-    "german": "Theater",
+    "german": "das Theater",
     "english": [
       "theatre"
     ],
@@ -6612,7 +6612,7 @@
     "rank": 584,
     "level": "A2",
     "kind": "word",
-    "german": "Tier",
+    "german": "das Tier",
     "english": [
       "animal"
     ],
@@ -6623,7 +6623,7 @@
     "rank": 585,
     "level": "A2",
     "kind": "word",
-    "german": "Tipp",
+    "german": "der Tipp",
     "english": [
       "tip"
     ],
@@ -6634,7 +6634,7 @@
     "rank": 586,
     "level": "A2",
     "kind": "word",
-    "german": "Titel",
+    "german": "der Titel",
     "english": [
       "title"
     ],
@@ -6657,7 +6657,7 @@
     "rank": 588,
     "level": "A2",
     "kind": "word",
-    "german": "Topf",
+    "german": "der Topf",
     "english": [
       "pot, pan",
       "pot",
@@ -6670,7 +6670,7 @@
     "rank": 589,
     "level": "A2",
     "kind": "word",
-    "german": "Torte",
+    "german": "die Torte",
     "english": [
       "pie, tart, flan",
       "pie",
@@ -6695,7 +6695,7 @@
     "rank": 591,
     "level": "A2",
     "kind": "word",
-    "german": "Tour",
+    "german": "die Tour",
     "english": [
       "tour, trip",
       "tour",
@@ -6708,7 +6708,7 @@
     "rank": 592,
     "level": "A2",
     "kind": "word",
-    "german": "Tourist",
+    "german": "der Tourist",
     "english": [
       "tourist"
     ],
@@ -6719,7 +6719,7 @@
     "rank": 593,
     "level": "A2",
     "kind": "word",
-    "german": "Touristin",
+    "german": "die Touristin",
     "english": [
       "female tourist",
       "tourist"
@@ -6754,7 +6754,7 @@
     "rank": 596,
     "level": "A2",
     "kind": "word",
-    "german": "Training",
+    "german": "das Training",
     "english": [
       "training"
     ],
@@ -6765,7 +6765,7 @@
     "rank": 597,
     "level": "A2",
     "kind": "word",
-    "german": "Traum",
+    "german": "der Traum",
     "english": [
       "dream"
     ],
@@ -6821,7 +6821,7 @@
     "rank": 602,
     "level": "A2",
     "kind": "word",
-    "german": "T-Shirt",
+    "german": "das T-Shirt",
     "english": [
       "T-shirt"
     ],
@@ -6832,7 +6832,7 @@
     "rank": 603,
     "level": "A2",
     "kind": "word",
-    "german": "Tür",
+    "german": "die Tür",
     "english": [
       "door"
     ],
@@ -6898,7 +6898,7 @@
     "rank": 609,
     "level": "A2",
     "kind": "word",
-    "german": "Übersetzung",
+    "german": "die Übersetzung",
     "english": [
       "translation"
     ],
@@ -6920,7 +6920,7 @@
     "rank": 611,
     "level": "A2",
     "kind": "word",
-    "german": "Umzug",
+    "german": "der Umzug",
     "english": [
       "move"
     ],
@@ -6931,7 +6931,7 @@
     "rank": 612,
     "level": "A2",
     "kind": "word",
-    "german": "Unfall",
+    "german": "der Unfall",
     "english": [
       "accident"
     ],
@@ -6942,7 +6942,7 @@
     "rank": 613,
     "level": "A2",
     "kind": "word",
-    "german": "Universität",
+    "german": "die Universität",
     "english": [
       "university"
     ],
@@ -6964,7 +6964,7 @@
     "rank": 615,
     "level": "A2",
     "kind": "word",
-    "german": "Unterkunft",
+    "german": "die Unterkunft",
     "english": [
       "accommodation"
     ],
@@ -6988,7 +6988,7 @@
     "rank": 617,
     "level": "A2",
     "kind": "word",
-    "german": "Unterschied",
+    "german": "der Unterschied",
     "english": [
       "difference"
     ],
@@ -7010,7 +7010,7 @@
     "rank": 619,
     "level": "A2",
     "kind": "word",
-    "german": "Veranstaltung",
+    "german": "die Veranstaltung",
     "english": [
       "event"
     ],
@@ -7055,7 +7055,7 @@
     "rank": 623,
     "level": "A2",
     "kind": "word",
-    "german": "Verkehr",
+    "german": "der Verkehr",
     "english": [
       "traffic"
     ],
@@ -7066,7 +7066,7 @@
     "rank": 624,
     "level": "A2",
     "kind": "word",
-    "german": "Verkehrsmittel",
+    "german": "das Verkehrsmittel",
     "english": [
       "means of transport"
     ],
@@ -7111,7 +7111,7 @@
     "rank": 628,
     "level": "A2",
     "kind": "word",
-    "german": "Vermieterin",
+    "german": "die Vermieterin",
     "english": [
       "landlady"
     ],
@@ -7166,7 +7166,7 @@
     "rank": 633,
     "level": "A2",
     "kind": "word",
-    "german": "Verspätung",
+    "german": "die Verspätung",
     "english": [
       "delay"
     ],
@@ -7188,7 +7188,7 @@
     "rank": 635,
     "level": "A2",
     "kind": "word",
-    "german": "Vertrag",
+    "german": "der Vertrag",
     "english": [
       "contract, agreement",
       "contract",
@@ -7201,7 +7201,7 @@
     "rank": 636,
     "level": "A2",
     "kind": "word",
-    "german": "Vogel",
+    "german": "der Vogel",
     "english": [
       "bird"
     ],
@@ -7281,7 +7281,7 @@
     "rank": 643,
     "level": "A2",
     "kind": "word",
-    "german": "Vorschlag",
+    "german": "der Vorschlag",
     "english": [
       "suggestion, proposal",
       "suggestion",
@@ -7327,7 +7327,7 @@
     "rank": 647,
     "level": "A2",
     "kind": "word",
-    "german": "Wagen",
+    "german": "der Wagen",
     "english": [
       "car",
       "coach"
@@ -7372,7 +7372,7 @@
     "rank": 651,
     "level": "A2",
     "kind": "word",
-    "german": "Wald",
+    "german": "der Wald",
     "english": [
       "wood"
     ],
@@ -7394,7 +7394,7 @@
     "rank": 653,
     "level": "A2",
     "kind": "word",
-    "german": "Wäsche",
+    "german": "die Wäsche",
     "english": [
       "laundry"
     ],
@@ -7405,7 +7405,7 @@
     "rank": 654,
     "level": "A2",
     "kind": "word",
-    "german": "Webseite",
+    "german": "die Webseite",
     "english": [
       "website"
     ],
@@ -7518,7 +7518,7 @@
     "rank": 664,
     "level": "A2",
     "kind": "word",
-    "german": "Werkstatt",
+    "german": "die Werkstatt",
     "english": [
       "workshop"
     ],
@@ -7529,7 +7529,7 @@
     "rank": 665,
     "level": "A2",
     "kind": "word",
-    "german": "Wettbewerb",
+    "german": "der Wettbewerb",
     "english": [
       "competition"
     ],
@@ -7573,7 +7573,7 @@
     "rank": 669,
     "level": "A2",
     "kind": "word",
-    "german": "Witz",
+    "german": "der Witz",
     "english": [
       "joke"
     ],
@@ -7595,7 +7595,7 @@
     "rank": 671,
     "level": "A2",
     "kind": "word",
-    "german": "Wohnzimmer",
+    "german": "das Wohnzimmer",
     "english": [
       "living room"
     ],
@@ -7606,7 +7606,7 @@
     "rank": 672,
     "level": "A2",
     "kind": "word",
-    "german": "Workshop",
+    "german": "der Workshop",
     "english": [
       "workshop"
     ],
@@ -7617,7 +7617,7 @@
     "rank": 673,
     "level": "A2",
     "kind": "word",
-    "german": "Wunsch",
+    "german": "der Wunsch",
     "english": [
       "wish, desire",
       "wish",
@@ -7643,7 +7643,7 @@
     "rank": 675,
     "level": "A2",
     "kind": "word",
-    "german": "Wurst",
+    "german": "die Wurst",
     "english": [
       "sausage"
     ],
@@ -7654,7 +7654,7 @@
     "rank": 676,
     "level": "A2",
     "kind": "word",
-    "german": "Zahl",
+    "german": "die Zahl",
     "english": [
       "number"
     ],
@@ -7665,7 +7665,7 @@
     "rank": 677,
     "level": "A2",
     "kind": "word",
-    "german": "Zahn",
+    "german": "der Zahn",
     "english": [
       "tooth"
     ],
@@ -7698,7 +7698,7 @@
     "rank": 680,
     "level": "A2",
     "kind": "word",
-    "german": "Zeitschrift",
+    "german": "die Zeitschrift",
     "english": [
       "magazine"
     ],
@@ -7709,7 +7709,7 @@
     "rank": 681,
     "level": "A2",
     "kind": "word",
-    "german": "Zelt",
+    "german": "das Zelt",
     "english": [
       "tent"
     ],
@@ -7720,7 +7720,7 @@
     "rank": 682,
     "level": "A2",
     "kind": "word",
-    "german": "Zentrum",
+    "german": "das Zentrum",
     "english": [
       "centre"
     ],
@@ -7731,7 +7731,7 @@
     "rank": 683,
     "level": "A2",
     "kind": "word",
-    "german": "Zettel",
+    "german": "der Zettel",
     "english": [
       "note"
     ],
@@ -7742,7 +7742,7 @@
     "rank": 684,
     "level": "A2",
     "kind": "word",
-    "german": "Zeugnis",
+    "german": "das Zeugnis",
     "english": [
       "school report"
     ],
@@ -7753,7 +7753,7 @@
     "rank": 685,
     "level": "A2",
     "kind": "word",
-    "german": "Ziel",
+    "german": "das Ziel",
     "english": [
       "goal",
       "destination"
@@ -7765,7 +7765,7 @@
     "rank": 686,
     "level": "A2",
     "kind": "word",
-    "german": "Zirkus",
+    "german": "der Zirkus",
     "english": [
       "circus"
     ],
@@ -7776,7 +7776,7 @@
     "rank": 687,
     "level": "A2",
     "kind": "word",
-    "german": "Zitrone",
+    "german": "die Zitrone",
     "english": [
       "lemon"
     ],
@@ -7787,7 +7787,7 @@
     "rank": 688,
     "level": "A2",
     "kind": "word",
-    "german": "Zoo",
+    "german": "der Zoo",
     "english": [
       "zoo"
     ],
@@ -7798,7 +7798,7 @@
     "rank": 689,
     "level": "A2",
     "kind": "word",
-    "german": "Zucker",
+    "german": "der Zucker",
     "english": [
       "sugar"
     ],
