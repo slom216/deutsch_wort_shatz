@@ -13,7 +13,7 @@ import './LevelBadge.css';
  * beside it — the only feedback that the number moved at all.
  */
 export function LevelBadge(): ReactNode {
-  const { level, lastXp, answerCount, ready } = useLiveLevel();
+  const { level, lastXp, answerCount, ready, totalXp } = useLiveLevel();
   const percent = Math.round(level.fraction * 100);
   const previousLevel = useLevelUp(ready ? level.level : null);
 
@@ -27,7 +27,7 @@ export function LevelBadge(): ReactNode {
       <img className="level-badge__avatar" src={avatarSrc(level.level)} alt="" />
       <div className="level-badge__body">
         <p className="level-badge__title">
-          Level {level.level}
+          Level {level.level} <span className="level-badge__total">({totalXp} XP)</span>
           {lastXp !== 0 ? (
             <span
               key={answerCount}

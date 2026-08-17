@@ -57,15 +57,23 @@ export function exerciseXp(input: ExerciseXpInput): number {
  * Learner levels (§23).
  *
  * Each level costs 25% more XP than the one before it, so reaching level 2 is 25% easier
- * than reaching level 3, and so on. `LEVEL_XP_BASE` is tuned so that a learner who works
- * the whole corpus to mastery lands on level 20: the 3,460 entries yield roughly 183,000
- * XP in exercises, mastery bonuses and band/level completions, and
- * `xpRequiredForLevel(20)` sits just under that. Levels past 20 keep the same curve —
- * streak and daily-goal bonuses carry the learner beyond.
+ * than reaching level 3, and so on. `LEVEL_XP_BASE` is tuned so that level 20 lands at 90%
+ * of the corpus: the last tenth is the long tail of rare B1 words, and a learner who never
+ * finishes it should still top out. Levels past 20 keep the same curve — streak and
+ * daily-goal bonuses carry the learner beyond.
  *
- * The four-step score ladder is what sets the corpus total: 26 XP of exercises plus the
- * 10-XP mastery bonus per word. Shortening or lengthening the ladder moves this figure,
- * so the base has to move with it.
+ * The corpus is worth 127,260 XP once fully mastered:
+ *
+ *   3,460 entries × 36 XP   124,560   the four-step ladder (5+5+8+8) plus 10 for mastery
+ *   12 bands × 100            1,200
+ *   3 CEFR levels × 500       1,500
+ *
+ * 90% of that is 114,534, and `xpRequiredForLevel(20)` is 114,346 — just under, so the level
+ * is actually reached there rather than one word short of it.
+ *
+ * The ladder is what sets the per-word figure, so shortening or lengthening it moves the
+ * total and the base has to move with it — as does growing the corpus. `gamification.test.ts`
+ * recomputes the whole sum from the manifest and fails if the base drifts out of step.
  *
  * Each flattening of the curve — 50% to 30% to today's 25% — makes the late levels cheaper
  * and so forces the base up: the same corpus total has to be spread over 19 steps that
@@ -74,14 +82,18 @@ export function exerciseXp(input: ExerciseXpInput): number {
  * Retune by moving `LEVEL_XP_BASE` alone; the curve's shape is `LEVEL_XP_GROWTH`.
  */
 const LEVEL_XP_GROWTH = 1.25;
-const LEVEL_XP_BASE = 668;
+const LEVEL_XP_BASE = 418;
+
+/** Share of the corpus that reaching `LEVEL_XP_TARGET` represents. */
+export const CORPUS_MASTERY_TARGET = 0.9;
+
+/** The level a learner reaches at `CORPUS_MASTERY_TARGET` of the corpus. */
+export const LEVEL_XP_TARGET = 20;
 
 /** Cumulative XP needed to *be* this level. Level 1 starts at 0. */
 export function xpRequiredForLevel(level: number): number {
   if (level <= 1) return 0;
-  return Math.round(
-    (LEVEL_XP_BASE * (LEVEL_XP_GROWTH ** (level - 1) - 1)) / (LEVEL_XP_GROWTH - 1),
-  );
+  return Math.round((LEVEL_XP_BASE * (LEVEL_XP_GROWTH ** (level - 1) - 1)) / (LEVEL_XP_GROWTH - 1));
 }
 
 export function levelForXp(totalXp: number): number {

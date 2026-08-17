@@ -1,6 +1,19 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { exerciseXp, levelForXp, levelProgress, xpRequiredForLevel, XP_BY_TYPE } from './xp';
+import {
+  CORPUS_MASTERY_TARGET,
+  exerciseXp,
+  levelForXp,
+  levelProgress,
+  LEVEL_XP_TARGET,
+  xpRequiredForLevel,
+  XP_BY_TYPE,
+  XP_COMPLETE_BAND,
+  XP_COMPLETE_LEVEL,
+  XP_MASTER_ENTRY,
+} from './xp';
+import { SCORE_FORMATS } from '@/features/practice/session/endless';
+import manifest from '@/content/vocabulary/generated/manifest.json';
 import { computeStreak, dailyActivity, dailyGoalState } from './streak';
 import {
   ACHIEVEMENTS,
@@ -57,54 +70,83 @@ describe('XP rules (§23)', () => {
   });
 
   it('deducts the same amount for a wrong answer', () => {
-    expect(
-      exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: false }),
-    ).toBe(-8);
-    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: true, revealed: false })).toBe(8);
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: false })).toBe(
+      -8,
+    );
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: true, revealed: false })).toBe(
+      8,
+    );
   });
 
   it('awards nothing for a revealed answer', () => {
     expect(exerciseXp({ exerciseType: 'typedTranslation', correct: true, revealed: true })).toBe(0);
-    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: true })).toBe(0);
+    expect(exerciseXp({ exerciseType: 'typedTranslation', correct: false, revealed: true })).toBe(
+      0,
+    );
   });
 });
 
 describe('learner levels (§23)', () => {
   it('makes each level cost 25% more than the one before', () => {
     expect(xpRequiredForLevel(1)).toBe(0);
-    expect(xpRequiredForLevel(2)).toBe(668);
+    expect(xpRequiredForLevel(2)).toBe(418);
     for (let level = 2; level < 20; level += 1) {
       const previousStep = xpRequiredForLevel(level) - xpRequiredForLevel(level - 1);
       const step = xpRequiredForLevel(level + 1) - xpRequiredForLevel(level);
-      // Rounding to whole XP wobbles the ratio on the cheapest levels (668 → 835 is 1.25).
+      // Rounding to whole XP wobbles the ratio on the cheapest levels (418 → 522 is 1.25).
       expect(step / previousStep).toBeCloseTo(1.25, 1);
     }
   });
 
-  // The whole 3,460-entry corpus yields roughly 183,000 XP once mastered — 36 XP a word
-  // over the four-step ladder, plus band and level completions. The curve is tuned so that
-  // lands on level 20 rather than somewhere arbitrary.
-  it('puts level 20 within reach of a fully mastered corpus', () => {
-    expect(xpRequiredForLevel(20)).toBeLessThanOrEqual(183_000);
-    expect(xpRequiredForLevel(21)).toBeGreaterThan(183_000);
-    expect(levelForXp(183_000)).toBe(20);
+  /**
+   * Everything the corpus is worth, recomputed rather than written down: taking one entry
+   * up the whole score ladder, times the entries, plus the band and CEFR completions.
+   *
+   * The figure in a comment went stale the moment the ladder lost a rung, and nothing
+   * caught it — the tuning was two levels out. Derived from the manifest and the XP table,
+   * it cannot drift again: grow the corpus or change the ladder and this test says so.
+   */
+  const corpusXp = (): number => {
+    const perEntry =
+      SCORE_FORMATS.reduce((sum, format) => sum + (XP_BY_TYPE[format.type] ?? 0), 0) +
+      XP_MASTER_ENTRY;
+    return (
+      manifest.totalEntries * perEntry +
+      manifest.bands.length * XP_COMPLETE_BAND +
+      Object.keys(manifest.entriesByLevel).length * XP_COMPLETE_LEVEL
+    );
+  };
+
+  it('puts level 20 at 90% of the corpus', () => {
+    const target = corpusXp() * CORPUS_MASTERY_TARGET;
+
+    expect(levelForXp(target)).toBe(LEVEL_XP_TARGET);
+    // Within a level's own width of the target, not merely somewhere inside it: the base is
+    // meant to land on the boundary, and a sloppy retune would still pass a bare `toBe`.
+    const step = xpRequiredForLevel(LEVEL_XP_TARGET + 1) - xpRequiredForLevel(LEVEL_XP_TARGET);
+    expect(Math.abs(xpRequiredForLevel(LEVEL_XP_TARGET) - target)).toBeLessThan(step * 0.05);
+  });
+
+  it('leaves the last tenth of the corpus worth more than one more level', () => {
+    // The point of stopping at 90%: the long tail of rare B1 words is not a grind to 21.
+    expect(corpusXp()).toBeGreaterThan(xpRequiredForLevel(LEVEL_XP_TARGET));
   });
 
   it('starts every learner at level 1', () => {
     expect(levelForXp(0)).toBe(1);
-    expect(levelForXp(667)).toBe(1);
+    expect(levelForXp(417)).toBe(1);
   });
 
   it('advances a level once the threshold is reached', () => {
-    expect(levelForXp(668)).toBe(2);
-    expect(levelForXp(1600)).toBe(3);
-    expect(levelForXp(2600)).toBe(4);
+    expect(levelForXp(418)).toBe(2);
+    expect(levelForXp(941)).toBe(3);
+    expect(levelForXp(1594)).toBe(4);
   });
 
   it('reports progress towards the next level', () => {
     const progress = levelProgress(2000);
-    expect(progress.level).toBe(3);
-    expect(progress.xpForNextLevel).toBe(547);
+    expect(progress.level).toBe(4);
+    expect(progress.xpForNextLevel).toBe(410);
     expect(progress.fraction).toBeGreaterThan(0);
     expect(progress.fraction).toBeLessThan(1);
   });

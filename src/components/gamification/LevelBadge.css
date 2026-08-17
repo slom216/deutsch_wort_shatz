@@ -35,6 +35,15 @@
   font-weight: var(--weight-semibold);
 }
 
+/* The lifetime total, next to the level it produced — there to be read off while tuning
+   the curve, so it is quiet enough not to compete with the level itself. */
+.level-badge__total {
+  font-weight: var(--weight-normal);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .level-badge__hint {
   margin: var(--space-1) 0 0;
   font-size: var(--text-sm);

@@ -1138,16 +1138,22 @@ Revealed answer:
 
 ### Learner Level Formula
 
-Each level costs 30% more XP than the one before it, so reaching level 2 is 30% easier than
+Each level costs 25% more XP than the one before it, so reaching level 2 is 25% easier than
 reaching level 3, and so on:
 
 ```ts
-xpRequiredForLevel(level) = round((413 * (1.3 ** (level - 1) - 1)) / 0.3); // level 1 = 0
+xpRequiredForLevel(level) = round((419 * (1.25 ** (level - 1) - 1)) / 0.25); // level 1 = 0
 ```
 
-The base (413) is tuned so that the ~200,000 XP the full 3,460-entry corpus yields — exercises,
-mastery bonuses and band/level completions — lands the learner on level 20
-(`xpRequiredForLevel(20) = 199,881`). Levels past 20 follow the same curve.
+The base (419) is tuned so that level 20 falls at **90%** of the corpus, not all of it: the
+last tenth is the long tail of rare B1 words, and a learner who never finishes it should
+still top out. The full 3,460-entry corpus is worth 127,260 XP — 36 XP an entry over the
+four-step score ladder (5+5+8+8, plus 10 for mastery), 12 band completions at 100 and 3 CEFR
+completions at 500 — so the target is 114,534 and `xpRequiredForLevel(20) = 114,620`.
+
+Levels past 20 follow the same curve. Retune by moving the base alone. The ladder length and
+the corpus size both feed the total, so `gamification.test.ts` recomputes it from the
+manifest and fails if the base falls out of step.
 
 ### Daily Goal
 
