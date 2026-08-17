@@ -15,6 +15,7 @@ import { loadBand, loadEntries, loadEntry, loadSearchIndex } from '@/content/voc
 import { topicFromSlug } from '@/content/vocabulary/topics';
 import { loadAllProgress, introduceEntry } from '@/features/srs/repository';
 import { dueEntries } from '@/features/srs/queue';
+import { loadSkippedIds } from '@/features/srs/skipped';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { SessionMode } from '@/features/practice/session/buildSession';
 import { createRandom } from '@/features/practice/random';
@@ -195,6 +196,12 @@ export default function PracticeSessionPage(): ReactNode {
       }
 
       if (cancelled) return;
+
+      // Set-aside words are set aside everywhere, not only in continuous learning: the
+      // learner parked them, and a review session serving one back would read as a bug.
+      // Filtered here, where every mode's working set has just been assembled.
+      const skipped = await loadSkippedIds();
+      if (skipped.size > 0) entries = entries.filter((entry) => !skipped.has(entry.id));
 
       // A new-word session introduces its entries before they can be scheduled (§18).
       if (mode === 'new') {

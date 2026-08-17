@@ -24,6 +24,7 @@ const PracticeSessionPage = lazy(() => import('@/pages/PracticeSessionPage'));
 const ResultsPage = lazy(() => import('@/pages/ResultsPage'));
 const VocabularyBrowserPage = lazy(() => import('@/pages/VocabularyBrowserPage'));
 const VocabularyEntryPage = lazy(() => import('@/pages/VocabularyEntryPage'));
+const SkippedWordsPage = lazy(() => import('@/pages/SkippedWordsPage'));
 const ProgressPage = lazy(() => import('@/pages/ProgressPage'));
 const AchievementsPage = lazy(() => import('@/pages/AchievementsPage'));
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
@@ -53,6 +54,7 @@ export const routes: RouteObject[] = [
       { path: 'results/:sessionId', element: page(<ResultsPage />) },
       { path: 'vocabulary', element: page(<VocabularyBrowserPage />) },
       { path: 'word/:entryId', element: page(<VocabularyEntryPage />) },
+      { path: 'skipped', element: page(<SkippedWordsPage />) },
       { path: 'progress', element: page(<ProgressPage />) },
       { path: 'achievements', element: page(<AchievementsPage />) },
       { path: 'settings', element: page(<SettingsPage />) },

@@ -178,6 +178,9 @@ export default function ContinuousPage(): ReactNode {
           onComplete={(outcome) => {
             void stream.answer(outcome);
           }}
+          onSkip={() => {
+            void stream.skip();
+          }}
         />
       ) : stream.error ? null : (
         <p className="band-summary">Choosing your next word…</p>

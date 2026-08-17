@@ -48,6 +48,11 @@ export function TypedTranslationExercise({
       <p className="exercise__prompt">{exercise.prompt}</p>
       <p className="exercise__question" lang={exercise.answerLanguage === 'de' ? 'en' : 'de'}>
         {exercise.question}
+        {exercise.wordClass ? (
+          <span className="exercise__class" lang="en">
+            ({exercise.wordClass})
+          </span>
+        ) : null}
       </p>
 
       <form

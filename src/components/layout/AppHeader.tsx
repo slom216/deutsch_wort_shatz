@@ -18,6 +18,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   { to: '/review', label: 'Review' },
   { to: '/practice', label: 'Practice' },
   { to: '/vocabulary', label: 'Vocabulary' },
+  { to: '/skipped', label: 'Skipped' },
   { to: '/progress', label: 'Progress' },
   { to: '/settings', label: 'Settings' },
 ];

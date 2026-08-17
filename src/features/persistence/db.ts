@@ -1,6 +1,11 @@
 import Dexie, { type Table } from 'dexie';
 
-import type { AchievementRecord, EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
+import type {
+  AchievementRecord,
+  EntryProgress,
+  ExerciseHistory,
+  SkippedEntry,
+} from '@/schemas/progressSchema';
 import type { PracticeSessionRecord } from '@/schemas/sessionSchema';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, type Settings } from '@/schemas/settingsSchema';
 
@@ -31,7 +36,7 @@ export interface DatabaseMetadata {
 }
 
 /** Bumped whenever the Dexie schema changes. Mirrored into the `metadata` table. */
-export const DATABASE_SCHEMA_VERSION = 4;
+export const DATABASE_SCHEMA_VERSION = 5;
 export const DATABASE_NAME = 'deutsch-wort-shatz';
 
 export class VocabularyLearningDatabase extends Dexie {
@@ -42,6 +47,7 @@ export class VocabularyLearningDatabase extends Dexie {
   declare settings: Table<Settings, string>;
   declare metadata: Table<DatabaseMetadata, string>;
   declare xpEvents: Table<XpEvent, string>;
+  declare skippedEntries: Table<SkippedEntry, string>;
 
   constructor(name: string = DATABASE_NAME) {
     super(name);
@@ -110,6 +116,15 @@ export class VocabularyLearningDatabase extends Dexie {
             progress.totalResponseMs ??= 0;
           }),
       );
+
+    // Version 5 — adds `skippedEntries`, the words the learner has set aside.
+    //
+    // A new table, so nothing is migrated: an existing learner simply has none skipped.
+    // The entry's progress row is deliberately not involved — skipping parks a word for
+    // later and must leave its mastery score and due date exactly where they were.
+    this.version(5).stores({
+      skippedEntries: 'entryId, skippedAt',
+    });
   }
 }
 
@@ -152,6 +167,7 @@ export async function resetAllProgress(database: VocabularyLearningDatabase = db
       database.achievements,
       database.settings,
       database.xpEvents,
+      database.skippedEntries,
       database.metadata,
     ],
     async () => {
@@ -162,6 +178,7 @@ export async function resetAllProgress(database: VocabularyLearningDatabase = db
         database.achievements.clear(),
         database.settings.clear(),
         database.xpEvents.clear(),
+        database.skippedEntries.clear(),
         // The stream's spacing counts exercises the learner has answered, so it goes with
         // them. `metadata` is not cleared wholesale: the schema version has to survive.
         database.metadata.delete('stream-schedule'),

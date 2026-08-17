@@ -49,6 +49,11 @@ export function MultipleChoiceExercise({
       <p className="exercise__prompt">{exercise.prompt}</p>
       <p className="exercise__question" lang="de">
         {exercise.question}
+        {exercise.wordClass ? (
+          <span className="exercise__class" lang="en">
+            ({exercise.wordClass})
+          </span>
+        ) : null}
       </p>
 
       <ChoiceOptions

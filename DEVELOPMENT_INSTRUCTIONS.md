@@ -120,6 +120,7 @@ Do not add:
  /results/:sessionId
  /vocabulary
  /word/:entryId
+ /skipped
  /progress
  /achievements
  /settings
@@ -1218,6 +1219,7 @@ Persist:
 - settings;
 - streak;
 - XP;
+- skipped words;
 - migrations metadata.
 
 Recommended tables:
@@ -1229,6 +1231,7 @@ class VocabularyLearningDatabase extends Dexie {
   sessions!: Table<PracticeSessionRecord, string>;
   achievements!: Table<AchievementRecord, string>;
   settings!: Table<PersistedSettings, string>;
+  skippedEntries!: Table<SkippedEntry, string>;
   metadata!: Table<DatabaseMetadata, string>;
 }
 ```

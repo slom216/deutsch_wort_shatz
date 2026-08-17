@@ -38,6 +38,11 @@ interface ExerciseRunnerProps {
   readonly exercise: Exercise;
   readonly onComplete: (outcome: ExerciseOutcome) => void;
   readonly progressLabel?: string;
+  /**
+   * Sets this word aside instead of answering it. Given only by modes that have somewhere
+   * to put it — continuous learning — so no other caller grows a button it cannot honour.
+   */
+  readonly onSkip?: () => void;
 }
 
 function renderExercise(props: ExerciseComponentProps): ReactNode {
@@ -71,6 +76,7 @@ export function ExerciseRunner({
   exercise,
   onComplete,
   progressLabel,
+  onSkip,
 }: ExerciseRunnerProps): ReactNode {
   const [result, setResult] = useState<EvaluationResult | null>(null);
   const [locked, setLocked] = useState(false);
@@ -178,6 +184,14 @@ export function ExerciseRunner({
         {!locked && !revealed ? (
           <button type="button" className="runner__reveal" onClick={reveal}>
             Show answer
+          </button>
+        ) : null}
+
+        {/* Only before an answer: once one is in, the word is graded and Continue owns
+            the way on. */}
+        {onSkip && !locked ? (
+          <button type="button" className="runner__skip" onClick={onSkip}>
+            Skip this word
           </button>
         ) : null}
 

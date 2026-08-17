@@ -234,6 +234,15 @@ describe('multiple choice', () => {
     expect(exercise?.options[exercise.correctIndex]).toBe(entry.english[0]);
   });
 
+  it('carries the word class beside the question, except when it is the answer', () => {
+    const entry = find((e) => e.wordClass === 'noun');
+    const context = { entry, pool: pilot, random: random(), id: 'mc-class' };
+
+    expect(generateMultipleChoice(context, 'englishToGerman')?.wordClass).toBe('noun');
+    expect(generateMultipleChoice(context, 'germanToEnglish')?.wordClass).toBe('noun');
+    expect(generateMultipleChoice(context, 'wordClass')?.wordClass).toBeUndefined();
+  });
+
   it('offers the right answer misspelled by one interior letter, but only sometimes', () => {
     let withMiss = 0;
     let total = 0;

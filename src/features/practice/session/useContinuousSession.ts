@@ -12,6 +12,7 @@ import {
   loadAllProgress,
   loadProgress,
 } from '@/features/srs/repository';
+import { loadSkippedIds, skipEntry } from '@/features/srs/skipped';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { Exercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
@@ -63,6 +64,12 @@ export interface ContinuousSession {
    */
   readonly masteryScore: number;
   readonly answer: (outcome: ExerciseOutcome) => Promise<void>;
+  /**
+   * Sets the word on screen aside and moves on. Nothing is graded: the word keeps its
+   * score and its schedule, and stays out of the stream until it is returned from the
+   * skipped-words screen.
+   */
+  readonly skip: () => Promise<void>;
 }
 
 /** Every band in frequency order, A1 first — the order new words are introduced in. */
@@ -73,6 +80,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
   const start = useSessionStore((state) => state.start);
   const serve = useSessionStore((state) => state.serve);
   const recordAnswer = useSessionStore((state) => state.recordAnswer);
+  const dropCurrent = useSessionStore((state) => state.dropCurrent);
   const exercise = useSessionStore((state) => state.exercises[state.currentIndex] ?? null);
 
   const [loading, setLoading] = useState(true);
@@ -89,6 +97,8 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
   const startedIds = useRef<string[]>([]);
   /** Entry ids the learner has a progress record for, so new words skip them. */
   const seen = useRef<Set<string>>(new Set());
+  /** Words set aside. Held here as well as in the database so a skip bites immediately. */
+  const skipped = useRef<Set<string>>(new Set());
   const entries = useRef<Map<string, VocabularyEntry>>(new Map());
   /** Generated exercises per entry; the ladder picks from them by score. */
   const generated = useRef<Map<string, readonly Exercise[]>>(new Map());
@@ -246,6 +256,10 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       // drops them, but the due queue and the started-words fallback do not know about the
       // score, and a mastered word served from either would be asked for ever.
       if (score >= MASTERY_SCORE_TARGET) return null;
+      // Same guard, same reason, for a word the learner has set aside: the requeue holds
+      // words picked before the skip, and the due and started lists are start-of-stream
+      // snapshots, so this is the one place every source has to pass through.
+      if (skipped.current.has(entry.id)) return null;
       setMasteryScore(score);
       const wanted = formatForScore(score);
 
@@ -298,12 +312,18 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     startedOnce.current = true;
 
     const begin = async (): Promise<void> => {
-      const progress = await loadAllProgress();
+      const [progress, skippedIds] = await Promise.all([loadAllProgress(), loadSkippedIds()]);
+      skipped.current = skippedIds;
       seen.current = new Set(progress.map((record) => record.entryId));
       // `seen` still holds every record so new words skip them, but neither source may
       // offer a mastered word: the stream only gives up after ten empty picks in a row, and
       // a mostly mastered vocabulary would spend them all on words it has to skip.
-      const open = progress.filter((record) => (record.masteryScore ?? 0) < MASTERY_SCORE_TARGET);
+      // Skipped words are dropped here as well as in `exerciseFor` so a learner who has set
+      // many aside does not spend all ten of the stream's empty picks stepping over them.
+      const open = progress.filter(
+        (record) =>
+          (record.masteryScore ?? 0) < MASTERY_SCORE_TARGET && !skipped.current.has(record.entryId),
+      );
       dueIds.current = dueEntries(open).map((record) => record.entryId);
       startedIds.current = [...open]
         .sort((a, b) => (a.srs.lastReviewedAt ?? '').localeCompare(b.srs.lastReviewedAt ?? ''))
@@ -366,5 +386,29 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     [recordAnswer, serveNext],
   );
 
-  return { loading, error, exercise, masteryScore, answer };
+  /**
+   * Set the word on screen aside.
+   *
+   * Nothing is recorded: no history row, no SRS grade, no XP, and `position` — which
+   * counts answered exercises, because the requeue offsets are measured in them — does not
+   * move. The exercise is taken out of the session rather than stepped over, so a reload
+   * does not resume on the word that was just parked (`dropCurrent`).
+   */
+  const skip = useCallback(async (): Promise<void> => {
+    const state = useSessionStore.getState();
+    const current = state.exercises[state.currentIndex];
+    if (!current) return;
+
+    const { entryId } = current;
+    skipped.current.add(entryId);
+    await skipEntry(entryId);
+
+    requeued.current = requeued.current.filter((item) => item.entryId !== entryId);
+    await saveStreamSchedule({ position: position.current, requeued: requeued.current });
+
+    await dropCurrent();
+    await serveNext();
+  }, [dropCurrent, serveNext]);
+
+  return { loading, error, exercise, masteryScore, answer, skip };
 }

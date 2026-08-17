@@ -43,6 +43,8 @@ export function generateTypedTranslation(
     type: 'typedTranslation' as const,
     variant,
     requiresTypedInput: true,
+    // "other" names nothing the learner can use to tell two senses apart, so it is left off.
+    ...(entry.wordClass === 'other' ? {} : { wordClass: entry.wordClass }),
   };
 
   switch (variant) {

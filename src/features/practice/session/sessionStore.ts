@@ -77,6 +77,14 @@ interface SessionState {
    * be planned in advance the way a fixed session is.
    */
   readonly serve: (exercise: Exercise) => Promise<void>;
+  /**
+   * Removes the exercise on screen without answering it — what skipping a word does.
+   *
+   * It has to leave, not merely be stepped over: a resumed session replays history and
+   * stops at the first exercise with no row (see `start`), so an unanswered exercise left
+   * in the list would be where every later reload resumed, stranding the answers after it.
+   */
+  readonly dropCurrent: () => Promise<void>;
   /** Closes the session and awards its end-of-session bonuses. Safe to call twice. */
   readonly finish: () => Promise<void>;
   readonly reset: () => void;
@@ -289,6 +297,17 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
     const next = [...exercises, exercise];
     set({ exercises: next, currentIndex: next.length - 1, status: 'active' });
+    await db.sessions.put(summarize(sessionId, mode, next, answers, startedAt, false));
+  },
+
+  dropCurrent: async () => {
+    const { sessionId, mode, exercises, currentIndex, answers, startedAt } = get();
+    if (!sessionId) return;
+
+    const next = exercises.filter((_, index) => index !== currentIndex);
+    // Past the end deliberately: there is no current exercise until the next one is served,
+    // and the continuous page shows its "choosing your next word" line meanwhile.
+    set({ exercises: next, currentIndex: next.length });
     await db.sessions.put(summarize(sessionId, mode, next, answers, startedAt, false));
   },
 

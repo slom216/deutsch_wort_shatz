@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { strictnessSchema } from './vocabularySchema';
+import { strictnessSchema, wordClassSchema } from './vocabularySchema';
 
 /**
  * Exercise runtime shapes (§15, §16).
@@ -41,6 +41,14 @@ const exerciseBaseShape = {
   prompt: z.string().min(1),
   /** Extra context shown under the prompt, e.g. the English gloss of a target word. */
   hint: z.string().optional(),
+  /**
+   * The word class of the word being asked about, shown beside it — not a hint, and never
+   * hidden behind one: "Mexican" is one word as a noun and another as an adjective, and a
+   * learner who cannot tell which is being asked for is guessing rather than recalling.
+   *
+   * Left off when the class is what the question is asking for.
+   */
+  wordClass: wordClassSchema.optional(),
   strictness: strictnessSchema,
 };
 

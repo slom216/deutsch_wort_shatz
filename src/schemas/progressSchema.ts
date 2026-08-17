@@ -76,6 +76,17 @@ export const exerciseHistorySchema = z.object({
   xpAwarded: z.number().int(),
 });
 
+/**
+ * A word the learner has set aside.
+ *
+ * The id is all that is stored: the entry itself is bundled with the app, and the SRS
+ * record stays exactly where it was — skipping parks a word, it does not unlearn it.
+ */
+export const skippedEntrySchema = z.object({
+  entryId: z.string().min(1),
+  skippedAt: z.string().datetime(),
+});
+
 export const achievementRecordSchema = z.object({
   id: z.string().min(1),
   unlockedAt: z.string().datetime(),
@@ -89,4 +100,5 @@ export type ExercisePerformance = z.infer<typeof exercisePerformanceSchema>;
 export type SrsState = z.infer<typeof srsStateSchema>;
 export type EntryProgress = z.infer<typeof entryProgressSchema>;
 export type ExerciseHistory = z.infer<typeof exerciseHistorySchema>;
+export type SkippedEntry = z.infer<typeof skippedEntrySchema>;
 export type AchievementRecord = z.infer<typeof achievementRecordSchema>;

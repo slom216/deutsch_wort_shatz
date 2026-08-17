@@ -5,6 +5,7 @@ import {
   achievementRecordSchema,
   entryProgressSchema,
   exerciseHistorySchema,
+  skippedEntrySchema,
 } from '@/schemas/progressSchema';
 import { practiceSessionRecordSchema } from '@/schemas/sessionSchema';
 import { settingsSchema } from '@/schemas/settingsSchema';
@@ -40,6 +41,9 @@ export const exportFileSchema = z.object({
   sessions: z.array(practiceSessionRecordSchema),
   achievements: z.array(achievementRecordSchema),
   xpEvents: z.array(xpEventSchema),
+  // Defaulted rather than migrated: an export written before skipping existed simply has
+  // no skipped words, which is exactly what an empty array says.
+  skippedEntries: z.array(skippedEntrySchema).default([]),
   settings: settingsSchema.nullable(),
 });
 
@@ -48,15 +52,23 @@ export type ExportFile = z.infer<typeof exportFileSchema>;
 export async function exportProgress(
   database: VocabularyLearningDatabase = db,
 ): Promise<ExportFile> {
-  const [entryProgress, exerciseHistory, sessions, achievements, xpEvents, settings] =
-    await Promise.all([
-      database.entryProgress.toArray(),
-      database.exerciseHistory.toArray(),
-      database.sessions.toArray(),
-      database.achievements.toArray(),
-      database.xpEvents.toArray(),
-      database.settings.get('user-settings'),
-    ]);
+  const [
+    entryProgress,
+    exerciseHistory,
+    sessions,
+    achievements,
+    xpEvents,
+    skippedEntries,
+    settings,
+  ] = await Promise.all([
+    database.entryProgress.toArray(),
+    database.exerciseHistory.toArray(),
+    database.sessions.toArray(),
+    database.achievements.toArray(),
+    database.xpEvents.toArray(),
+    database.skippedEntries.toArray(),
+    database.settings.get('user-settings'),
+  ]);
 
   return {
     kind: 'deutsch-wort-shatz-progress',
@@ -68,6 +80,7 @@ export async function exportProgress(
     sessions,
     achievements,
     xpEvents,
+    skippedEntries,
     settings: settings ?? null,
   };
 }
@@ -266,6 +279,7 @@ export async function applyImport(
       database.sessions,
       database.achievements,
       database.xpEvents,
+      database.skippedEntries,
       database.settings,
     ],
     async () => {
@@ -276,6 +290,7 @@ export async function applyImport(
           database.sessions.clear(),
           database.achievements.clear(),
           database.xpEvents.clear(),
+          database.skippedEntries.clear(),
           // "Discard everything stored here first" has to include settings, or the
           // learner's old preferences quietly survive a replace they asked for.
           database.settings.clear(),
@@ -312,6 +327,8 @@ export async function applyImport(
       await database.sessions.bulkPut(file.sessions);
       await database.achievements.bulkPut(file.achievements);
       await database.xpEvents.bulkPut(file.xpEvents);
+      // Keyed by entry id, so a merge unions the two lists rather than duplicating them.
+      await database.skippedEntries.bulkPut(file.skippedEntries);
       if (file.settings) await database.settings.put(file.settings);
     },
   );

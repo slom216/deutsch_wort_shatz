@@ -120,6 +120,11 @@ function assemble(
     requiresTypedInput: false,
     prompt: fields.prompt,
     ...(fields.hint === undefined ? {} : { hint: fields.hint }),
+    // Everything but the variant that asks for the word class, where it is the answer —
+    // and never "other", which names nothing the learner can use to tell two senses apart.
+    ...(variant === 'wordClass' || entry.wordClass === 'other'
+      ? {}
+      : { wordClass: entry.wordClass }),
     strictness: strictnessFor(entry),
     question: fields.question,
     options,

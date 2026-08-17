@@ -251,6 +251,42 @@ describe('resuming after a reload', () => {
     expect(record?.correctCount).toBe(2);
   });
 
+  it('drops a skipped exercise so a resumed stream does not stop on it', async () => {
+    // A skipped exercise is never answered, and `start` replays history only as far as the
+    // first exercise without a row. Left in the list it would be where every later reload
+    // resumed, stranding the answers after it — so it has to leave the list entirely.
+    await startSession('borrowed');
+    const [first, second, third] = useSessionStore.getState().exercises;
+    useSessionStore.getState().reset();
+
+    const store = useSessionStore.getState();
+    await store.start({ sessionId: 'stream', mode: 'continuous', entries: [] });
+    await store.serve(first!);
+    await store.recordAnswer({
+      exerciseId: first!.id,
+      entryId: first!.entryId,
+      result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
+      attempts: 1,
+      revealed: false,
+      hintUsed: false,
+      responseMs: 800,
+    });
+    await store.serve(second!);
+    await store.dropCurrent();
+    await store.serve(third!);
+
+    useSessionStore.getState().reset();
+    await useSessionStore.getState().start({
+      sessionId: 'stream',
+      mode: 'continuous',
+      entries: [],
+    });
+
+    const resumed = useSessionStore.getState();
+    expect(resumed.exercises.map((exercise) => exercise.id)).toEqual([first!.id, third!.id]);
+    expect(resumed.currentIndex).toBe(1);
+  });
+
   it('records the XP earned on the session', async () => {
     await startSession('xp-session');
     await answerFirst(3, 'xp-session');

@@ -30,6 +30,7 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   { path: '/results/no-such-session', heading: /results not found/i },
   { path: '/vocabulary', heading: /^vocabulary$/i },
   { path: '/word/a1-0662-sein', heading: /sein/i },
+  { path: '/skipped', heading: /^skipped words$/i },
   { path: '/progress', heading: /^progress$/i },
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },
