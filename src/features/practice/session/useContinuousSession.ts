@@ -6,7 +6,12 @@ import { loadBand, loadEntry } from '@/content/vocabulary/registry';
 import { generateAllForEntry } from '@/features/practice/generators';
 import { createRandom } from '@/features/practice/random';
 import { dueEntries } from '@/features/srs/queue';
-import { introduceEntry, loadAllProgress, loadProgress } from '@/features/srs/repository';
+import {
+  MASTERY_SCORE_TARGET,
+  introduceEntry,
+  loadAllProgress,
+  loadProgress,
+} from '@/features/srs/repository';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { Exercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
@@ -237,6 +242,10 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
 
       const progress = await loadProgress(entry.id);
       const score = progress?.masteryScore ?? 0;
+      // Mastered words leave the stream, whichever source offered this one: the requeue
+      // drops them, but the due queue and the started-words fallback do not know about the
+      // score, and a mastered word served from either would be asked for ever.
+      if (score >= MASTERY_SCORE_TARGET) return null;
       setMasteryScore(score);
       const wanted = formatForScore(score);
 
@@ -291,8 +300,12 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     const begin = async (): Promise<void> => {
       const progress = await loadAllProgress();
       seen.current = new Set(progress.map((record) => record.entryId));
-      dueIds.current = dueEntries(progress).map((record) => record.entryId);
-      startedIds.current = [...progress]
+      // `seen` still holds every record so new words skip them, but neither source may
+      // offer a mastered word: the stream only gives up after ten empty picks in a row, and
+      // a mostly mastered vocabulary would spend them all on words it has to skip.
+      const open = progress.filter((record) => (record.masteryScore ?? 0) < MASTERY_SCORE_TARGET);
+      dueIds.current = dueEntries(open).map((record) => record.entryId);
+      startedIds.current = [...open]
         .sort((a, b) => (a.srs.lastReviewedAt ?? '').localeCompare(b.srs.lastReviewedAt ?? ''))
         .map((record) => record.entryId);
 

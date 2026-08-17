@@ -52,7 +52,11 @@ export function createProgress(entryId: string, now: Date): EntryProgress {
 }
 
 /**
- * The score after one answer: +1 clean, −1 wrong, floored at 0.
+ * The score after one answer: +1 clean, −1 wrong, floored at 0 and capped at the target.
+ *
+ * The cap is what makes the target mean something: a word mastered in the stream can still
+ * be answered from the review queue, and without it the score would climb past 4 and the
+ * exercise header would read "score 6/4".
  *
  * Getting there in the end holds the score rather than dropping it. A second attempt earns
  * no progress — the word was not known — but it must not cost a rung either: a learner who
@@ -63,8 +67,10 @@ export function nextMasteryScore(
   current: number,
   outcome: { correct: boolean; attempts: number; revealed: boolean },
 ): number {
-  if (outcome.correct && outcome.attempts === 1 && !outcome.revealed) return current + 1;
-  if (outcome.correct && !outcome.revealed) return current;
+  if (outcome.correct && outcome.attempts === 1 && !outcome.revealed) {
+    return Math.min(MASTERY_SCORE_TARGET, current + 1);
+  }
+  if (outcome.correct && !outcome.revealed) return Math.min(MASTERY_SCORE_TARGET, current);
   return Math.max(0, current - 1);
 }
 

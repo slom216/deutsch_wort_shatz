@@ -207,6 +207,11 @@ describe('quiz score', () => {
     expect((await loadProgress(entryId))?.masteryScore).toBe(0);
   });
 
+  it('never goes above the target', async () => {
+    for (let i = 0; i < MASTERY_SCORE_TARGET + 3; i += 1) await answer(entryId, true);
+    expect((await loadProgress(entryId))?.masteryScore).toBe(MASTERY_SCORE_TARGET);
+  });
+
   it('does not count a second-attempt or revealed answer as clean', async () => {
     await answer(entryId, true, { attempts: 2 });
     expect((await loadProgress(entryId))?.masteryScore).toBe(0);
