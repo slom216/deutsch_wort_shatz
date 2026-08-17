@@ -665,8 +665,9 @@ Rules:
 
 - six options by default;
 - exactly one correct answer;
-- one option is the correct answer with a single letter changed, added or removed, never
-  the first or last letter of a word;
+- one option is the correct answer carrying a single mistake a learner would plausibly
+  make — a confusable spelling, the wrong article or the wrong ending — never a random
+  letter, which is dismissed on sight;
 - plausible distractors;
 - distractors preferably from same topic or nearby frequency range.
 

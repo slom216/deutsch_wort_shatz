@@ -21,9 +21,10 @@ import {
  * the entry cannot support it — an article question needs a noun, a verb-form question
  * needs a verb.
  *
- * About half the German-answer questions include the right answer misspelled by a single
- * letter, so recognizing the shape of the word is not enough (`nearMiss`). Only about half,
- * because a near miss is also a tell: two options one letter apart point at each other.
+ * About half the German-answer questions include the right answer carrying one plausible
+ * learner mistake — a confusable spelling, the wrong article, the wrong ending — so
+ * recognizing the shape of the word is not enough (`nearMiss`). Only about half, because a
+ * near miss is also a tell: two options that close point at each other.
  * English-answer variants get none — a misspelled gloss tests English, not German.
  *
  * `article` is naturally capped at three options, since German has three articles.
@@ -53,6 +54,20 @@ const GERMAN_OPTION_VARIANTS: readonly MultipleChoiceVariant[] = [
 
 /** How often those variants actually get one. */
 const NEAR_MISS_CHANCE = 0.5;
+
+/**
+ * Forms that are also right, and so must never come back as a near miss: the plural, and any
+ * article the entry accepts besides its main one. The article and ending rules would
+ * otherwise happily offer "das Joghurt" as the wrong answer to "der Joghurt".
+ */
+function alsoCorrect(entry: VocabularyEntry): string[] {
+  if (!isNounEntry(entry)) return [];
+  const plural = pluralForm(entry);
+  return [
+    ...(plural === null ? [] : [plural]),
+    ...(entry.alternateArticles ?? []).map((article) => `${article} ${entry.german}`),
+  ];
+}
 
 export interface GeneratorContext {
   readonly entry: VocabularyEntry;
@@ -85,6 +100,7 @@ function assemble(
           ...fields.distractors,
           ...entry.english,
           ...acceptedGerman(entry),
+          ...alsoCorrect(entry),
         ])
       : null;
   const distractors = near
@@ -219,7 +235,8 @@ export function generateMultipleChoice(
           pool,
           count: OPTION_COUNT - 1,
           random,
-          valueOf: (candidate) => (isVerbEntry(candidate) ? (candidate.pastParticiple ?? null) : null),
+          valueOf: (candidate) =>
+            isVerbEntry(candidate) ? (candidate.pastParticiple ?? null) : null,
           exclude: [correct],
           filter: (candidate) => isVerbEntry(candidate),
         }),

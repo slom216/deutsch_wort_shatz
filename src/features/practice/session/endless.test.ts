@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createRandom } from '../random';
 import {
   formatForScore,
+  requeue,
   REQUEUE_AFTER_CORRECT,
   REQUEUE_AFTER_WRONG,
   requeueOffset,
@@ -10,6 +11,26 @@ import {
   takeReady,
   type Requeued,
 } from './endless';
+
+describe('requeue', () => {
+  it('gives an entry one turn, not two', () => {
+    // The reported bug: served from the due queue at 62 while an older turn at 70 was still
+    // pending, the word came back eight exercises later and stayed in the queue twice.
+    const queue: Requeued[] = [
+      { entryId: 'a', at: 70 },
+      { entryId: 'b', at: 80 },
+    ];
+    const after = requeue(queue, 'a', 122);
+
+    expect(after.filter((item) => item.entryId === 'a')).toEqual([{ entryId: 'a', at: 122 }]);
+    expect(after).toHaveLength(2);
+    expect(takeReady(after, 70)).toBeNull();
+  });
+
+  it('adds an entry the queue has never held', () => {
+    expect(requeue([], 'a', 50)).toEqual([{ entryId: 'a', at: 50 }]);
+  });
+});
 
 describe('requeueOffset', () => {
   const random = createRandom('spacing');

@@ -107,3 +107,14 @@ export function takeReady(
     rest: queue.filter((_, index) => index !== bestIndex),
   };
 }
+
+/**
+ * The queue with `entryId` waiting at `at`, replacing any turn it was already given.
+ *
+ * Appending instead would leave a word in the queue twice, because the due queue can serve
+ * it while an older turn is still pending: requeued for 70, served from the due list at 62,
+ * requeued again — and from then on it comes round twice every cycle.
+ */
+export function requeue(queue: readonly Requeued[], entryId: string, at: number): Requeued[] {
+  return [...queue.filter((item) => item.entryId !== entryId), { entryId, at }];
+}

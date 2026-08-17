@@ -31,7 +31,7 @@ export async function loadProgress(
  * Quiz score at which an entry counts as mastered.
  *
  * Answering correctly first time is +1, getting it wrong is −1, and the score never goes
- * below zero — so four clean answers master a word, and every slip costs one of them.
+ * below zero — so four clean answers master a word, and every wrong one costs one of them.
  */
 export const MASTERY_SCORE_TARGET = 4;
 
@@ -51,13 +51,21 @@ export function createProgress(entryId: string, now: Date): EntryProgress {
   };
 }
 
-/** The score after one answer: +1 clean, −1 wrong, floored at 0. */
+/**
+ * The score after one answer: +1 clean, −1 wrong, floored at 0.
+ *
+ * Getting there in the end holds the score rather than dropping it. A second attempt earns
+ * no progress — the word was not known — but it must not cost a rung either: a learner who
+ * usually needs two tries at the typed formats could otherwise never reach the target, and
+ * the word would stay in the stream for ever.
+ */
 export function nextMasteryScore(
   current: number,
   outcome: { correct: boolean; attempts: number; revealed: boolean },
 ): number {
-  const clean = outcome.correct && outcome.attempts === 1 && !outcome.revealed;
-  return Math.max(0, current + (clean ? 1 : -1));
+  if (outcome.correct && outcome.attempts === 1 && !outcome.revealed) return current + 1;
+  if (outcome.correct && !outcome.revealed) return current;
+  return Math.max(0, current - 1);
 }
 
 export async function introduceEntry(

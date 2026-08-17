@@ -11,7 +11,7 @@ import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { Exercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { relaxStrictness } from './buildSession';
-import { formatForScore, requeueOffset, takeReady, type Requeued } from './endless';
+import { formatForScore, requeue, requeueOffset, takeReady, type Requeued } from './endless';
 import { loadStreamSchedule, saveStreamSchedule } from './streamSchedule';
 import { useSessionStore } from './sessionStore';
 
@@ -169,8 +169,15 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       if (fresh) return fresh;
     }
 
+    // A word already waiting in the requeue is spoken for, and the other two sources cannot
+    // see it: `dueIds` is a snapshot taken at stream start, and a correct answer leaves an
+    // entry due again in ten minutes, so a word requeued at exercise 70 was being served
+    // from the due queue at 62 and then again at 70 — the same word, eight exercises apart.
+    const pending = new Set(requeued.current.map((item) => item.entryId));
+
     while (dueIds.current.length > 0) {
       const dueId = dueIds.current.shift() as string;
+      if (pending.has(dueId)) continue;
       const entry = await entryById(dueId);
       if (entry) return entry;
     }
@@ -184,6 +191,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     for (let attempt = 0; attempt < startedIds.current.length; attempt += 1) {
       const entryId = startedIds.current.shift() as string;
       startedIds.current.push(entryId);
+      if (pending.has(entryId)) continue;
       const entry = await entryById(entryId);
       if (entry) return entry;
     }
@@ -323,10 +331,11 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
         random.current,
       );
       if (offset !== null) {
-        requeued.current = [
-          ...requeued.current,
-          { entryId: outcome.exercise.entryId, at: position.current + offset },
-        ];
+        requeued.current = requeue(
+          requeued.current,
+          outcome.exercise.entryId,
+          position.current + offset,
+        );
       }
       await saveStreamSchedule({ position: position.current, requeued: requeued.current });
 

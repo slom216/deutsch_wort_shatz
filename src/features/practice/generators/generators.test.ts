@@ -15,6 +15,7 @@ import {
   generateWordOrdering,
   headword,
   nearMiss,
+  nearMissCandidates,
   pluralForm,
 } from './index';
 import { exerciseSchema } from '@/schemas/exerciseSchema';
@@ -32,28 +33,19 @@ import {
 let pilot: readonly VocabularyEntry[];
 const random = () => createRandom('test-seed');
 
-/**
- * True when `option` is `correct` with exactly one letter changed, added or removed, and
- * the edit touched neither the first nor the last letter. Every position is tried rather
- * than the first difference, since a repeated letter can be edited at more than one index.
- */
+/** True when `option` is one of the near misses the rules can build from `correct`. */
 function isNearMiss(correct: string, option: string): boolean {
-  if (option === correct) return false;
+  return option !== correct && nearMissCandidates(correct).includes(option);
+}
 
-  if (option.length === correct.length) {
-    return [...correct].some(
-      (_, i) =>
-        i > 0 &&
-        i < correct.length - 1 &&
-        correct.slice(0, i) + option[i] + correct.slice(i + 1) === option,
-    );
+/** Every distinct near miss `correct` yields over `seeds` draws — the rules are random. */
+function drawNearMisses(correct: string, taken: readonly string[] = [], seeds = 60): Set<string> {
+  const drawn = new Set<string>();
+  for (let i = 0; i < seeds; i += 1) {
+    const miss = nearMiss(correct, createRandom(`draw-${correct}-${i}`), taken);
+    if (miss !== null) drawn.add(miss);
   }
-
-  const [longer, shorter] = correct.length > option.length ? [correct, option] : [option, correct];
-  if (longer.length !== shorter.length + 1) return false;
-  return [...longer].some(
-    (_, i) => i > 0 && i < longer.length - 1 && longer.slice(0, i) + longer.slice(i + 1) === shorter,
-  );
+  return drawn;
 }
 
 function find(predicate: (entry: VocabularyEntry) => boolean): VocabularyEntry {
@@ -168,22 +160,47 @@ describe('pilot dataset', () => {
 });
 
 describe('near miss', () => {
-  it('changes, adds or removes one letter, never the first or the last', () => {
-    const words = pilot.flatMap((entry) => [entry.german, ...entry.english]);
+  it('only ever returns something the rules could have built', () => {
+    const words = pilot.flatMap((entry) => [headword(entry), entry.german, ...entry.english]);
     for (const word of words) {
       const miss = nearMiss(word, random());
       if (miss === null) continue;
       expect(isNearMiss(word, miss)).toBe(true);
-
-      // Per word, not just per answer: in a phrase every word keeps its outer letters.
-      const parts = word.split(/\s+/);
-      const edited = miss.split(/\s+/);
-      expect(edited).toHaveLength(parts.length);
-      edited.forEach((part, i) => {
-        expect(part[0]).toBe(parts[i]?.[0]);
-        expect(part.at(-1)).toBe(parts[i]?.at(-1));
-      });
+      expect(miss).not.toBe(word);
     }
+  });
+
+  it.each([
+    // The reported case: "der Tüvke" was noise, these are mistakes learners make.
+    ['der Türke', ['der Turke', 'der Tuerke', 'die Türke', 'das Türke', 'der Türken']],
+    ['die Straße', ['die Strasse', 'die Strase', 'der Straße', 'die Straßen']],
+    ['vielleicht', ['veilleicht', 'villeicht', 'vieleicht', 'fielleicht']],
+    ['das Auto', ['das Audo', 'der Auto', 'die Auto']],
+    ['der Käse', ['der Kese', 'der Kase', 'der Kaese', 'der Käze']],
+    ['die Wohnung', ['die Wohnen', 'der Wohnung', 'die Wonung', 'die Wohnunk']],
+    ['der Hund', ['der Hunt', 'die Hund']],
+    ['gehen', ['gehe', 'gehn', 'geen']],
+  ])('builds plausible misspellings of %s', (correct, expected) => {
+    // Against the candidates, not a sample: the draw is random and would miss some.
+    expect(nearMissCandidates(correct)).toEqual(expect.arrayContaining(expected));
+  });
+
+  it.each([
+    // The families that used to fire in both directions and produced pure noise.
+    ['sprechen', 'ßprechen'], // ß cannot start a word
+    ['das Auto', 'das Äuto'], // umlauts get dropped, not invented
+    ['der Türke', 'der Türkee'], // nor do doubled letters
+    ['der Türke', 'där Türke'], // and the article is never misspelled, only swapped
+  ])('never builds %s → %s', (correct, rejected) => {
+    expect(nearMissCandidates(correct)).not.toContain(rejected);
+  });
+
+  it('never lands on a form that is also right', () => {
+    // The plural and the alternate article are exactly what the ending and article rules
+    // reach for, so the caller has to block them.
+    const blocked = ['die Joghurts', 'das Joghurt'];
+    expect(drawNearMisses('der Joghurt', blocked)).not.toContain('das Joghurt');
+    expect(drawNearMisses('der Joghurt', blocked)).not.toContain('die Joghurts');
   });
 
   it('gives up when there is nowhere to edit', () => {
@@ -195,7 +212,7 @@ describe('near miss', () => {
   });
 
   it('never returns an excluded value', () => {
-    const blocked = ['Tag', 'Tg', 'Taag', 'Tng'];
+    const blocked = ['Tag', 'Tak', 'Tagen', 'Tage'];
     for (let i = 0; i < 50; i += 1) {
       const miss = nearMiss('Tag', createRandom(`near-${i}`), blocked);
       if (miss !== null) expect(blocked).not.toContain(miss);
@@ -223,7 +240,12 @@ describe('multiple choice', () => {
 
     for (const entry of pilot) {
       const exercise = generateMultipleChoice(
-        { entry, pool: pilot, random: createRandom(`mc-near-${entry.id}`), id: `mc-near-${entry.id}` },
+        {
+          entry,
+          pool: pilot,
+          random: createRandom(`mc-near-${entry.id}`),
+          id: `mc-near-${entry.id}`,
+        },
         'englishToGerman',
       );
       if (!exercise) continue;
@@ -244,7 +266,12 @@ describe('multiple choice', () => {
   it('never misspells an English gloss', () => {
     for (const entry of pilot) {
       const exercise = generateMultipleChoice(
-        { entry, pool: pilot, random: createRandom(`mc-gloss-${entry.id}`), id: `mc-gloss-${entry.id}` },
+        {
+          entry,
+          pool: pilot,
+          random: createRandom(`mc-gloss-${entry.id}`),
+          id: `mc-gloss-${entry.id}`,
+        },
         'germanToEnglish',
       );
       if (!exercise) continue;
@@ -257,7 +284,12 @@ describe('multiple choice', () => {
   it('never offers a near miss that is also an accepted answer', () => {
     for (const entry of pilot) {
       const exercise = generateMultipleChoice(
-        { entry, pool: pilot, random: createRandom(`mc-acc-${entry.id}`), id: `mc-acc-${entry.id}` },
+        {
+          entry,
+          pool: pilot,
+          random: createRandom(`mc-acc-${entry.id}`),
+          id: `mc-acc-${entry.id}`,
+        },
         'englishToGerman',
       );
       if (!exercise) continue;
@@ -289,8 +321,7 @@ describe('multiple choice', () => {
       // requirement is conditional on the pool actually containing one.
       const within = deltas.filter((delta) => delta <= 2).length;
       const poolHasNearLength = pilot.some(
-        (other) =>
-          other.id !== entry.id && Math.abs((other.english[0] ?? '').length - target) <= 2,
+        (other) => other.id !== entry.id && Math.abs((other.english[0] ?? '').length - target) <= 2,
       );
       if (poolHasNearLength) expect(within).toBeGreaterThan(0);
       // Nothing wildly off: an obviously long option among short ones is a free answer.
@@ -422,7 +453,11 @@ describe('typed translation', () => {
 
 describe('sentence completion', () => {
   it('splits an example sentence around its target token', () => {
-    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
+    const entry = entryWithExample(
+      'Das Haus ist sehr alt und schön',
+      'The house is very old and beautiful',
+      'Haus',
+    );
 
     const exercise = generateSentenceCompletion(
       { entry, pool: pilot, random: random(), id: 'sc-1' },
@@ -437,7 +472,11 @@ describe('sentence completion', () => {
   });
 
   it('shows the full corrected sentence for feedback', () => {
-    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
+    const entry = entryWithExample(
+      'Das Haus ist sehr alt und schön',
+      'The house is very old and beautiful',
+      'Haus',
+    );
     const exercise = generateSentenceCompletion(
       { entry, pool: pilot, random: random(), id: 'sc-2' },
       'vocabularyGap',
@@ -508,7 +547,11 @@ describe('matching', () => {
 
 describe('word ordering', () => {
   it('produces 4 to 12 shuffled tokens that rebuild the sentence', () => {
-    const entry = entryWithExample('Das Haus ist sehr alt und schön', 'The house is very old and beautiful', 'Haus');
+    const entry = entryWithExample(
+      'Das Haus ist sehr alt und schön',
+      'The house is very old and beautiful',
+      'Haus',
+    );
 
     const exercise = generateWordOrdering(
       { entry, pool: pilot, random: random(), id: 'wo-1' },

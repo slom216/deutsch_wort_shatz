@@ -215,6 +215,18 @@ describe('quiz score', () => {
     expect((await loadProgress(entryId))?.masteryScore).toBe(0);
   });
 
+  it('holds the score for a second-attempt answer rather than dropping a rung', async () => {
+    // Getting there in the end earns nothing, but must not cost anything either: a learner
+    // who usually needs two tries at the typed formats could otherwise never reach the
+    // target, and the word would never leave the continuous stream.
+    await answer(entryId, true);
+    await answer(entryId, true);
+    expect((await answer(entryId, true, { attempts: 3 })).progress.masteryScore).toBe(2);
+
+    // A revealed answer is a different thing: the learner did not produce it at all.
+    expect((await answer(entryId, true, { revealed: true })).progress.masteryScore).toBe(1);
+  });
+
   it('masters an entry once the score reaches the target', async () => {
     // The score only promotes an entry that has reached `review`; a word still in its
     // learning steps is not mastered by four quick answers on the same day.
