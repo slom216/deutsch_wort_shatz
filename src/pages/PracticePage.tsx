@@ -409,7 +409,7 @@ function ReadyScreen({
                 onStart(level.id);
               }}
             >
-              I am ready · {level.label}
+              {level.label}
               <span className="streak-modes__detail">
                 {level.wrong + 1} options
                 {(bests[level.id] ?? 0) > 0 ? ` · best ${String(bests[level.id])}` : ''}
