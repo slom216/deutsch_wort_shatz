@@ -292,7 +292,7 @@ export default function ProgressPage(): ReactNode {
           <h2 id="mastered">Mastered words</h2>
           {mastered.length === 0 ? (
             <p className="band-summary">
-              Mastery needs a quiz score of 5, or the full §22 evidence: five successful reviews,
+              Mastery needs a quiz score of 4, or the full §22 evidence: five successful reviews,
               three of them production, and a 30-day interval.
             </p>
           ) : (

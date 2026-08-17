@@ -31,9 +31,9 @@ export async function loadProgress(
  * Quiz score at which an entry counts as mastered.
  *
  * Answering correctly first time is +1, getting it wrong is −1, and the score never goes
- * below zero — so five clean answers master a word, and every slip costs one of them.
+ * below zero — so four clean answers master a word, and every slip costs one of them.
  */
-export const MASTERY_SCORE_TARGET = 5;
+export const MASTERY_SCORE_TARGET = 4;
 
 /** Creates the progress record for a newly introduced entry (§18). */
 export function createProgress(entryId: string, now: Date): EntryProgress {
@@ -196,9 +196,9 @@ export async function recordReview(
     recentGrades: [...evidence.recentGrades, grade],
   });
 
-  // Two independent routes to mastered: the §22 evidence check, and a quiz score of 5.
+  // Two independent routes to mastered: the §22 evidence check, and a quiz score of 4.
   // Keeping both means an entry already mastered under §22 is never demoted by the
-  // arrival of the score, and a word answered cleanly five times counts as known.
+  // arrival of the score, and a word answered cleanly four times counts as known.
   const scoreMastered = updated.masteryScore >= MASTERY_SCORE_TARGET;
   if ((check.mastered || scoreMastered) && updated.srs.status === 'review') {
     updated = { ...updated, srs: { ...updated.srs, status: 'mastered' } };

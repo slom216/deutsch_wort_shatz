@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { introduceEntry, loadAllProgress, loadProgress, recordReview } from './repository';
+import {
+  introduceEntry,
+  loadAllProgress,
+  loadProgress,
+  MASTERY_SCORE_TARGET,
+  recordReview,
+} from './repository';
 import { dueEntries, queueCounts } from './queue';
 import { db, VocabularyLearningDatabase } from '@/features/persistence/db';
 
@@ -209,9 +215,9 @@ describe('quiz score', () => {
     expect((await loadProgress(entryId))?.masteryScore).toBe(0);
   });
 
-  it('masters an entry once the score reaches five', async () => {
+  it('masters an entry once the score reaches the target', async () => {
     // The score only promotes an entry that has reached `review`; a word still in its
-    // learning steps is not mastered by five quick answers on the same day.
+    // learning steps is not mastered by four quick answers on the same day.
     let at = NOW;
     for (let i = 0; i < 8; i += 1) {
       const result = await answer(entryId, true, {
@@ -223,7 +229,7 @@ describe('quiz score', () => {
     }
 
     const stored = await loadProgress(entryId);
-    expect(stored?.masteryScore).toBeGreaterThanOrEqual(5);
+    expect(stored?.masteryScore).toBeGreaterThanOrEqual(MASTERY_SCORE_TARGET);
     expect(stored?.srs.status).toBe('mastered');
   });
 

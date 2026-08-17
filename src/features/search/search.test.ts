@@ -8,6 +8,7 @@ import {
   type SearchableRecord,
 } from './searchIndex';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
+import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 import {
   bandEntryCount,
   bandById,
@@ -273,7 +274,7 @@ describe('progress analytics (§16)', () => {
 
     const a1 = progressByLevel(index, scored).find((row) => row.key === 'A1');
     expect(a1?.points).toBe(5);
-    expect(a1?.pointsFraction).toBeCloseTo(5 / (LEVEL_ENTRY_COUNTS.A1 * 5), 10);
+    expect(a1?.pointsFraction).toBeCloseTo(5 / (LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET), 10);
     // Two words met counts as 0.25% complete, not the 0.25% *started* the old figure gave.
     expect(a1?.fraction).toBeCloseTo(2 / LEVEL_ENTRY_COUNTS.A1, 10);
   });
@@ -289,16 +290,20 @@ describe('progress analytics (§16)', () => {
 
   it('reports level completion straight from progress records', () => {
     const empty = levelCompletion([]);
-    expect(empty.A1).toEqual({ points: 0, max: LEVEL_ENTRY_COUNTS.A1 * 5, fraction: 0 });
+    expect(empty.A1).toEqual({
+      points: 0,
+      max: LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET,
+      fraction: 0,
+    });
     expect(empty.B1.fraction).toBe(0);
 
     const scored = levelCompletion([
-      makeProgress('a1-0001-eins', 'review', 0.2, 4),
-      makeProgress('a1-0002-zwei', 'review', 0.2, 7), // above the target: capped at 5
-      makeProgress('xx-0001-nonsense', 'review', 0.2, 5), // unknown level: ignored
+      makeProgress('a1-0001-eins', 'review', 0.2, 3),
+      makeProgress('a1-0002-zwei', 'review', 0.2, 7), // above the target: capped at 4
+      makeProgress('xx-0001-nonsense', 'review', 0.2, 4), // unknown level: ignored
     ]);
-    expect(scored.A1.points).toBe(9);
-    expect(scored.A1.fraction).toBeCloseTo(9 / (LEVEL_ENTRY_COUNTS.A1 * 5), 10);
+    expect(scored.A1.points).toBe(7);
+    expect(scored.A1.fraction).toBeCloseTo(7 / (LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET), 10);
     expect(scored.A2.points).toBe(0);
   });
 

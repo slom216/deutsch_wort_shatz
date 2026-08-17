@@ -27,7 +27,7 @@ describe('requeueOffset', () => {
   it('brings a correct answer back within 50–100 exercises while the score is below target', () => {
     const [from, to] = REQUEUE_AFTER_CORRECT;
     for (let i = 0; i < 200; i += 1) {
-      const offset = requeueOffset({ correct: true, masteryScore: 4 }, random);
+      const offset = requeueOffset({ correct: true, masteryScore: 3 }, random);
       expect(offset).not.toBeNull();
       expect(offset as number).toBeGreaterThanOrEqual(from);
       expect(offset as number).toBeLessThanOrEqual(to);
@@ -83,15 +83,14 @@ describe('formatForScore', () => {
   it('walks recognition to production, alternating direction', () => {
     expect(formatForScore(0)).toEqual({ type: 'multipleChoice', variant: 'germanToEnglish' });
     expect(formatForScore(1)).toEqual({ type: 'multipleChoice', variant: 'englishToGerman' });
-    expect(formatForScore(2)).toEqual({ type: 'multipleChoice', variant: 'germanToEnglish' });
-    expect(formatForScore(3)).toEqual({ type: 'typedTranslation', variant: 'englishToGerman' });
-    expect(formatForScore(4)).toEqual({ type: 'typedTranslation', variant: 'germanToEnglish' });
+    expect(formatForScore(2)).toEqual({ type: 'typedTranslation', variant: 'englishToGerman' });
+    expect(formatForScore(3)).toEqual({ type: 'typedTranslation', variant: 'germanToEnglish' });
   });
 
   it('clamps at both ends', () => {
     expect(formatForScore(-3)).toEqual(SCORE_FORMATS[0]);
-    // 5 is mastery, where the SRS takes over; anything higher still has to answer.
-    expect(formatForScore(5)).toEqual(SCORE_FORMATS[SCORE_FORMATS.length - 1]);
+    // 4 is mastery, where the SRS takes over; anything higher still has to answer.
+    expect(formatForScore(4)).toEqual(SCORE_FORMATS[SCORE_FORMATS.length - 1]);
     expect(formatForScore(99)).toEqual(SCORE_FORMATS[SCORE_FORMATS.length - 1]);
   });
 

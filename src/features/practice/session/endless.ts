@@ -44,11 +44,10 @@ export function requeueOffset(input: RequeueInput, random: Random): number | nul
  *
  *   0  German shown, choose the English meaning
  *   1  English shown, choose the German word
- *   2  German shown, choose the English meaning again
- *   3  English shown, type the German word
- *   4  German shown, type the English meaning
+ *   2  English shown, type the German word
+ *   3  German shown, type the English meaning
  *
- * A score of 5 is mastery: the word leaves the stream and the SRS schedules it.
+ * A score of 4 is mastery: the word leaves the stream and the SRS schedules it.
  */
 export interface ExerciseFormat {
   readonly type: 'multipleChoice' | 'typedTranslation';
@@ -58,7 +57,6 @@ export interface ExerciseFormat {
 export const SCORE_FORMATS: readonly ExerciseFormat[] = [
   { type: 'multipleChoice', variant: 'germanToEnglish' },
   { type: 'multipleChoice', variant: 'englishToGerman' },
-  { type: 'multipleChoice', variant: 'germanToEnglish' },
   { type: 'typedTranslation', variant: 'englishToGerman' },
   { type: 'typedTranslation', variant: 'germanToEnglish' },
 ];

@@ -85,7 +85,9 @@
 
 /* The promotion, announced: old card, arrow, new card. */
 .level-up {
-  max-width: min(32rem, 92vw);
+  /* The reset's `* { margin: 0 }` beats the UA `margin: auto` that centres a modal. */
+  margin: auto;
+  max-width: min(44rem, 92vw);
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -117,9 +119,10 @@
   margin: var(--space-4) 0;
 }
 
+/* Shrinks on narrow screens: two 16rem cards side by side do not fit a phone. */
 .level-up__card {
-  width: 8rem;
-  height: 8rem;
+  width: min(16rem, 34vw);
+  aspect-ratio: 1;
   object-fit: cover;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);

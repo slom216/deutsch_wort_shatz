@@ -70,40 +70,41 @@ describe('XP rules (§23)', () => {
 });
 
 describe('learner levels (§23)', () => {
-  it('makes each level cost 30% more than the one before', () => {
+  it('makes each level cost 25% more than the one before', () => {
     expect(xpRequiredForLevel(1)).toBe(0);
-    expect(xpRequiredForLevel(2)).toBe(413);
+    expect(xpRequiredForLevel(2)).toBe(668);
     for (let level = 2; level < 20; level += 1) {
       const previousStep = xpRequiredForLevel(level) - xpRequiredForLevel(level - 1);
       const step = xpRequiredForLevel(level + 1) - xpRequiredForLevel(level);
-      // Rounding to whole XP wobbles the ratio on the cheapest levels (413 → 537 is 1.30).
-      expect(step / previousStep).toBeCloseTo(1.3, 1);
+      // Rounding to whole XP wobbles the ratio on the cheapest levels (668 → 835 is 1.25).
+      expect(step / previousStep).toBeCloseTo(1.25, 1);
     }
   });
 
-  // The whole 3,460-entry corpus yields roughly 200,000 XP once mastered; the curve is
-  // tuned so that lands on level 20 rather than somewhere arbitrary.
+  // The whole 3,460-entry corpus yields roughly 183,000 XP once mastered — 36 XP a word
+  // over the four-step ladder, plus band and level completions. The curve is tuned so that
+  // lands on level 20 rather than somewhere arbitrary.
   it('puts level 20 within reach of a fully mastered corpus', () => {
-    expect(xpRequiredForLevel(20)).toBeLessThanOrEqual(200_000);
-    expect(xpRequiredForLevel(21)).toBeGreaterThan(200_000);
-    expect(levelForXp(200_000)).toBe(20);
+    expect(xpRequiredForLevel(20)).toBeLessThanOrEqual(183_000);
+    expect(xpRequiredForLevel(21)).toBeGreaterThan(183_000);
+    expect(levelForXp(183_000)).toBe(20);
   });
 
   it('starts every learner at level 1', () => {
     expect(levelForXp(0)).toBe(1);
-    expect(levelForXp(412)).toBe(1);
+    expect(levelForXp(667)).toBe(1);
   });
 
   it('advances a level once the threshold is reached', () => {
-    expect(levelForXp(413)).toBe(2);
-    expect(levelForXp(950)).toBe(3);
-    expect(levelForXp(2555)).toBe(5);
+    expect(levelForXp(668)).toBe(2);
+    expect(levelForXp(1600)).toBe(3);
+    expect(levelForXp(2600)).toBe(4);
   });
 
   it('reports progress towards the next level', () => {
-    const progress = levelProgress(1200);
+    const progress = levelProgress(2000);
     expect(progress.level).toBe(3);
-    expect(progress.xpForNextLevel).toBe(448);
+    expect(progress.xpForNextLevel).toBe(547);
     expect(progress.fraction).toBeGreaterThan(0);
     expect(progress.fraction).toBeLessThan(1);
   });
