@@ -17,14 +17,14 @@ async function startSession(page: Page, types: string, length = 10, level = 'A1'
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
 }
 
-test('practice setup starts a session', async ({ page }) => {
+test('practice waits until there is something to practise', async ({ page }) => {
+  // A fresh profile has mastered nothing, which is exactly the state the streak game has to
+  // refuse to start in: it draws both its questions and its distractors from mastered words.
   await page.goto('/practice');
   await expect(page.getByRole('heading', { level: 1, name: /^practice$/i })).toBeVisible();
 
-  await page.getByRole('button', { name: /start practice/i }).click();
-
-  await expect(page).toHaveURL(/\/practice\/session\//);
-  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+  await expect(page.getByRole('heading', { name: /not enough learned words/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /i am ready/i })).toHaveCount(0);
 });
 
 test('multiple choice offers six numbered options', async ({ page }) => {

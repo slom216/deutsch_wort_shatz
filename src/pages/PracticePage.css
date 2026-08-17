@@ -1,0 +1,150 @@
+/* Practice learned skills: the streak game's status bar, clock and panels. */
+
+.streak-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.streak-bar__rank {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.streak-bar__stats {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+.streak-bar__stats dt {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.streak-bar__stats dd {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The clock is the loudest thing on the bar — it is what the run is racing. */
+.streak-clock__time {
+  min-width: 3ch;
+  margin: 0;
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-display);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  line-height: 1;
+  transition: color 150ms ease;
+}
+
+.streak-clock__time--alarm {
+  color: var(--color-danger);
+  animation: streak-alarm 700ms ease-in-out infinite;
+}
+
+@keyframes streak-alarm {
+  50% {
+    transform: scale(1.12);
+    opacity: 0.65;
+  }
+}
+
+/* Announced once when the clock turns alarming; never shown. */
+.streak-clock__announce {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.streak-levelup {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  background: var(--color-success-subtle);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+}
+
+/* Ready and game-over share a panel: same frame, same rhythm. */
+.streak-panel {
+  padding: var(--space-5);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.streak-panel h2 {
+  margin-top: 0;
+}
+
+.streak-panel__rank {
+  width: 9rem;
+  height: 9rem;
+  /* `img` is display:block globally, so centring needs the margin, not text-align. */
+  margin: 0 auto var(--space-4);
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.streak-panel__score {
+  font-size: var(--text-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.streak-panel__score strong {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-display);
+}
+
+.streak-panel__best {
+  color: var(--color-text-muted);
+}
+
+/* `display: table` shrinks to the longest rule but still takes a line of its own, so
+   `margin: auto` centres the block while the rules themselves stay left-aligned. */
+.streak-rules {
+  display: table;
+  margin: 0 auto var(--space-4);
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  color: var(--color-text-muted);
+}
+
+/* The panel's button is its own centred row, not a tail on the paragraph before it. */
+.streak-panel .exercise__submit {
+  display: block;
+  margin-inline: auto;
+}
+
+.streak-rules li + li {
+  margin-top: var(--space-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .streak-clock__time {
+    transition: none;
+  }
+
+  /* The colour still carries the warning; only the pulse goes. */
+  .streak-clock__time--alarm {
+    animation: none;
+  }
+}

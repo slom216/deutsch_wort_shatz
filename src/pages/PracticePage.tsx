@@ -1,189 +1,382 @@
-import { useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
+import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { CEFR_LEVELS, bandsForLevel } from '@/content/vocabulary/frequencyBands';
-import { TOPICS, topicSlug, type Topic } from '@/content/vocabulary/topics';
-import { useSettingsStore } from '@/features/settings/settingsStore';
+import { MultipleChoiceExercise } from '@/components/exercises/MultipleChoiceExercise';
+import { loadEntries } from '@/content/vocabulary/registry';
+import { avatarSrc } from '@/features/gamification/xp';
+import { createRandom } from '@/features/practice/random';
+import { continuousSessionPath } from '@/features/practice/session/endless';
 import {
-  ALL_EXERCISE_TYPES,
-  availableExerciseTypes,
-  EXERCISE_TYPE_LABELS,
-} from '@/features/practice/exerciseTypes';
-import { wordClassSchema, type ExerciseType } from '@/schemas/vocabularySchema';
-import './SettingsPage.css';
-
-const WORD_CLASSES = wordClassSchema.options;
+  ALARM_SECONDS,
+  BONUS_SECONDS,
+  loadBestStreak,
+  MIN_MASTERED,
+  questionFor,
+  saveBestStreak,
+  START_SECONDS,
+  streakLevel,
+} from '@/features/practice/streakGame';
+import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import type { MultipleChoiceExercise as Question } from '@/schemas/exerciseSchema';
+import type { VocabularyEntry } from '@/schemas/vocabularySchema';
+import '@/components/exercises/exercises.css';
+import '@/styles/lists.css';
+import './PracticePage.css';
 
 /**
- * Free practice setup (§18).
+ * Practice learned skills.
  *
- * Selections are encoded into the session URL so a session is addressable and can be
- * rebuilt deterministically after a refresh.
+ * Not a study screen: everything here is a word the learner has already mastered, asked in
+ * the two recognition formats and nothing else. The point is the streak — one wrong answer
+ * ends the run, and the clock only ever grows by answering. Nothing is written to the SRS,
+ * so a bad run costs nothing but the score.
+ *
+ * The exercise component is used directly rather than through `ExerciseRunner`: the runner
+ * offers to reveal the answer, which is a cheat code here, and makes the learner click
+ * Continue, which would burn the clock it exists to defend.
  */
 
-const SESSION_LENGTHS = [10, 20, 30] as const;
+/** Entries that may fail to make a question before the run gives up. */
+const MAX_SKIPS = 10;
+/** How long the level-up flash stays on screen. */
+const LEVEL_UP_MS = 2000;
+
+type Status = 'loading' | 'ready' | 'playing' | 'over';
+
+interface GameOver {
+  readonly reason: 'wrong' | 'time' | 'exhausted';
+  /** The question that ended it, for a game lost on a wrong answer. */
+  readonly missed: Question | null;
+  readonly streak: number;
+  readonly best: boolean;
+}
 
 export default function PracticePage(): ReactNode {
-  const navigate = useNavigate();
-  const settings = useSettingsStore((state) => state.settings);
+  const [status, setStatus] = useState<Status>('loading');
+  const [mastered, setMastered] = useState<readonly VocabularyEntry[]>([]);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [streak, setStreak] = useState(0);
+  const [best, setBest] = useState(0);
+  const [seconds, setSeconds] = useState(START_SECONDS);
+  const [levelUp, setLevelUp] = useState<number | null>(null);
+  const [over, setOver] = useState<GameOver | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const [level, setLevel] = useState<string>('A1');
-  const [band, setBand] = useState<string>('all');
-  const [topic, setTopic] = useState<string>('all');
-  const [wordClass, setWordClass] = useState<string>('all');
-  const [length, setLength] = useState<number>(20);
-  // Listening and speaking start selected only when they are both enabled and supported
-  // by this browser (§19); the learner can still tick them on deliberately.
-  const [types, setTypes] = useState<Set<ExerciseType>>(
-    () => new Set(availableExerciseTypes(settings)),
+  /** The shuffled deck and where we are in it. Refs: advancing must not wait for a render. */
+  const deck = useRef<readonly VocabularyEntry[]>([]);
+  const cursor = useRef(0);
+  const asked = useRef(0);
+  // Seeded from the clock, not from a fixed string: the rest of the app seeds from session
+  // ids so a refresh rebuilds the same exercises, but a game that dealt the same order every
+  // time you opened the page would be memorisable.
+  const random = useRef(createRandom(`streak-${Date.now()}`));
+
+  /* ---- the mastered pool, loaded once ---- */
+  useEffect(() => {
+    const load = async (): Promise<void> => {
+      const progress = await loadAllProgress();
+      const ids = progress
+        .filter((record) => (record.masteryScore ?? 0) >= MASTERY_SCORE_TARGET)
+        .map((record) => record.entryId);
+      const entries = await loadEntries(ids);
+
+      setMastered([...entries.values()]);
+      setBest(loadBestStreak());
+      setStatus('ready');
+    };
+
+    void load().catch((cause: unknown) => {
+      setError(cause instanceof Error ? cause.message : 'Could not load your mastered words.');
+      setStatus('ready');
+    });
+  }, []);
+
+  /**
+   * The next question, taken from the deck. The deck is reshuffled and walked again when it
+   * runs out, so a learner with twelve mastered words still gets an endless run.
+   *
+   * Distractors come from the mastered set itself: an option the learner has never met is a
+   * free elimination, and their own vocabulary is what the mode is about.
+   */
+  const nextQuestion = useCallback((): Question | null => {
+    for (let skip = 0; skip < MAX_SKIPS; skip += 1) {
+      if (cursor.current >= deck.current.length) {
+        deck.current = random.current.shuffle(deck.current);
+        cursor.current = 0;
+      }
+
+      const entry = deck.current[cursor.current] as VocabularyEntry | undefined;
+      cursor.current += 1;
+      if (!entry) break;
+
+      asked.current += 1;
+      const built = questionFor(entry, deck.current, random.current, `streak-${asked.current}`);
+      if (built) return built;
+    }
+    return null;
+  }, []);
+
+  const startGame = useCallback((): void => {
+    deck.current = random.current.shuffle(mastered);
+    cursor.current = 0;
+    const first = nextQuestion();
+    if (!first) {
+      setError('None of your mastered words can make a question right now.');
+      return;
+    }
+
+    setQuestion(first);
+    setStreak(0);
+    setSeconds(START_SECONDS);
+    setLevelUp(null);
+    setOver(null);
+    setError(null);
+    setStatus('playing');
+  }, [mastered, nextQuestion]);
+
+  const endGame = useCallback(
+    (reason: GameOver['reason'], missed: Question | null, finalStreak: number): void => {
+      const isBest = saveBestStreak(finalStreak);
+      if (isBest) setBest(finalStreak);
+      setOver({ reason, missed, streak: finalStreak, best: isBest });
+      setStatus('over');
+    },
+    [],
   );
 
-  const toggle = (value: ExerciseType): void => {
-    setTypes((current) => {
-      const next = new Set(current);
-      if (next.has(value)) next.delete(value);
-      else next.add(value);
-      return next;
-    });
+  /* ---- the clock ---- */
+  useEffect(() => {
+    if (status !== 'playing') return undefined;
+    const timer = setInterval(() => {
+      setSeconds((left) => left - 1);
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [status]);
+
+  useEffect(() => {
+    if (status === 'playing' && seconds <= 0) endGame('time', null, streak);
+  }, [seconds, status, streak, endGame]);
+
+  /* ---- the level flash; the rank card beside it swaps on its own ---- */
+  const level = streakLevel(streak);
+  const previousLevel = useRef(1);
+  useEffect(() => {
+    if (status !== 'playing') return undefined;
+    if (level <= previousLevel.current) {
+      previousLevel.current = level;
+      return undefined;
+    }
+
+    previousLevel.current = level;
+    setLevelUp(level);
+    const timer = setTimeout(() => {
+      setLevelUp(null);
+    }, LEVEL_UP_MS);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [level, status]);
+
+  const answer = (correct: boolean): void => {
+    if (!question) return;
+
+    if (!correct) {
+      endGame('wrong', question, streak);
+      return;
+    }
+
+    const next = nextQuestion();
+    if (!next) {
+      // The deck cycles, so this needs every remaining word in a row to fail to make a
+      // question. The answer still counted.
+      endGame('exhausted', null, streak + 1);
+      return;
+    }
+
+    setStreak((current) => current + 1);
+    setSeconds((left) => left + BONUS_SECONDS);
+    setQuestion(next);
   };
 
-  const start = (): void => {
-    const sessionId = `free-${Date.now().toString(36)}`;
-    const params = new URLSearchParams({
-      mode: 'free',
-      level,
-      band,
-      length: String(length),
-      types: [...types].join(','),
-      ...(topic === 'all' ? {} : { topic: topicSlug(topic as Topic) }),
-      ...(wordClass === 'all' ? {} : { class: wordClass }),
-    });
-    void navigate(`/practice/session/${sessionId}?${params.toString()}`);
-  };
-
-  const bands = CEFR_LEVELS.includes(level as (typeof CEFR_LEVELS)[number])
-    ? bandsForLevel(level as (typeof CEFR_LEVELS)[number])
-    : [];
+  if (status === 'loading') return <LoadingScreen label="Finding what you have learned…" />;
 
   return (
     <>
       <PageHeader
         title="Practice"
-        description="Choose what to practise. Nothing here affects your review schedule."
+        description="Words you have already mastered, one after another. Answer wrong and the run is over — every right answer buys you two more seconds."
       />
 
-      <section className="settings-section" aria-labelledby="practice-scope">
-        <h2 id="practice-scope">Vocabulary</h2>
-
-        <div className="settings-field">
-          <label htmlFor="practice-level">Level</label>
-          <select
-            id="practice-level"
-            value={level}
-            onChange={(event) => {
-              setLevel(event.target.value);
-              setBand('all');
-            }}
-          >
-            {CEFR_LEVELS.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="settings-field">
-          <label htmlFor="practice-band">Frequency band</label>
-          <select id="practice-band" value={band} onChange={(event) => setBand(event.target.value)}>
-            <option value="all">All bands in {level}</option>
-            {bands.map((value) => (
-              <option key={value.slug} value={value.slug}>
-                {value.id}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="settings-field">
-          <label htmlFor="practice-topic">Topic</label>
-          <select
-            id="practice-topic"
-            value={topic}
-            onChange={(event) => setTopic(event.target.value)}
-          >
-            <option value="all">Any topic</option>
-            {TOPICS.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="settings-field">
-          <label htmlFor="practice-class">Word class</label>
-          <select
-            id="practice-class"
-            value={wordClass}
-            onChange={(event) => setWordClass(event.target.value)}
-          >
-            <option value="all">Any word class</option>
-            {WORD_CLASSES.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
-      </section>
-
-      <section className="settings-section" aria-labelledby="practice-format">
-        <h2 id="practice-format">Session</h2>
-
-        <div className="settings-field">
-          <label htmlFor="practice-length">Length</label>
-          <select
-            id="practice-length"
-            value={length}
-            onChange={(event) => setLength(Number(event.target.value))}
-          >
-            {SESSION_LENGTHS.map((value) => (
-              <option key={value} value={value}>
-                {value} exercises
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <fieldset className="settings-field">
-          <legend>Exercise types</legend>
-          {ALL_EXERCISE_TYPES.map((type) => (
-            <div key={type} className="settings-field--checkbox">
-              <input
-                id={`type-${type}`}
-                type="checkbox"
-                checked={types.has(type)}
-                onChange={() => toggle(type)}
-              />
-              <label htmlFor={`type-${type}`}>{EXERCISE_TYPE_LABELS[type]}</label>
-            </div>
-          ))}
-        </fieldset>
-      </section>
-
-      <button
-        type="button"
-        className="exercise__submit"
-        onClick={start}
-        disabled={types.size === 0}
-      >
-        Start practice
-      </button>
-      {types.size === 0 ? (
-        <p className="exercise__hint">Choose at least one exercise type.</p>
+      {error ? (
+        <p role="alert" className="page-alert">
+          {error}
+        </p>
       ) : null}
+
+      {status === 'ready' ? (
+        <ReadyScreen count={mastered.length} best={best} onStart={startGame} />
+      ) : null}
+
+      {status === 'playing' && question ? (
+        <>
+          <div className="streak-bar">
+            <img className="streak-bar__rank" src={avatarSrc(level)} alt={`Level ${level}`} />
+            <dl className="streak-bar__stats">
+              <div>
+                <dt>Level</dt>
+                <dd>{level}</dd>
+              </div>
+              <div>
+                <dt>Streak</dt>
+                <dd aria-live="polite">{streak}</dd>
+              </div>
+              <div>
+                <dt>Best</dt>
+                <dd>{best}</dd>
+              </div>
+            </dl>
+            <Clock seconds={seconds} />
+          </div>
+
+          <div aria-live="polite">
+            {levelUp === null ? null : (
+              <p className="streak-levelup">
+                <strong>Level {levelUp}!</strong> {streak} in a row.
+              </p>
+            )}
+          </div>
+
+          <MultipleChoiceExercise
+            key={question.id}
+            exercise={question}
+            locked={false}
+            revealed={false}
+            onSubmit={(result) => {
+              answer(result.correct);
+            }}
+          />
+        </>
+      ) : null}
+
+      {status === 'over' && over ? <OverScreen over={over} onAgain={startGame} /> : null}
     </>
+  );
+}
+
+/**
+ * The countdown.
+ *
+ * `aria-live` is off deliberately: a screen reader announcing every second would drown out
+ * the question. The alarm threshold is announced once instead, by the region below it.
+ */
+function Clock({ seconds }: { seconds: number }): ReactNode {
+  const left = Math.max(0, seconds);
+  const alarm = left <= ALARM_SECONDS;
+
+  return (
+    <div className="streak-clock">
+      <p
+        className={alarm ? 'streak-clock__time streak-clock__time--alarm' : 'streak-clock__time'}
+        role="timer"
+        aria-live="off"
+        aria-label={`${left} seconds left`}
+      >
+        {left}
+      </p>
+      <div aria-live="polite" className="streak-clock__announce">
+        {alarm ? `${ALARM_SECONDS} seconds left` : ''}
+      </div>
+    </div>
+  );
+}
+
+function ReadyScreen({
+  count,
+  best,
+  onStart,
+}: {
+  count: number;
+  best: number;
+  onStart: () => void;
+}): ReactNode {
+  if (count < MIN_MASTERED) {
+    return (
+      <section className="streak-panel">
+        <h2>Not enough learned words yet</h2>
+        <p>
+          You have mastered {count} {count === 1 ? 'word' : 'words'}. This game needs {MIN_MASTERED}{' '}
+          to make a question worth answering.
+        </p>
+        <p className="band-summary">
+          Keep going in <Link to={continuousSessionPath()}>continuous learning</Link> — a word
+          counts as mastered once you have answered it cleanly {MASTERY_SCORE_TARGET} times.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="streak-panel">
+      <h2>{count} words are ready for you</h2>
+      <ul className="streak-rules">
+        <li>
+          You start with {START_SECONDS} seconds. Each correct answer adds {BONUS_SECONDS}.
+        </li>
+        <li>One wrong answer, or the clock reaching zero, ends the run.</li>
+        <li>Levels come after 10 in a row, then 20 more, then 30 more.</li>
+      </ul>
+      {best > 0 ? (
+        <p className="streak-panel__best">
+          Your best streak so far is <strong>{best}</strong>.
+        </p>
+      ) : null}
+      <button type="button" className="exercise__submit" onClick={onStart}>
+        I am ready
+      </button>
+    </section>
+  );
+}
+
+function OverScreen({ over, onAgain }: { over: GameOver; onAgain: () => void }): ReactNode {
+  const level = streakLevel(over.streak);
+
+  return (
+    <section className="streak-panel" aria-live="polite">
+      <img className="streak-panel__rank" src={avatarSrc(level)} alt={`Level ${level}`} />
+      <h2>
+        {over.reason === 'wrong'
+          ? 'That one got away'
+          : over.reason === 'time'
+            ? 'Time is up'
+            : 'That is every word you know'}
+      </h2>
+
+      <p className="streak-panel__score">
+        <strong>{over.streak}</strong> in a row · level {level}
+      </p>
+
+      {over.best ? <p className="streak-levelup">A new best streak!</p> : null}
+
+      {over.missed ? (
+        <p className="band-summary">
+          <span lang={over.missed.variant === 'germanToEnglish' ? 'de' : 'en'}>
+            {over.missed.question}
+          </span>{' '}
+          is{' '}
+          <strong lang={over.missed.variant === 'germanToEnglish' ? 'en' : 'de'}>
+            {over.missed.options[over.missed.correctIndex]}
+          </strong>
+          .
+        </p>
+      ) : null}
+
+      <button type="button" className="exercise__submit" onClick={onAgain}>
+        Play again
+      </button>
+    </section>
   );
 }
