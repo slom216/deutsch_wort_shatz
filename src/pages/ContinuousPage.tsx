@@ -10,6 +10,7 @@ import { useLiveLevel } from '@/features/gamification/useLiveLevel';
 import { useSessionStore } from '@/features/practice/session/sessionStore';
 import { useContinuousSession } from '@/features/practice/session/useContinuousSession';
 import { levelCompletion } from '@/features/progress/analytics';
+import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 import { useReviewState } from '@/features/srs/useReviewState';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
@@ -171,7 +172,9 @@ export default function ContinuousPage(): ReactNode {
         <ExerciseRunner
           key={stream.exercise.id}
           exercise={stream.exercise}
-          progressLabel={`Exercise ${answers.length + 1}`}
+          // The score picks the format and decides whether the word comes back, so it goes
+          // on screen beside the question rather than only in the database.
+          progressLabel={`Exercise ${answers.length + 1} · score ${stream.masteryScore}/${MASTERY_SCORE_TARGET}`}
           onComplete={(outcome) => {
             void stream.answer(outcome);
           }}

@@ -51,6 +51,12 @@ export interface ContinuousSession {
   readonly error: string | null;
   /** The exercise on screen, or null while the next one is being chosen. */
   readonly exercise: Exercise | null;
+  /**
+   * Running quiz score of the word on screen, 0–`MASTERY_SCORE_TARGET`. Shown beside the
+   * exercise: it is what picks the format and what decides whether the word comes back, so
+   * it is the one number that explains why this question appeared.
+   */
+  readonly masteryScore: number;
   readonly answer: (outcome: ExerciseOutcome) => Promise<void>;
 }
 
@@ -66,6 +72,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [masteryScore, setMasteryScore] = useState(0);
 
   const random = useRef(createRandom(sessionId));
   /** Exercises answered in this stream. The unit the spacing offsets are measured in. */
@@ -229,7 +236,9 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       if (generatedForEntry.length === 0) return null;
 
       const progress = await loadProgress(entry.id);
-      const wanted = formatForScore(progress?.masteryScore ?? 0);
+      const score = progress?.masteryScore ?? 0;
+      setMasteryScore(score);
+      const wanted = formatForScore(score);
 
       // Fall back within the ladder rather than dropping the word: an entry that cannot
       // produce the exact format — one whose gloss yields too few plausible distractors,
@@ -344,5 +353,5 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     [recordAnswer, serveNext],
   );
 
-  return { loading, error, exercise, answer };
+  return { loading, error, exercise, masteryScore, answer };
 }
