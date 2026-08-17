@@ -1,6 +1,10 @@
 import type { MultipleChoiceExercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
-import { generateMultipleChoice, type MultipleChoiceVariant } from './generators/multipleChoice';
+import {
+  generateMultipleChoice,
+  OPTION_COUNT,
+  type MultipleChoiceVariant,
+} from './generators/multipleChoice';
 import type { Random } from './random';
 
 /**
@@ -61,6 +65,34 @@ export function streakLevel(correct: number): number {
 const DIRECTIONS: readonly MultipleChoiceVariant[] = ['germanToEnglish', 'englishToGerman'];
 
 /**
+ * How many wrong options a run shows. The question is always built at full width and then
+ * trimmed, so an easier level is the same question with fewer things to eliminate — the
+ * near miss, when one was drawn, is as likely to survive the cut as any other distractor.
+ */
+export const DIFFICULTIES = [
+  { id: 'easy', label: 'Easy', wrong: 2 },
+  { id: 'medium', label: 'Medium', wrong: 3 },
+  { id: 'hard', label: 'Hard', wrong: 4 },
+  { id: 'master', label: 'Word master', wrong: OPTION_COUNT - 1 },
+] as const;
+
+export type Difficulty = (typeof DIFFICULTIES)[number]['id'];
+
+/** Drops distractors at random until only `wrong` are left. Fewer than that is left alone. */
+function trimOptions(
+  question: MultipleChoiceExercise,
+  wrong: number,
+  random: Random,
+): MultipleChoiceExercise {
+  const correct = question.options[question.correctIndex] as string;
+  const distractors = question.options.filter((_, index) => index !== question.correctIndex);
+  if (distractors.length <= wrong) return question;
+
+  const options = random.shuffle([correct, ...random.sample(distractors, wrong)]);
+  return { ...question, options, correctIndex: options.indexOf(correct) };
+}
+
+/**
  * A question for this word, in a direction chosen at random.
  *
  * Null when the word cannot make one — an entry with no English gloss, or one whose gloss
@@ -71,22 +103,29 @@ export function questionFor(
   pool: readonly VocabularyEntry[],
   random: Random,
   id: string,
+  wrong: number = OPTION_COUNT - 1,
 ): MultipleChoiceExercise | null {
   const variant = DIRECTIONS[random.int(DIRECTIONS.length)] as MultipleChoiceVariant;
-  return generateMultipleChoice({ entry, pool, random, id }, variant);
+  const built = generateMultipleChoice({ entry, pool, random, id }, variant);
+  return built && trimOptions(built, wrong, random);
 }
 
 const BEST_STREAK_KEY = 'practice-best-streak';
 
+/** Word master keeps the original key, so a best set before the levels existed survives. */
+function bestKey(difficulty: Difficulty): string {
+  return difficulty === 'master' ? BEST_STREAK_KEY : `${BEST_STREAK_KEY}-${difficulty}`;
+}
+
 /** The longest streak so far, or 0. Survives a reload; it is a scoreboard, not progress. */
-export function loadBestStreak(): number {
-  const stored = Number(localStorage.getItem(BEST_STREAK_KEY));
+export function loadBestStreak(difficulty: Difficulty): number {
+  const stored = Number(localStorage.getItem(bestKey(difficulty)));
   return Number.isFinite(stored) && stored > 0 ? Math.trunc(stored) : 0;
 }
 
-/** Records a streak if it beats the stored best, and reports whether it did. */
-export function saveBestStreak(streak: number): boolean {
-  if (streak <= loadBestStreak()) return false;
-  localStorage.setItem(BEST_STREAK_KEY, String(streak));
+/** Records a streak if it beats the stored best for that level, and reports whether it did. */
+export function saveBestStreak(difficulty: Difficulty, streak: number): boolean {
+  if (streak <= loadBestStreak(difficulty)) return false;
+  localStorage.setItem(bestKey(difficulty), String(streak));
   return true;
 }

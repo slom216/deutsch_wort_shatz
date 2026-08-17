@@ -11,6 +11,7 @@ import { continuousSessionPath } from '@/features/practice/session/endless';
 import {
   ALARM_SECONDS,
   BONUS_SECONDS,
+  DIFFICULTIES,
   formatClock,
   loadBestStreak,
   MIN_MASTERED,
@@ -19,6 +20,7 @@ import {
   saveBestStreak,
   START_SECONDS,
   streakLevel,
+  type Difficulty,
 } from '@/features/practice/streakGame';
 import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 import type { MultipleChoiceExercise as Question } from '@/schemas/exerciseSchema';
@@ -60,7 +62,8 @@ export default function PracticePage(): ReactNode {
   const [mastered, setMastered] = useState<readonly VocabularyEntry[]>([]);
   const [question, setQuestion] = useState<Question | null>(null);
   const [streak, setStreak] = useState(0);
-  const [best, setBest] = useState(0);
+  const [difficulty, setDifficulty] = useState<Difficulty>('master');
+  const [bests, setBests] = useState<Partial<Record<Difficulty, number>>>({});
   const [seconds, setSeconds] = useState(START_SECONDS);
   const [countdown, setCountdown] = useState(READY_SECONDS);
   const [levelUp, setLevelUp] = useState<number | null>(null);
@@ -86,7 +89,9 @@ export default function PracticePage(): ReactNode {
       const entries = await loadEntries(ids);
 
       setMastered([...entries.values()]);
-      setBest(loadBestStreak());
+      setBests(
+        Object.fromEntries(DIFFICULTIES.map((level) => [level.id, loadBestStreak(level.id)])),
+      );
       setStatus('ready');
     };
 
@@ -103,7 +108,7 @@ export default function PracticePage(): ReactNode {
    * Distractors come from the mastered set itself: an option the learner has never met is a
    * free elimination, and their own vocabulary is what the mode is about.
    */
-  const nextQuestion = useCallback((): Question | null => {
+  const nextQuestion = useCallback((wrong: number): Question | null => {
     for (let skip = 0; skip < MAX_SKIPS; skip += 1) {
       if (cursor.current >= deck.current.length) {
         deck.current = random.current.shuffle(deck.current);
@@ -115,39 +120,49 @@ export default function PracticePage(): ReactNode {
       if (!entry) break;
 
       asked.current += 1;
-      const built = questionFor(entry, deck.current, random.current, `streak-${asked.current}`);
+      const built = questionFor(
+        entry,
+        deck.current,
+        random.current,
+        `streak-${asked.current}`,
+        wrong,
+      );
       if (built) return built;
     }
     return null;
   }, []);
 
-  const startGame = useCallback((): void => {
-    deck.current = random.current.shuffle(mastered);
-    cursor.current = 0;
-    const first = nextQuestion();
-    if (!first) {
-      setError('None of your mastered words can make a question right now.');
-      return;
-    }
+  const startGame = useCallback(
+    (level: Difficulty): void => {
+      deck.current = random.current.shuffle(mastered);
+      cursor.current = 0;
+      const first = nextQuestion(wrongCount(level));
+      if (!first) {
+        setError('None of your mastered words can make a question right now.');
+        return;
+      }
 
-    setQuestion(first);
-    setStreak(0);
-    setSeconds(START_SECONDS);
-    setCountdown(READY_SECONDS);
-    setLevelUp(null);
-    setOver(null);
-    setError(null);
-    setStatus('countdown');
-  }, [mastered, nextQuestion]);
+      setDifficulty(level);
+      setQuestion(first);
+      setStreak(0);
+      setSeconds(START_SECONDS);
+      setCountdown(READY_SECONDS);
+      setLevelUp(null);
+      setOver(null);
+      setError(null);
+      setStatus('countdown');
+    },
+    [mastered, nextQuestion],
+  );
 
   const endGame = useCallback(
     (reason: GameOver['reason'], missed: Question | null, finalStreak: number): void => {
-      const isBest = saveBestStreak(finalStreak);
-      if (isBest) setBest(finalStreak);
+      const isBest = saveBestStreak(difficulty, finalStreak);
+      if (isBest) setBests((current) => ({ ...current, [difficulty]: finalStreak }));
       setOver({ reason, missed, streak: finalStreak, best: isBest });
       setStatus('over');
     },
-    [],
+    [difficulty],
   );
 
   /* ---- three, two, one: the question is already on screen behind it ---- */
@@ -205,7 +220,7 @@ export default function PracticePage(): ReactNode {
       return;
     }
 
-    const next = nextQuestion();
+    const next = nextQuestion(wrongCount(difficulty));
     if (!next) {
       // The deck cycles, so this needs every remaining word in a row to fail to make a
       // question. The answer still counted.
@@ -234,7 +249,7 @@ export default function PracticePage(): ReactNode {
       ) : null}
 
       {status === 'ready' ? (
-        <ReadyScreen count={mastered.length} best={best} onStart={startGame} />
+        <ReadyScreen count={mastered.length} bests={bests} onStart={startGame} />
       ) : null}
 
       {status === 'countdown' ? (
@@ -258,7 +273,11 @@ export default function PracticePage(): ReactNode {
               </div>
               <div>
                 <dt>Best</dt>
-                <dd>{best}</dd>
+                <dd>{bests[difficulty] ?? 0}</dd>
+              </div>
+              <div>
+                <dt>Mode</dt>
+                <dd>{labelOf(difficulty)}</dd>
               </div>
             </dl>
             <Clock seconds={seconds} />
@@ -286,7 +305,18 @@ export default function PracticePage(): ReactNode {
         </>
       ) : null}
 
-      {status === 'over' && over ? <OverScreen over={over} onAgain={startGame} /> : null}
+      {status === 'over' && over ? (
+        <OverScreen
+          over={over}
+          difficulty={difficulty}
+          onAgain={() => {
+            startGame(difficulty);
+          }}
+          onChange={() => {
+            setStatus('ready');
+          }}
+        />
+      ) : null}
     </>
   );
 }
@@ -318,14 +348,27 @@ function Clock({ seconds }: { seconds: number }): ReactNode {
   );
 }
 
+/** Wrong options a level shows, and its name. Unknown ids cannot happen; the cast is the price. */
+function levelOf(difficulty: Difficulty): (typeof DIFFICULTIES)[number] {
+  return DIFFICULTIES.find((level) => level.id === difficulty) ?? DIFFICULTIES[3];
+}
+
+function wrongCount(difficulty: Difficulty): number {
+  return levelOf(difficulty).wrong;
+}
+
+function labelOf(difficulty: Difficulty): string {
+  return levelOf(difficulty).label;
+}
+
 function ReadyScreen({
   count,
-  best,
+  bests,
   onStart,
 }: {
   count: number;
-  best: number;
-  onStart: () => void;
+  bests: Partial<Record<Difficulty, number>>;
+  onStart: (difficulty: Difficulty) => void;
 }): ReactNode {
   if (count < MIN_MASTERED) {
     return (
@@ -352,21 +395,44 @@ function ReadyScreen({
         </li>
         <li>One wrong answer, or the clock reaching zero, ends the run.</li>
         <li>Levels come after 10 in a row, then 20 more, then 30 more.</li>
+        <li>Pick how many wrong answers you want to sift through. Each keeps its own best.</li>
       </ul>
-      {best > 0 ? (
-        <p className="streak-panel__best">
-          Your best streak so far is <strong>{best}</strong>.
-        </p>
-      ) : null}
-      {/* Focused on arrival so Enter starts the game — no key handler needed for that. */}
-      <button type="button" className="exercise__submit" autoFocus onClick={onStart}>
-        I am ready
-      </button>
+      <ul className="streak-modes">
+        {DIFFICULTIES.map((level) => (
+          <li key={level.id}>
+            {/* The hardest is focused on arrival, so Enter still starts the original game. */}
+            <button
+              type="button"
+              className="exercise__submit"
+              autoFocus={level.id === 'master'}
+              onClick={() => {
+                onStart(level.id);
+              }}
+            >
+              I am ready · {level.label}
+              <span className="streak-modes__detail">
+                {level.wrong + 1} options
+                {(bests[level.id] ?? 0) > 0 ? ` · best ${String(bests[level.id])}` : ''}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
 
-function OverScreen({ over, onAgain }: { over: GameOver; onAgain: () => void }): ReactNode {
+function OverScreen({
+  over,
+  difficulty,
+  onAgain,
+  onChange,
+}: {
+  over: GameOver;
+  difficulty: Difficulty;
+  onAgain: () => void;
+  onChange: () => void;
+}): ReactNode {
   const level = streakLevel(over.streak);
 
   return (
@@ -384,7 +450,9 @@ function OverScreen({ over, onAgain }: { over: GameOver; onAgain: () => void }):
         <strong>{over.streak}</strong> in a row · level {level}
       </p>
 
-      {over.best ? <p className="streak-levelup">A new best streak!</p> : null}
+      {over.best ? (
+        <p className="streak-levelup">A new best streak on {labelOf(difficulty)}!</p>
+      ) : null}
 
       {over.missed ? (
         <p className="band-summary">
@@ -400,7 +468,10 @@ function OverScreen({ over, onAgain }: { over: GameOver; onAgain: () => void }):
       ) : null}
 
       <button type="button" className="exercise__submit" autoFocus onClick={onAgain}>
-        Play again
+        Play {labelOf(difficulty)} again
+      </button>
+      <button type="button" className="streak-panel__switch" onClick={onChange}>
+        Pick another level
       </button>
     </section>
   );

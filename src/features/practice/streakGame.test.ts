@@ -5,7 +5,7 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { loadPilotDataset } from '@/test/fixtures/pilotDataset';
 import { headword, primaryEnglish } from './generators/entryHelpers';
 import { createRandom } from './random';
-import { formatClock, levelThreshold, questionFor, streakLevel } from './streakGame';
+import { DIFFICULTIES, formatClock, levelThreshold, questionFor, streakLevel } from './streakGame';
 
 let pilot: readonly VocabularyEntry[];
 
@@ -82,6 +82,29 @@ describe('streak questions', () => {
         expect(question.question).toBe(
           question.variant === 'germanToEnglish' ? headword(entry) : primaryEnglish(entry),
         );
+      }
+    }
+  });
+
+  it("shows one right answer and the level's worth of wrong ones", () => {
+    for (const level of DIFFICULTIES) {
+      for (const entry of pilot) {
+        for (let i = 0; i < 4; i += 1) {
+          const question = questionFor(
+            entry,
+            pilot,
+            createRandom(`trim-${i}`),
+            `q-${i}`,
+            level.wrong,
+          );
+          if (!question) continue;
+
+          expect(question.options.length).toBeLessThanOrEqual(level.wrong + 1);
+          expect(new Set(question.options).size).toBe(question.options.length);
+          expect(question.options[question.correctIndex]).toBe(
+            question.variant === 'germanToEnglish' ? primaryEnglish(entry) : headword(entry),
+          );
+        }
       }
     }
   });
