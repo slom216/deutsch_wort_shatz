@@ -16,9 +16,18 @@ import type { Random } from './random';
 /** Seconds on the clock when the game starts. */
 export const START_SECONDS = 20;
 /** Seconds a correct answer adds. */
-export const BONUS_SECONDS = 2;
+export const BONUS_SECONDS = 3;
 /** At or below this, the countdown turns alarming. */
 export const ALARM_SECONDS = 5;
+/** Seconds of "get ready" between pressing start and the first question. */
+export const READY_SECONDS = 3;
+
+/** The clock as mm:ss. Negative time reads as zero; the run is over either way. */
+export function formatClock(seconds: number): string {
+  const left = Math.max(0, Math.trunc(seconds));
+  const minutes = Math.floor(left / 60);
+  return `${String(minutes).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`;
+}
 
 /**
  * Fewest mastered words the game will run on: one question's worth of options.

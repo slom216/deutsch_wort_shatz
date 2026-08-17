@@ -5,7 +5,7 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { loadPilotDataset } from '@/test/fixtures/pilotDataset';
 import { headword, primaryEnglish } from './generators/entryHelpers';
 import { createRandom } from './random';
-import { levelThreshold, questionFor, streakLevel } from './streakGame';
+import { formatClock, levelThreshold, questionFor, streakLevel } from './streakGame';
 
 let pilot: readonly VocabularyEntry[];
 
@@ -37,6 +37,16 @@ describe('streak levels', () => {
       expect(jump).toBeGreaterThanOrEqual(0);
       expect(jump).toBeLessThanOrEqual(1);
     }
+  });
+});
+
+describe('the clock', () => {
+  it('reads as mm:ss, and never below zero', () => {
+    expect(formatClock(0)).toBe('00:00');
+    expect(formatClock(-3)).toBe('00:00');
+    expect(formatClock(9)).toBe('00:09');
+    expect(formatClock(60)).toBe('01:00');
+    expect(formatClock(125)).toBe('02:05');
   });
 });
 

@@ -11,9 +11,11 @@ import { continuousSessionPath } from '@/features/practice/session/endless';
 import {
   ALARM_SECONDS,
   BONUS_SECONDS,
+  formatClock,
   loadBestStreak,
   MIN_MASTERED,
   questionFor,
+  READY_SECONDS,
   saveBestStreak,
   START_SECONDS,
   streakLevel,
@@ -43,7 +45,7 @@ const MAX_SKIPS = 10;
 /** How long the level-up flash stays on screen. */
 const LEVEL_UP_MS = 2000;
 
-type Status = 'loading' | 'ready' | 'playing' | 'over';
+type Status = 'loading' | 'ready' | 'countdown' | 'playing' | 'over';
 
 interface GameOver {
   readonly reason: 'wrong' | 'time' | 'exhausted';
@@ -60,6 +62,7 @@ export default function PracticePage(): ReactNode {
   const [streak, setStreak] = useState(0);
   const [best, setBest] = useState(0);
   const [seconds, setSeconds] = useState(START_SECONDS);
+  const [countdown, setCountdown] = useState(READY_SECONDS);
   const [levelUp, setLevelUp] = useState<number | null>(null);
   const [over, setOver] = useState<GameOver | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -130,10 +133,11 @@ export default function PracticePage(): ReactNode {
     setQuestion(first);
     setStreak(0);
     setSeconds(START_SECONDS);
+    setCountdown(READY_SECONDS);
     setLevelUp(null);
     setOver(null);
     setError(null);
-    setStatus('playing');
+    setStatus('countdown');
   }, [mastered, nextQuestion]);
 
   const endGame = useCallback(
@@ -145,6 +149,18 @@ export default function PracticePage(): ReactNode {
     },
     [],
   );
+
+  /* ---- three, two, one: the question is already on screen behind it ---- */
+  useEffect(() => {
+    if (status !== 'countdown') return undefined;
+    const timer = setTimeout(() => {
+      if (countdown <= 0) setStatus('playing');
+      else setCountdown((left) => left - 1);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [status, countdown]);
 
   /* ---- the clock ---- */
   useEffect(() => {
@@ -208,7 +224,7 @@ export default function PracticePage(): ReactNode {
     <>
       <PageHeader
         title="Practice"
-        description="Words you have already mastered, one after another. Answer wrong and the run is over — every right answer buys you two more seconds."
+        description={`Words you have already mastered, one after another. Answer wrong and the run is over — every right answer buys you ${BONUS_SECONDS} more seconds.`}
       />
 
       {error ? (
@@ -219,6 +235,12 @@ export default function PracticePage(): ReactNode {
 
       {status === 'ready' ? (
         <ReadyScreen count={mastered.length} best={best} onStart={startGame} />
+      ) : null}
+
+      {status === 'countdown' ? (
+        <section className="streak-panel" aria-live="assertive">
+          <p className="streak-countdown">{countdown > 0 ? countdown : 'Los!'}</p>
+        </section>
       ) : null}
 
       {status === 'playing' && question ? (
@@ -242,9 +264,11 @@ export default function PracticePage(): ReactNode {
             <Clock seconds={seconds} />
           </div>
 
+          {/* Fixed, not in the flow: a banner appearing above the options would shove them
+              out from under the pointer mid-run. */}
           <div aria-live="polite">
             {levelUp === null ? null : (
-              <p className="streak-levelup">
+              <p className="streak-levelup streak-levelup--toast">
                 <strong>Level {levelUp}!</strong> {streak} in a row.
               </p>
             )}
@@ -285,7 +309,7 @@ function Clock({ seconds }: { seconds: number }): ReactNode {
         aria-live="off"
         aria-label={`${left} seconds left`}
       >
-        {left}
+        {formatClock(left)}
       </p>
       <div aria-live="polite" className="streak-clock__announce">
         {alarm ? `${ALARM_SECONDS} seconds left` : ''}
@@ -334,7 +358,8 @@ function ReadyScreen({
           Your best streak so far is <strong>{best}</strong>.
         </p>
       ) : null}
-      <button type="button" className="exercise__submit" onClick={onStart}>
+      {/* Focused on arrival so Enter starts the game — no key handler needed for that. */}
+      <button type="button" className="exercise__submit" autoFocus onClick={onStart}>
         I am ready
       </button>
     </section>
@@ -374,7 +399,7 @@ function OverScreen({ over, onAgain }: { over: GameOver; onAgain: () => void }):
         </p>
       ) : null}
 
-      <button type="button" className="exercise__submit" onClick={onAgain}>
+      <button type="button" className="exercise__submit" autoFocus onClick={onAgain}>
         Play again
       </button>
     </section>
