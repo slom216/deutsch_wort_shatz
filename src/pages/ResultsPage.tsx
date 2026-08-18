@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
+import { expectedAnswerOf } from '@/components/exercises/expectedAnswer';
 import { loadSessionHistory, loadSessionRecord } from '@/features/practice/session/sessionStore';
 import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
@@ -87,6 +88,20 @@ export default function ResultsPage(): ReactNode {
   }
   const topErrors = [...errorCounts.entries()].sort((a, b) => b[1] - a[1]);
 
+  // The answer each missed exercise wanted, so the words that went wrong can be learned
+  // here rather than only on the next session. Read from the exercises stored with the
+  // session, so nothing extra has to be persisted per answer.
+  const exercisesById = new Map(
+    (record.exercises ?? []).map((exercise) => [exercise.id, exercise]),
+  );
+  const missed = history
+    .filter((row) => !row.correct || row.revealed)
+    .map((row) => {
+      const exercise = exercisesById.get(row.id.slice(`${row.sessionId}:`.length));
+      return exercise ? { row, answer: expectedAnswerOf(exercise), prompt: exercise.prompt } : null;
+    })
+    .filter((item) => item !== null);
+
   return (
     <>
       <PageHeader
@@ -110,7 +125,7 @@ export default function ResultsPage(): ReactNode {
         />
       </dl>
 
-      {topErrors.length > 0 ? (
+      {topErrors.length > 0 || missed.length > 0 ? (
         <section className="entry-panel" aria-labelledby="results-errors">
           <h2 id="results-errors">What to work on</h2>
           <ul className="example-list">
@@ -120,6 +135,25 @@ export default function ResultsPage(): ReactNode {
               </li>
             ))}
           </ul>
+
+          {missed.length > 0 ? (
+            <>
+              <h3 className="results__missed-heading">The answers you missed</h3>
+              <ul className="entry-list results__missed">
+                {missed.map(({ row, answer, prompt }) => (
+                  <li key={row.id} className="entry-row">
+                    <Link className="entry-row__german" to={`/word/${row.entryId}`} lang="de">
+                      {labels.get(row.entryId) ?? row.entryId}
+                    </Link>
+                    <span className="entry-row__english">{prompt}</span>
+                    <strong className="entry-row__answer" lang="de">
+                      {answer}
+                    </strong>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </section>
       ) : null}
 

@@ -10,6 +10,7 @@ import { SentenceCompletionExercise } from './SentenceCompletionExercise';
 import { SpeakingExercise } from './SpeakingExercise';
 import { TypedTranslationExercise } from './TypedTranslationExercise';
 import { WordOrderingExercise } from './WordOrderingExercise';
+import { expectedAnswerOf } from './expectedAnswer';
 import type { ExerciseComponentProps } from './exerciseProps';
 import './exercises.css';
 
@@ -247,19 +248,4 @@ export function ExerciseRunner({
       </div>
     </section>
   );
-}
-
-function expectedAnswerOf(exercise: Exercise): string {
-  switch (exercise.type) {
-    case 'multipleChoice':
-      return exercise.options[exercise.correctIndex] ?? '';
-    case 'matching':
-      return exercise.pairs.map((pair) => `${pair.left} → ${pair.right}`).join('; ');
-    case 'speaking':
-      return exercise.targetText;
-    case 'sentenceCompletion':
-      return exercise.canonicalAnswer;
-    default:
-      return 'canonicalAnswer' in exercise ? exercise.canonicalAnswer : '';
-  }
 }

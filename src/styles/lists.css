@@ -224,3 +224,27 @@
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: var(--space-4);
 }
+
+/* Missed answers on the results page: word, what was asked, and the answer itself. */
+.results__missed-heading {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.results__missed .entry-row {
+  grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 1.6fr) minmax(8rem, 1fr);
+}
+
+.entry-row__answer {
+  color: var(--color-success);
+}
+
+@media (max-width: 60rem) {
+  .results__missed .entry-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .results__missed .entry-row__english {
+    display: none;
+  }
+}
