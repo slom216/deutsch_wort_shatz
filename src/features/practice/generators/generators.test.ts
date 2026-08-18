@@ -450,6 +450,18 @@ describe('typed translation', () => {
     expect(toEnglish?.isProduction).toBe(false);
   });
 
+  it('accepts an English verb with or without its "to"', () => {
+    const entry = find((e) => e.wordClass === 'verb' && e.english[0]?.startsWith('to ') === true);
+    const exercise = generateTypedTranslation(
+      { entry, pool: pilot, random: random(), id: 'tt-6' },
+      'germanToEnglish',
+    );
+    const bare = (entry.english[0] as string).slice(3);
+    expect(exercise?.canonicalAnswer).toBe(entry.english[0]);
+    expect(exercise?.acceptedAnswers).toContain(bare);
+    expect(exercise?.acceptedAnswers).toContain(`to ${bare}`);
+  });
+
   it('requires punctuation for a full phrase', () => {
     const entry = find((e) => isPhraseEntry(e));
     const exercise = generateTypedTranslation(

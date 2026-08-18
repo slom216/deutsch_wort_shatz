@@ -28,6 +28,16 @@ export function acceptedEnglish(entry: VocabularyEntry): string[] {
     ...entry.exerciseConfig.acceptedAnswers.english,
     ...entry.english,
   ]);
+  // English infinitives are written "to answer" but nobody types the "to" when the German
+  // side already says it is a verb, so both forms count. Added after the configured ones,
+  // so the canonical answer stays the form the dataset teaches.
+  if (isVerbEntry(entry)) {
+    for (const form of [...forms]) {
+      const bare = form.replace(/^to\s+/iu, '');
+      forms.add(bare);
+      forms.add(`to ${bare}`);
+    }
+  }
   return [...forms].filter((form) => form.trim().length > 0);
 }
 
