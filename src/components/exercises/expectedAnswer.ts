@@ -15,3 +15,26 @@ export function expectedAnswerOf(exercise: Exercise): string {
       return 'canonicalAnswer' in exercise ? exercise.canonicalAnswer : '';
   }
 }
+
+/**
+ * What the exercise actually showed the learner. Paired with `expectedAnswerOf` on the
+ * results page, where the entry's headword would otherwise repeat the answer for every
+ * exercise whose answer *is* the German word.
+ */
+export function questionOf(exercise: Exercise): string {
+  switch (exercise.type) {
+    case 'multipleChoice':
+      return exercise.question;
+    case 'typedTranslation':
+      return exercise.question;
+    case 'sentenceCompletion':
+      return `${exercise.sentenceBefore}___${exercise.sentenceAfter}`.trim();
+    case 'speaking':
+      return exercise.englishGloss;
+    case 'wordOrdering':
+      return exercise.tokens.join(' · ');
+    default:
+      // Listening and matching have nothing to show — the audio and the pairs are the question.
+      return exercise.prompt;
+  }
+}

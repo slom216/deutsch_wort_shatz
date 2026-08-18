@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
-import { expectedAnswerOf } from '@/components/exercises/expectedAnswer';
+import { expectedAnswerOf, questionOf } from '@/components/exercises/expectedAnswer';
 import { loadSessionHistory, loadSessionRecord } from '@/features/practice/session/sessionStore';
 import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
@@ -98,7 +98,14 @@ export default function ResultsPage(): ReactNode {
     .filter((row) => !row.correct || row.revealed)
     .map((row) => {
       const exercise = exercisesById.get(row.id.slice(`${row.sessionId}:`.length));
-      return exercise ? { row, answer: expectedAnswerOf(exercise), prompt: exercise.prompt } : null;
+      return exercise
+        ? {
+            row,
+            question: questionOf(exercise),
+            prompt: exercise.prompt,
+            answer: expectedAnswerOf(exercise),
+          }
+        : null;
     })
     .filter((item) => item !== null);
 
@@ -140,10 +147,12 @@ export default function ResultsPage(): ReactNode {
             <>
               <h3 className="results__missed-heading">The answers you missed</h3>
               <ul className="entry-list results__missed">
-                {missed.map(({ row, answer, prompt }) => (
+                {missed.map(({ row, question, answer, prompt }) => (
                   <li key={row.id} className="entry-row">
-                    <Link className="entry-row__german" to={`/word/${row.entryId}`} lang="de">
-                      {labels.get(row.entryId) ?? row.entryId}
+                    {/* The question, not the headword: for an English→German exercise the
+                        headword is the answer, and a row that answers itself teaches nothing. */}
+                    <Link className="entry-row__german" to={`/word/${row.entryId}`}>
+                      {question}
                     </Link>
                     <span className="entry-row__english">{prompt}</span>
                     <strong className="entry-row__answer" lang="de">
