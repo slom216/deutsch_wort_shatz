@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 
+import { isNearMiss, wordVerdicts } from '@/features/practice/evaluation/evaluateAnswer';
 import type { EvaluationResult, Exercise } from '@/schemas/exerciseSchema';
 import { ExerciseFeedback } from './ExerciseFeedback';
 import { ListeningExercise } from './ListeningExercise';
@@ -27,11 +28,17 @@ import './exercises.css';
 export interface ExerciseOutcome {
   readonly exercise: Exercise;
   readonly result: EvaluationResult;
-  /** Always 1: there is no second try. Kept because the SRS grades on it (§20). */
+  /** 1, or 2 when a near miss earned a second try — the SRS grades a retry as §20's "difficult". */
   readonly attempts: number;
   readonly revealed: boolean;
   readonly hintUsed: boolean;
   readonly responseMs: number;
+}
+
+/** Only typed answers can be a near miss; a picked option is either right or wrong. */
+function acceptsTypedAnswer(exercise: Exercise): boolean {
+  if (exercise.type === 'typedTranslation' || exercise.type === 'sentenceCompletion') return true;
+  return exercise.type === 'listening' && exercise.options === undefined;
 }
 
 interface ExerciseRunnerProps {
@@ -82,6 +89,8 @@ export function ExerciseRunner({
   const [locked, setLocked] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [hintShown, setHintShown] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [nearMiss, setNearMiss] = useState<EvaluationResult | null>(null);
   const startedAt = useRef(Date.now());
 
   useEffect(() => {
@@ -89,16 +98,29 @@ export function ExerciseRunner({
     setLocked(false);
     setRevealed(false);
     setHintShown(false);
+    setAttempts(0);
+    setNearMiss(null);
     startedAt.current = Date.now();
   }, [exercise.id]);
 
-  const handleSubmit = useCallback((submitted: EvaluationResult) => {
-    // One try per word: right or wrong, the exercise is finished.
-    setResult(submitted);
-    setLocked(true);
-  }, []);
+  const handleSubmit = useCallback(
+    (submitted: EvaluationResult) => {
+      const attempt = attempts + 1;
+      setAttempts(attempt);
+      // A typo is not a lost word: one — and only one — extra try when the answer is close.
+      if (attempt === 1 && acceptsTypedAnswer(exercise) && isNearMiss(submitted)) {
+        setNearMiss(submitted);
+        return;
+      }
+      setNearMiss(null);
+      setResult(submitted);
+      setLocked(true);
+    },
+    [attempts, exercise],
+  );
 
   const reveal = (): void => {
+    setNearMiss(null);
     setRevealed(true);
     setLocked(true);
     setResult({
@@ -114,12 +136,12 @@ export function ExerciseRunner({
     onComplete({
       exercise,
       result: revealed ? { ...result, correct: false } : result,
-      attempts: 1,
+      attempts: Math.max(attempts, 1),
       revealed,
       hintUsed: hintShown,
       responseMs: Date.now() - startedAt.current,
     });
-  }, [result, onComplete, exercise, revealed, hintShown]);
+  }, [result, onComplete, exercise, revealed, hintShown, attempts]);
 
   // Enter continues once the exercise is answered, so a whole session runs from the keyboard.
   useEffect(() => {
@@ -153,6 +175,28 @@ export function ExerciseRunner({
         locked,
         revealed,
       })}
+
+      {nearMiss ? (
+        <div className="near-miss" role="status" aria-live="polite">
+          <p className="near-miss__heading">
+            <span aria-hidden="true">≈</span> So close — one more try.
+          </p>
+          <p className="near-miss__words" lang="de">
+            {wordVerdicts(nearMiss.submittedAnswer, nearMiss.expectedAnswer).map(
+              (verdict, index) => (
+                <span
+                  key={`${verdict.word}-${index}`}
+                  className={
+                    verdict.correct ? 'near-miss__word' : 'near-miss__word near-miss__word--wrong'
+                  }
+                >
+                  {verdict.word}
+                </span>
+              ),
+            )}
+          </p>
+        </div>
+      ) : null}
 
       {exercise.hint && hintShown ? (
         <p className="exercise__hint" role="status">

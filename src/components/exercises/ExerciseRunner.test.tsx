@@ -55,6 +55,46 @@ describe('ExerciseRunner', () => {
     expect(outcome.attempts).toBe(1);
   });
 
+  it('gives a near-miss typed answer one more try, then grades it as a retry', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    render(<ExerciseRunner exercise={fixtures.typedTranslation} onComplete={onComplete} />);
+
+    const input = screen.getByLabelText(/your answer/i);
+    await user.type(input, 'die Strase');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+
+    expect(screen.getByText(/one more try/i)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /continue/i })).not.toBeInTheDocument();
+
+    await user.clear(input);
+    await user.type(input, 'die Straße');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+
+    expect(screen.queryByText(/one more try/i)).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    const outcome = lastOutcome(onComplete);
+    expect(outcome.result.correct).toBe(true);
+    expect(outcome.attempts).toBe(2);
+  });
+
+  it('locks the second wrong answer even if it is also close', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    render(<ExerciseRunner exercise={fixtures.typedTranslation} onComplete={onComplete} />);
+
+    const input = screen.getByLabelText(/your answer/i);
+    await user.type(input, 'die Strase');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+    await user.type(input, 'x');
+    await user.click(screen.getByRole('button', { name: /check answer/i }));
+
+    expect(screen.getByRole('status')).toHaveTextContent(/not correct/i);
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+    expect(lastOutcome(onComplete).attempts).toBe(2);
+  });
+
   it('marks a revealed answer as incorrect', async () => {
     const user = userEvent.setup();
     const onComplete = vi.fn();

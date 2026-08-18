@@ -7,6 +7,7 @@ import type {
 } from '@/schemas/exerciseSchema';
 import {
   collapseWhitespace,
+  editDistance,
   expandUmlautsToDigraphs,
   foldCase,
   foldEszett,
@@ -347,6 +348,36 @@ export function evaluateAnswer(
     submittedAnswer: cleaned,
     expectedAnswer: expected,
   };
+}
+
+/** A near miss gets one more try instead of a lost word: at most this many edits away. */
+export const NEAR_MISS_DISTANCE = 2;
+
+/**
+ * True when a wrong answer is a typo rather than a different word — close enough that
+ * locking it in would punish spelling, not knowledge. Case is folded first, so a purely
+ * capitalization mistake also earns the second chance.
+ */
+export function isNearMiss(result: EvaluationResult): boolean {
+  if (result.correct) return false;
+  const submitted = foldCase(collapseWhitespace(result.submittedAnswer));
+  if (submitted.length === 0) return false;
+  return editDistance(submitted, foldCase(result.expectedAnswer)) <= NEAR_MISS_DISTANCE;
+}
+
+/**
+ * Word-by-word verdict for the near-miss hint: each submitted word is right when the
+ * expected answer contains it (ignoring case, umlaut spelling, ß and punctuation).
+ */
+export function wordVerdicts(
+  submitted: string,
+  expected: string,
+): { readonly word: string; readonly correct: boolean }[] {
+  const expectedWords = new Set(tokenize(fullyNormalize(expected)));
+  return collapseWhitespace(submitted)
+    .split(' ')
+    .filter((word) => word.length > 0)
+    .map((word) => ({ word, correct: expectedWords.has(fullyNormalize(word)) }));
 }
 
 /** Convenience for multiple-choice and matching, where correctness is an index match. */

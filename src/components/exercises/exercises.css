@@ -441,3 +441,35 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Near miss: a second chance, with the words that were already right kept plain. */
+.near-miss {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.near-miss__heading {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-2);
+}
+
+.near-miss__words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-lg);
+}
+
+.near-miss__word {
+  color: var(--color-text);
+}
+
+.near-miss__word--wrong {
+  color: var(--color-danger);
+  text-decoration: underline wavy;
+  text-underline-offset: 0.25em;
+}

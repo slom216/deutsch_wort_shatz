@@ -108,3 +108,22 @@ export function sameTokenMultiset(a: readonly string[], b: readonly string[]): b
 export function fullyNormalize(value: string): string {
   return collapseWhitespace(foldCase(foldEszett(foldUmlautVariants(stripPunctuation(value)))));
 }
+
+/** Levenshtein distance, capped implicitly by string length. Used for near-miss detection. */
+export function editDistance(a: string, b: string): number {
+  if (a === b) return 0;
+  let previous = Array.from({ length: b.length + 1 }, (_, index) => index);
+  for (let i = 1; i <= a.length; i += 1) {
+    const current = [i];
+    for (let j = 1; j <= b.length; j += 1) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      current[j] = Math.min(
+        (current[j - 1] as number) + 1,
+        (previous[j] as number) + 1,
+        (previous[j - 1] as number) + cost,
+      );
+    }
+    previous = current;
+  }
+  return previous[b.length] as number;
+}

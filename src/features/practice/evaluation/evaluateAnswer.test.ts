@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { evaluateAnswer, evaluateChoice } from './evaluateAnswer';
+import { evaluateAnswer, evaluateChoice, isNearMiss, wordVerdicts } from './evaluateAnswer';
 import type { Strictness } from '@/schemas/exerciseSchema';
 
 const STRICT: Strictness = {
@@ -265,5 +265,37 @@ describe('evaluateChoice', () => {
     expect(result.correct).toBe(false);
     expect(result.issues[0]?.message).toMatch(/der Tisch/);
     expect(result.submittedAnswer).toBe('die Lampe');
+  });
+});
+
+describe('near miss', () => {
+  const near = (submitted: string, expected: string) =>
+    isNearMiss({
+      correct: false,
+      issues: [],
+      submittedAnswer: submitted,
+      expectedAnswer: expected,
+    });
+
+  it('accepts a one- or two-character typo and a capitalization slip', () => {
+    expect(near('Strase', 'Straße')).toBe(true);
+    expect(near('strasse', 'Straße')).toBe(true);
+    expect(near('die Fentser', 'die Fenster')).toBe(true);
+  });
+
+  it('rejects a different word and an empty answer', () => {
+    expect(near('Haus', 'Straße')).toBe(false);
+    expect(near('', 'Straße')).toBe(false);
+  });
+
+  it('marks each submitted word right or wrong', () => {
+    expect(wordVerdicts('die Fentser', 'das Fenster')).toEqual([
+      { word: 'die', correct: false },
+      { word: 'Fentser', correct: false },
+    ]);
+    expect(wordVerdicts('der fenster', 'der Fenster')).toEqual([
+      { word: 'der', correct: true },
+      { word: 'fenster', correct: true },
+    ]);
   });
 });
