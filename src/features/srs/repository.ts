@@ -5,6 +5,7 @@ import { computeDifficulty, difficultyInputsFrom } from './difficulty';
 import { expectedResponseMs, gradeAttempt, isSuccess, type AttemptOutcome } from './grading';
 import { evaluateMastery, masteryEvidenceFrom } from './mastery';
 import { applyReview, createInitialSrsState } from './scheduler';
+import { masteryTarget } from './learningMode';
 
 /**
  * Persistence for SRS state (§24).
@@ -28,12 +29,16 @@ export async function loadProgress(
 }
 
 /**
- * Quiz score at which an entry counts as mastered.
+ * Quiz score at which an entry counts as mastered, for the learner's current mode.
  *
  * Answering correctly first time is +1, getting it wrong is −1, and the score never goes
- * below zero — so four clean answers master a word, and every wrong one costs one of them.
+ * below zero — so `masteryTarget()` clean answers master a word, and every wrong one costs
+ * one of them. Normal asks for four, fast for three, ultra fast for two.
+ *
+ * Re-exported here because this module is where the score itself is written; the table
+ * lives in `learningMode.ts`.
  */
-export const MASTERY_SCORE_TARGET = 4;
+export { masteryTarget } from './learningMode';
 
 /** Creates the progress record for a newly introduced entry (§18). */
 export function createProgress(entryId: string, now: Date): EntryProgress {
@@ -55,8 +60,8 @@ export function createProgress(entryId: string, now: Date): EntryProgress {
  * The score after one answer: +1 clean, −1 wrong, floored at 0 and capped at the target.
  *
  * The cap is what makes the target mean something: a word mastered in the stream can still
- * be answered from the review queue, and without it the score would climb past 4 and the
- * exercise header would read "score 6/4".
+ * be answered from the review queue, and without it the score would climb past the target
+ * and the exercise header would read "score 6/4".
  *
  * Getting there in the end holds the score rather than dropping it. A second attempt earns
  * no progress — the word was not known — but it must not cost a rung either: a learner who
@@ -66,11 +71,12 @@ export function createProgress(entryId: string, now: Date): EntryProgress {
 export function nextMasteryScore(
   current: number,
   outcome: { correct: boolean; attempts: number; revealed: boolean },
+  target: number = masteryTarget(),
 ): number {
   if (outcome.correct && outcome.attempts === 1 && !outcome.revealed) {
-    return Math.min(MASTERY_SCORE_TARGET, current + 1);
+    return Math.min(target, current + 1);
   }
-  if (outcome.correct && !outcome.revealed) return Math.min(MASTERY_SCORE_TARGET, current);
+  if (outcome.correct && !outcome.revealed) return Math.min(target, current);
   return Math.max(0, current - 1);
 }
 
@@ -210,10 +216,11 @@ export async function recordReview(
     recentGrades: [...evidence.recentGrades, grade],
   });
 
-  // Two independent routes to mastered: the §22 evidence check, and a quiz score of 4.
-  // Keeping both means an entry already mastered under §22 is never demoted by the
-  // arrival of the score, and a word answered cleanly four times counts as known.
-  const scoreMastered = updated.masteryScore >= MASTERY_SCORE_TARGET;
+  // Two independent routes to mastered: the §22 evidence check, and the quiz score
+  // reaching the mode's target. Keeping both means an entry already mastered under §22 is
+  // never demoted by the arrival of the score, and a word answered cleanly as many times
+  // as the mode asks for counts as known.
+  const scoreMastered = updated.masteryScore >= masteryTarget();
   if ((check.mastered || scoreMastered) && updated.srs.status === 'review') {
     updated = { ...updated, srs: { ...updated.srs, status: 'mastered' } };
   }

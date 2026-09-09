@@ -1,0 +1,4160 @@
+{
+ "1": [
+  {
+   "de": "Die Fahrt dauert ca. zwanzig Minuten.",
+   "en": "The trip takes approximately twenty minutes."
+  }
+ ],
+ "2": [
+  {
+   "de": "Er kommt am Wochenende, d.h. am Samstag.",
+   "en": "He is coming at the weekend, that is, on Saturday."
+  }
+ ],
+ "3": [
+  {
+   "de": "Wir fahren mit dem ICE nach Berlin.",
+   "en": "We are taking the high-speed train to Berlin."
+  }
+ ],
+ "4": [
+  {
+   "de": "Mein PC ist heute sehr langsam.",
+   "en": "My PC is very slow today."
+  }
+ ],
+ "5": [
+  {
+   "de": "Ich schicke dir gleich eine SMS.",
+   "en": "I will send you a text message right away."
+  }
+ ],
+ "6": [
+  {
+   "de": "Wir brauchen Brot, Milch, Eier usw.",
+   "en": "We need bread, milk, eggs and so on."
+  }
+ ],
+ "7": [
+  {
+   "de": "Wo ist hier bitte das WC?",
+   "en": "Where is the toilet here, please?"
+  }
+ ],
+ "8": [
+  {
+   "de": "Ich esse gern Obst, z. B. Äpfel und Bananen.",
+   "en": "I like eating fruit, for example apples and bananas."
+  }
+ ],
+ "9": [
+  {
+   "de": "Schreiben Sie Ihren Namen auf den Antwortbogen.",
+   "en": "Write your name on the answer sheet."
+  }
+ ],
+ "10": [
+  {
+   "de": "Ich markiere die wichtigen Wörter im Text.",
+   "en": "I mark the important words in the text."
+  }
+ ],
+ "11": [
+  {
+   "de": "Der Prüfer stellt mir drei Fragen.",
+   "en": "The examiner asks me three questions."
+  }
+ ],
+ "12": [
+  {
+   "de": "Die Prüferin begrüßt uns freundlich.",
+   "en": "The examiner greets us in a friendly way."
+  }
+ ],
+ "13": [
+  {
+   "de": "Für jede richtige Antwort bekommst du einen Punkt.",
+   "en": "You get one point for every correct answer."
+  }
+ ],
+ "14": [
+  {
+   "de": "Ich suche das neue Wort im Wörterbuch.",
+   "en": "I look up the new word in the dictionary."
+  }
+ ],
+ "15": [
+  {
+   "de": "Mein Bruder ist Angestellter bei einer Bank.",
+   "en": "My brother is an employee at a bank."
+  }
+ ],
+ "16": [
+  {
+   "de": "Die Angestellte arbeitet seit zehn Jahren hier.",
+   "en": "The employee has been working here for ten years."
+  }
+ ],
+ "17": [
+  {
+   "de": "Die Ärztin gibt mir ein Rezept.",
+   "en": "The doctor gives me a prescription."
+  }
+ ],
+ "18": [
+  {
+   "de": "Er ist Auszubildender in einer Autowerkstatt.",
+   "en": "He is a trainee at a car repair shop."
+  }
+ ],
+ "19": [
+  {
+   "de": "Die Auszubildende lernt viel im Büro.",
+   "en": "The trainee is learning a lot in the office."
+  }
+ ],
+ "20": [
+  {
+   "de": "Der Autor liest heute aus seinem neuen Buch.",
+   "en": "The author is reading from his new book today."
+  }
+ ],
+ "21": [
+  {
+   "de": "Die Autorin schreibt Bücher für Kinder.",
+   "en": "The author writes books for children."
+  }
+ ],
+ "22": [
+  {
+   "de": "Wir brauchen heute Abend einen Babysitter.",
+   "en": "We need a babysitter this evening."
+  }
+ ],
+ "23": [
+  {
+   "de": "Der Bäcker steht jeden Morgen um vier Uhr auf.",
+   "en": "The baker gets up at four o'clock every morning."
+  }
+ ],
+ "24": [
+  {
+   "de": "Die Bäckerin verkauft frische Brötchen.",
+   "en": "The baker sells fresh rolls."
+  }
+ ],
+ "25": [
+  {
+   "de": "Die Doktorin untersucht mein linkes Knie.",
+   "en": "The doctor examines my left knee."
+  }
+ ],
+ "26": [
+  {
+   "de": "Die Fahrerin hält an der nächsten Haltestelle.",
+   "en": "The driver stops at the next stop."
+  }
+ ],
+ "27": [
+  {
+   "de": "Mein Friseur schneidet mir die Haare kurz.",
+   "en": "My hairdresser cuts my hair short."
+  }
+ ],
+ "28": [
+  {
+   "de": "Die Friseurin färbt meine Haare blond.",
+   "en": "The hairdresser dyes my hair blonde."
+  }
+ ],
+ "29": [
+  {
+   "de": "Der Handwerker repariert unsere Heizung.",
+   "en": "The tradesman is repairing our heating."
+  }
+ ],
+ "30": [
+  {
+   "de": "Die Handwerkerin baut ein neues Regal ein.",
+   "en": "The tradeswoman installs a new shelf."
+  }
+ ],
+ "31": [
+  {
+   "de": "Der Journalist schreibt einen Artikel über die Stadt.",
+   "en": "The journalist is writing an article about the city."
+  }
+ ],
+ "32": [
+  {
+   "de": "Die Journalistin arbeitet für eine große Zeitung.",
+   "en": "The journalist works for a big newspaper."
+  }
+ ],
+ "33": [
+  {
+   "de": "Mein Onkel ist Kaufmann in einem großen Büro.",
+   "en": "My uncle is a clerk in a big office."
+  }
+ ],
+ "34": [
+  {
+   "de": "Sie arbeitet als Kauffrau in einer Firma.",
+   "en": "She works as a businesswoman at a company."
+  }
+ ],
+ "35": [
+  {
+   "de": "Der Kellner bringt uns die Speisekarte.",
+   "en": "The waiter brings us the menu."
+  }
+ ],
+ "36": [
+  {
+   "de": "Die Kellnerin bringt zwei Gläser Wasser.",
+   "en": "The waitress brings two glasses of water."
+  }
+ ],
+ "37": [
+  {
+   "de": "Der Koch macht heute eine Gemüsesuppe.",
+   "en": "The chef is making a vegetable soup today."
+  }
+ ],
+ "38": [
+  {
+   "de": "Die Köchin arbeitet in einem kleinen Restaurant.",
+   "en": "The cook works in a small restaurant."
+  }
+ ],
+ "39": [
+  {
+   "de": "Der Krankenpfleger hilft dem alten Mann.",
+   "en": "The nurse helps the old man."
+  }
+ ],
+ "40": [
+  {
+   "de": "Die Krankenschwester misst mein Fieber.",
+   "en": "The nurse takes my temperature."
+  }
+ ],
+ "41": [
+  {
+   "de": "Der Künstler malt ein Bild von der Stadt.",
+   "en": "The artist is painting a picture of the city."
+  }
+ ],
+ "42": [
+  {
+   "de": "Die Künstlerin zeigt ihre Bilder im Museum.",
+   "en": "The female artist is showing her pictures in the museum."
+  }
+ ],
+ "43": [
+  {
+   "de": "Unsere Lehrerin erklärt die Aufgabe noch einmal.",
+   "en": "Our teacher explains the exercise again."
+  }
+ ],
+ "44": [
+  {
+   "de": "Der Mechaniker wechselt die Reifen am Auto.",
+   "en": "The mechanic changes the tires on the car."
+  }
+ ],
+ "45": [
+  {
+   "de": "Die Mechanikerin repariert mein altes Fahrrad.",
+   "en": "The mechanic repairs my old bicycle."
+  }
+ ],
+ "46": [
+  {
+   "de": "Das Model trägt ein rotes Kleid.",
+   "en": "The model is wearing a red dress."
+  }
+ ],
+ "47": [
+  {
+   "de": "Der Musiker spielt Gitarre auf der Straße.",
+   "en": "The musician plays guitar in the street."
+  }
+ ],
+ "48": [
+  {
+   "de": "Die Musikerin spielt heute Abend Klavier.",
+   "en": "The musician is playing the piano this evening."
+  }
+ ],
+ "49": [
+  {
+   "de": "Der Polizist zeigt uns den Weg zum Bahnhof.",
+   "en": "The police officer shows us the way to the station."
+  }
+ ],
+ "50": [
+  {
+   "de": "Die Polizistin kontrolliert meinen Ausweis.",
+   "en": "The police officer checks my ID."
+  }
+ ],
+ "51": [
+  {
+   "de": "Mein Nachbar ist Rentner und hat viel Zeit.",
+   "en": "My neighbour is a pensioner and has a lot of time."
+  }
+ ],
+ "52": [
+  {
+   "de": "Die Rentnerin geht jeden Tag im Park spazieren.",
+   "en": "The retiree goes for a walk in the park every day."
+  }
+ ],
+ "53": [
+  {
+   "de": "Der Sänger singt ein altes Lied.",
+   "en": "The singer sings an old song."
+  }
+ ],
+ "54": [
+  {
+   "de": "Die Sängerin hat eine sehr schöne Stimme.",
+   "en": "The singer has a very beautiful voice."
+  }
+ ],
+ "55": [
+  {
+   "de": "Der Schauspieler spielt in einem neuen Film.",
+   "en": "The actor is in a new film."
+  }
+ ],
+ "56": [
+  {
+   "de": "Die Schauspielerin bekommt einen Preis für ihre Rolle.",
+   "en": "The actress receives a prize for her role."
+  }
+ ],
+ "57": [
+  {
+   "de": "Der Techniker repariert morgen unser Internet.",
+   "en": "The technician is fixing our internet tomorrow."
+  }
+ ],
+ "58": [
+  {
+   "de": "Die Technikerin prüft die Maschine in der Halle.",
+   "en": "The technician checks the machine in the hall."
+  }
+ ],
+ "59": [
+  {
+   "de": "Die Verkäuferin zeigt mir eine andere Größe.",
+   "en": "The saleswoman shows me another size."
+  }
+ ],
+ "60": [
+  {
+   "de": "Mein Cousin wohnt seit einem Jahr in Hamburg.",
+   "en": "My cousin has been living in Hamburg for a year."
+  }
+ ],
+ "61": [
+  {
+   "de": "Meine Cousine kommt am Wochenende zu Besuch.",
+   "en": "My cousin is coming to visit at the weekend."
+  }
+ ],
+ "62": [
+  {
+   "de": "Ihr Enkel besucht sie jeden Sonntag.",
+   "en": "Her grandson visits her every Sunday."
+  }
+ ],
+ "63": [
+  {
+   "de": "Meine Enkelin ist gestern sechs Jahre alt geworden.",
+   "en": "My granddaughter turned six yesterday."
+  }
+ ],
+ "64": [
+  {
+   "de": "Meine Mama kocht heute Nudeln für uns.",
+   "en": "My mom is cooking pasta for us today."
+  }
+ ],
+ "65": [
+  {
+   "de": "Mein Onkel hat einen großen Garten.",
+   "en": "My uncle has a big garden."
+  }
+ ],
+ "66": [
+  {
+   "de": "Meine Tante backt einen Kuchen für die Party.",
+   "en": "My aunt is baking a cake for the party."
+  }
+ ],
+ "67": [
+  {
+   "de": "Mein Papa bringt mich morgens zur Schule.",
+   "en": "My dad takes me to school in the mornings."
+  }
+ ],
+ "68": [
+  {
+   "de": "Wir möchten bitte getrennt bezahlen.",
+   "en": "We would like to pay separately, please."
+  }
+ ],
+ "69": [
+  {
+   "de": "Meine Eltern sind seit zwei Jahren geschieden.",
+   "en": "My parents have been divorced for two years."
+  }
+ ],
+ "70": [
+  {
+   "de": "Sie trägt heute einen lila Pullover.",
+   "en": "She is wearing a purple sweater today."
+  }
+ ],
+ "71": [
+  {
+   "de": "Meine neue Tasche ist orange.",
+   "en": "My new bag is orange."
+  }
+ ],
+ "72": [
+  {
+   "de": "Das Kind hat ein rosa Fahrrad bekommen.",
+   "en": "The child got a pink bicycle."
+  }
+ ],
+ "73": [
+  {
+   "de": "Im Winter fahren wir nach Österreich.",
+   "en": "In winter we travel to Austria."
+  }
+ ],
+ "74": [
+  {
+   "de": "Mein Kollege ist Österreicher und kommt aus Wien.",
+   "en": "My colleague is Austrian and comes from Vienna."
+  }
+ ],
+ "75": [
+  {
+   "de": "Meine Nachbarin ist Österreicherin aus Salzburg.",
+   "en": "My neighbour is an Austrian woman from Salzburg."
+  }
+ ],
+ "76": [
+  {
+   "de": "Meine Freundin hat einen österreichischen Pass.",
+   "en": "My friend has an Austrian passport."
+  }
+ ],
+ "77": [
+  {
+   "de": "Meine Tante lebt in der Schweiz.",
+   "en": "My aunt lives in Switzerland."
+  }
+ ],
+ "78": [
+  {
+   "de": "Ein Schweizer hat uns den Weg gezeigt.",
+   "en": "A Swiss person showed us the way."
+  }
+ ],
+ "79": [
+  {
+   "de": "Die Schweizerin spricht Deutsch und Französisch.",
+   "en": "The Swiss woman speaks German and French."
+  }
+ ],
+ "80": [
+  {
+   "de": "Er arbeitet für eine schweizerische Bank.",
+   "en": "He works for a Swiss bank."
+  }
+ ],
+ "81": [
+  {
+   "de": "Mein Bruder arbeitet seit Januar in Luxemburg.",
+   "en": "My brother has been working in Luxembourg since January."
+  }
+ ],
+ "82": [
+  {
+   "de": "Der Luxemburger spricht drei Sprachen.",
+   "en": "The Luxembourger speaks three languages."
+  }
+ ],
+ "83": [
+  {
+   "de": "Die Luxemburgerin studiert jetzt in Deutschland.",
+   "en": "The Luxembourger is now studying in Germany."
+  }
+ ],
+ "84": [
+  {
+   "de": "Sie hat einen luxemburgischen Pass.",
+   "en": "She has a Luxembourgish passport."
+  }
+ ],
+ "85": [
+  {
+   "de": "Als Europäerin braucht sie kein Visum.",
+   "en": "As a European, she does not need a visa."
+  }
+ ],
+ "86": [
+  {
+   "de": "In der Schweiz bezahlt man mit Franken.",
+   "en": "In Switzerland you pay with francs."
+  }
+ ],
+ "87": [
+  {
+   "de": "Der Kaffee kostet vier Franken und fünfzig Rappen.",
+   "en": "The coffee costs four francs and fifty centimes."
+  }
+ ],
+ "88": [
+  {
+   "de": "Ich kaufe ein Kilogramm Tomaten.",
+   "en": "I am buying a kilogram of tomatoes."
+  }
+ ],
+ "89": [
+  {
+   "de": "Meine Schwester macht nächstes Jahr Abitur.",
+   "en": "My sister is taking her school-leaving exams next year."
+  }
+ ],
+ "90": [
+  {
+   "de": "Der Direktor spricht heute mit allen Lehrern.",
+   "en": "The headteacher is speaking with all the teachers today."
+  }
+ ],
+ "91": [
+  {
+   "de": "Wir fahren auf Klassenfahrt nach München.",
+   "en": "We are going on a class trip to Munich."
+  }
+ ],
+ "92": [
+  {
+   "de": "Das Formular bekommst du im Sekretariat.",
+   "en": "You get the form in the administrative office."
+  }
+ ],
+ "93": [
+  {
+   "de": "Am Montag steht Sport auf dem Stundenplan.",
+   "en": "On Monday, sport is on the timetable."
+  }
+ ],
+ "94": [
+  {
+   "de": "In Biologie lernen wir heute über Pflanzen.",
+   "en": "In biology we are learning about plants today."
+  }
+ ],
+ "95": [
+  {
+   "de": "Morgen schreiben wir einen Test in Chemie.",
+   "en": "Tomorrow we are writing a chemistry test."
+  }
+ ],
+ "96": [
+  {
+   "de": "Sein Englisch ist in einem Jahr sehr gut geworden.",
+   "en": "His English has become very good within a year."
+  }
+ ],
+ "97": [
+  {
+   "de": "Ich lerne seit drei Jahren Französisch.",
+   "en": "I have been learning French for three years."
+  }
+ ],
+ "98": [
+  {
+   "de": "In Geografie lernen wir die Hauptstädte Europas.",
+   "en": "In geography we learn the capitals of Europe."
+  }
+ ],
+ "99": [
+  {
+   "de": "Geschichte ist mein Lieblingsfach in der Schule.",
+   "en": "History is my favourite subject at school."
+  }
+ ],
+ "100": [
+  {
+   "de": "In der Kunsterziehung malen wir mit Wasserfarben.",
+   "en": "In art class we paint with watercolours."
+  }
+ ],
+ "101": [
+  {
+   "de": "Mein Bruder lernt Latein in der Schule.",
+   "en": "My brother is learning Latin at school."
+  }
+ ],
+ "102": [
+  {
+   "de": "Mathematik ist mein Lieblingsfach in der Schule.",
+   "en": "Mathematics is my favourite subject at school."
+  }
+ ],
+ "103": [
+  {
+   "de": "Ich höre gern laute Musik im Auto.",
+   "en": "I like listening to loud music in the car."
+  }
+ ],
+ "104": [
+  {
+   "de": "In Physik machen wir heute ein Experiment.",
+   "en": "In physics we are doing an experiment today."
+  }
+ ],
+ "105": [
+  {
+   "de": "In Religion sprechen wir über verschiedene Feste.",
+   "en": "In Religious Education we talk about different festivals."
+  }
+ ],
+ "106": [
+  {
+   "de": "In Sozialkunde lernen wir über die Regierung.",
+   "en": "In social studies we learn about the government."
+  }
+ ],
+ "107": [
+  {
+   "de": "Im Februar feiern wir Karneval in Köln.",
+   "en": "In February we celebrate carnival in Cologne."
+  }
+ ],
+ "108": [
+  {
+   "de": "Zu Ostern suchen die Kinder bunte Eier.",
+   "en": "At Easter the children look for coloured eggs."
+  }
+ ],
+ "109": [
+  {
+   "de": "An Weihnachten essen wir bei meiner Oma.",
+   "en": "At Christmas we eat at my grandma's."
+  }
+ ],
+ "110": [
+  {
+   "de": "An Neujahr schlafen wir immer sehr lange.",
+   "en": "On New Year's Day we always sleep in very late."
+  }
+ ],
+ "111": [
+  {
+   "de": "An Silvester feiern wir mit unseren Freunden.",
+   "en": "On New Year's Eve we celebrate with our friends."
+  }
+ ],
+ "112": [
+  {
+   "de": "Der Zug kommt erst nach Mitternacht an.",
+   "en": "The train does not arrive until after midnight."
+  }
+ ],
+ "113": [
+  {
+   "de": "Ich gehe täglich mit dem Hund spazieren.",
+   "en": "I walk the dog daily."
+  }
+ ],
+ "114": [
+  {
+   "de": "Tagsüber ist meine Mutter nicht zu Hause.",
+   "en": "During the day my mother is not at home."
+  }
+ ],
+ "115": [
+  {
+   "de": "Morgens trinke ich immer einen starken Kaffee.",
+   "en": "In the morning I always drink a strong coffee."
+  }
+ ],
+ "116": [
+  {
+   "de": "Vormittags habe ich vier Stunden Unterricht.",
+   "en": "In the morning I have four lessons."
+  }
+ ],
+ "117": [
+  {
+   "de": "Mittags essen wir in der Kantine.",
+   "en": "At lunchtime we eat in the canteen."
+  }
+ ],
+ "118": [
+  {
+   "de": "Nachmittags spiele ich mit meinen Freunden Fußball.",
+   "en": "In the afternoons I play football with my friends."
+  }
+ ],
+ "119": [
+  {
+   "de": "Abends sehen wir zusammen einen Film.",
+   "en": "In the evening we watch a film together."
+  }
+ ],
+ "120": [
+  {
+   "de": "Nachts ist es in der Stadt sehr ruhig.",
+   "en": "At night the city is very quiet."
+  }
+ ],
+ "121": [
+  {
+   "de": "Mein Bruder ist im Jahr zweitausendeins geboren.",
+   "en": "My brother was born in the year two thousand and one."
+  }
+ ],
+ "122": [
+  {
+   "de": "Erstens ist das Auto für uns zu teuer.",
+   "en": "Firstly, the car is too expensive for us."
+  }
+ ],
+ "123": [
+  {
+   "de": "Zweitens gefällt mir die Farbe überhaupt nicht.",
+   "en": "Secondly, I do not like the colour at all."
+  }
+ ],
+ "124": [
+  {
+   "de": "Drittens ist die Wohnung viel zu klein.",
+   "en": "Thirdly, the flat is far too small."
+  }
+ ],
+ "125": [
+  {
+   "de": "Viertens muss ich morgen sehr früh aufstehen.",
+   "en": "Fourthly, I have to get up very early tomorrow."
+  }
+ ],
+ "126": [
+  {
+   "de": "Ich gehe zweimal pro Woche schwimmen.",
+   "en": "I go swimming twice a week."
+  }
+ ],
+ "127": [
+  {
+   "de": "Wir haben dreimal geklingelt, aber niemand hat geöffnet.",
+   "en": "We rang three times, but nobody opened."
+  }
+ ],
+ "128": [
+  {
+   "de": "Meine Tante ruft mich viermal am Tag an.",
+   "en": "My aunt calls me four times a day."
+  }
+ ],
+ "129": [
+  {
+   "de": "Montags habe ich immer Sport in der Schule.",
+   "en": "On Mondays I always have PE at school."
+  }
+ ],
+ "130": [
+  {
+   "de": "Dienstags kommt meine Oma zum Kaffee.",
+   "en": "On Tuesday my grandma comes for coffee."
+  }
+ ],
+ "131": [
+  {
+   "de": "Mittwochs schließt der Laden schon um zwei.",
+   "en": "On Wednesdays the shop closes at two already."
+  }
+ ],
+ "132": [
+  {
+   "de": "Donnerstags gehe ich zum Gitarrenunterricht.",
+   "en": "On Thursdays I go to my guitar lesson."
+  }
+ ],
+ "133": [
+  {
+   "de": "Freitags essen wir bei uns immer Fisch.",
+   "en": "On Fridays we always eat fish at home."
+  }
+ ],
+ "134": [
+  {
+   "de": "Samstags kaufen wir auf dem Markt ein.",
+   "en": "On Saturdays we do our shopping at the market."
+  }
+ ],
+ "135": [
+  {
+   "de": "Sonntags stehen wir sehr spät auf.",
+   "en": "On Sundays we get up very late."
+  }
+ ],
+ "136": [
+  {
+   "de": "Mein Arbeitstag beginnt schon um acht Uhr.",
+   "en": "My working day starts at eight o'clock."
+  }
+ ],
+ "137": [
+  {
+   "de": "An einem Werktag fahren die Busse öfter.",
+   "en": "On a weekday the buses run more often."
+  }
+ ],
+ "138": [
+  {
+   "de": "Morgen ist ein Feiertag, die Schule bleibt zu.",
+   "en": "Tomorrow is a holiday, so school stays closed."
+  }
+ ],
+ "139": [
+  {
+   "de": "Du musst die Haustür abends immer abschließen.",
+   "en": "You must always lock the front door in the evening."
+  }
+ ],
+ "140": [
+  {
+   "de": "Ich habe keine Ahnung, wo mein Handy ist.",
+   "en": "I have no idea where my phone is."
+  }
+ ],
+ "141": [
+  {
+   "de": "Mein Opa ist mit achtzig noch sehr aktiv.",
+   "en": "My grandpa is still very active at eighty."
+  }
+ ],
+ "142": [
+  {
+   "de": "Das ist die aktuelle Version des Programms.",
+   "en": "That is the current version of the program."
+  }
+ ],
+ "143": [
+  {
+   "de": "Mein Bruder ist viel größer als ich.",
+   "en": "My brother is much taller than me."
+  }
+ ],
+ "144": [
+  {
+   "de": "An der Ampel musst du rechts abbiegen.",
+   "en": "At the traffic light you have to turn right."
+  }
+ ],
+ "145": [
+  {
+   "de": "Wir ändern den Termin auf Freitag.",
+   "en": "We are changing the appointment to Friday."
+  }
+ ],
+ "146": [
+  {
+   "de": "Heute schmeckt die Suppe ganz anders.",
+   "en": "Today the soup tastes quite different."
+  }
+ ],
+ "147": [
+  {
+   "de": "Meine Schwester hat große Angst vor Hunden.",
+   "en": "My sister is very afraid of dogs."
+  }
+ ],
+ "148": [
+  {
+   "de": "Willst du dir die Fotos von der Reise ansehen?",
+   "en": "Do you want to look at the photos from the trip?"
+  }
+ ],
+ "149": [
+  {
+   "de": "Zur Hochzeit trägt er einen schwarzen Anzug.",
+   "en": "He is wearing a black suit to the wedding."
+  }
+ ],
+ "150": [
+  {
+   "de": "Die Apotheke neben dem Bahnhof hat noch offen.",
+   "en": "The pharmacy next to the station is still open."
+  }
+ ],
+ "151": [
+  {
+   "de": "Mein kleiner Bruder ärgert mich jeden Tag.",
+   "en": "My little brother annoys me every day."
+  }
+ ],
+ "152": [
+  {
+   "de": "Ich habe einen Artikel über Fußball gelesen.",
+   "en": "I read an article about football."
+  }
+ ],
+ "153": [
+  {
+   "de": "Ich komme auf jeden Fall zu deiner Party.",
+   "en": "I am coming to your party in any case."
+  }
+ ],
+ "154": [
+  {
+   "de": "Du darfst auf keinen Fall allein nach Hause gehen.",
+   "en": "Under no circumstances may you walk home alone."
+  }
+ ],
+ "155": [
+  {
+   "de": "Kannst du bitte das Fenster aufmachen?",
+   "en": "Can you please open the window?"
+  }
+ ],
+ "156": [
+  {
+   "de": "Im Straßenverkehr muss man gut aufpassen.",
+   "en": "In traffic you have to watch out carefully."
+  }
+ ],
+ "157": [
+  {
+   "de": "Ich soll heute Nachmittag mein Zimmer aufräumen.",
+   "en": "I am supposed to tidy my room this afternoon."
+  }
+ ],
+ "158": [
+  {
+   "de": "Das Fußballspiel gestern war wirklich aufregend.",
+   "en": "The football match yesterday was really exciting."
+  }
+ ],
+ "159": [
+  {
+   "de": "Sie macht eine Ausbildung als Krankenschwester.",
+   "en": "She is doing training as a nurse."
+  }
+ ],
+ "160": [
+  {
+   "de": "Für Schuhe möchte ich nicht so viel Geld ausgeben.",
+   "en": "I do not want to spend so much money on shoes."
+  }
+ ],
+ "161": [
+  {
+   "de": "Am Samstag wollen wir mit Freunden ausgehen.",
+   "en": "On Saturday we want to go out with friends."
+  }
+ ],
+ "162": [
+  {
+   "de": "Die Kinder dürfen die Geschenke jetzt auspacken.",
+   "en": "The children may unwrap the presents now."
+  }
+ ],
+ "163": [
+  {
+   "de": "Nach der Arbeit will ich mich kurz ausruhen.",
+   "en": "After work I want to rest for a little while."
+  }
+ ],
+ "164": [
+  {
+   "de": "Alle kommen mit, außer meiner Schwester.",
+   "en": "Everyone is coming along except my sister."
+  }
+ ],
+ "165": [
+  {
+   "de": "Es regnet, und außerdem ist es sehr kalt.",
+   "en": "It is raining, and furthermore it is very cold."
+  }
+ ],
+ "166": [
+  {
+   "de": "Wir wohnen außerhalb der Stadt.",
+   "en": "We live outside the town."
+  }
+ ],
+ "167": [
+  {
+   "de": "Dieses lange Wort kann ich nicht richtig aussprechen.",
+   "en": "I cannot pronounce this long word correctly."
+  }
+ ],
+ "168": [
+  {
+   "de": "Morgen besuchen wir eine Ausstellung im Museum.",
+   "en": "Tomorrow we are visiting an exhibition at the museum."
+  }
+ ],
+ "169": [
+  {
+   "de": "Mein Sohn muss morgens die Zeitungen austragen.",
+   "en": "My son has to deliver the newspapers in the morning."
+  }
+ ],
+ "170": [
+  {
+   "de": "Meine Mutter backt am Sonntag einen Kuchen.",
+   "en": "My mother bakes a cake on Sunday."
+  }
+ ],
+ "171": [
+  {
+   "de": "Die Kinder spielen mit einem roten Ball.",
+   "en": "The children are playing with a red ball."
+  }
+ ],
+ "172": [
+  {
+   "de": "Meine Schwester singt in einer Band.",
+   "en": "My sister sings in a band."
+  }
+ ],
+ "173": [
+  {
+   "de": "Wir spielen im Park oft Basketball.",
+   "en": "We often play basketball in the park."
+  }
+ ],
+ "174": [
+  {
+   "de": "Die Kinder basteln Karten für Weihnachten.",
+   "en": "The children are making cards for Christmas."
+  }
+ ],
+ "175": [
+  {
+   "de": "Sie bauen ein neues Haus am See.",
+   "en": "They are building a new house by the lake."
+  }
+ ],
+ "176": [
+  {
+   "de": "Vor der Schule ist eine große Baustelle.",
+   "en": "There is a big construction site in front of the school."
+  }
+ ],
+ "177": [
+  {
+   "de": "Er beantwortet meine E-Mails immer sehr schnell.",
+   "en": "He always answers my emails very quickly."
+  }
+ ],
+ "178": [
+  {
+   "de": "Ich bedanke mich für dein schönes Geschenk.",
+   "en": "I thank you for your lovely present."
+  }
+ ],
+ "179": [
+  {
+   "de": "Beeil dich, der Bus kommt gleich!",
+   "en": "Hurry up, the bus is coming soon!"
+  }
+ ],
+ "180": [
+  {
+   "de": "Kannst du deine Meinung kurz begründen?",
+   "en": "Can you briefly justify your opinion?"
+  }
+ ],
+ "181": [
+  {
+   "de": "Dieses Lied ist bei jungen Leuten sehr beliebt.",
+   "en": "This song is very popular with young people."
+  }
+ ],
+ "182": [
+  {
+   "de": "Der alte Sessel ist wirklich sehr bequem.",
+   "en": "The old armchair is really very comfortable."
+  }
+ ],
+ "183": [
+  {
+   "de": "Wir lassen uns im Geschäft gut beraten.",
+   "en": "We get good advice in the shop."
+  }
+ ],
+ "184": [
+  {
+   "de": "Im Sommer wandern wir gern in den Bergen.",
+   "en": "In summer we like to hike in the mountains."
+  }
+ ],
+ "185": [
+  {
+   "de": "Sie berichtet über ihre Reise nach Spanien.",
+   "en": "She is reporting on her trip to Spain."
+  }
+ ],
+ "186": [
+  {
+   "de": "Dieser Schauspieler ist in Deutschland sehr berühmt.",
+   "en": "This actor is very famous in Germany."
+  }
+ ],
+ "187": [
+  {
+   "de": "Der Bescheid vom Amt kam heute mit der Post.",
+   "en": "The notice from the office came today in the post."
+  }
+ ],
+ "188": [
+  {
+   "de": "Beschreib mir bitte den Weg zum Bahnhof.",
+   "en": "Please describe the way to the station to me."
+  }
+ ],
+ "189": [
+  {
+   "de": "Wir beschweren uns über den lauten Nachbarn.",
+   "en": "We are complaining about the noisy neighbour."
+  }
+ ],
+ "190": [
+  {
+   "de": "Der Film gestern war besonders spannend.",
+   "en": "The film yesterday was particularly exciting."
+  }
+ ],
+ "191": [
+  {
+   "de": "Bitte bestätigen Sie den Termin per E-Mail.",
+   "en": "Please confirm the appointment by email."
+  }
+ ],
+ "192": [
+  {
+   "de": "Sie besteht die Prüfung ganz bestimmt.",
+   "en": "She will definitely pass the exam."
+  }
+ ],
+ "193": [
+  {
+   "de": "Am Sonntag bekommen wir Besuch von Freunden.",
+   "en": "On Sunday we are getting a visit from friends."
+  }
+ ],
+ "194": [
+  {
+   "de": "Wir bewerben uns alle um dieselbe Stelle.",
+   "en": "We are all applying for the same position."
+  }
+ ],
+ "195": [
+  {
+   "de": "Ich schreibe gerade meine Bewerbung für den Job.",
+   "en": "I am writing my job application right now."
+  }
+ ],
+ "196": [
+  {
+   "de": "Heute ist der Himmel den ganzen Tag bewölkt.",
+   "en": "Today the sky is cloudy all day."
+  }
+ ],
+ "197": [
+  {
+   "de": "Am Himmel ist heute keine einzige Wolke.",
+   "en": "There is not a single cloud in the sky today."
+  }
+ ],
+ "198": [
+  {
+   "de": "Ich lerne oft in der Bibliothek.",
+   "en": "I often study in the library."
+  }
+ ],
+ "199": [
+  {
+   "de": "Im Herbst fällt ein Blatt vom Baum.",
+   "en": "In autumn a leaf falls from the tree."
+  }
+ ],
+ "200": [
+  {
+   "de": "Der Film gestern Abend war ziemlich blöd.",
+   "en": "The film last night was pretty stupid."
+  }
+ ],
+ "201": [
+  {
+   "de": "Ich lese jeden Morgen ihren Blog.",
+   "en": "I read her blog every morning."
+  }
+ ],
+ "202": [
+  {
+   "de": "Meine Schwester hat lange blonde Haare.",
+   "en": "My sister has long blond hair."
+  }
+ ],
+ "203": [
+  {
+   "de": "Sie trägt heute eine weiße Bluse.",
+   "en": "She is wearing a white blouse today."
+  }
+ ],
+ "204": [
+  {
+   "de": "Zum Fleisch gibt es grüne Bohnen.",
+   "en": "There are green beans with the meat."
+  }
+ ],
+ "205": [
+  {
+   "de": "Ich brate die Kartoffeln in der Pfanne.",
+   "en": "I am frying the potatoes in the pan."
+  }
+ ],
+ "206": [
+  {
+   "de": "Ohne meine Brille sehe ich fast nichts.",
+   "en": "Without my glasses I can hardly see anything."
+  }
+ ],
+ "207": [
+  {
+   "de": "Wir gehen zu Fuß über die alte Brücke.",
+   "en": "We walk across the old bridge."
+  }
+ ],
+ "208": [
+  {
+   "de": "Wir haben ein Hotel in Rom gebucht.",
+   "en": "We have booked a hotel in Rome."
+  }
+ ],
+ "209": [
+  {
+   "de": "Der Markt ist voll mit bunten Blumen.",
+   "en": "The market is full of colourful flowers."
+  }
+ ],
+ "210": [
+  {
+   "de": "Mein Büro liegt im dritten Stock.",
+   "en": "My office is on the third floor."
+  }
+ ],
+ "211": [
+  {
+   "de": "In der Cafeteria gibt es günstiges Mittagessen.",
+   "en": "There is cheap lunch in the cafeteria."
+  }
+ ],
+ "212": [
+  {
+   "de": "Abends chatte ich mit meinen Freunden.",
+   "en": "In the evenings I chat with my friends."
+  }
+ ],
+ "213": [
+  {
+   "de": "Meine Chefin kommt jeden Tag um acht.",
+   "en": "My boss comes in at eight every day."
+  }
+ ],
+ "214": [
+  {
+   "de": "Am Samstag gehen wir in den Club.",
+   "en": "On Saturday we are going to the club."
+  }
+ ],
+ "215": [
+  {
+   "de": "Mein Sohn liest am liebsten Comics.",
+   "en": "My son likes reading comics best."
+  }
+ ],
+ "216": [
+  {
+   "de": "Ich kaufe eine Creme für trockene Haut.",
+   "en": "I am buying a cream for dry skin."
+  }
+ ],
+ "217": [
+  {
+   "de": "Ich bin dafür, aber meine Frau ist dagegen.",
+   "en": "I am for it, but my wife is against it."
+  }
+ ],
+ "218": [
+  {
+   "de": "Damals war ich noch ein kleines Kind.",
+   "en": "Back then I was still a small child."
+  }
+ ],
+ "219": [
+  {
+   "de": "Ich glaube, dass er heute später kommt.",
+   "en": "I think that he is coming later today."
+  }
+ ],
+ "220": [
+  {
+   "de": "Ich habe dir die Datei per Mail geschickt.",
+   "en": "I have sent you the file by email."
+  }
+ ],
+ "221": [
+  {
+   "de": "Ich denke oft an meine Familie.",
+   "en": "I often think about my family."
+  }
+ ],
+ "222": [
+  {
+   "de": "Es regnet, deshalb bleiben wir zu Hause.",
+   "en": "It is raining, so we are staying at home."
+  }
+ ],
+ "223": [
+  {
+   "de": "Bitte sprich lauter und deutlich.",
+   "en": "Please speak louder and clearly."
+  }
+ ],
+ "224": [
+  {
+   "de": "Das Buch ist dick und sehr schwer.",
+   "en": "The book is thick and very heavy."
+  }
+ ],
+ "225": [
+  {
+   "de": "Was ist das für ein Ding auf dem Tisch?",
+   "en": "What is that thing on the table?"
+  }
+ ],
+ "226": [
+  {
+   "de": "Der Zug fährt direkt nach Berlin.",
+   "en": "The train goes directly to Berlin."
+  }
+ ],
+ "227": [
+  {
+   "de": "In der Disko tanzen wir bis zwei Uhr.",
+   "en": "We dance in the disco until two o'clock."
+  }
+ ],
+ "228": [
+  {
+   "de": "Meine Eltern diskutieren jeden Abend über Politik.",
+   "en": "My parents discuss politics every evening."
+  }
+ ],
+ "229": [
+  {
+   "de": "Ich bin müde, doch ich gehe noch einkaufen.",
+   "en": "I am tired, but I am still going shopping."
+  }
+ ],
+ "230": [
+  {
+   "de": "Ich brauche dringend deine Hilfe.",
+   "en": "I urgently need your help."
+  }
+ ],
+ "231": [
+  {
+   "de": "Es regnet, wir bleiben lieber drinnen.",
+   "en": "It is raining, we would rather stay inside."
+  }
+ ],
+ "232": [
+  {
+   "de": "Der Bahnhof ist da drüben, hinter der Kirche.",
+   "en": "The station is over there, behind the church."
+  }
+ ],
+ "233": [
+  {
+   "de": "Das war eine dumme Idee von mir.",
+   "en": "That was a stupid idea of mine."
+  }
+ ],
+ "234": [
+  {
+   "de": "Im Winter wird es sehr früh dunkel.",
+   "en": "In winter it gets dark very early."
+  }
+ ],
+ "235": [
+  {
+   "de": "Die Jacke ist zu dünn für den Winter.",
+   "en": "The jacket is too thin for the winter."
+  }
+ ],
+ "236": [
+  {
+   "de": "Ich lese das E-Book auf meinem Tablet.",
+   "en": "I am reading the e-book on my tablet."
+  }
+ ],
+ "237": [
+  {
+   "de": "Ist der Ring aus echtem Gold?",
+   "en": "Is the ring made of real gold?"
+  }
+ ],
+ "238": [
+  {
+   "de": "Wohin wir fahren, ist mir egal.",
+   "en": "I do not care where we go."
+  }
+ ],
+ "239": [
+  {
+   "de": "Mein Ehepartner und ich haben zwei Kinder.",
+   "en": "My spouse and I have two children."
+  }
+ ],
+ "240": [
+  {
+   "de": "Meine Tochter hat jetzt ein eigenes Zimmer.",
+   "en": "My daughter now has her own room."
+  }
+ ],
+ "241": [
+  {
+   "de": "Eigentlich wollte ich heute gar nicht arbeiten.",
+   "en": "Actually, I did not want to work today at all."
+  }
+ ],
+ "242": [
+  {
+   "de": "Ich habe einige Freunde in München.",
+   "en": "I have a few friends in Munich."
+  }
+ ],
+ "243": [
+  {
+   "de": "Ich muss noch die Koffer einpacken.",
+   "en": "I still have to pack up the suitcases."
+  }
+ ],
+ "244": [
+  {
+   "de": "Bitte hier den Namen und das Datum eintragen.",
+   "en": "Please enter the name and the date here."
+  }
+ ],
+ "245": [
+  {
+   "de": "Bist du mit dem Preis einverstanden?",
+   "en": "Do you agree with the price?"
+  }
+ ],
+ "246": [
+  {
+   "de": "Ich möchte ein Einzelzimmer für zwei Nächte.",
+   "en": "I would like a single room for two nights."
+  }
+ ],
+ "247": [
+  {
+   "de": "Wir wollen im Mai in die neue Wohnung einziehen.",
+   "en": "We want to move into the new flat in May."
+  }
+ ],
+ "248": [
+  {
+   "de": "Im Sommer essen die Kinder gern Eis.",
+   "en": "In summer the children like eating ice cream."
+  }
+ ],
+ "249": [
+  {
+   "de": "Endlich ist der Sommer da!",
+   "en": "Summer is here at last!"
+  }
+ ],
+ "250": [
+  {
+   "de": "Die Hose ist mir leider zu eng.",
+   "en": "Unfortunately the trousers are too tight for me."
+  }
+ ],
+ "251": [
+  {
+   "de": "Sie hat viel Erfahrung als Verkäuferin.",
+   "en": "She has a lot of experience as a saleswoman."
+  }
+ ],
+ "252": [
+  {
+   "de": "Ich erinnere mich gut an diesen Tag.",
+   "en": "I remember this day well."
+  }
+ ],
+ "253": [
+  {
+   "de": "Ohne Erlaubnis darfst du hier nicht parken.",
+   "en": "Without permission you may not park here."
+  }
+ ],
+ "254": [
+  {
+   "de": "Studenten bekommen eine Ermäßigung auf den Eintritt.",
+   "en": "Students get a reduction on the entrance fee."
+  }
+ ],
+ "255": [
+  {
+   "de": "Mit dem Bus erreichen wir den Bahnhof schnell.",
+   "en": "By bus we get to the station quickly."
+  }
+ ],
+ "256": [
+  {
+   "de": "Es ist erst acht Uhr, wir haben Zeit.",
+   "en": "It is only eight o'clock, we have time."
+  }
+ ],
+ "257": [
+  {
+   "de": "Ich möchte etwas trinken, bitte.",
+   "en": "I would like something to drink, please."
+  }
+ ],
+ "258": [
+  {
+   "de": "Welches Fach magst du in der Schule am liebsten?",
+   "en": "Which subject do you like best at school?"
+  }
+ ],
+ "259": [
+  {
+   "de": "Der Fahrplan hängt am Bahnsteig.",
+   "en": "The timetable is posted on the platform."
+  }
+ ],
+ "260": [
+  {
+   "de": "An meinem Auto ist ein Rad kaputt.",
+   "en": "One wheel on my car is broken."
+  }
+ ],
+ "261": [
+  {
+   "de": "Im Herbst fallen die Blätter von den Bäumen.",
+   "en": "In autumn the leaves fall from the trees."
+  }
+ ],
+ "262": [
+  {
+   "de": "Mein Vater ist ein großer Fan von Bayern München.",
+   "en": "My father is a big fan of Bayern Munich."
+  }
+ ],
+ "263": [
+  {
+   "de": "Das Konzert gestern Abend war fantastisch.",
+   "en": "The concert last night was fantastic."
+  }
+ ],
+ "264": [
+  {
+   "de": "Der Film ist fast zu Ende.",
+   "en": "The film is almost over."
+  }
+ ],
+ "265": [
+  {
+   "de": "Am Sonntag bin ich immer faul.",
+   "en": "On Sundays I am always lazy."
+  }
+ ],
+ "266": [
+  {
+   "de": "Die Feier zum Geburtstag beginnt um sieben.",
+   "en": "The birthday celebration starts at seven."
+  }
+ ],
+ "267": [
+  {
+   "de": "Bitte mach das Fenster zu, mir ist kalt.",
+   "en": "Please close the window, I am cold."
+  }
+ ],
+ "268": [
+  {
+   "de": "In den Ferien fahren wir ans Meer.",
+   "en": "In the holidays we are going to the seaside."
+  }
+ ],
+ "269": [
+  {
+   "de": "Im Wohnzimmer steht ein neuer Fernseher.",
+   "en": "There is a new television in the living room."
+  }
+ ],
+ "270": [
+  {
+   "de": "Der Termin für die Hochzeit steht schon fest.",
+   "en": "The date for the wedding is already fixed."
+  }
+ ],
+ "271": [
+  {
+   "de": "Im Juli besuchen wir ein Festival in Berlin.",
+   "en": "In July we are going to a festival in Berlin."
+  }
+ ],
+ "272": [
+  {
+   "de": "Die Wurst ist mir zu fett.",
+   "en": "The sausage is too fatty for me."
+  }
+ ],
+ "273": [
+  {
+   "de": "Meine neue Kollegin ist sehr fleißig.",
+   "en": "My new colleague is very hard-working."
+  }
+ ],
+ "274": [
+  {
+   "de": "Auf dem Flohmarkt habe ich eine alte Lampe gekauft.",
+   "en": "I bought an old lamp at the flea market."
+  }
+ ],
+ "275": [
+  {
+   "de": "Der Flug nach Wien dauert eine Stunde.",
+   "en": "The flight to Vienna takes one hour."
+  }
+ ],
+ "276": [
+  {
+   "de": "Hinter dem Haus fließt ein kleiner Fluss.",
+   "en": "A small river flows behind the house."
+  }
+ ],
+ "277": [
+  {
+   "de": "Ich habe meinen Fotoapparat zu Hause vergessen.",
+   "en": "I have left my camera at home."
+  }
+ ],
+ "278": [
+  {
+   "de": "Im Museum darf man nicht fotografieren.",
+   "en": "You are not allowed to take photographs in the museum."
+  }
+ ],
+ "279": [
+  {
+   "de": "Sie arbeitet freiwillig im Krankenhaus.",
+   "en": "She works voluntarily at the hospital."
+  }
+ ],
+ "280": [
+  {
+   "de": "Meine Freundin und ich gehen ins Kino.",
+   "en": "My girlfriend and I are going to the cinema."
+  }
+ ],
+ "281": [
+  {
+   "de": "Der Verkäufer war sehr freundlich zu uns.",
+   "en": "The shop assistant was very friendly to us."
+  }
+ ],
+ "282": [
+  {
+   "de": "Das Brot vom Bäcker ist noch ganz frisch.",
+   "en": "The bread from the baker is still quite fresh."
+  }
+ ],
+ "283": [
+  {
+   "de": "Ich bin froh, dass du da bist.",
+   "en": "I am happy that you are here."
+  }
+ ],
+ "284": [
+  {
+   "de": "Morgen muss ich sehr früh aufstehen.",
+   "en": "Tomorrow I have to get up very early."
+  }
+ ],
+ "285": [
+  {
+   "de": "Heute fühle ich mich viel besser.",
+   "en": "Today I feel much better."
+  }
+ ],
+ "286": [
+  {
+   "de": "Mein Bruder macht gerade den Führerschein.",
+   "en": "My brother is getting his driving licence at the moment."
+  }
+ ],
+ "287": [
+  {
+   "de": "Deinen Schirm findest du bei den Fundsachen.",
+   "en": "You will find your umbrella at the lost property office."
+  }
+ ],
+ "288": [
+  {
+   "de": "Gestern war das Wetter wirklich furchtbar.",
+   "en": "Yesterday the weather was really terrible."
+  }
+ ],
+ "289": [
+  {
+   "de": "Ich brauche noch eine Gabel und ein Messer.",
+   "en": "I still need a fork and a knife."
+  }
+ ],
+ "290": [
+  {
+   "de": "Der Weg zum See war ganz schön weit.",
+   "en": "The way to the lake was fairly long."
+  }
+ ],
+ "291": [
+  {
+   "de": "Das Auto steht in der Garage.",
+   "en": "The car is in the garage."
+  }
+ ],
+ "292": [
+  {
+   "de": "Sehr geehrte Frau Müller, ich schreibe wegen Ihrer Anzeige.",
+   "en": "Dear Ms Müller, I am writing about your advertisement."
+  }
+ ],
+ "293": [
+  {
+   "de": "Rauchen ist gefährlich für die Gesundheit.",
+   "en": "Smoking is dangerous for your health."
+  }
+ ],
+ "294": [
+  {
+   "de": "Die Apotheke ist gegenüber dem Bahnhof.",
+   "en": "The pharmacy is opposite the station."
+  }
+ ],
+ "295": [
+  {
+   "de": "Sie bekommt jeden Monat ein gutes Gehalt.",
+   "en": "She gets a good salary every month."
+  }
+ ],
+ "296": [
+  {
+   "de": "Ich habe meine Geldbörse im Bus verloren.",
+   "en": "I have lost my wallet on the bus."
+  }
+ ],
+ "297": [
+  {
+   "de": "Weißt du genau, wann der Zug kommt?",
+   "en": "Do you know exactly when the train arrives?"
+  }
+ ],
+ "298": [
+  {
+   "de": "Wir haben nicht genug Milch für den Kuchen.",
+   "en": "We do not have enough milk for the cake."
+  }
+ ],
+ "299": [
+  {
+   "de": "Das neue Gerät in der Küche ist sehr leise.",
+   "en": "The new device in the kitchen is very quiet."
+  }
+ ],
+ "300": [
+  {
+   "de": "Das Gericht mit Fisch schmeckt hier besonders gut.",
+   "en": "The dish with fish tastes especially good here."
+  }
+ ],
+ "301": [
+  {
+   "de": "Nach dem Essen stelle ich das Geschirr in den Schrank.",
+   "en": "After the meal I put the crockery in the cupboard."
+  }
+ ],
+ "302": [
+  {
+   "de": "Sie wäscht sich morgens das Gesicht mit kaltem Wasser.",
+   "en": "In the morning she washes her face with cold water."
+  }
+ ],
+ "303": [
+  {
+   "de": "Obst und Gemüse sind sehr gesund.",
+   "en": "Fruit and vegetables are very healthy."
+  }
+ ],
+ "304": [
+  {
+   "de": "Deine Gesundheit ist wichtiger als dein Geld.",
+   "en": "Your health is more important than your money."
+  }
+ ],
+ "305": [
+  {
+   "de": "Gestern Abend gab es ein starkes Gewitter.",
+   "en": "Last night there was a heavy thunderstorm."
+  }
+ ],
+ "306": [
+  {
+   "de": "Mein Bruder spielt jeden Abend Gitarre.",
+   "en": "My brother plays the guitar every evening."
+  }
+ ],
+ "307": [
+  {
+   "de": "Ich habe die Grippe und bleibe im Bett.",
+   "en": "I have the flu and am staying in bed."
+  }
+ ],
+ "308": [
+  {
+   "de": "Mein Hals tut weh, ich kann kaum sprechen.",
+   "en": "My throat hurts, I can hardly speak."
+  }
+ ],
+ "309": [
+  {
+   "de": "Ich esse einen Hamburger mit Pommes.",
+   "en": "I am eating a beefburger with chips."
+  }
+ ],
+ "310": [
+  {
+   "de": "Das Handtuch hängt im Bad neben der Dusche.",
+   "en": "The hand towel is hanging in the bathroom next to the shower."
+  }
+ ],
+ "311": [
+  {
+   "de": "Die Jacken hängen an der Tür im Flur.",
+   "en": "The jackets are hanging on the door in the hallway."
+  }
+ ],
+ "312": [
+  {
+   "de": "Das Brot ist alt und ganz hart.",
+   "en": "The bread is old and quite hard."
+  }
+ ],
+ "313": [
+  {
+   "de": "Der alte Teppich im Flur ist wirklich hässlich.",
+   "en": "The old carpet in the hallway is really ugly."
+  }
+ ],
+ "314": [
+  {
+   "de": "Berlin ist die Hauptstadt von Deutschland.",
+   "en": "Berlin is the capital city of Germany."
+  }
+ ],
+ "315": [
+  {
+   "de": "In unserem Haushalt leben vier Personen.",
+   "en": "Four people live in our household."
+  }
+ ],
+ "316": [
+  {
+   "de": "Schreib die neuen Wörter bitte in dein Heft.",
+   "en": "Please write the new words in your exercise book."
+  }
+ ],
+ "317": [
+  {
+   "de": "Der Kaffee ist noch zu heiß.",
+   "en": "The coffee is still too hot."
+  }
+ ],
+ "318": [
+  {
+   "de": "Im Winter stelle ich die Heizung höher.",
+   "en": "In winter I turn the heating up higher."
+  }
+ ],
+ "319": [
+  {
+   "de": "Er trägt heute ein weißes Hemd.",
+   "en": "He is wearing a white shirt today."
+  }
+ ],
+ "320": [
+  {
+   "de": "Komm mal her, ich zeige dir etwas!",
+   "en": "Come here, I'll show you something!"
+  }
+ ],
+ "321": [
+  {
+   "de": "Sie holt den Kuchen aus dem Ofen heraus.",
+   "en": "She takes the cake out of the oven."
+  }
+ ],
+ "322": [
+  {
+   "de": "Die Fabrik kann tausend Autos pro Tag herstellen.",
+   "en": "The factory can produce a thousand cars per day."
+  }
+ ],
+ "323": [
+  {
+   "de": "Du kannst die App kostenlos herunterladen.",
+   "en": "You can download the app for free."
+  }
+ ],
+ "324": [
+  {
+   "de": "Am Himmel sind heute keine Wolken.",
+   "en": "There are no clouds in the sky today."
+  }
+ ],
+ "325": [
+  {
+   "de": "Ich fahre mit dem Rad hin und komme spät zurück.",
+   "en": "I am cycling there and coming back late."
+  }
+ ],
+ "326": [
+  {
+   "de": "Der Garten liegt hinter dem Haus.",
+   "en": "The garden is behind the house."
+  }
+ ],
+ "327": [
+  {
+   "de": "Wir hoffen auf gutes Wetter am Wochenende.",
+   "en": "We hope for good weather at the weekend."
+  }
+ ],
+ "328": [
+  {
+   "de": "Hoffentlich kommt der Bus bald.",
+   "en": "Hopefully the bus will come soon."
+  }
+ ],
+ "329": [
+  {
+   "de": "Alle Preise stehen auf unserer Homepage.",
+   "en": "All the prices are on our website."
+  }
+ ],
+ "330": [
+  {
+   "de": "Diese Hose ist mir leider zu eng.",
+   "en": "Unfortunately these trousers are too tight for me."
+  }
+ ],
+ "331": [
+  {
+   "de": "Ich muss die ganze Nacht husten.",
+   "en": "I have to cough all night long."
+  }
+ ],
+ "332": [
+  {
+   "de": "Das ist eine gute Idee, machen wir das!",
+   "en": "That is a good idea, let's do it!"
+  }
+ ],
+ "333": [
+  {
+   "de": "Wir informieren Sie morgen über die neuen Termine.",
+   "en": "We will inform you about the new appointments tomorrow."
+  }
+ ],
+ "334": [
+  {
+   "de": "Im Sommer fahren wir auf eine kleine Insel.",
+   "en": "In summer we travel to a small island."
+  }
+ ],
+ "335": [
+  {
+   "de": "Meine Tochter lernt ein neues Instrument in der Schule.",
+   "en": "My daughter is learning a new instrument at school."
+  }
+ ],
+ "336": [
+  {
+   "de": "Unsere Nachbarin ist sehr intelligent und lustig.",
+   "en": "Our neighbour is very intelligent and funny."
+  }
+ ],
+ "337": [
+  {
+   "de": "Er hat großes Interesse an alter Musik.",
+   "en": "He has a great interest in old music."
+  }
+ ],
+ "338": [
+  {
+   "de": "Fußball und Musik interessieren mich sehr.",
+   "en": "Football and music interest me a lot."
+  }
+ ],
+ "339": [
+  {
+   "de": "Im Radio läuft ein Interview mit dem Trainer.",
+   "en": "There is an interview with the coach on the radio."
+  }
+ ],
+ "340": [
+  {
+   "de": "Meine neue Jeans ist mir zu lang.",
+   "en": "My new jeans are too long for me."
+  }
+ ],
+ "341": [
+  {
+   "de": "Hat jemand meinen Schlüssel gesehen?",
+   "en": "Has someone seen my key?"
+  }
+ ],
+ "342": [
+  {
+   "de": "Wir joggen jeden Sonntag durch den Wald.",
+   "en": "We jog through the forest every Sunday."
+  }
+ ],
+ "343": [
+  {
+   "de": "Wir übernachten in einer billigen Jugendherberge.",
+   "en": "We are staying overnight in a cheap youth hostel."
+  }
+ ],
+ "344": [
+  {
+   "de": "Ich schreibe den Termin in meinen Kalender.",
+   "en": "I am writing the appointment in my diary."
+  }
+ ],
+ "345": [
+  {
+   "de": "Heute ist es draußen sehr kalt.",
+   "en": "It is very cold outside today."
+  }
+ ],
+ "346": [
+  {
+   "de": "Meine neue Kamera macht sehr gute Fotos.",
+   "en": "My new camera takes very good photos."
+  }
+ ],
+ "347": [
+  {
+   "de": "Auf dem Brot sind Käse und Tomaten.",
+   "en": "There is cheese and tomato on the bread."
+  }
+ ],
+ "348": [
+  {
+   "de": "Unsere Katze schläft den ganzen Tag auf dem Sofa.",
+   "en": "Our cat sleeps on the sofa all day."
+  }
+ ],
+ "349": [
+  {
+   "de": "Im Kaufhaus gibt es Kleidung und Schuhe.",
+   "en": "In the department store there are clothes and shoes."
+  }
+ ],
+ "350": [
+  {
+   "de": "Die Getränke stehen unten im Keller.",
+   "en": "The drinks are downstairs in the cellar."
+  }
+ ],
+ "351": [
+  {
+   "de": "Meine Kenntnisse in Mathematik sind nicht sehr gut.",
+   "en": "My knowledge of maths is not very good."
+  }
+ ],
+ "352": [
+  {
+   "de": "Sie trägt eine goldene Kette am Hals.",
+   "en": "She is wearing a gold necklace around her neck."
+  }
+ ],
+ "353": [
+  {
+   "de": "Die alte Kirche steht mitten im Dorf.",
+   "en": "The old church stands in the middle of the village."
+  }
+ ],
+ "354": [
+  {
+   "de": "Mit etwas Glück wird alles klappen.",
+   "en": "With a bit of luck everything will work out."
+  }
+ ],
+ "355": [
+  {
+   "de": "Meine Schwester spielt sehr gut Klavier.",
+   "en": "My sister plays the piano very well."
+  }
+ ],
+ "356": [
+  {
+   "de": "Zur Hochzeit trägt sie ein rotes Kleid.",
+   "en": "She is wearing a red dress to the wedding."
+  }
+ ],
+ "357": [
+  {
+   "de": "Der Junge ist klug und lernt sehr schnell.",
+   "en": "The boy is clever and learns very quickly."
+  }
+ ],
+ "358": [
+  {
+   "de": "Meine Kollegin aus dem Büro ist heute krank.",
+   "en": "My colleague from the office is ill today."
+  }
+ ],
+ "359": [
+  {
+   "de": "Die Milch riecht komisch, trink sie nicht.",
+   "en": "The milk smells strange, don't drink it."
+  }
+ ],
+ "360": [
+  {
+   "de": "Ich habe noch Kontakt zu meinen alten Freunden.",
+   "en": "I am still in contact with my old friends."
+  }
+ ],
+ "361": [
+  {
+   "de": "Der Chef will heute alle Rechnungen kontrollieren.",
+   "en": "The boss wants to check all the invoices today."
+  }
+ ],
+ "362": [
+  {
+   "de": "Am Samstag gehen wir in ein Konzert.",
+   "en": "On Saturday we are going to a concert."
+  }
+ ],
+ "363": [
+  {
+   "de": "Nach dem Sport tut mir der ganze Körper weh.",
+   "en": "After sport my whole body hurts."
+  }
+ ],
+ "364": [
+  {
+   "de": "Sie kauft ihre Kosmetik immer in der Drogerie.",
+   "en": "She always buys her cosmetics at the drugstore."
+  }
+ ],
+ "365": [
+  {
+   "de": "Mein Opa liegt seit Montag im Krankenhaus.",
+   "en": "My grandpa has been in hospital since Monday."
+  }
+ ],
+ "366": [
+  {
+   "de": "Die Krankenkasse bezahlt die neue Brille nicht.",
+   "en": "The health insurance fund does not pay for the new glasses."
+  }
+ ],
+ "367": [
+  {
+   "de": "Seine Krankheit dauert schon drei Wochen.",
+   "en": "His illness has already lasted three weeks."
+  }
+ ],
+ "368": [
+  {
+   "de": "Für das neue Haus nehmen wir einen Kredit.",
+   "en": "We are taking out a loan for the new house."
+  }
+ ],
+ "369": [
+  {
+   "de": "An der nächsten Kreuzung musst du rechts fahren.",
+   "en": "At the next junction you have to turn right."
+  }
+ ],
+ "370": [
+  {
+   "de": "Abends lese ich gern einen spannenden Krimi.",
+   "en": "In the evening I like reading an exciting crime thriller."
+  }
+ ],
+ "371": [
+  {
+   "de": "Am Abend wird es draußen kühl.",
+   "en": "In the evening it gets cool outside."
+  }
+ ],
+ "372": [
+  {
+   "de": "Die Kultur in Japan ist ganz anders.",
+   "en": "The culture in Japan is quite different."
+  }
+ ],
+ "373": [
+  {
+   "de": "Die Kundin bezahlt an der Kasse mit Karte.",
+   "en": "The customer pays by card at the till."
+  }
+ ],
+ "374": [
+  {
+   "de": "Nächste Woche will sie ihre Stelle kündigen.",
+   "en": "Next week she wants to give notice on her job."
+  }
+ ],
+ "375": [
+  {
+   "de": "Sie interessiert sich sehr für moderne Kunst.",
+   "en": "She is very interested in modern art."
+  }
+ ],
+ "376": [
+  {
+   "de": "Die Lampe im Wohnzimmer ist kaputt.",
+   "en": "The lamp in the living room is broken."
+  }
+ ],
+ "377": [
+  {
+   "de": "Die Landschaft in den Bergen ist wunderschön.",
+   "en": "The scenery in the mountains is beautiful."
+  }
+ ],
+ "378": [
+  {
+   "de": "Der Film war lang und ziemlich langweilig.",
+   "en": "The film was long and rather boring."
+  }
+ ],
+ "379": [
+  {
+   "de": "Ich arbeite am Küchentisch mit meinem Laptop.",
+   "en": "I work at the kitchen table with my laptop."
+  }
+ ],
+ "380": [
+  {
+   "de": "Ich habe meinen Schlüssel im Auto gelassen.",
+   "en": "I left my key in the car."
+  }
+ ],
+ "381": [
+  {
+   "de": "Der Kühlschrank ist schon wieder ganz leer.",
+   "en": "The fridge is completely empty again."
+  }
+ ],
+ "382": [
+  {
+   "de": "Kannst du mir bis morgen zehn Euro leihen?",
+   "en": "Can you lend me ten euros until tomorrow?"
+  }
+ ],
+ "383": [
+  {
+   "de": "Wir liefern die Möbel am Freitag.",
+   "en": "We are delivering the furniture on Friday."
+  }
+ ],
+ "384": [
+  {
+   "de": "Für die Suppe brauchst du einen großen Löffel.",
+   "en": "You need a big spoon for the soup."
+  }
+ ],
+ "385": [
+  {
+   "de": "Das war eine Lüge, er war nicht krank.",
+   "en": "That was a lie, he was not ill."
+  }
+ ],
+ "386": [
+  {
+   "de": "Kinder lügen manchmal aus Angst.",
+   "en": "Children sometimes lie out of fear."
+  }
+ ],
+ "387": [
+  {
+   "de": "Ich habe heute keine Lust auf Kino.",
+   "en": "I don't feel like going to the cinema today."
+  }
+ ],
+ "388": [
+  {
+   "de": "Nach dem Essen tut mir der Magen weh.",
+   "en": "After the meal my stomach hurts."
+  }
+ ],
+ "389": [
+  {
+   "de": "Sprich mir bitte kurz auf die Mailbox.",
+   "en": "Please leave me a short message on my voicemail."
+  }
+ ],
+ "390": [
+  {
+   "de": "Beim dritten Mal hat es endlich geklappt.",
+   "en": "The third time it finally worked."
+  }
+ ],
+ "391": [
+  {
+   "de": "Die Kinder malen bunte Bilder im Garten.",
+   "en": "The children are painting colourful pictures in the garden."
+  }
+ ],
+ "392": [
+  {
+   "de": "Manche Leute stehen sehr früh auf.",
+   "en": "Some people get up very early."
+  }
+ ],
+ "393": [
+  {
+   "de": "Manchmal esse ich abends nur einen Salat.",
+   "en": "Sometimes I only eat a salad in the evening."
+  }
+ ],
+ "394": [
+  {
+   "de": "Unsere Mannschaft hat das Spiel gewonnen.",
+   "en": "Our team won the game."
+  }
+ ],
+ "395": [
+  {
+   "de": "Zieh den warmen Mantel an, es schneit.",
+   "en": "Put on the warm coat, it's snowing."
+  }
+ ],
+ "396": [
+  {
+   "de": "Auf dem Markt kaufe ich frisches Gemüse.",
+   "en": "At the market I buy fresh vegetables."
+  }
+ ],
+ "397": [
+  {
+   "de": "Der Arzt gibt mir ein Medikament gegen Husten.",
+   "en": "The doctor gives me a medication for a cough."
+  }
+ ],
+ "398": [
+  {
+   "de": "Wir meinen damit etwas ganz anderes.",
+   "en": "We mean something completely different by that."
+  }
+ ],
+ "399": [
+  {
+   "de": "Meiner Meinung nach ist der Film schlecht.",
+   "en": "In my opinion the film is bad."
+  }
+ ],
+ "400": [
+  {
+   "de": "Vor dem Stadion wartet eine große Menge.",
+   "en": "A large crowd is waiting in front of the stadium."
+  }
+ ],
+ "401": [
+  {
+   "de": "Sie hat meinen Fehler gar nicht gemerkt.",
+   "en": "She didn't notice my mistake at all."
+  }
+ ],
+ "402": [
+  {
+   "de": "Wir zeigen unsere Produkte auf der Messe in Köln.",
+   "en": "We are showing our products at the trade fair in Cologne."
+  }
+ ],
+ "403": [
+  {
+   "de": "Das Messer ist zu stumpf für das Brot.",
+   "en": "The knife is too blunt for the bread."
+  }
+ ],
+ "404": [
+  {
+   "de": "Der Film dauert mindestens zwei Stunden.",
+   "en": "The film lasts at least two hours."
+  }
+ ],
+ "405": [
+  {
+   "de": "Ich trinke lieber Mineralwasser als Limonade.",
+   "en": "I prefer drinking mineral water to lemonade."
+  }
+ ],
+ "406": [
+  {
+   "de": "Unsere Firma hat dreißig Mitarbeiter.",
+   "en": "Our company has thirty staff members."
+  }
+ ],
+ "407": [
+  {
+   "de": "Zum Mittagessen gibt es heute Suppe.",
+   "en": "There is soup for lunch today."
+  }
+ ],
+ "408": [
+  {
+   "de": "Der Arzt gibt mir ein Mittel gegen Husten.",
+   "en": "The doctor is giving me a remedy for a cough."
+  }
+ ],
+ "409": [
+  {
+   "de": "Mein Mobiltelefon ist leider kaputt.",
+   "en": "Unfortunately my mobile phone is broken."
+  }
+ ],
+ "410": [
+  {
+   "de": "Meine Schwester interessiert sich sehr für Mode.",
+   "en": "My sister is very interested in fashion."
+  }
+ ],
+ "411": [
+  {
+   "de": "Ihre Wohnung ist hell und sehr modern.",
+   "en": "Her flat is bright and very modern."
+  }
+ ],
+ "412": [
+  {
+   "de": "Der Motor von unserem Auto startet heute nicht.",
+   "en": "The engine of our car won't start today."
+  }
+ ],
+ "413": [
+  {
+   "de": "Er fährt jeden Morgen mit dem Motorroller zur Arbeit.",
+   "en": "He rides his scooter to work every morning."
+  }
+ ],
+ "414": [
+  {
+   "de": "Bitte bring den Müll nach unten.",
+   "en": "Please take the rubbish downstairs."
+  }
+ ],
+ "415": [
+  {
+   "de": "Am Sonntag gehen wir ins Museum.",
+   "en": "On Sunday we are going to the museum."
+  }
+ ],
+ "416": [
+  {
+   "de": "Setz bitte eine Mütze auf, es ist kalt.",
+   "en": "Please put on a hat, it's cold."
+  }
+ ],
+ "417": [
+  {
+   "de": "Mein Nachbar hilft mir oft im Garten.",
+   "en": "My neighbour often helps me in the garden."
+  }
+ ],
+ "418": [
+  {
+   "de": "Unsere neue Nachbarin kommt aus Polen.",
+   "en": "Our new neighbour comes from Poland."
+  }
+ ],
+ "419": [
+  {
+   "de": "Ich habe dir gestern eine Nachricht geschickt.",
+   "en": "I sent you a message yesterday."
+  }
+ ],
+ "420": [
+  {
+   "de": "Es gibt eine Bäckerei in der Nähe.",
+   "en": "There is a bakery nearby."
+  }
+ ],
+ "421": [
+  {
+   "de": "Meine Schuhe sind vom Regen ganz nass.",
+   "en": "My shoes are completely wet from the rain."
+  }
+ ],
+ "422": [
+  {
+   "de": "Am Wochenende sind wir gern in der Natur.",
+   "en": "At the weekend we like being out in nature."
+  }
+ ],
+ "423": [
+  {
+   "de": "Natürlich helfe ich dir beim Umzug.",
+   "en": "Of course I'll help you with the move."
+  }
+ ],
+ "424": [
+  {
+   "de": "Die Apotheke ist neben der Post.",
+   "en": "The pharmacy is next to the post office."
+  }
+ ],
+ "425": [
+  {
+   "de": "Meine beste Freundin wohnt nebenan.",
+   "en": "My best friend lives next door."
+  }
+ ],
+ "426": [
+  {
+   "de": "Heute Morgen war es draußen sehr neblig.",
+   "en": "This morning it was very foggy outside."
+  }
+ ],
+ "427": [
+  {
+   "de": "Kannst du mir drei deutsche Städte nennen?",
+   "en": "Can you name three German cities for me?"
+  }
+ ],
+ "428": [
+  {
+   "de": "Vor der Prüfung bin ich immer nervös.",
+   "en": "I am always nervous before the exam."
+  }
+ ],
+ "429": [
+  {
+   "de": "Deine Kollegen sind wirklich sehr nett.",
+   "en": "Your colleagues are really very nice."
+  }
+ ],
+ "430": [
+  {
+   "de": "Gestern Abend war niemand zu Hause.",
+   "en": "Nobody was at home yesterday evening."
+  }
+ ],
+ "431": [
+  {
+   "de": "Ich finde meinen Schlüssel nirgends.",
+   "en": "I can't find my key anywhere."
+  }
+ ],
+ "432": [
+  {
+   "de": "In Mathe habe ich eine gute Note bekommen.",
+   "en": "I got a good grade in maths."
+  }
+ ],
+ "433": [
+  {
+   "de": "Ich notiere mir schnell deine Adresse.",
+   "en": "I'll quickly note down your address."
+  }
+ ],
+ "434": [
+  {
+   "de": "Er hat mir eine kurze Notiz auf den Tisch gelegt.",
+   "en": "He left a short note for me on the table."
+  }
+ ],
+ "435": [
+  {
+   "de": "Ein Regenschirm ist heute wirklich notwendig.",
+   "en": "An umbrella is really necessary today."
+  }
+ ],
+ "436": [
+  {
+   "de": "Die Nudeln sind in zehn Minuten fertig.",
+   "en": "The noodles will be ready in ten minutes."
+  }
+ ],
+ "437": [
+  {
+   "de": "Dein Tipp war sehr nützlich, danke.",
+   "en": "Your tip was very useful, thanks."
+  }
+ ],
+ "438": [
+  {
+   "de": "Mein linkes Ohr tut seit gestern weh.",
+   "en": "My left ear has been hurting since yesterday."
+  }
+ ],
+ "439": [
+  {
+   "de": "Ich habe die Schuhe online gekauft.",
+   "en": "I bought the shoes online."
+  }
+ ],
+ "440": [
+  {
+   "de": "Wir organisieren eine Party für Anna.",
+   "en": "We are organising a party for Anna."
+  }
+ ],
+ "441": [
+  {
+   "de": "Das junge Paar wohnt über uns.",
+   "en": "The young couple lives above us."
+  }
+ ],
+ "442": [
+  {
+   "de": "Ich brauche noch ein paar Minuten.",
+   "en": "I need a few more minutes."
+  }
+ ],
+ "443": [
+  {
+   "de": "Heute Abend packe ich meinen Koffer.",
+   "en": "This evening I am packing my suitcase."
+  }
+ ],
+ "444": [
+  {
+   "de": "Der Postbote bringt heute ein Paket.",
+   "en": "The postman is bringing a parcel today."
+  }
+ ],
+ "445": [
+  {
+   "de": "Dein Parfüm riecht wirklich gut.",
+   "en": "Your scent smells really good."
+  }
+ ],
+ "446": [
+  {
+   "de": "Wir gehen mit dem Hund in den Park.",
+   "en": "We are going to the park with the dog."
+  }
+ ],
+ "447": [
+  {
+   "de": "Ich parke immer direkt vor dem Haus.",
+   "en": "I always park right in front of the house."
+  }
+ ],
+ "448": [
+  {
+   "de": "Die blaue Hose passt dir wirklich gut.",
+   "en": "The blue trousers suit you really well."
+  }
+ ],
+ "449": [
+  {
+   "de": "Was ist gestern Abend auf der Straße passiert?",
+   "en": "What happened on the street yesterday evening?"
+  }
+ ],
+ "450": [
+  {
+   "de": "An dem Tisch sitzen vier Personen.",
+   "en": "Four people are sitting at that table."
+  }
+ ],
+ "451": [
+  {
+   "de": "Das Pferd läuft über die Wiese.",
+   "en": "The horse is running across the meadow."
+  }
+ ],
+ "452": [
+  {
+   "de": "Die Pflanze auf dem Balkon braucht Wasser.",
+   "en": "The plant on the balcony needs water."
+  }
+ ],
+ "453": [
+  {
+   "de": "Wir bestellen heute Abend eine Pizza.",
+   "en": "We are ordering a pizza this evening."
+  }
+ ],
+ "454": [
+  {
+   "de": "An der Wand hängt ein Plakat für das Konzert.",
+   "en": "There is a poster for the concert on the wall."
+  }
+ ],
+ "455": [
+  {
+   "de": "Wir planen eine Reise nach Italien.",
+   "en": "We are planning a trip to Italy."
+  }
+ ],
+ "456": [
+  {
+   "de": "Plötzlich hat es angefangen zu regnen.",
+   "en": "Suddenly it started to rain."
+  }
+ ],
+ "457": [
+  {
+   "de": "Ich nehme eine große Portion Eis.",
+   "en": "I'll have a large portion of ice cream."
+  }
+ ],
+ "458": [
+  {
+   "de": "Über meinem Bett hängt ein Poster.",
+   "en": "There is a poster above my bed."
+  }
+ ],
+ "459": [
+  {
+   "de": "Ich schreibe dir eine Postkarte aus Spanien.",
+   "en": "I'll write you a postcard from Spain."
+  }
+ ],
+ "460": [
+  {
+   "de": "Die neue Tasche ist sehr praktisch.",
+   "en": "The new bag is very practical."
+  }
+ ],
+ "461": [
+  {
+   "de": "Das Hotel war sauber und sehr preiswert.",
+   "en": "The hotel was clean and very inexpensive."
+  }
+ ],
+ "462": [
+  {
+   "de": "Wir sprechen später privat darüber.",
+   "en": "We'll talk about it privately later."
+  }
+ ],
+ "463": [
+  {
+   "de": "Der Kurs kostet zwanzig Euro pro Stunde.",
+   "en": "The course costs twenty euros per hour."
+  }
+ ],
+ "464": [
+  {
+   "de": "Ich probiere den Käse aus Frankreich.",
+   "en": "I am trying the cheese from France."
+  }
+ ],
+ "465": [
+  {
+   "de": "Dieses Produkt gibt es nur im Internet.",
+   "en": "This product is only available on the internet."
+  }
+ ],
+ "466": [
+  {
+   "de": "Im Fernsehen läuft heute ein gutes Programm.",
+   "en": "There is a good programme on television today."
+  }
+ ],
+ "467": [
+  {
+   "de": "Der Chef prüft alle Rechnungen selbst.",
+   "en": "The boss checks all the invoices himself."
+  }
+ ],
+ "468": [
+  {
+   "de": "Der blaue Pullover ist mir zu warm.",
+   "en": "The blue pullover is too warm for me."
+  }
+ ],
+ "469": [
+  {
+   "de": "Am Samstag putze ich die Fenster.",
+   "en": "On Saturday I clean the windows."
+  }
+ ],
+ "470": [
+  {
+   "de": "Die Qualität von diesen Schuhen ist sehr gut.",
+   "en": "The quality of these shoes is very good."
+  }
+ ],
+ "471": [
+  {
+   "de": "Am Freitag machen wir ein Quiz in der Klasse.",
+   "en": "On Friday we are doing a quiz in class."
+  }
+ ],
+ "472": [
+  {
+   "de": "Im Radio kommt gerade mein Lieblingslied.",
+   "en": "My favourite song is on the radio right now."
+  }
+ ],
+ "473": [
+  {
+   "de": "Rate mal, wen ich heute getroffen habe!",
+   "en": "Guess who I met today!"
+  }
+ ],
+ "474": [
+  {
+   "de": "Wir heiraten nächste Woche im Rathaus.",
+   "en": "We are getting married at the town hall next week."
+  }
+ ],
+ "475": [
+  {
+   "de": "Meine Oma löst jeden Tag ein Rätsel.",
+   "en": "My grandma solves a puzzle every day."
+  }
+ ],
+ "476": [
+  {
+   "de": "Meine Tochter rechnet sehr schnell im Kopf.",
+   "en": "My daughter calculates very quickly in her head."
+  }
+ ],
+ "477": [
+  {
+   "de": "Wir reden später über das Problem.",
+   "en": "We'll talk about the problem later."
+  }
+ ],
+ "478": [
+  {
+   "de": "Seine Familie ist sehr reich.",
+   "en": "His family is very rich."
+  }
+ ],
+ "479": [
+  {
+   "de": "Der Reifen von meinem Fahrrad ist platt.",
+   "en": "The tyre on my bike is flat."
+  }
+ ],
+ "480": [
+  {
+   "de": "Im Kino sitzen wir in der ersten Reihe.",
+   "en": "At the cinema we are sitting in the first row."
+  }
+ ],
+ "481": [
+  {
+   "de": "Ich bringe den Mantel morgen in die Reinigung.",
+   "en": "I am taking the coat to the dry cleaner's tomorrow."
+  }
+ ],
+ "482": [
+  {
+   "de": "Meine Schwester reitet jeden Samstag.",
+   "en": "My sister goes horse riding every Saturday."
+  }
+ ],
+ "483": [
+  {
+   "de": "Wir renovieren gerade unser Badezimmer.",
+   "en": "We are renovating our bathroom at the moment."
+  }
+ ],
+ "484": [
+  {
+   "de": "Ich habe einen Tisch für acht Uhr reserviert.",
+   "en": "I have reserved a table for eight o'clock."
+  }
+ ],
+ "485": [
+  {
+   "de": "Den Rest vom Kuchen essen wir morgen.",
+   "en": "We'll eat the rest of the cake tomorrow."
+  }
+ ],
+ "486": [
+  {
+   "de": "Das Rezept für den Kuchen ist von meiner Oma.",
+   "en": "The recipe for the cake is from my grandma."
+  }
+ ],
+ "487": [
+  {
+   "de": "Ich esse lieber Rind als Schwein.",
+   "en": "I prefer eating beef to pork."
+  }
+ ],
+ "488": [
+  {
+   "de": "Sie trägt einen goldenen Ring.",
+   "en": "She is wearing a gold ring."
+  }
+ ],
+ "489": [
+  {
+   "de": "Der rote Rock ist mir zu kurz.",
+   "en": "The red skirt is too short for me."
+  }
+ ],
+ "490": [
+  {
+   "de": "Das Abendessen bei Kerzenlicht war sehr romantisch.",
+   "en": "The dinner by candlelight was very romantic."
+  }
+ ],
+ "491": [
+  {
+   "de": "Er schenkt seiner Frau rote Rosen.",
+   "en": "He is giving his wife red roses."
+  }
+ ],
+ "492": [
+  {
+   "de": "Nach der Arbeit tut mir der Rücken weh.",
+   "en": "After work my back hurts."
+  }
+ ],
+ "493": [
+  {
+   "de": "Mein Rucksack ist heute richtig schwer.",
+   "en": "My rucksack is really heavy today."
+  }
+ ],
+ "494": [
+  {
+   "de": "Kannst du bitte ein Taxi rufen?",
+   "en": "Can you call a taxi, please?"
+  }
+ ],
+ "495": [
+  {
+   "de": "Im Garten haben wir endlich Ruhe.",
+   "en": "In the garden we finally have some peace and quiet."
+  }
+ ],
+ "496": [
+  {
+   "de": "Der Rundgang durch das Schloss dauert eine Stunde.",
+   "en": "The tour through the castle takes an hour."
+  }
+ ],
+ "497": [
+  {
+   "de": "Pack deine Sachen, wir gehen gleich.",
+   "en": "Pack your things, we are leaving soon."
+  }
+ ],
+ "498": [
+  {
+   "de": "Mein Sohn sammelt alte Münzen.",
+   "en": "My son collects old coins."
+  }
+ ],
+ "499": [
+  {
+   "de": "Die Küche ist jetzt wieder sauber.",
+   "en": "The kitchen is clean again now."
+  }
+ ],
+ "500": [
+  {
+   "de": "Mein Vater ist sauer, weil ich zu spät komme.",
+   "en": "My father is annoyed because I am late."
+  }
+ ],
+ "501": [
+  {
+   "de": "Schade, dass du nicht mitkommen kannst.",
+   "en": "It's a pity that you can't come along."
+  }
+ ],
+ "502": [
+  {
+   "de": "Rauchen ist sehr schädlich für die Gesundheit.",
+   "en": "Smoking is very harmful to your health."
+  }
+ ],
+ "503": [
+  {
+   "de": "Wir schaffen die Arbeit bis morgen Abend.",
+   "en": "We will manage the work by tomorrow evening."
+  }
+ ],
+ "504": [
+  {
+   "de": "Die Suppe ist mir viel zu scharf.",
+   "en": "The soup is far too spicy for me."
+  }
+ ],
+ "505": [
+  {
+   "de": "Ich schenke meiner Mutter rote Blumen.",
+   "en": "I am giving my mother red flowers as a present."
+  }
+ ],
+ "506": [
+  {
+   "de": "Gib mir bitte die Schere für das Papier.",
+   "en": "Please give me the scissors for the paper."
+  }
+ ],
+ "507": [
+  {
+   "de": "Das Schiff fährt heute Abend nach England.",
+   "en": "The ship sails to England this evening."
+  }
+ ],
+ "508": [
+  {
+   "de": "Der Lehrer schimpft mit den lauten Kindern.",
+   "en": "The teacher is scolding the noisy children."
+  }
+ ],
+ "509": [
+  {
+   "de": "Nimm den Schirm mit, draußen regnet es.",
+   "en": "Take the umbrella with you, it is raining outside."
+  }
+ ],
+ "510": [
+  {
+   "de": "Der Unfall war zum Glück nicht schlimm.",
+   "en": "Luckily the accident was not bad."
+  }
+ ],
+ "511": [
+  {
+   "de": "Wir haben gestern ein altes Schloss besucht.",
+   "en": "Yesterday we visited an old castle."
+  }
+ ],
+ "512": [
+  {
+   "de": "Ich habe seit gestern starke Schmerzen im Rücken.",
+   "en": "I have had bad pain in my back since yesterday."
+  }
+ ],
+ "513": [
+  {
+   "de": "Deine Schuhe sind ganz schmutzig.",
+   "en": "Your shoes are completely dirty."
+  }
+ ],
+ "514": [
+  {
+   "de": "Der Schnee liegt noch auf den Bergen.",
+   "en": "The snow is still lying on the mountains."
+  }
+ ],
+ "515": [
+  {
+   "de": "Ich schneide das Brot in dünne Scheiben.",
+   "en": "I am cutting the bread into thin slices."
+  }
+ ],
+ "516": [
+  {
+   "de": "Draußen schneit es schon seit dem Morgen.",
+   "en": "It has been snowing outside since the morning."
+  }
+ ],
+ "517": [
+  {
+   "de": "Abends esse ich gern ein Stück Schokolade.",
+   "en": "In the evening I like to eat a piece of chocolate."
+  }
+ ],
+ "518": [
+  {
+   "de": "Das Wetter war gestern schrecklich kalt.",
+   "en": "The weather was terribly cold yesterday."
+  }
+ ],
+ "519": [
+  {
+   "de": "Bitte antworten Sie mir schriftlich.",
+   "en": "Please answer me in writing."
+  }
+ ],
+ "520": [
+  {
+   "de": "Nach der Grippe fühle ich mich noch schwach.",
+   "en": "After the flu I still feel weak."
+  }
+ ],
+ "521": [
+  {
+   "de": "Meine Schwester ist im vierten Monat schwanger.",
+   "en": "My sister is four months pregnant."
+  }
+ ],
+ "522": [
+  {
+   "de": "Auf dem Bauernhof leben zehn Schweine.",
+   "en": "Ten pigs live on the farm."
+  }
+ ],
+ "523": [
+  {
+   "de": "Die Aufgabe war zu schwierig für mich.",
+   "en": "The task was too difficult for me."
+  }
+ ],
+ "524": [
+  {
+   "de": "Kannst du mir bitte die Seife geben?",
+   "en": "Can you pass me the soap, please?"
+  }
+ ],
+ "525": [
+  {
+   "de": "Auf der linken Seite siehst du die Kirche.",
+   "en": "On the left side you can see the church."
+  }
+ ],
+ "526": [
+  {
+   "de": "Ich habe den Kuchen selbst gebacken.",
+   "en": "I baked the cake myself."
+  }
+ ],
+ "527": [
+  {
+   "de": "Diese Sendung läuft jeden Montag im Fernsehen.",
+   "en": "This broadcast is on television every Monday."
+  }
+ ],
+ "528": [
+  {
+   "de": "Der Service in dem Hotel war sehr gut.",
+   "en": "The service at the hotel was very good."
+  }
+ ],
+ "529": [
+  {
+   "de": "Bitte setzen Sie sich hier neben mich.",
+   "en": "Please sit down here next to me."
+  }
+ ],
+ "530": [
+  {
+   "de": "Wir singen im Chor alte deutsche Lieder.",
+   "en": "We sing old German songs in the choir."
+  }
+ ],
+ "531": [
+  {
+   "de": "In dieser Situation weiß ich nicht weiter.",
+   "en": "In this situation I don't know what to do."
+  }
+ ],
+ "532": [
+  {
+   "de": "Meine neuen Skier stehen unten im Keller.",
+   "en": "My new skis are down in the basement."
+  }
+ ],
+ "533": [
+  {
+   "de": "Er spricht sogar ein bisschen Japanisch.",
+   "en": "He even speaks a little Japanese."
+  }
+ ],
+ "534": [
+  {
+   "de": "Morgen wird es warm und sonnig.",
+   "en": "Tomorrow it will be warm and sunny."
+  }
+ ],
+ "535": [
+  {
+   "de": "Beeil dich, sonst verpassen wir den Bus.",
+   "en": "Hurry up, otherwise we will miss the bus."
+  }
+ ],
+ "536": [
+  {
+   "de": "Der Film gestern Abend war sehr spannend.",
+   "en": "The film last night was very exciting."
+  }
+ ],
+ "537": [
+  {
+   "de": "Ich spare Geld für ein neues Fahrrad.",
+   "en": "I am saving money for a new bike."
+  }
+ ],
+ "538": [
+  {
+   "de": "Das Spiel macht uns allen großen Spaß.",
+   "en": "The game is great fun for all of us."
+  }
+ ],
+ "539": [
+  {
+   "de": "Wir wollen nach dem Essen spazieren gehen.",
+   "en": "We want to go for a walk after the meal."
+  }
+ ],
+ "540": [
+  {
+   "de": "Nach dem Abendessen machen wir einen kurzen Spaziergang.",
+   "en": "After dinner we take a short walk."
+  }
+ ],
+ "541": [
+  {
+   "de": "Ich speichere die Fotos auf meinem Computer.",
+   "en": "I save the photos on my computer."
+  }
+ ],
+ "542": [
+  {
+   "de": "Das Spiel beginnt um halb acht.",
+   "en": "The game starts at half past seven."
+  }
+ ],
+ "543": [
+  {
+   "de": "Meine kleine Schwester ist sehr sportlich.",
+   "en": "My little sister is very sporty."
+  }
+ ],
+ "544": [
+  {
+   "de": "Die Kinder spielen auf dem Sportplatz Fußball.",
+   "en": "The children are playing football on the sports field."
+  }
+ ],
+ "545": [
+  {
+   "de": "Der Arzt hat heute keine Sprechstunde.",
+   "en": "The doctor has no consultation hours today."
+  }
+ ],
+ "546": [
+  {
+   "de": "Ich suche unser Hotel auf dem Stadtplan.",
+   "en": "I am looking for our hotel on the city map."
+  }
+ ],
+ "547": [
+  {
+   "de": "Der Star kam sehr spät auf die Bühne.",
+   "en": "The star came on stage very late."
+  }
+ ],
+ "548": [
+  {
+   "de": "Mein großer Bruder ist wirklich stark.",
+   "en": "My big brother is really strong."
+  }
+ ],
+ "549": [
+  {
+   "de": "Das Konzert soll am Samstag stattfinden.",
+   "en": "The concert is supposed to take place on Saturday."
+  }
+ ],
+ "550": [
+  {
+   "de": "Ohne Wasser sterben die Blumen schnell.",
+   "en": "Without water the flowers die quickly."
+  }
+ ],
+ "551": [
+  {
+   "de": "Die neuen Stiefel sind mir zu eng.",
+   "en": "The new boots are too tight for me."
+  }
+ ],
+ "552": [
+  {
+   "de": "Kannst du mir bitte einen Stift leihen?",
+   "en": "Can you lend me a pen, please?"
+  }
+ ],
+ "553": [
+  {
+   "de": "Sie hat ein Stipendium für ein Jahr bekommen.",
+   "en": "She got a scholarship for one year."
+  }
+ ],
+ "554": [
+  {
+   "de": "Unsere Wohnung liegt im dritten Stockwerk.",
+   "en": "Our flat is on the third floor."
+  }
+ ],
+ "555": [
+  {
+   "de": "Der Lärm von der Straße stört mich beim Lernen.",
+   "en": "The noise from the street disturbs me while studying."
+  }
+ ],
+ "556": [
+  {
+   "de": "Wir liegen den ganzen Tag am Strand.",
+   "en": "We lie on the beach all day."
+  }
+ ],
+ "557": [
+  {
+   "de": "Meine Brüder streiten oft um den Computer.",
+   "en": "My brothers often argue about the computer."
+  }
+ ],
+ "558": [
+  {
+   "de": "Ich habe im Moment viel Stress bei der Arbeit.",
+   "en": "I have a lot of stress at work at the moment."
+  }
+ ],
+ "559": [
+  {
+   "de": "Die letzte Woche war für uns sehr stressig.",
+   "en": "Last week was very stressful for us."
+  }
+ ],
+ "560": [
+  {
+   "de": "Kannst du bitte ein Stück nach rechts rücken?",
+   "en": "Could you move a little to the right, please?"
+  }
+ ],
+ "561": [
+  {
+   "de": "Die Studentin lernt für ihre erste Prüfung.",
+   "en": "The student is studying for her first exam."
+  }
+ ],
+ "562": [
+  {
+   "de": "Der Stuhl in der Küche ist kaputt.",
+   "en": "The chair in the kitchen is broken."
+  }
+ ],
+ "563": [
+  {
+   "de": "Das Essen hier schmeckt wirklich super.",
+   "en": "The food here tastes really great."
+  }
+ ],
+ "564": [
+  {
+   "de": "Ich gehe schnell in den Supermarkt einkaufen.",
+   "en": "I am quickly going shopping at the supermarket."
+  }
+ ],
+ "565": [
+  {
+   "de": "Die Suppe ist noch viel zu heiß.",
+   "en": "The soup is still much too hot."
+  }
+ ],
+ "566": [
+  {
+   "de": "Abends surfe ich gern im Internet.",
+   "en": "In the evening I like to surf the internet."
+  }
+ ],
+ "567": [
+  {
+   "de": "Euer kleines Baby ist wirklich süß.",
+   "en": "Your little baby is really cute."
+  }
+ ],
+ "568": [
+  {
+   "de": "Die Süßigkeiten für die Kinder sind schon alle.",
+   "en": "The sweets for the children are all gone already."
+  }
+ ],
+ "569": [
+  {
+   "de": "Unser neuer Nachbar ist sehr sympathisch.",
+   "en": "Our new neighbour is very likeable."
+  }
+ ],
+ "570": [
+  {
+   "de": "Ich lese die Zeitung auf meinem Tablet.",
+   "en": "I read the newspaper on my tablet."
+  }
+ ],
+ "571": [
+  {
+   "de": "Nimm eine Tablette gegen die Kopfschmerzen.",
+   "en": "Take a tablet for the headache."
+  }
+ ],
+ "572": [
+  {
+   "de": "Der Lehrer schreibt das neue Wort an die Tafel.",
+   "en": "The teacher writes the new word on the board."
+  }
+ ],
+ "573": [
+  {
+   "de": "Von meinem Taschengeld kaufe ich mir Comics.",
+   "en": "I buy comics with my pocket money."
+  }
+ ],
+ "574": [
+  {
+   "de": "Möchtest du eine Tasse Tee mit Milch?",
+   "en": "Would you like a cup of tea with milk?"
+  }
+ ],
+ "575": [
+  {
+   "de": "Wir tauschen im Kino unsere Plätze.",
+   "en": "We are swapping our seats in the cinema."
+  }
+ ],
+ "576": [
+  {
+   "de": "Nach dem Kurs wollen wir unsere Erfahrungen austauschen.",
+   "en": "After the course we want to exchange our experiences."
+  }
+ ],
+ "577": [
+  {
+   "de": "Unser Team hat das Spiel gewonnen.",
+   "en": "Our team won the game."
+  }
+ ],
+ "578": [
+  {
+   "de": "Ich teile mein Zimmer mit meinem Bruder.",
+   "en": "I share my room with my brother."
+  }
+ ],
+ "579": [
+  {
+   "de": "Möchtest du an dem Kurs teilnehmen?",
+   "en": "Would you like to take part in the course?"
+  }
+ ],
+ "580": [
+  {
+   "de": "Stell den Teller bitte auf den Tisch.",
+   "en": "Please put the plate on the table."
+  }
+ ],
+ "581": [
+  {
+   "de": "Am Wochenende spielen wir zusammen Tennis.",
+   "en": "At the weekend we play tennis together."
+  }
+ ],
+ "582": [
+  {
+   "de": "Heute Abend gehen wir ins Theater.",
+   "en": "This evening we are going to the theatre."
+  }
+ ],
+ "583": [
+  {
+   "de": "Der See ist hier sehr tief.",
+   "en": "The lake is very deep here."
+  }
+ ],
+ "584": [
+  {
+   "de": "Welches Tier magst du am liebsten?",
+   "en": "Which animal do you like best?"
+  }
+ ],
+ "585": [
+  {
+   "de": "Danke für den guten Tipp mit dem Restaurant!",
+   "en": "Thanks for the good tip about the restaurant!"
+  }
+ ],
+ "586": [
+  {
+   "de": "Ich habe den Titel des Films vergessen.",
+   "en": "I have forgotten the title of the film."
+  }
+ ],
+ "587": [
+  {
+   "de": "Deine neue Wohnung ist wirklich toll.",
+   "en": "Your new flat is really great."
+  }
+ ],
+ "588": [
+  {
+   "de": "Der Topf mit den Nudeln steht auf dem Herd.",
+   "en": "The pot with the noodles is on the stove."
+  }
+ ],
+ "589": [
+  {
+   "de": "Zum Geburtstag backe ich eine Torte mit Erdbeeren.",
+   "en": "For the birthday I am baking a tart with strawberries."
+  }
+ ],
+ "590": [
+  {
+   "de": "Ich bin heute total müde.",
+   "en": "I am really tired today."
+  }
+ ],
+ "591": [
+  {
+   "de": "Die Tour durch die Stadt dauert zwei Stunden.",
+   "en": "The tour through the city takes two hours."
+  }
+ ],
+ "592": [
+  {
+   "de": "Ein Tourist fragt mich nach dem Weg.",
+   "en": "A tourist is asking me for directions."
+  }
+ ],
+ "593": [
+  {
+   "de": "Die Touristin macht ein Foto vom Dom.",
+   "en": "The tourist is taking a photo of the cathedral."
+  }
+ ],
+ "594": [
+  {
+   "de": "Ich trage den schweren Koffer die Treppe hinauf.",
+   "en": "I am carrying the heavy suitcase up the stairs."
+  }
+ ],
+ "595": [
+  {
+   "de": "Er trainiert dreimal pro Woche im Fitnessstudio.",
+   "en": "He trains three times a week at the gym."
+  }
+ ],
+ "596": [
+  {
+   "de": "Das Training beginnt heute um sechs Uhr.",
+   "en": "The training starts at six o'clock today."
+  }
+ ],
+ "597": [
+  {
+   "de": "Ein eigenes Haus am Meer ist mein größter Traum.",
+   "en": "My own house by the sea is my biggest dream."
+  }
+ ],
+ "598": [
+  {
+   "de": "Ich träume oft von einer Reise nach Japan.",
+   "en": "I often dream of a trip to Japan."
+  }
+ ],
+ "599": [
+  {
+   "de": "Sie ist traurig, weil ihr Hund krank ist.",
+   "en": "She is sad because her dog is ill."
+  }
+ ],
+ "600": [
+  {
+   "de": "Meine Haare sind schon wieder trocken.",
+   "en": "My hair is dry again already."
+  }
+ ],
+ "601": [
+  {
+   "de": "Tschüs, bis morgen in der Schule!",
+   "en": "Bye, see you tomorrow at school!"
+  }
+ ],
+ "602": [
+  {
+   "de": "Dieses blaue T-Shirt kostet nur zehn Euro.",
+   "en": "This blue T-shirt costs only ten euros."
+  }
+ ],
+ "603": [
+  {
+   "de": "Bitte mach die Tür leise zu.",
+   "en": "Please close the door quietly."
+  }
+ ],
+ "604": [
+  {
+   "de": "Das ist typisch für meinen kleinen Bruder.",
+   "en": "That is typical of my little brother."
+  }
+ ],
+ "605": [
+  {
+   "de": "Wir üben jeden Tag neue Wörter.",
+   "en": "We practise new words every day."
+  }
+ ],
+ "606": [
+  {
+   "de": "Überall in der Stadt liegt Schnee.",
+   "en": "There is snow everywhere in the city."
+  }
+ ],
+ "607": [
+  {
+   "de": "Übermorgen fahren wir ans Meer.",
+   "en": "The day after tomorrow we are driving to the sea."
+  }
+ ],
+ "608": [
+  {
+   "de": "Kannst du diesen Satz ins Englische übersetzen?",
+   "en": "Can you translate this sentence into English?"
+  }
+ ],
+ "609": [
+  {
+   "de": "Die Übersetzung von dem Brief war ziemlich schwer.",
+   "en": "The translation of the letter was quite hard."
+  }
+ ],
+ "610": [
+  {
+   "de": "In Köln müssen wir in einen anderen Zug umsteigen.",
+   "en": "In Cologne we have to change to another train."
+  }
+ ],
+ "611": [
+  {
+   "de": "Der Umzug in die neue Wohnung war anstrengend.",
+   "en": "The move into the new flat was exhausting."
+  }
+ ],
+ "612": [
+  {
+   "de": "Auf der Autobahn gab es heute einen Unfall.",
+   "en": "There was an accident on the motorway today."
+  }
+ ],
+ "613": [
+  {
+   "de": "Meine Schwester studiert an der Universität in Hamburg.",
+   "en": "My sister studies at the university in Hamburg."
+  }
+ ],
+ "614": [
+  {
+   "de": "Der Clown will die Kinder unterhalten.",
+   "en": "The clown wants to entertain the children."
+  }
+ ],
+ "615": [
+  {
+   "de": "Wir suchen noch eine günstige Unterkunft für den Urlaub.",
+   "en": "We are still looking for cheap accommodation for the holiday."
+  }
+ ],
+ "616": [
+  {
+   "de": "Wollen wir am Samstag etwas zusammen unternehmen?",
+   "en": "Shall we do something together on Saturday?"
+  }
+ ],
+ "617": [
+  {
+   "de": "Zwischen den beiden Handys gibt es kaum einen Unterschied.",
+   "en": "There is hardly any difference between the two phones."
+  }
+ ],
+ "618": [
+  {
+   "de": "Der Arzt muss mein Knie genau untersuchen.",
+   "en": "The doctor has to examine my knee closely."
+  }
+ ],
+ "619": [
+  {
+   "de": "Die Veranstaltung beginnt um acht Uhr im Rathaus.",
+   "en": "The event starts at eight o'clock in the town hall."
+  }
+ ],
+ "620": [
+  {
+   "de": "Die Lehrer verbieten uns das Essen im Unterricht.",
+   "en": "The teachers forbid us to eat in class."
+  }
+ ],
+ "621": [
+  {
+   "de": "Wir wollen einen neuen Termin vereinbaren.",
+   "en": "We want to agree on a new appointment."
+  }
+ ],
+ "622": [
+  {
+   "de": "Ich habe meinen Schlüssel zu Hause vergessen.",
+   "en": "I have forgotten my key at home."
+  }
+ ],
+ "623": [
+  {
+   "de": "Am Morgen ist der Verkehr in der Stadt schlimm.",
+   "en": "In the morning the traffic in the city is bad."
+  }
+ ],
+ "624": [
+  {
+   "de": "Der Bus ist mein liebstes Verkehrsmittel.",
+   "en": "The bus is my favourite means of transport."
+  }
+ ],
+ "625": [
+  {
+   "de": "Pass auf, du kannst dich am Messer verletzen!",
+   "en": "Be careful, you can injure yourself on the knife!"
+  }
+ ],
+ "626": [
+  {
+   "de": "Man kann sich in dieser Stadt schnell verlieben.",
+   "en": "You can fall in love quickly in this city."
+  }
+ ],
+ "627": [
+  {
+   "de": "Wir verlieren oft unsere Regenschirme im Bus.",
+   "en": "We often lose our umbrellas on the bus."
+  }
+ ],
+ "628": [
+  {
+   "de": "Unsere Vermieterin wohnt im Haus nebenan.",
+   "en": "Our landlady lives in the house next door."
+  }
+ ],
+ "629": [
+  {
+   "de": "Wenn wir nicht laufen, verpassen wir den Zug.",
+   "en": "If we don't run, we will miss the train."
+  }
+ ],
+ "630": [
+  {
+   "de": "Im Sommer verreisen wir für zwei Wochen.",
+   "en": "In summer we go away for two weeks."
+  }
+ ],
+ "631": [
+  {
+   "de": "Wir müssen das Treffen auf Freitag verschieben.",
+   "en": "We have to postpone the meeting until Friday."
+  }
+ ],
+ "632": [
+  {
+   "de": "Im Schrank stehen verschiedene Gläser und Tassen.",
+   "en": "There are different glasses and cups in the cupboard."
+  }
+ ],
+ "633": [
+  {
+   "de": "Der Zug hat heute zwanzig Minuten Verspätung.",
+   "en": "The train has a twenty-minute delay today."
+  }
+ ],
+ "634": [
+  {
+   "de": "Wir versuchen, jeden Tag früher aufzustehen.",
+   "en": "We try to get up earlier every day."
+  }
+ ],
+ "635": [
+  {
+   "de": "Morgen unterschreibe ich meinen neuen Vertrag bei der Firma.",
+   "en": "Tomorrow I am signing my new contract with the company."
+  }
+ ],
+ "636": [
+  {
+   "de": "Ein kleiner Vogel sitzt auf dem Balkon.",
+   "en": "A small bird is sitting on the balcony."
+  }
+ ],
+ "637": [
+  {
+   "de": "Der Bus war heute Morgen ganz voll.",
+   "en": "The bus was completely full this morning."
+  }
+ ],
+ "638": [
+  {
+   "de": "Der Sommer ist leider schon vorbei.",
+   "en": "Unfortunately the summer is already over."
+  }
+ ],
+ "639": [
+  {
+   "de": "Wir müssen das Fest gut vorbereiten.",
+   "en": "We have to prepare the party well."
+  }
+ ],
+ "640": [
+  {
+   "de": "Vorgestern haben wir meinen Opa besucht.",
+   "en": "The day before yesterday we visited my grandpa."
+  }
+ ],
+ "641": [
+  {
+   "de": "Wir essen vorher, dann gehen wir ins Kino.",
+   "en": "We eat first, then we go to the cinema."
+  }
+ ],
+ "642": [
+  {
+   "de": "Im Bus sitze ich am liebsten vorn.",
+   "en": "On the bus I like sitting at the front best."
+  }
+ ],
+ "643": [
+  {
+   "de": "Dein Vorschlag für das Wochenende gefällt mir sehr.",
+   "en": "I really like your suggestion for the weekend."
+  }
+ ],
+ "644": [
+  {
+   "de": "Sei vorsichtig, die Straße ist heute sehr nass.",
+   "en": "Be careful, the road is very wet today."
+  }
+ ],
+ "645": [
+  {
+   "de": "Der alte Bus fährt nur langsam vorwärts.",
+   "en": "The old bus only moves forward slowly."
+  }
+ ],
+ "646": [
+  {
+   "de": "Um sechs Uhr war ich schon wach.",
+   "en": "At six o'clock I was already awake."
+  }
+ ],
+ "647": [
+  {
+   "de": "Mein Wagen steht in der Garage.",
+   "en": "My car is in the garage."
+  }
+ ],
+ "648": [
+  {
+   "de": "Wir wählen heute Abend einen guten Film.",
+   "en": "We are choosing a good film tonight."
+  }
+ ],
+ "649": [
+  {
+   "de": "Die Geschichte klingt komisch, aber sie ist wahr.",
+   "en": "The story sounds strange, but it is true."
+  }
+ ],
+ "650": [
+  {
+   "de": "Wahrscheinlich regnet es morgen den ganzen Tag.",
+   "en": "It will probably rain all day tomorrow."
+  }
+ ],
+ "651": [
+  {
+   "de": "Am Sonntag gehen wir im Wald spazieren.",
+   "en": "On Sunday we go for a walk in the wood."
+  }
+ ],
+ "652": [
+  {
+   "de": "Heute ist es endlich wieder warm draußen.",
+   "en": "Today it is finally warm outside again."
+  }
+ ],
+ "653": [
+  {
+   "de": "Die Wäsche hängt schon auf dem Balkon.",
+   "en": "The laundry is already hanging on the balcony."
+  }
+ ],
+ "654": [
+  {
+   "de": "Auf ihrer Webseite findest du alle Preise.",
+   "en": "You will find all the prices on her website."
+  }
+ ],
+ "655": [
+  {
+   "de": "Am Bahnhof kann man Geld wechseln.",
+   "en": "You can change money at the station."
+  }
+ ],
+ "656": [
+  {
+   "de": "Kannst du mich morgen um sieben Uhr wecken?",
+   "en": "Can you wake me up at seven o'clock tomorrow?"
+  }
+ ],
+ "657": [
+  {
+   "de": "Mein Bruder ist schon seit einer Woche weg.",
+   "en": "My brother has been away for a week already."
+  }
+ ],
+ "658": [
+  {
+   "de": "Wegen dem Regen bleiben wir heute zu Hause.",
+   "en": "Because of the rain we are staying at home today."
+  }
+ ],
+ "659": [
+  {
+   "de": "Ich will dir nicht wehtun.",
+   "en": "I don't want to hurt you."
+  }
+ ],
+ "660": [
+  {
+   "de": "Das Bett im Hotel war sehr weich.",
+   "en": "The bed in the hotel was very soft."
+  }
+ ],
+ "661": [
+  {
+   "de": "Ich bleibe heute zu Hause, weil ich krank bin.",
+   "en": "I am staying at home today because I am ill."
+  }
+ ],
+ "662": [
+  {
+   "de": "Kleine Kinder weinen manchmal ohne Grund.",
+   "en": "Small children sometimes cry without a reason."
+  }
+ ],
+ "663": [
+  {
+   "de": "Das Essen war teuer, aber wenigstens war es lecker.",
+   "en": "The food was expensive, but at least it was tasty."
+  }
+ ],
+ "664": [
+  {
+   "de": "Mein Auto steht seit Montag in der Werkstatt.",
+   "en": "My car has been in the workshop since Monday."
+  }
+ ],
+ "665": [
+  {
+   "de": "Meine Tochter hat den Wettbewerb im Schwimmen gewonnen.",
+   "en": "My daughter won the swimming competition."
+  }
+ ],
+ "666": [
+  {
+   "de": "Morgen sehen wir uns wieder.",
+   "en": "We will see each other again tomorrow."
+  }
+ ],
+ "667": [
+  {
+   "de": "Am Meer ist es heute sehr windig.",
+   "en": "It is very windy at the sea today."
+  }
+ ],
+ "668": [
+  {
+   "de": "Das Konzert gestern war wirklich toll.",
+   "en": "The concert yesterday was really great."
+  }
+ ],
+ "669": [
+  {
+   "de": "Er erzählt immer den gleichen Witz.",
+   "en": "He always tells the same joke."
+  }
+ ],
+ "670": [
+  {
+   "de": "Dein neuer Freund ist sehr witzig.",
+   "en": "Your new friend is very funny."
+  }
+ ],
+ "671": [
+  {
+   "de": "Im Wohnzimmer steht ein großes Sofa.",
+   "en": "There is a big sofa in the living room."
+  }
+ ],
+ "672": [
+  {
+   "de": "Am Samstag besuche ich einen Workshop über Fotografie.",
+   "en": "On Saturday I am attending a workshop about photography."
+  }
+ ],
+ "673": [
+  {
+   "de": "Ich habe nur einen Wunsch zum Geburtstag.",
+   "en": "I have only one wish for my birthday."
+  }
+ ],
+ "674": [
+  {
+   "de": "Wir wünschen dir alles Gute zum Geburtstag.",
+   "en": "We wish you all the best for your birthday."
+  }
+ ],
+ "675": [
+  {
+   "de": "Auf dem Brot liegt eine Scheibe Wurst.",
+   "en": "There is a slice of sausage on the bread."
+  }
+ ],
+ "676": [
+  {
+   "de": "Schreib bitte die Zahl an die Tafel.",
+   "en": "Please write the number on the board."
+  }
+ ],
+ "677": [
+  {
+   "de": "Mein Zahn tut seit gestern weh.",
+   "en": "My tooth has been hurting since yesterday."
+  }
+ ],
+ "678": [
+  {
+   "de": "Die Kinder zeichnen gern Tiere mit Buntstiften.",
+   "en": "The children like drawing animals with coloured pencils."
+  }
+ ],
+ "679": [
+  {
+   "de": "Kannst du mir den Weg zum Bahnhof zeigen?",
+   "en": "Can you show me the way to the station?"
+  }
+ ],
+ "680": [
+  {
+   "de": "Im Zug lese ich immer eine Zeitschrift.",
+   "en": "On the train I always read a magazine."
+  }
+ ],
+ "681": [
+  {
+   "de": "Unser Zelt steht direkt am See.",
+   "en": "Our tent is right by the lake."
+  }
+ ],
+ "682": [
+  {
+   "de": "Wir wohnen mitten im Zentrum der Stadt.",
+   "en": "We live right in the centre of the city."
+  }
+ ],
+ "683": [
+  {
+   "de": "Auf dem Tisch liegt ein Zettel für dich.",
+   "en": "There is a note on the table for you."
+  }
+ ],
+ "684": [
+  {
+   "de": "Mein Sohn hat ein gutes Zeugnis bekommen.",
+   "en": "My son got a good school report."
+  }
+ ],
+ "685": [
+  {
+   "de": "Mein Ziel ist eine bessere Note in Mathe.",
+   "en": "My goal is a better grade in maths."
+  }
+ ],
+ "686": [
+  {
+   "de": "Am Wochenende gehen wir in den Zirkus.",
+   "en": "At the weekend we are going to the circus."
+  }
+ ],
+ "687": [
+  {
+   "de": "In meinem Tee ist immer eine Scheibe Zitrone.",
+   "en": "There is always a slice of lemon in my tea."
+  }
+ ],
+ "688": [
+  {
+   "de": "Im Zoo haben wir gestern Elefanten gesehen.",
+   "en": "Yesterday we saw elephants at the zoo."
+  }
+ ],
+ "689": [
+  {
+   "de": "Nimmst du Zucker in deinen Kaffee?",
+   "en": "Do you take sugar in your coffee?"
+  }
+ ],
+ "690": [
+  {
+   "de": "Zuerst machen wir die Hausaufgaben, dann spielen wir.",
+   "en": "First we do the homework, then we play."
+  }
+ ],
+ "691": [
+  {
+   "de": "Du musst deinem Lehrer gut zuhören.",
+   "en": "You have to listen to your teacher carefully."
+  }
+ ],
+ "692": [
+  {
+   "de": "Wann hast du deinen Onkel zuletzt gesehen?",
+   "en": "When did you last see your uncle?"
+  }
+ ],
+ "693": [
+  {
+   "de": "Kannst du bitte das Fenster zumachen?",
+   "en": "Can you please close the window?"
+  }
+ ]
+}

@@ -13,8 +13,20 @@
  * had checked.
  *
  * What the source no longer carries, the application does without: nouns have no article
- * or plural, verbs no conjugation, and no entry has example sentences. The generators that
- * need those fields produce nothing for such an entry rather than inventing anything.
+ * or plural and verbs no conjugation. The generators that need those fields produce
+ * nothing for such an entry rather than inventing anything.
+ *
+ * Example sentences are the exception, and live apart from the wordlists in
+ * `data/examples/*.json`, keyed by the entry's source rank:
+ *
+ *     { "1": [{ "de": "…", "en": "…", "form": "eins" }] }
+ *
+ * `form` is the target word as it appears in that sentence, which is what the app
+ * highlights; it falls back to the headword when absent.
+ *
+ * Keeping them in their own file is what keeps the wordlists short enough to read: the
+ * sentences are a separate, regenerable artefact, and merging them in here means a missing
+ * or partial examples file degrades to the old behaviour rather than breaking the build.
  */
 
 import { readFileSync } from 'node:fs';
@@ -30,6 +42,7 @@ import {
 
 export const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const DATA_DIR = path.join(REPO_ROOT, 'data');
+export const EXAMPLES_DIR = path.join(DATA_DIR, 'examples');
 
 /** @type {ReadonlyArray<{ level: 'A1' | 'A2' | 'B1', file: string }>} */
 export const DATASET_FILES = [
@@ -37,6 +50,21 @@ export const DATASET_FILES = [
   { level: 'A2', file: 'a2.json' },
   { level: 'B1', file: 'b1.json' },
 ];
+
+/**
+ * Reads the example sentences for one level: `{ "<source rank>": [{ de, en, form? }, …] }`.
+ *
+ * Absent or unreadable is not an error — entries simply get no examples, which is exactly
+ * where the datasets started.
+ */
+export function readExamples(file) {
+  try {
+    const parsed = JSON.parse(readFileSync(path.join(EXAMPLES_DIR, file), 'utf8'));
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
 
 /** Reads one dataset file: a flat array of source rows. */
 export function readDataset(file) {
@@ -46,6 +74,28 @@ export function readDataset(file) {
     throw new Error(`${file}: expected an array of entries`);
   }
   return parsed;
+}
+
+/**
+ * The headword without its leading article or particle: `die Million` → `Million`.
+ *
+ * A target token has to be something that occurs in the sentence, and a natural sentence
+ * declines the article away — "eine Million Einwohner" contains `Million`, never
+ * `die Million`.
+ */
+function bareHeadword(german) {
+  return (
+    german
+      .replace(/^(der|die|das)\/(der|die|das)\s+/iu, '')
+      .replace(/^(der|die|das)\s+/iu, '')
+      .replace(/^(sich|zu)\s+/iu, '')
+      // `ihr/ihm/ihn` lists alternatives; any one of them is a token of the sentence.
+      .split('/')[0]
+      // `all-`, `jed-` and `ein-` are paradigm stubs: the trailing hyphen stands for the
+      // ending the sentence supplies, so the stem is what actually occurs in it.
+      .replace(/-$/u, '')
+      .trim()
+  );
 }
 
 /** `Müllabfuhr` → `mullabfuhr`; the lemma half of the §12 id. */
@@ -92,14 +142,16 @@ function enabledTypesFor(entry) {
  * @param {object} raw source row
  * @param {number} globalRank rank across all three levels, A1 first
  * @param {number} total entries across all three levels
+ * @param {{de: string, en: string, form?: string}[]} sentences authored example sentences
  */
-export function expandEntry(raw, globalRank, total) {
+export function expandEntry(raw, globalRank, total, sentences = []) {
   const band = bandForRank(globalRank);
   const german = String(raw.german ?? '').trim();
   const english = (raw.english ?? []).map((value) => String(value).trim()).filter(Boolean);
 
+  const entryId = `${String(raw.level).toLowerCase()}-${String(globalRank).padStart(4, '0')}-${slugify(german)}`;
   const base = {
-    id: `${String(raw.level).toLowerCase()}-${String(globalRank).padStart(4, '0')}-${slugify(german)}`,
+    id: entryId,
     rank: globalRank,
     level: raw.level,
     kind: raw.kind ?? 'word',
@@ -113,9 +165,19 @@ export function expandEntry(raw, globalRank, total) {
     // §16 searches by any stored form. The source has one form per entry, so that is it.
     searchableForms: [german],
     tags: [],
-    // Nothing in the source is a checked example sentence, and an invented one would be
-    // worse than none: the formats that need sentences simply do not generate (§15).
-    exampleSentences: [],
+    // Both languages are stored — the vocabulary browser and the entry page show the pair.
+    // Only the German half ever reaches an exercise card: those cards ask the learner to
+    // produce the English meaning, so printing the translation would hand them the answer.
+    exampleSentences: sentences.map((sentence, index) => ({
+      id: `${entryId}-example-${index + 1}`,
+      german: sentence.de,
+      english: sentence.en,
+      level: raw.level,
+      // The word as it actually appears in the sentence when the author recorded it, and
+      // the headword otherwise. German strong verbs change stem — `dürfen` surfaces as
+      // `darf` — so the headword alone is not always a token of its own example.
+      targetTokens: [sentence.form?.trim() || bareHeadword(german) || german],
+    })),
     /** The rank the dataset itself gave this entry, within its level. */
     sourceRank: raw.rank,
   };
@@ -284,6 +346,7 @@ export function loadAllEntries() {
 
   for (const { level, file } of DATASET_FILES) {
     const rows = readDataset(file);
+    const examples = readExamples(file);
     const expected = LEVEL_ENTRY_COUNTS[level];
     if (rows.length !== expected) {
       throw new Error(
@@ -299,7 +362,14 @@ export function loadAllEntries() {
     const ordered = [...rows].sort((a, b) => a.rank - b.rank);
 
     ordered.forEach((raw, index) => {
-      const { entry, unresolved } = normalizeEntryTopics(expandEntry(raw, offset + index, total));
+      // Keyed by the *source* rank, which is what a human editing the examples file sees;
+      // the global rank shifts whenever an earlier level's count changes.
+      const sentences = (examples[String(raw.rank)] ?? []).filter(
+        (item) => item && typeof item.de === 'string' && typeof item.en === 'string',
+      );
+      const { entry, unresolved } = normalizeEntryTopics(
+        expandEntry(raw, offset + index, total, sentences),
+      );
       for (const label of unresolved) {
         unresolvedTopics.set(label, (unresolvedTopics.get(label) ?? 0) + 1);
       }

@@ -56,6 +56,12 @@ export function MultipleChoiceExercise({
         ) : null}
       </p>
 
+      {exercise.example ? (
+        <p className="exercise__example" lang="de">
+          {exercise.example}
+        </p>
+      ) : null}
+
       <ChoiceOptions
         options={exercise.options}
         correctIndex={exercise.correctIndex}

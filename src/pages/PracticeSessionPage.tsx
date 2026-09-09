@@ -17,6 +17,7 @@ import { loadAllProgress, introduceEntry } from '@/features/srs/repository';
 import { dueEntries } from '@/features/srs/queue';
 import { loadSkippedIds } from '@/features/srs/skipped';
 import { useSettingsStore } from '@/features/settings/settingsStore';
+import { introductionOrder } from '@/features/learning/introductionOrder';
 import type { SessionMode } from '@/features/practice/session/buildSession';
 import { createRandom } from '@/features/practice/random';
 import { useSessionStore } from '@/features/practice/session/sessionStore';
@@ -101,6 +102,10 @@ export default function PracticeSessionPage(): ReactNode {
      * Bands are walked in frequency order and, when the requested level runs out, the walk
      * continues into the next level (§3, §18). Stopping at one level is what produced an
      * empty batch — and so an instant 0-of-0 results page — for any learner past A1.
+     *
+     * Within a band the words are taken in introduction order, not rank order: the source
+     * wordlist arrives in topical then alphabetical blocks, so a batch of five drawn
+     * verbatim would be five consecutive numbers or five B-words.
      */
     const loadNew = async (batchSize: number): Promise<VocabularyEntry[]> => {
       if (!isCefrLevel(level)) throw new Error(`Unknown level: ${level}`);
@@ -114,7 +119,7 @@ export default function PracticeSessionPage(): ReactNode {
 
       const batch: VocabularyEntry[] = [];
       for (const band of candidateBands) {
-        for (const entry of await loadBand(band.id)) {
+        for (const entry of introductionOrder(band.id, await loadBand(band.id))) {
           if (seen.has(entry.id)) continue;
           batch.push(entry);
           if (batch.length >= batchSize) return batch;

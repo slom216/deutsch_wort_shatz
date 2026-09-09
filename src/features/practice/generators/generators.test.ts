@@ -655,6 +655,57 @@ describe('listening and speaking', () => {
   });
 });
 
+describe('example sentences as context', () => {
+  const EXAMPLE = {
+    id: 'ex-1',
+    german: 'Der Baum vor dem Haus ist sehr alt.',
+    english: 'The tree in front of the house is very old.',
+    level: 'A1' as const,
+    targetTokens: ['Baum'],
+  };
+
+  /** A dataset entry with an authored example sentence attached. */
+  function withExample(): VocabularyEntry {
+    return { ...find((entry) => entry.english.length > 0), exampleSentences: [EXAMPLE] };
+  }
+
+  it('shows the German sentence when asking for the English meaning', () => {
+    const entry = withExample();
+    const context = { entry, pool: pilot, random: random(), id: 'ex' };
+
+    expect(generateMultipleChoice(context, 'germanToEnglish')?.example).toBe(EXAMPLE.german);
+    expect(generateTypedTranslation(context, 'germanToEnglish')?.example).toBe(EXAMPLE.german);
+  });
+
+  it('never shows its English translation, which would be the answer', () => {
+    const entry = withExample();
+    const context = { entry, pool: pilot, random: random(), id: 'ex' };
+
+    for (const built of [
+      generateMultipleChoice(context, 'germanToEnglish'),
+      generateTypedTranslation(context, 'germanToEnglish'),
+    ]) {
+      expect(JSON.stringify(built)).not.toContain(EXAMPLE.english);
+    }
+  });
+
+  it('shows nothing on the English→German card, where the sentence holds the answer', () => {
+    const entry = withExample();
+    const context = { entry, pool: pilot, random: random(), id: 'ex' };
+
+    expect(generateMultipleChoice(context, 'englishToGerman')?.example).toBeUndefined();
+    expect(generateTypedTranslation(context, 'englishToGerman')?.example).toBeUndefined();
+  });
+
+  it('shows nothing for an entry that has no authored sentence', () => {
+    const entry = { ...withExample(), exampleSentences: [] };
+    const context = { entry, pool: pilot, random: random(), id: 'ex' };
+
+    expect(generateMultipleChoice(context, 'germanToEnglish')?.example).toBeUndefined();
+    expect(generateTypedTranslation(context, 'germanToEnglish')?.example).toBeUndefined();
+  });
+});
+
 describe('generateAllForEntry', () => {
   it('produces schema-valid exercises with unique ids for every pilot entry', () => {
     let total = 0;

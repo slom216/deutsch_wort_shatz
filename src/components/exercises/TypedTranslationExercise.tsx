@@ -55,6 +55,12 @@ export function TypedTranslationExercise({
         ) : null}
       </p>
 
+      {exercise.example ? (
+        <p className="exercise__example" lang="de">
+          {exercise.example}
+        </p>
+      ) : null}
+
       <form
         onSubmit={(event) => {
           event.preventDefault();

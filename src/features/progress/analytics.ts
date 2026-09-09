@@ -7,7 +7,7 @@ import {
 import type { EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
 import { localDateKey } from '@/features/srs/localDate';
-import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import { masteryTarget } from '@/features/srs/learningMode';
 
 /**
  * Progress analytics (§6, §16).
@@ -31,7 +31,7 @@ export interface Breakdown {
   readonly practisedFraction: number;
   /** Mastered share, 0–1. */
   readonly masteredFraction: number;
-  /** Sum of mastery points, each entry capped at `MASTERY_SCORE_TARGET`. */
+  /** Sum of mastery points, each entry capped at the mode's mastery target. */
   readonly points: number;
   /** Points share of the maximum, 0–1 — how far through this group the learner is. */
   readonly pointsFraction: number;
@@ -44,7 +44,7 @@ export interface Breakdown {
  * past the target, and an uncapped sum would report more than 100%.
  */
 function pointsOf(progress: EntryProgress): number {
-  return Math.min(progress.masteryScore, MASTERY_SCORE_TARGET);
+  return Math.min(progress.masteryScore, masteryTarget());
 }
 
 function buildBreakdown(
@@ -94,7 +94,7 @@ function buildBreakdown(
       masteredFraction: bucket.total === 0 ? 0 : bucket.mastered / bucket.total,
       points: bucket.points,
       pointsFraction:
-        bucket.total === 0 ? 0 : bucket.points / (bucket.total * MASTERY_SCORE_TARGET),
+        bucket.total === 0 ? 0 : bucket.points / (bucket.total * masteryTarget()),
     }))
     .sort((a, b) => b.introduced - a.introduced || a.label.localeCompare(b.label));
 }
@@ -136,7 +136,7 @@ export function levelCompletion(
 
   return Object.fromEntries(
     CEFR_LEVELS.map((level) => {
-      const max = LEVEL_ENTRY_COUNTS[level] * MASTERY_SCORE_TARGET;
+      const max = LEVEL_ENTRY_COUNTS[level] * masteryTarget();
       return [level, { points: points[level], max, fraction: max === 0 ? 0 : points[level] / max }];
     }),
   ) as Record<CefrLevel, LevelCompletion>;

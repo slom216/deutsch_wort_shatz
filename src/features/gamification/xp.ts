@@ -1,4 +1,5 @@
 import type { Exercise } from '@/schemas/exerciseSchema';
+import { xpMultiplier } from '@/features/srs/learningMode';
 
 /**
  * XP rules (§23).
@@ -45,11 +46,19 @@ export interface ExerciseXpInput {
 /**
  * XP for a single answered exercise: the type's award if right, the same amount deducted
  * if wrong. Revealed answers score zero even when the learner then picks the right option.
+ *
+ * Scaled by the learning mode, so that mastering a word is worth the same XP whichever
+ * mode the learner is in: ultra fast asks for two clean answers instead of four, and pays
+ * double per answer to match. Without the scale the faster modes would quietly halve the
+ * XP earned for learning the same vocabulary.
+ *
+ * Baked in at award time — total XP is derived by summing the stored `xpAwarded` — which
+ * is sound because switching mode resets all history.
  */
 export function exerciseXp(input: ExerciseXpInput): number {
   if (input.revealed) return 0;
 
-  const base = XP_BY_TYPE[input.exerciseType] ?? 0;
+  const base = Math.round((XP_BY_TYPE[input.exerciseType] ?? 0) * xpMultiplier());
   return input.correct ? base : -base;
 }
 

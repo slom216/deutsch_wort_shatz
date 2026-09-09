@@ -6,12 +6,9 @@ import { loadBand, loadEntry } from '@/content/vocabulary/registry';
 import { generateAllForEntry } from '@/features/practice/generators';
 import { createRandom } from '@/features/practice/random';
 import { dueEntries } from '@/features/srs/queue';
-import {
-  MASTERY_SCORE_TARGET,
-  introduceEntry,
-  loadAllProgress,
-  loadProgress,
-} from '@/features/srs/repository';
+import { introduceEntry, loadAllProgress, loadProgress } from '@/features/srs/repository';
+import { masteryTarget } from '@/features/srs/learningMode';
+import { introductionOrder } from '@/features/learning/introductionOrder';
 import { loadSkippedIds, skipEntry } from '@/features/srs/skipped';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import type { Exercise } from '@/schemas/exerciseSchema';
@@ -58,7 +55,7 @@ export interface ContinuousSession {
   /** The exercise on screen, or null while the next one is being chosen. */
   readonly exercise: Exercise | null;
   /**
-   * Running quiz score of the word on screen, 0–`MASTERY_SCORE_TARGET`. Shown beside the
+   * Running quiz score of the word on screen, 0–`masteryTarget()`. Shown beside the
    * exercise: it is what picks the format and what decides whether the word comes back, so
    * it is the one number that explains why this question appeared.
    */
@@ -72,7 +69,7 @@ export interface ContinuousSession {
   readonly skip: () => Promise<void>;
 }
 
-/** Every band in frequency order, A1 first — the order new words are introduced in. */
+/** Every band in frequency order, A1 first. Words are shuffled *within* each band. */
 const ALL_BANDS = CEFR_LEVELS.flatMap((level) => bandsForLevel(level));
 
 export function useContinuousSession(sessionId: string): ContinuousSession {
@@ -105,6 +102,8 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
   /** Distractor pool, grown one band at a time as the stream walks the vocabulary. */
   const pool = useRef<VocabularyEntry[]>([]);
   const loadedBands = useRef<Set<string>>(new Set());
+  /** Bands in introduction order, memoized: `nextNewEntry`'s cursor indexes into these. */
+  const ordered = useRef<Map<string, readonly VocabularyEntry[]>>(new Map());
   const cursor = useRef({ band: 0, offset: 0 });
   const freshCount = useRef(0);
   const startedOnce = useRef(false);
@@ -117,9 +116,20 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     strict.current = settings.strictAnswerChecking;
   }, [settings]);
 
-  /** Loads a band once, adding it to the distractor pool. */
+  /**
+   * Loads a band once, adding it to the distractor pool.
+   *
+   * Returned in introduction order rather than rank order: the source wordlist arrives in
+   * topical then alphabetical blocks, so walking it verbatim would introduce thirty
+   * numbers in a row (see `introductionOrder`). The distractor pool does not care about
+   * order, so one shuffled copy serves both.
+   */
   const bandEntries = useCallback(async (bandId: string): Promise<readonly VocabularyEntry[]> => {
-    const list = await loadBand(bandId);
+    const cached = ordered.current.get(bandId);
+    if (cached) return cached;
+
+    const list = introductionOrder(bandId, await loadBand(bandId));
+    ordered.current.set(bandId, list);
     if (!loadedBands.current.has(bandId)) {
       loadedBands.current.add(bandId);
       pool.current = [...pool.current, ...list];
@@ -147,7 +157,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
   );
 
   /**
-   * The next word the learner has never met, in frequency order across every level.
+   * The next word the learner has never met, walking the bands in frequency order.
    * Introducing it here — rather than in batches up front — is what lets the stream run
    * indefinitely without writing 10,000 progress records.
    */
@@ -255,7 +265,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       // Mastered words leave the stream, whichever source offered this one: the requeue
       // drops them, but the due queue and the started-words fallback do not know about the
       // score, and a mastered word served from either would be asked for ever.
-      if (score >= MASTERY_SCORE_TARGET) return null;
+      if (score >= masteryTarget()) return null;
       // Same guard, same reason, for a word the learner has set aside: the requeue holds
       // words picked before the skip, and the due and started lists are start-of-stream
       // snapshots, so this is the one place every source has to pass through.
@@ -322,7 +332,7 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       // many aside does not spend all ten of the stream's empty picks stepping over them.
       const open = progress.filter(
         (record) =>
-          (record.masteryScore ?? 0) < MASTERY_SCORE_TARGET && !skipped.current.has(record.entryId),
+          (record.masteryScore ?? 0) < masteryTarget() && !skipped.current.has(record.entryId),
       );
       dueIds.current = dueEntries(open).map((record) => record.entryId);
       startedIds.current = [...open]

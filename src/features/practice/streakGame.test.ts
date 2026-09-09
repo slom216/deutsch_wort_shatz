@@ -61,6 +61,26 @@ describe('streak questions', () => {
     return questions;
   }
 
+  it('never carries a context sentence — this run is against the clock', () => {
+    // The generator attaches one to every German→English card, which the learning stream
+    // wants and a timed run cannot afford: a sentence containing the word is a free answer.
+    const entry = {
+      ...(pilot[0] as VocabularyEntry),
+      exampleSentences: [
+        {
+          id: 'ex-1',
+          german: 'Der Baum vor dem Haus ist sehr alt.',
+          english: 'The tree in front of the house is very old.',
+          level: 'A1' as const,
+          targetTokens: ['Baum'],
+        },
+      ],
+    };
+
+    expect(draw(entry).length).toBeGreaterThan(0);
+    for (const question of draw(entry)) expect(question.example).toBeUndefined();
+  });
+
   it('asks in both directions', () => {
     const entry = pilot[0] as VocabularyEntry;
     const variants = new Set(draw(entry).map((question) => question.variant));

@@ -1,4 +1,4 @@
-import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import { masteryTarget } from '@/features/srs/learningMode';
 import type { Random } from '../random';
 
 /**
@@ -9,9 +9,10 @@ import type { Random } from '../random';
  * days. A word answered wrong is worth seeing again in the same sitting; a word answered
  * right is worth confirming once the learner has had time to forget it.
  *
- * A word whose running quiz score has reached `MASTERY_SCORE_TARGET` drops out of the
- * stream when answered correctly — it has been answered cleanly five times, and the
- * scheduler is a better judge of when it should reappear than a fixed offset is.
+ * A word whose running quiz score has reached the mode's mastery target drops out of the
+ * stream when answered correctly — it has been answered cleanly as often as the learning
+ * mode asks for, and the scheduler is a better judge of when it should reappear than a
+ * fixed offset is.
  */
 
 /** Exercises to wait before a wrongly answered word returns. */
@@ -21,8 +22,10 @@ export const REQUEUE_AFTER_CORRECT: readonly [number, number] = [50, 100];
 
 export interface RequeueInput {
   readonly correct: boolean;
-  /** The entry's running quiz score after this answer, 0–`MASTERY_SCORE_TARGET`. */
+  /** The entry's running quiz score after this answer, 0–`masteryTarget()`. */
   readonly masteryScore: number;
+  /** Mastery target to judge against. Defaults to the learner's current mode. */
+  readonly target?: number;
 }
 
 /**
@@ -30,7 +33,7 @@ export interface RequeueInput {
  * over. Both bounds are inclusive.
  */
 export function requeueOffset(input: RequeueInput, random: Random): number | null {
-  if (input.correct && input.masteryScore >= MASTERY_SCORE_TARGET) return null;
+  if (input.correct && input.masteryScore >= (input.target ?? masteryTarget())) return null;
 
   const [from, to] = input.correct ? REQUEUE_AFTER_CORRECT : REQUEUE_AFTER_WRONG;
   return from + random.int(to - from + 1);
@@ -47,24 +50,40 @@ export function requeueOffset(input: RequeueInput, random: Random): number | nul
  *   2  English shown, type the German word
  *   3  German shown, type the English meaning
  *
- * A score of 4 is mastery: the word leaves the stream and the SRS schedules it.
+ * Reaching the mode's target is mastery: the word leaves the stream and the SRS schedules
+ * it. The faster modes climb a shorter ladder — rungs are dropped from the middle rather
+ * than the end, so every mode still opens on recognition and still demands one typed
+ * production before it calls a word learned.
  */
 export interface ExerciseFormat {
   readonly type: 'multipleChoice' | 'typedTranslation';
   readonly variant: 'germanToEnglish' | 'englishToGerman';
 }
 
+const MC_DE_EN: ExerciseFormat = { type: 'multipleChoice', variant: 'germanToEnglish' };
+const MC_EN_DE: ExerciseFormat = { type: 'multipleChoice', variant: 'englishToGerman' };
+const TYPED_EN_DE: ExerciseFormat = { type: 'typedTranslation', variant: 'englishToGerman' };
+const TYPED_DE_EN: ExerciseFormat = { type: 'typedTranslation', variant: 'germanToEnglish' };
+
 export const SCORE_FORMATS: readonly ExerciseFormat[] = [
-  { type: 'multipleChoice', variant: 'germanToEnglish' },
-  { type: 'multipleChoice', variant: 'englishToGerman' },
-  { type: 'typedTranslation', variant: 'englishToGerman' },
-  { type: 'typedTranslation', variant: 'germanToEnglish' },
+  MC_DE_EN,
+  MC_EN_DE,
+  TYPED_EN_DE,
+  TYPED_DE_EN,
 ];
 
+/** The ladder for a mastery target: one rung per score below it. */
+export function ladderForTarget(target: number = masteryTarget()): readonly ExerciseFormat[] {
+  if (target <= 2) return [MC_DE_EN, TYPED_EN_DE];
+  if (target === 3) return [MC_DE_EN, MC_EN_DE, TYPED_EN_DE];
+  return SCORE_FORMATS;
+}
+
 /** The format for a score, clamped to the ladder at both ends. */
-export function formatForScore(score: number): ExerciseFormat {
-  const index = Math.min(Math.max(0, Math.trunc(score)), SCORE_FORMATS.length - 1);
-  return SCORE_FORMATS[index] as ExerciseFormat;
+export function formatForScore(score: number, target: number = masteryTarget()): ExerciseFormat {
+  const ladder = ladderForTarget(target);
+  const index = Math.min(Math.max(0, Math.trunc(score)), ladder.length - 1);
+  return ladder[index] as ExerciseFormat;
 }
 
 /**

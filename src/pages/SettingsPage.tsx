@@ -1,12 +1,22 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { useSettingsStore } from '@/features/settings/settingsStore';
-import type { BatchSize, DailyGoal } from '@/schemas/settingsSchema';
+import { switchLearningMode } from '@/features/settings/switchLearningMode';
+import { LEARNING_MODES, LEARNING_MODE_LABELS, MASTERY_TARGETS } from '@/features/srs/learningMode';
+import type { BatchSize, DailyGoal, LearningMode } from '@/schemas/settingsSchema';
 import './SettingsPage.css';
 
 const DAILY_GOALS: readonly DailyGoal[] = [10, 20, 30, 50];
 const BATCH_SIZES: readonly BatchSize[] = [5, 10, 15, 20];
+
+const LEARNING_MODE_HINTS: Readonly<Record<LearningMode, string>> = {
+  normal:
+    'Four clean answers, walking the full ladder: recognise it both ways, then type it both ways.',
+  fast: 'Three clean answers. Drops the last rung — you still type the German at least once.',
+  ultraFast:
+    'Two clean answers: recognise the meaning, then type the German. The quickest way through the vocabulary, and the shallowest.',
+};
 
 /**
  * Settings (§23 daily goal, §18 batch size, §26 speech).
@@ -18,6 +28,20 @@ export default function SettingsPage(): ReactNode {
   const settings = useSettingsStore((state) => state.settings);
   const status = useSettingsStore((state) => state.status);
   const update = useSettingsStore((state) => state.update);
+
+  /** The mode the learner has asked for but not yet confirmed. */
+  const [pendingMode, setPendingMode] = useState<LearningMode | null>(null);
+  const [switching, setSwitching] = useState(false);
+
+  const confirmSwitch = async (mode: LearningMode): Promise<void> => {
+    setSwitching(true);
+    try {
+      await switchLearningMode(mode);
+    } finally {
+      setSwitching(false);
+      setPendingMode(null);
+    }
+  };
 
   return (
     <>
@@ -113,6 +137,64 @@ export default function SettingsPage(): ReactNode {
             {settings.speechRate.toFixed(1)}× — used for German (de-DE) playback.
           </p>
         </div>
+      </section>
+
+      <section className="settings-section" aria-labelledby="settings-mode">
+        <h2 id="settings-mode">Learning mode</h2>
+        <div className="settings-field">
+          <label htmlFor="learning-mode">How many clean answers master a word</label>
+          <select
+            id="learning-mode"
+            // Shows the pending choice while the confirm is up: snapping back to the
+            // current mode would read as the click not having registered.
+            value={pendingMode ?? settings.learningMode}
+            disabled={status !== 'ready' || switching}
+            onChange={(event) => {
+              const mode = event.target.value as LearningMode;
+              // Re-picking the current mode is not a change, and must not offer to wipe
+              // the learner's progress for one.
+              if (mode !== settings.learningMode) setPendingMode(mode);
+            }}
+          >
+            {LEARNING_MODES.map((mode) => (
+              <option key={mode} value={mode}>
+                {LEARNING_MODE_LABELS[mode]} — {MASTERY_TARGETS[mode]} answers
+              </option>
+            ))}
+          </select>
+          <p className="settings-hint">{LEARNING_MODE_HINTS[settings.learningMode]}</p>
+        </div>
+
+        {pendingMode ? (
+          <div className="data-reset__confirm" role="alertdialog" aria-labelledby="mode-confirm">
+            <p id="mode-confirm">
+              <strong>Switch to {LEARNING_MODE_LABELS[pendingMode]}?</strong> This resets all of
+              your learning progress — every word&rsquo;s score, your XP, your level and your best
+              streaks. It cannot be undone.
+            </p>
+            <p className="settings-hint">{LEARNING_MODE_HINTS[pendingMode]}</p>
+            <div className="data-reset__actions">
+              <button
+                type="button"
+                className="data-reset__button data-reset__button--danger"
+                disabled={switching}
+                onClick={() => {
+                  void confirmSwitch(pendingMode);
+                }}
+              >
+                {switching ? 'Resetting…' : 'Yes, switch and reset'}
+              </button>
+              <button
+                type="button"
+                className="runner__retry"
+                disabled={switching}
+                onClick={() => setPendingMode(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : null}
       </section>
 
       <section className="settings-section" aria-labelledby="settings-answers">

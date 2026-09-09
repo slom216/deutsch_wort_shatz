@@ -107,7 +107,11 @@ export function questionFor(
 ): MultipleChoiceExercise | null {
   const variant = DIRECTIONS[random.int(DIRECTIONS.length)] as MultipleChoiceVariant;
   const built = generateMultipleChoice({ entry, pool, random, id }, variant);
-  return built && trimOptions(built, wrong, random);
+  if (!built) return null;
+  // No context sentence here. The generator attaches one to every German→English card,
+  // which is what the learning stream wants — but this is a timed run against the clock,
+  // where a sentence containing the word is a free answer rather than context.
+  return trimOptions({ ...built, example: undefined }, wrong, random);
 }
 
 const BEST_STREAK_KEY = 'practice-best-streak';
@@ -121,6 +125,18 @@ function bestKey(difficulty: Difficulty): string {
 export function loadBestStreak(difficulty: Difficulty): number {
   const stored = Number(localStorage.getItem(bestKey(difficulty)));
   return Number.isFinite(stored) && stored > 0 ? Math.trunc(stored) : 0;
+}
+
+/**
+ * Forgets every recorded best.
+ *
+ * The bests are a scoreboard rather than progress, which is why `resetAllProgress` — an
+ * IndexedDB transaction — does not reach them. A learner who has just wiped their progress
+ * would still be shown a best streak they can no longer account for, so the one caller
+ * that resets everything clears these too.
+ */
+export function clearBestStreaks(): void {
+  for (const { id } of DIFFICULTIES) localStorage.removeItem(bestKey(id));
 }
 
 /** Records a streak if it beats the stored best for that level, and reports whether it did. */

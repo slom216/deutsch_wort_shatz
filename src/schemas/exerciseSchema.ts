@@ -42,6 +42,16 @@ const exerciseBaseShape = {
   /** Extra context shown under the prompt, e.g. the English gloss of a target word. */
   hint: z.string().optional(),
   /**
+   * A German sentence using the word, shown as context.
+   *
+   * Only ever set on German→English cards, where the learner has to produce the English
+   * meaning: seeing the word in a sentence is the difference between recalling a lone
+   * `bar` and recognising it in use. Never its English translation, which would hand the
+   * learner the answer, and never on English→German cards, where the sentence contains
+   * the German word being asked for.
+   */
+  example: z.string().optional(),
+  /**
    * The word class of the word being asked about, shown beside it — not a hint, and never
    * hidden behind one: "Mexican" is one word as a noun and another as an adjective, and a
    * learner who cannot tell which is being asked for is guessing rather than recalling.

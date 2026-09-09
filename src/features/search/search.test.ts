@@ -8,7 +8,7 @@ import {
   type SearchableRecord,
 } from './searchIndex';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
-import { MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import { masteryTarget } from '@/features/srs/learningMode';
 import {
   bandEntryCount,
   bandById,
@@ -274,7 +274,7 @@ describe('progress analytics (§16)', () => {
 
     const a1 = progressByLevel(index, scored).find((row) => row.key === 'A1');
     expect(a1?.points).toBe(5);
-    expect(a1?.pointsFraction).toBeCloseTo(5 / (LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET), 10);
+    expect(a1?.pointsFraction).toBeCloseTo(5 / (LEVEL_ENTRY_COUNTS.A1 * masteryTarget()), 10);
     // Two words met counts as 0.25% complete, not the 0.25% *started* the old figure gave.
     expect(a1?.fraction).toBeCloseTo(2 / LEVEL_ENTRY_COUNTS.A1, 10);
   });
@@ -292,7 +292,7 @@ describe('progress analytics (§16)', () => {
     const empty = levelCompletion([]);
     expect(empty.A1).toEqual({
       points: 0,
-      max: LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET,
+      max: LEVEL_ENTRY_COUNTS.A1 * masteryTarget(),
       fraction: 0,
     });
     expect(empty.B1.fraction).toBe(0);
@@ -303,7 +303,7 @@ describe('progress analytics (§16)', () => {
       makeProgress('xx-0001-nonsense', 'review', 0.2, 4), // unknown level: ignored
     ]);
     expect(scored.A1.points).toBe(7);
-    expect(scored.A1.fraction).toBeCloseTo(7 / (LEVEL_ENTRY_COUNTS.A1 * MASTERY_SCORE_TARGET), 10);
+    expect(scored.A1.fraction).toBeCloseTo(7 / (LEVEL_ENTRY_COUNTS.A1 * masteryTarget()), 10);
     expect(scored.A2.points).toBe(0);
   });
 

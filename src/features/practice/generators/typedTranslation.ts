@@ -5,6 +5,7 @@ import {
   acceptedGerman,
   articleStrictness,
   englishStrictness,
+  firstExample,
   headword,
   isNounEntry,
   isPhraseEntry,
@@ -56,6 +57,9 @@ export function generateTypedTranslation(
         isProduction: false,
         prompt: 'Type the English translation.',
         strictness: englishStrictness(entry),
+        // Context only on this direction — see `exerciseBaseShape.example`. The German
+        // sentence alone: its translation would spell out the answer being typed.
+        ...(firstExample(entry) ? { example: firstExample(entry)?.german } : {}),
         question: headword(entry),
         answerLanguage: 'en',
         acceptedAnswers: accepted,

@@ -6,7 +6,8 @@ import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
 import { expectedAnswerOf, questionOf } from '@/components/exercises/expectedAnswer';
 import { loadSessionHistory, loadSessionRecord } from '@/features/practice/session/sessionStore';
-import { loadAllProgress, MASTERY_SCORE_TARGET } from '@/features/srs/repository';
+import { loadAllProgress } from '@/features/srs/repository';
+import { masteryTarget } from '@/features/srs/learningMode';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import type { ExerciseHistory } from '@/schemas/progressSchema';
 import type { PracticeSessionRecord } from '@/schemas/sessionSchema';
@@ -181,7 +182,7 @@ export default function ResultsPage(): ReactNode {
               </span>
               <span className="entry-row__topic">
                 {scores.has(row.entryId)
-                  ? `score ${scores.get(row.entryId)}/${MASTERY_SCORE_TARGET}`
+                  ? `score ${scores.get(row.entryId)}/${masteryTarget()}`
                   : `${(row.responseMs / 1000).toFixed(1)}s`}
               </span>
             </li>

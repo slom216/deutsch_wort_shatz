@@ -4,6 +4,7 @@ import type { Random } from '../random';
 import { nearMiss, selectDistractors } from './distractors';
 import {
   acceptedGerman,
+  firstExample,
   headword,
   isNounEntry,
   isPhraseEntry,
@@ -126,6 +127,11 @@ function assemble(
       ? {}
       : { wordClass: entry.wordClass }),
     strictness: strictnessFor(entry),
+    // Context only where the question shows German and asks for English. On the reverse
+    // card the sentence would contain the very word the learner has to produce.
+    ...(variant === 'germanToEnglish' && firstExample(entry)
+      ? { example: firstExample(entry)?.german }
+      : {}),
     question: fields.question,
     options,
     correctIndex,

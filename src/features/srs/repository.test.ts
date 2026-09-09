@@ -4,9 +4,9 @@ import {
   introduceEntry,
   loadAllProgress,
   loadProgress,
-  MASTERY_SCORE_TARGET,
   recordReview,
 } from './repository';
+import { masteryTarget } from './learningMode';
 import { dueEntries, queueCounts } from './queue';
 import { db, VocabularyLearningDatabase } from '@/features/persistence/db';
 
@@ -208,8 +208,8 @@ describe('quiz score', () => {
   });
 
   it('never goes above the target', async () => {
-    for (let i = 0; i < MASTERY_SCORE_TARGET + 3; i += 1) await answer(entryId, true);
-    expect((await loadProgress(entryId))?.masteryScore).toBe(MASTERY_SCORE_TARGET);
+    for (let i = 0; i < masteryTarget() + 3; i += 1) await answer(entryId, true);
+    expect((await loadProgress(entryId))?.masteryScore).toBe(masteryTarget());
   });
 
   it('does not count a second-attempt or revealed answer as clean', async () => {
@@ -246,7 +246,7 @@ describe('quiz score', () => {
     }
 
     const stored = await loadProgress(entryId);
-    expect(stored?.masteryScore).toBeGreaterThanOrEqual(MASTERY_SCORE_TARGET);
+    expect(stored?.masteryScore).toBeGreaterThanOrEqual(masteryTarget());
     expect(stored?.srs.status).toBe('mastered');
   });
 

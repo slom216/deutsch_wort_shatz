@@ -56,6 +56,16 @@
   color: var(--color-text-muted);
 }
 
+/* A German sentence using the word, shown as context on German→English cards. */
+.exercise__example {
+  margin-top: calc(-1 * var(--space-2));
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
 .exercise__label {
   display: block;
   font-size: var(--text-sm);
