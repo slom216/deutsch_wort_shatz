@@ -1,6 +1,7 @@
 {
   "name": "deutsch-wort-shatz",
   "private": true,
+  "license": "MIT",
   "version": "0.1.0",
   "type": "module",
   "description": "Deutsch Wort Shatz \u2014 a frontend-only German vocabulary trainer for CEFR levels A1, A2 and B1.",
