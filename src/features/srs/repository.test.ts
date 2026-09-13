@@ -1,11 +1,14 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   introduceEntry,
   loadAllProgress,
   loadProgress,
+  loadQueueableProgress,
   recordReview,
 } from './repository';
+import { skipEntry } from './skipped';
+import { LEARNING_STEPS_DAYS } from './scheduler';
 import { masteryTarget } from './learningMode';
 import { dueEntries, queueCounts } from './queue';
 import { db, VocabularyLearningDatabase } from '@/features/persistence/db';
@@ -42,9 +45,15 @@ async function answer(
   });
 }
 
+vi.mock('@/content/vocabulary/registry', () => ({
+  loadSearchIndex: () =>
+    Promise.resolve([{ id: 'a1-0001-hallo' }, { id: 'a1-0002-ich' }, { id: 'a1-0003-sein' }]),
+}));
+
 beforeEach(async () => {
   await db.entryProgress.clear();
   await db.exerciseHistory.clear();
+  await db.skippedEntries.clear();
 });
 
 describe('SRS repository', () => {
@@ -232,22 +241,21 @@ describe('quiz score', () => {
     expect((await answer(entryId, true, { revealed: true })).progress.masteryScore).toBe(1);
   });
 
-  it('masters an entry once the score reaches the target', async () => {
-    // The score only promotes an entry that has reached `review`; a word still in its
-    // learning steps is not mastered by four quick answers on the same day.
+  it('does not master an entry on the score alone', async () => {
+    // Every answer on its due date, so the word graduates to review with the full score,
+    // but without history there is no §22 evidence.
     let at = NOW;
-    for (let i = 0; i < 8; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       const result = await answer(entryId, true, {
         exercise: productionExercise,
         reviewedAt: at,
       });
-      if (result.progress.srs.status === 'mastered') break;
       at = new Date(at.getTime() + result.progress.srs.intervalDays * 86_400_000);
     }
 
     const stored = await loadProgress(entryId);
-    expect(stored?.masteryScore).toBeGreaterThanOrEqual(masteryTarget());
-    expect(stored?.srs.status).toBe('mastered');
+    expect(stored?.masteryScore).toBe(masteryTarget());
+    expect(stored?.srs.status).toBe('review');
   });
 
   it('averages response time rather than reacting to the last answer', async () => {
@@ -262,5 +270,71 @@ describe('quiz score', () => {
     // its full 0.20 weight. Averaged, the mean is 5s — under expectation — so the term
     // barely moves. Difficulty gates both scheduling and mastery, so this matters.
     expect(afterOneSlow - steady).toBeLessThan(0.1);
+  });
+});
+
+describe('one scheduling step per scheduled review (§20)', () => {
+  const entryId = 'a1-0001-hallo';
+  const minutes = (n: number) => new Date(NOW.getTime() + n * 60_000);
+
+  it('advances one step for several correct answers within minutes', async () => {
+    await answer(entryId, true, { reviewedAt: minutes(0) });
+    for (let i = 1; i <= 5; i += 1) {
+      await answer(entryId, true, { exercise: productionExercise, reviewedAt: minutes(i) });
+    }
+
+    const stored = await loadProgress(entryId);
+    expect(stored?.srs.intervalDays).toBe(LEARNING_STEPS_DAYS[0]);
+    expect(stored?.srs.repetitions).toBe(1);
+    expect(stored?.totalAttempts).toBe(6);
+
+    // Once due, the next production success takes exactly the next step.
+    const due = await answer(entryId, true, {
+      exercise: productionExercise,
+      reviewedAt: minutes(11),
+    });
+    expect(due.progress.srs.intervalDays).toBe(LEARNING_STEPS_DAYS[1]);
+  });
+
+  it('still counts a failure on a word that is not due', async () => {
+    await answer(entryId, true, { exercise: productionExercise, reviewedAt: minutes(0) });
+    await answer(entryId, true, { exercise: productionExercise, reviewedAt: minutes(11) });
+    const failed = await answer(entryId, false, { reviewedAt: minutes(12) });
+    expect(failed.progress.srs.lapses).toBe(1);
+    expect(failed.progress.srs.intervalDays).toBe(LEARNING_STEPS_DAYS[0]);
+  });
+
+  it('records a self-assessed answer without score or schedule gain', async () => {
+    const result = await answer(entryId, true, {
+      exercise: { type: 'speaking', isProduction: true, requiresTypedInput: false },
+      selfAssessed: true,
+    });
+    expect(result.progress.totalAttempts).toBe(1);
+    expect(result.progress.masteryScore).toBe(0);
+    expect(result.progress.srs.status).toBe('new');
+    expect(result.progress.srs.repetitions).toBe(0);
+  });
+});
+
+describe('unreadable and unreviewable progress', () => {
+  it('skips a malformed row instead of throwing', async () => {
+    await answer('a1-0001-hallo', true);
+    await db.entryProgress.put({ entryId: 'a1-0002-ich', srs: null } as never);
+
+    expect((await loadAllProgress()).map((row) => row.entryId)).toEqual(['a1-0001-hallo']);
+    expect(await loadProgress('a1-0002-ich')).toBeUndefined();
+    await expect(answer('a1-0002-ich', true)).resolves.toBeDefined();
+  });
+
+  it('keeps unknown ids and skipped words out of the queue', async () => {
+    await answer('a1-0001-hallo', false);
+    await answer('a1-0002-ich', false);
+    await answer('zz-9999-nope', false);
+    await skipEntry('a1-0002-ich');
+
+    const { known, queueable, totalEntries } = await loadQueueableProgress();
+    expect(totalEntries).toBe(3);
+    expect(known.map((row) => row.entryId).sort()).toEqual(['a1-0001-hallo', 'a1-0002-ich']);
+    expect(queueable.map((row) => row.entryId)).toEqual(['a1-0001-hallo']);
   });
 });

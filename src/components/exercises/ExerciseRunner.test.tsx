@@ -121,15 +121,34 @@ describe('ExerciseRunner', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Der Tag ist lang.');
   });
 
-  it('announces feedback in a live region without moving focus', async () => {
+  it('announces feedback in a live region and moves focus to Continue', async () => {
     const user = userEvent.setup();
     render(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={vi.fn()} />);
 
     await user.click(screen.getByRole('radio', { name: 'day' }));
 
-    const status = screen.getByRole('status');
-    expect(status).toHaveAttribute('aria-live', 'polite');
-    expect(document.activeElement).not.toBe(status);
+    expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite');
+    expect(screen.getByRole('button', { name: /continue/i })).toHaveFocus();
+  });
+
+  it('focuses the first option of each new exercise', () => {
+    const { rerender } = render(
+      <ExerciseRunner exercise={fixtures.typedTranslation} onComplete={vi.fn()} />,
+    );
+    rerender(<ExerciseRunner exercise={fixtures.multipleChoice} onComplete={vi.fn()} />);
+
+    expect(screen.getAllByRole('radio')[0]).toHaveFocus();
+  });
+
+  it('passes a self-assessed speaking answer on as self-assessed', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    render(<ExerciseRunner exercise={fixtures.speaking} onComplete={onComplete} />);
+
+    await user.click(screen.getByRole('button', { name: /i said it correctly/i }));
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(lastOutcome(onComplete).selfAssessed).toBe(true);
   });
 
   it('answers with a number key and continues with Enter', async () => {
@@ -146,6 +165,8 @@ describe('ExerciseRunner', () => {
 
     await user.keyboard('{Enter}');
 
+    // Focus is on Continue: the button and the window handler must not both fire.
+    expect(onComplete).toHaveBeenCalledTimes(1);
     const outcome = lastOutcome(onComplete);
     expect(outcome.result.correct).toBe(true);
     expect(outcome.attempts).toBe(1);

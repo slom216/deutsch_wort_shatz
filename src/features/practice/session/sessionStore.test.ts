@@ -4,6 +4,7 @@ import { loadSessionHistory, loadSessionRecord, useSessionStore } from './sessio
 import { db } from '@/features/persistence/db';
 import { loadPilotDataset } from '@/test/fixtures/pilotDataset';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
+import { exerciseXp } from '@/features/gamification/xp';
 
 let pilot: readonly VocabularyEntry[];
 
@@ -297,5 +298,91 @@ describe('resuming after a reload', () => {
 
     expect(expected).toBeGreaterThan(0);
     expect(record?.xpEarned).toBe(expected);
+  });
+});
+
+describe('answer integrity', () => {
+  const answerOf = (exercise: { id: string; entryId: string }, extra = {}) => ({
+    exerciseId: exercise.id,
+    entryId: exercise.entryId,
+    result: { correct: true, issues: [], submittedAnswer: 'x', expectedAnswer: 'x' },
+    attempts: 1,
+    revealed: false,
+    hintUsed: false,
+    responseMs: 700,
+    ...extra,
+  });
+
+  beforeEach(async () => {
+    await db.entryProgress.clear();
+  });
+
+  it('resyncs instead of overwriting when another tab already answered the exercise', async () => {
+    await startSession('two-tabs');
+    const [first] = useSessionStore.getState().exercises;
+    // The other tab's answer, already committed.
+    await db.exerciseHistory.put({
+      id: `two-tabs:${first!.id}`,
+      entryId: first!.entryId,
+      sessionId: 'two-tabs',
+      exerciseType: first!.type,
+      correct: false,
+      firstAttempt: true,
+      revealed: false,
+      hintUsed: false,
+      responseMs: 1,
+      grade: 0,
+      errorCategories: [],
+      answeredAt: new Date().toISOString(),
+      xpAwarded: 0,
+    });
+
+    const recorded = await useSessionStore.getState().recordAnswer(answerOf(first!));
+
+    expect(recorded).toBe(false);
+    expect(await db.entryProgress.count()).toBe(0);
+    expect((await loadSessionHistory('two-tabs'))[0]?.correct).toBe(false);
+    expect(useSessionStore.getState().currentIndex).toBe(1);
+  });
+
+  it('awards half XP for a self-assessed answer', async () => {
+    await startSession('self');
+    const [first] = useSessionStore.getState().exercises;
+    await useSessionStore.getState().recordAnswer(answerOf(first!, { selfAssessed: true }));
+
+    const full = exerciseXp({ exerciseType: first!.type, correct: true, revealed: false });
+    expect((await loadSessionHistory('self'))[0]?.xpAwarded).toBe(Math.floor(full / 2));
+  });
+
+  it('stores nothing for a fixed session with no exercises', async () => {
+    await useSessionStore.getState().start({ sessionId: 'empty', mode: 'review', entries: [] });
+    expect(useSessionStore.getState().exercises).toHaveLength(0);
+    expect(await loadSessionRecord('empty')).toBeUndefined();
+  });
+
+  it('marks an older active session of the same mode as abandoned', async () => {
+    await startSession('older');
+    useSessionStore.getState().reset();
+    await startSession('newer');
+
+    expect((await loadSessionRecord('older'))?.status).toBe('abandoned');
+    expect((await loadSessionRecord('newer'))?.status).toBe('active');
+  });
+
+  it('does not count the unanswered exercise when a stream is finished', async () => {
+    await startSession('source');
+    const [first, second] = useSessionStore.getState().exercises;
+    useSessionStore.getState().reset();
+
+    const store = useSessionStore.getState();
+    await store.start({ sessionId: 'finished-stream', mode: 'continuous', entries: [] });
+    await store.serve(first!);
+    await store.recordAnswer(answerOf(first!));
+    await store.serve(second!);
+    await useSessionStore.getState().finish();
+
+    const record = await loadSessionRecord('finished-stream');
+    expect(record?.plannedExerciseCount).toBe(1);
+    expect(record?.completedExerciseCount).toBe(1);
   });
 });

@@ -4,33 +4,40 @@ import { localDateKey, localDaysBetween } from '@/features/srs/localDate';
 /**
  * Streaks and daily goals (§23).
  *
- * A day counts towards the streak when the learner completes at least 10 graded exercises
- * or earns at least 50 XP, measured against the **local** calendar date.
+ * A day counts towards the streak when the learner gets at least 10 answers right or earns
+ * at least 50 XP, measured against the **local** calendar date. Wrong answers do not count:
+ * clicking through a session should not keep a streak alive.
  *
  * The streak is derived from stored history rather than kept as a running counter, so it
  * cannot drift, cannot be double-counted by a refresh, and repairs itself if history is
- * imported or edited.
+ * imported or edited. Streak freezes are derived the same way (see `streakFromActivity`).
  */
 
 export const STREAK_MIN_EXERCISES = 10;
 export const STREAK_MIN_XP = 50;
+/** One freeze is earned for every this many study days in a row. */
+export const FREEZE_EARN_DAYS = 7;
+export const MAX_FREEZES = 2;
 
 export interface DailyActivity {
   /** Local date, `YYYY-MM-DD`. */
   readonly date: string;
+  /** Correct answers that day. */
   readonly exercises: number;
   readonly xp: number;
   readonly countsForStreak: boolean;
 }
 
+type ActivityRow = Pick<ExerciseHistory, 'answeredAt' | 'correct' | 'xpAwarded'>;
+
 /** Groups history into local days. Newest last. */
-export function dailyActivity(history: readonly ExerciseHistory[]): DailyActivity[] {
+export function dailyActivity(history: readonly ActivityRow[]): DailyActivity[] {
   const byDay = new Map<string, { exercises: number; xp: number }>();
 
   for (const row of history) {
     const key = localDateKey(new Date(row.answeredAt));
     const bucket = byDay.get(key) ?? { exercises: 0, xp: 0 };
-    bucket.exercises += 1;
+    if (row.correct) bucket.exercises += 1;
     bucket.xp += row.xpAwarded;
     byDay.set(key, bucket);
   }
@@ -52,79 +59,71 @@ export interface StreakState {
   readonly todayCounts: boolean;
   /** Local date of the most recent qualifying day, or null. */
   readonly lastQualifyingDate: string | null;
+  /** Streak freezes held right now, after covering any days missed since the last study day. */
+  readonly freezes: number;
+}
+
+export function computeStreak(
+  history: readonly ActivityRow[],
+  now: Date = new Date(),
+): StreakState {
+  return streakFromActivity(dailyActivity(history), now);
 }
 
 /**
- * Current and longest streak.
+ * Current and longest streak, with earned streak freezes.
  *
- * `freezesAvailable` lets a single missed day be bridged (the streak-freeze deliverable):
- * one freeze covers one gap day, and freezes are consumed oldest-gap-first.
+ * Walking the qualifying days in order: every `FREEZE_EARN_DAYS` study days in a row earn a
+ * freeze (at most `MAX_FREEZES` held). A gap of missed days is bridged when enough freezes
+ * are held, and bridging spends them for good; otherwise the run starts again and the
+ * freezes are kept. Current and longest streak come from the same walk, so a bridged run
+ * counts the same once it is no longer current.
  */
-export function computeStreak(
-  history: readonly ExerciseHistory[],
+export function streakFromActivity(
+  activity: readonly DailyActivity[],
   now: Date = new Date(),
-  freezesAvailable = 0,
 ): StreakState {
-  const qualifying = dailyActivity(history).filter((day) => day.countsForStreak);
-
-  if (qualifying.length === 0) {
-    return { current: 0, longest: 0, todayCounts: false, lastQualifyingDate: null };
+  const qualifying = activity.filter((day) => day.countsForStreak);
+  const last = qualifying[qualifying.length - 1];
+  if (!last) {
+    return { current: 0, longest: 0, todayCounts: false, lastQualifyingDate: null, freezes: 0 };
   }
 
-  const dates = qualifying.map((day) => new Date(`${day.date}T12:00:00`));
-  const today = localDateKey(now);
-  const todayCounts = qualifying.some((day) => day.date === today);
+  let run = 0;
+  let studyRun = 0;
+  let freezes = 0;
+  let longest = 0;
+  let previous: Date | null = null;
 
-  /* ---- longest run of consecutive local days ---- */
-  let longest = 1;
-  let run = 1;
-  for (let i = 1; i < dates.length; i += 1) {
-    const gap = localDaysBetween(dates[i - 1] as Date, dates[i] as Date);
-    run = gap === 1 ? run + 1 : 1;
-    longest = Math.max(longest, run);
-  }
-
-  /* ---- current streak, walking backwards from today ---- */
-  const last = dates[dates.length - 1] as Date;
-  const daysSinceLast = localDaysBetween(last, now);
-
-  // More than one day since the last qualifying day (allowing for freezes) breaks it.
-  let freezes = freezesAvailable;
-  if (daysSinceLast > 1) {
-    const missed = daysSinceLast - 1;
-    if (missed > freezes) {
-      return {
-        current: 0,
-        longest,
-        todayCounts: false,
-        lastQualifyingDate: last ? localDateKey(last) : null,
-      };
-    }
-    freezes -= missed;
-  }
-
-  let current = 1;
-  for (let i = dates.length - 1; i > 0; i -= 1) {
-    const gap = localDaysBetween(dates[i - 1] as Date, dates[i] as Date);
-    if (gap === 1) {
-      current += 1;
-      continue;
-    }
-    // A gap larger than one day may be bridged by the remaining freezes.
-    const missed = gap - 1;
-    if (missed > 0 && missed <= freezes) {
+  for (const day of qualifying) {
+    const date = new Date(`${day.date}T12:00:00`);
+    const missed = previous ? localDaysBetween(previous, date) - 1 : 0;
+    if (previous === null || missed > freezes) {
+      run = 1;
+      studyRun = 1;
+    } else if (missed === 0) {
+      run += 1;
+      studyRun += 1;
+    } else {
       freezes -= missed;
-      current += 1;
-      continue;
+      run += 1;
+      studyRun = 1;
     }
-    break;
+    if (studyRun % FREEZE_EARN_DAYS === 0) freezes = Math.min(MAX_FREEZES, freezes + 1);
+    longest = Math.max(longest, run);
+    previous = date;
   }
+
+  // Today and yesterday miss nothing; a clock set back before the last day misses nothing.
+  const missedSinceLast = Math.max(0, localDaysBetween(previous as Date, now) - 1);
+  const alive = missedSinceLast <= freezes;
 
   return {
-    current,
-    longest: Math.max(longest, current),
-    todayCounts,
-    lastQualifyingDate: localDateKey(last),
+    current: alive ? run : 0,
+    longest,
+    todayCounts: last.date === localDateKey(now),
+    lastQualifyingDate: last.date,
+    freezes: alive ? freezes - missedSinceLast : freezes,
   };
 }
 
@@ -135,15 +134,15 @@ export interface DailyGoalState {
   readonly fraction: number;
 }
 
-/** Progress towards today's goal, counted in graded exercises (§23). */
+/** Progress towards today's goal, counted in correct answers (§23). */
 export function dailyGoalState(
-  history: readonly ExerciseHistory[],
+  history: readonly ActivityRow[],
   goal: number,
   now: Date = new Date(),
 ): DailyGoalState {
   const today = localDateKey(now);
   const completed = history.filter(
-    (row) => localDateKey(new Date(row.answeredAt)) === today,
+    (row) => row.correct && localDateKey(new Date(row.answeredAt)) === today,
   ).length;
   return {
     goal,

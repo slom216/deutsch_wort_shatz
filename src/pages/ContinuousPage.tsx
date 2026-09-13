@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { ExerciseRunner } from '@/components/exercises/ExerciseRunner';
+import { ExerciseRunner, type ExerciseOutcome } from '@/components/exercises/ExerciseRunner';
 import { LevelBadge } from '@/components/gamification/LevelBadge';
 import { CEFR_LEVELS } from '@/content/vocabulary/frequencyBands';
 import { useLiveLevel } from '@/features/gamification/useLiveLevel';
@@ -58,6 +58,12 @@ export default function ContinuousPage(): ReactNode {
   const completion = useMemo(() => levelCompletion(progress), [progress]);
 
   const [levelUp, setLevelUp] = useState<number | null>(null);
+  /** An answer whose save failed, kept so it can be sent again. */
+  const [unsaved, setUnsaved] = useState<ExerciseOutcome | null>(null);
+  const submit = (outcome: ExerciseOutcome): void => {
+    setUnsaved(null);
+    stream.answer(outcome).catch(() => setUnsaved(outcome));
+  };
   const previousLevel = useRef<number | null>(null);
   useEffect(() => {
     if (!ready) return undefined;
@@ -168,6 +174,15 @@ export default function ContinuousPage(): ReactNode {
         </p>
       ) : null}
 
+      {unsaved ? (
+        <div role="alert" className="page-alert">
+          <p>Your answer could not be saved, so the stream cannot move on yet.</p>
+          <button type="button" className="page-action" onClick={() => submit(unsaved)}>
+            Try again
+          </button>
+        </div>
+      ) : null}
+
       {stream.exercise ? (
         <ExerciseRunner
           key={stream.exercise.id}
@@ -175,9 +190,7 @@ export default function ContinuousPage(): ReactNode {
           // The score picks the format and decides whether the word comes back, so it goes
           // on screen beside the question rather than only in the database.
           progressLabel={`Exercise ${answers.length + 1} · score ${stream.masteryScore}/${masteryTarget()}`}
-          onComplete={(outcome) => {
-            void stream.answer(outcome);
-          }}
+          onComplete={submit}
           onSkip={() => {
             void stream.skip();
           }}

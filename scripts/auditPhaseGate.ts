@@ -162,17 +162,6 @@ function main() {
     ui.ok('every generated exercise is schema-valid');
   }
 
-  /* ---- editorial corrections still awaiting sign-off ---- */
-  const corrected = segment.filter((entry) => entry.editorialCorrection);
-  if (corrected.length > 0) {
-    ui.warn(`${corrected.length} entries rely on an unreviewed editorial correction`);
-    printSample(
-      corrected.map((e) => `${e.rank}: ${e.german} — ${e.editorialCorrection.reason}`),
-      5,
-    );
-    warnings.push(...corrected.map((e) => e.id));
-  }
-
   finish(`audit:phase ${from}-${to}`, errors, warnings);
 }
 

@@ -8,13 +8,17 @@ interface StatCardProps {
   readonly hint?: string;
 }
 
-/** Single figure with its label. Used by the dashboard and progress screens. */
+/**
+ * Single figure with its label. Used by the dashboard and progress screens.
+ *
+ * Renders a `div` of `dt`/`dd` pairs, so it must sit directly inside a `<dl>`.
+ */
 export function StatCard({ label, value, hint }: StatCardProps): ReactNode {
   return (
     <div className="stat-card">
       <dt className="stat-card__label">{label}</dt>
       <dd className="stat-card__value">{value}</dd>
-      {hint ? <p className="stat-card__hint">{hint}</p> : null}
+      {hint ? <dd className="stat-card__hint">{hint}</dd> : null}
     </div>
   );
 }

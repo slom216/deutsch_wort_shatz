@@ -13,6 +13,7 @@ import {
   foldEszett,
   foldUmlautVariants,
   fullyNormalize,
+  GERMAN_ARTICLES,
   sameTokenMultiset,
   splitLeadingArticle,
   stripPunctuation,
@@ -41,13 +42,23 @@ export interface EvaluationOptions {
   readonly answerRole?: AnswerRole;
   /** Set when the exercise explicitly requires the article, e.g. "noun with article". */
   readonly requireArticle?: boolean;
+  /**
+   * Real words from the vocabulary pool that look like the answer. Typing one of them exactly
+   * is a different word: never accepted through a relaxed fold and never a near miss. A word
+   * listed here *and* in `accepted` is another entry with the prompt's meaning: accepted, with
+   * a note naming the word the card asked for (`accepted[0]`).
+   */
+  readonly otherWords?: readonly string[];
 }
+
+/** Prefix of the issue that marks a typed answer as another real word. */
+const DIFFERENT_WORD = 'That is a different word';
 
 const MESSAGES: Record<ErrorCategory, string> = {
   wrongMeaning: 'That is not the expected answer.',
   missingArticle: 'German nouns are learned with their article.',
   wrongArticle: 'That is the wrong article.',
-  wrongCapitalization: 'German nouns must be capitalized.',
+  wrongCapitalization: 'Check the capitalization.',
   wrongPlural: 'That is not the correct plural form.',
   wrongConjugation: 'That is not the correct verb form.',
   missingUmlaut: 'Check the umlauts (ä, ö, ü).',
@@ -153,15 +164,42 @@ function diagnoseSurfaceIssues(
   return issues;
 }
 
+/** Words written with a capital that are not nouns: the formal "Sie" family. */
+const CAPITALIZED_PRONOUNS = new Set([
+  'sie',
+  'ihnen',
+  'ihr',
+  'ihre',
+  'ihren',
+  'ihrem',
+  'ihrer',
+  'ihres',
+]);
+
+/** Names the first word whose case is wrong. Only called when the two differ in folds alone. */
 function capitalizationMessage(submitted: string, expected: string): string {
-  const expectedWord = expected.split(' ').find((word) => /^[A-ZÄÖÜ]/u.test(word));
-  const submittedHasLowerNoun =
-    expectedWord !== undefined &&
-    submitted.toLocaleLowerCase('de-DE').includes(foldCase(expectedWord));
-  if (expectedWord && submittedHasLowerNoun) {
-    return `German nouns must be capitalized: ${expectedWord}.`;
+  const submittedWords = submitted.split(' ');
+  const expectedWords = expected.split(' ');
+  for (const [index, want] of expectedWords.entries()) {
+    const got = submittedWords[index];
+    if (got === undefined || got === want || foldCase(got) !== foldCase(want)) continue;
+    const word = stripPunctuation(want);
+    const lower = foldCase(word);
+    if (/^\p{Ll}/u.test(want)) {
+      // "Die Minute": a capital article at the start reads as a sentence start, not a mistake.
+      if (index === 0 && expectedWords.length > 1 && isArticle(lower)) continue;
+      return `${word} is written in lower case.`;
+    }
+    if (isArticle(lower) || CAPITALIZED_PRONOUNS.has(lower)) {
+      return `${word} is written with a capital letter here.`;
+    }
+    return `German nouns must be capitalized: ${word}.`;
   }
   return MESSAGES.wrongCapitalization;
+}
+
+function isArticle(word: string): boolean {
+  return (GERMAN_ARTICLES as readonly string[]).includes(word);
 }
 
 function umlautMessage(expected: string): string {
@@ -188,11 +226,12 @@ function diagnoseStructuralIssues(
 
   const articleMatters = strictness.article || options.requireArticle || answerRole === 'article';
 
-  if (articleMatters && expectedParts.article) {
+  if (expectedParts.article) {
     if (!submittedParts.article) {
-      issues.push(
-        issue('missingArticle', `The article is missing: it is "${expectedParts.article}".`),
-      );
+      if (articleMatters)
+        issues.push(
+          issue('missingArticle', `The article is missing: it is "${expectedParts.article}".`),
+        );
     } else if (submittedParts.article !== expectedParts.article) {
       issues.push(
         issue(
@@ -295,29 +334,48 @@ export function evaluateAnswer(
     return result;
   };
 
-  const relaxedSubmitted = relax(cleaned);
+  const otherWords = new Set(options.otherWords ?? []);
+  // Typing another real word is never "close enough" (drücken for drucken, Sie for sie).
+  const typedOtherWord = otherWords.has(cleaned) && !accepted.includes(cleaned);
+  const articleOptional =
+    !strictness.article && !options.requireArticle && options.answerRole !== 'article';
+
   for (const candidate of accepted) {
-    if (relax(candidate) === relaxedSubmitted) {
-      return {
-        correct: true,
-        issues: [],
-        submittedAnswer: cleaned,
-        expectedAnswer: candidate,
-      };
-    }
+    const submittedForm = lowerLeadingArticle(cleaned, candidate);
+    // Article not significant: the bare noun matches the noun without its article.
+    // Only before a capitalized noun, so "ist gut" never passes for the phrase "das ist gut".
+    const candidateRest = splitLeadingArticle(candidate).rest;
+    const target =
+      articleOptional &&
+      !splitLeadingArticle(submittedForm).article &&
+      /^\p{Lu}/u.test(candidateRest)
+        ? candidateRest
+        : candidate;
+    if (relax(target) !== relax(submittedForm)) continue;
+    const exact = stripPunctuation(submittedForm) === stripPunctuation(target);
+    if (!exact && typedOtherWord) continue;
+    return {
+      correct: true,
+      issues: acceptanceNotes(candidate, target, exact, accepted, otherWords, options.language),
+      submittedAnswer: cleaned,
+      expectedAnswer: candidate,
+    };
   }
 
   const expected = chooseClosest(cleaned, accepted);
+  const differentWord = typedOtherWord
+    ? [issue(roleToCategory(options.answerRole), `${DIFFERENT_WORD}: "${cleaned}".`)]
+    : [];
 
   // Surface-only difference: the two strings agree once every fold is applied.
   if (fullyNormalize(cleaned) === fullyNormalize(expected)) {
     const surfaceIssues = diagnoseSurfaceIssues(cleaned, expected, strictness);
+    const issues = [...differentWord, ...surfaceIssues];
     return {
       correct: false,
       // Fall back to a meaning issue if every differing dimension was non-strict, which
       // would otherwise leave the learner with no explanation at all.
-      issues:
-        surfaceIssues.length > 0 ? surfaceIssues : [issue(roleToCategory(options.answerRole))],
+      issues: issues.length > 0 ? issues : [issue(roleToCategory(options.answerRole))],
       submittedAnswer: cleaned,
       expectedAnswer: expected,
     };
@@ -335,7 +393,7 @@ export function evaluateAnswer(
 
   // Surface issues are reported alongside structural ones only when they are genuinely
   // separate, e.g. a missing article *and* a lowercase noun.
-  const merged = [...structuralIssues];
+  const merged = [...differentWord, ...structuralIssues];
   for (const surfaceIssue of surfaceIssues) {
     if (!merged.some((existing) => existing.category === surfaceIssue.category)) {
       merged.push(surfaceIssue);
@@ -350,19 +408,67 @@ export function evaluateAnswer(
   };
 }
 
-/** A near miss gets one more try instead of a lost word: at most this many edits away. */
-export const NEAR_MISS_DISTANCE = 2;
+/** "Die Minute" for "die Minute": a sentence-start capital on the article is not a mistake. */
+function lowerLeadingArticle(submitted: string, candidate: string): string {
+  const typed = splitLeadingArticle(submitted).article;
+  if (!typed || !candidate.startsWith(`${typed} `)) return submitted;
+  return `${typed}${submitted.slice(typed.length)}`;
+}
+
+/**
+ * Notes on an accepted answer: another word with the same meaning names the one the card
+ * asked for, and a German spelling that only matched through a relaxed fold shows the real one.
+ */
+function acceptanceNotes(
+  candidate: string,
+  target: string,
+  exact: boolean,
+  accepted: readonly string[],
+  otherWords: ReadonlySet<string>,
+  language: AnswerLanguage,
+): EvaluationIssue[] {
+  const notes: EvaluationIssue[] = [];
+  const asked = accepted[0];
+  if (otherWords.has(candidate) && asked !== undefined && asked !== candidate) {
+    notes.push(
+      issue('wrongMeaning', `"${candidate}" is also right. This card asks for "${asked}".`),
+    );
+  }
+  if (!exact && language === 'de')
+    notes.push(issue(spellingCategory(target), `It is spelled "${target}".`));
+  return notes;
+}
+
+function spellingCategory(target: string): ErrorCategory {
+  if (/[äöüÄÖÜ]/u.test(target)) return 'missingUmlaut';
+  return /ß/u.test(target) ? 'ssInsteadOfEszett' : 'wrongCapitalization';
+}
+
+/** Answers up to this many letters (article aside) get one edit of slack; longer ones two. */
+export const SHORT_WORD_LENGTH = 6;
+
+export function nearMissDistance(expected: string): number {
+  return splitLeadingArticle(expected).rest.length <= SHORT_WORD_LENGTH ? 1 : 2;
+}
 
 /**
  * True when a wrong answer is a typo rather than a different word — close enough that
- * locking it in would punish spelling, not knowledge. Case is folded first, so a purely
- * capitalization mistake also earns the second chance.
+ * locking it in would punish spelling, not knowledge. Case is folded and ß written as ss
+ * first, so a capitalization or ß slip also earns the second chance. A wrong article and
+ * another real word are knowledge mistakes, never typos.
  */
 export function isNearMiss(result: EvaluationResult): boolean {
   if (result.correct) return false;
-  const submitted = foldCase(collapseWhitespace(result.submittedAnswer));
+  const knowledgeMistake = result.issues.some(
+    (found) => found.category === 'wrongArticle' || found.message.startsWith(DIFFERENT_WORD),
+  );
+  if (knowledgeMistake) return false;
+  const fold = (value: string): string => foldEszett(foldCase(collapseWhitespace(value)));
+  const submitted = fold(result.submittedAnswer);
   if (submitted.length === 0) return false;
-  return editDistance(submitted, foldCase(result.expectedAnswer)) <= NEAR_MISS_DISTANCE;
+  return (
+    editDistance(submitted, fold(result.expectedAnswer)) <= nearMissDistance(result.expectedAnswer)
+  );
 }
 
 /**

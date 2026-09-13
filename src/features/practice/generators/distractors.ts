@@ -1,5 +1,6 @@
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import type { Random } from '../random';
+import { headword, sharesGloss } from './entryHelpers';
 
 /**
  * Distractor selection (§15).
@@ -47,8 +48,14 @@ export function selectDistractors<T>(options: DistractorOptions<T>): T[] {
   const { target, pool, count, random, valueOf, exclude = [], filter } = options;
 
   const taken = new Set<string>(exclude.map((value) => JSON.stringify(value)));
+  // A candidate that can mean the same, or is spelled the same, would be a second right answer.
+  const targetHeadword = headword(target);
   const eligible = pool.filter(
-    (entry) => entry.id !== target.id && (filter ? filter(entry) : true),
+    (entry) =>
+      entry.id !== target.id &&
+      headword(entry) !== targetHeadword &&
+      !sharesGloss(entry, target) &&
+      (filter ? filter(entry) : true),
   );
 
   // Prefer the target's own level, but only while that still leaves enough candidates —
@@ -329,9 +336,23 @@ function keystrokeSlips(correct: string): string[] {
 }
 
 /** The rules, grouped, so no family is drowned out by one that happens to match more often. */
-function families(correct: string, blocked: Set<string>): string[][] {
+/** The word without its article, lowercased, for comparing against real words. */
+const bareLower = (value: string): string => value.replace(ARTICLE_PREFIX, '').toLowerCase();
+
+function families(
+  correct: string,
+  blocked: Set<string>,
+  realWords: ReadonlySet<string> = new Set(),
+): string[][] {
+  const correctWord = bareLower(correct);
+  // "das Ende" → "das Ente" is not a misspelling but a duck: a candidate whose word is another
+  // real word is never offered. An article swap keeps the word itself, so it is unaffected.
   const allow = (values: string[]): string[] =>
-    values.filter((value) => !blocked.has(value.toLowerCase()));
+    values.filter(
+      (value) =>
+        !blocked.has(value.toLowerCase()) &&
+        (bareLower(value) === correctWord || !realWords.has(bareLower(value))),
+    );
 
   const ruled = [confusions(correct), articleSwaps(correct), endingSwaps(correct)]
     .map(allow)
@@ -353,17 +374,19 @@ export function nearMissCandidates(correct: string): string[] {
  *
  * The accepted answers belong in `taken`, along with the plural and any alternate article —
  * the article and ending rules can otherwise land on a form that is genuinely right.
+ * `realWords` holds other entries' words (lowercase, without article) the result must not be.
  */
 export function nearMiss(
   correct: string,
   random: Random,
   taken: readonly string[] = [],
+  realWords: ReadonlySet<string> = new Set(),
 ): string | null {
   const blocked = new Set(taken.map((value) => value.toLowerCase()));
   blocked.add(correct.toLowerCase());
 
   // A family first, then a candidate within it: picking straight from the pooled list would
   // hand almost every question to the spelling rules, which match far more often.
-  const family = random.pick(families(correct, blocked));
+  const family = random.pick(families(correct, blocked, realWords));
   return family === undefined ? null : (random.pick(family) ?? null);
 }

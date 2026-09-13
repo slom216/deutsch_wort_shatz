@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { resetAllProgress } from '@/features/persistence/db';
@@ -13,10 +13,37 @@ import {
   type ImportInspection,
   type ImportMode,
   type RepairReport,
+  type RepairStore,
 } from '@/features/persistence/transfer';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import '@/styles/lists.css';
 import './SettingsPage.css';
+
+const STORE_LABELS: Readonly<Record<RepairStore, string>> = {
+  entryProgress: 'progress record',
+  exerciseHistory: 'history row',
+  sessions: 'session',
+  settings: 'settings row',
+  xpEvents: 'XP award',
+  skippedEntries: 'skipped word',
+  achievements: 'achievement',
+};
+
+/** "2 unreadable history rows, 1 session and 3 records for words no longer in the vocabulary". */
+function describeRepair(report: RepairReport): string {
+  const parts = (Object.keys(report.invalid) as RepairStore[])
+    .filter((store) => report.invalid[store] > 0)
+    .map((store) => {
+      const count = report.invalid[store];
+      return `${count} unreadable ${STORE_LABELS[store]}${count === 1 ? '' : 's'}`;
+    });
+  if (report.unknownEntries > 0) {
+    parts.push(
+      `${report.unknownEntries} record${report.unknownEntries === 1 ? '' : 's'} for words no longer in the vocabulary`,
+    );
+  }
+  return parts.join(', ');
+}
 
 /**
  * Data management (§25).
@@ -36,6 +63,12 @@ export default function DataPage(): ReactNode {
   const [repair, setRepair] = useState<RepairReport | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [resetDone, setResetDone] = useState(false);
+  const confirmRef = useRef<HTMLDivElement | null>(null);
+
+  // Move focus into the confirmation so keyboard and screen-reader users land on the question.
+  useEffect(() => {
+    if (confirming) confirmRef.current?.focus();
+  }, [confirming]);
 
   const saveFile = (contents: string, filename: string): void => {
     const blob = new Blob([contents], { type: 'application/json' });
@@ -177,7 +210,8 @@ export default function DataPage(): ReactNode {
                   onChange={() => setMode('merge')}
                 />
                 <label htmlFor="mode-merge">
-                  Merge — keep what you have, add anything new. Never loses reviews.
+                  Merge — keep what you have, including your settings, and add anything new. Never
+                  loses reviews.
                 </label>
               </div>
               <div className="settings-field--checkbox">
@@ -220,12 +254,12 @@ export default function DataPage(): ReactNode {
       </section>
 
       {/* ---------------------------------------------------------- repair */}
-      <section className="settings-section" aria-labelledby="data-repair">
-        <h2 id="data-repair">Repair database</h2>
+      <section className="settings-section" id="data-repair" aria-labelledby="data-repair-title">
+        <h2 id="data-repair-title">Repair database</h2>
         <p>
-          Checks every stored record against its schema. Repair <strong>deletes</strong> the records
-          it cannot read, so it reports what it found first and downloads a backup before removing
-          anything (§24: progress is never deleted silently).
+          Checks every stored record against its schema, and looks for progress on words that are no
+          longer in the vocabulary. Repair <strong>deletes</strong> those records, so it reports
+          what it found first and downloads a backup before removing anything.
         </p>
 
         {!repairPreview ? (
@@ -246,7 +280,7 @@ export default function DataPage(): ReactNode {
             <p role="status">
               {repairPreview.ok
                 ? 'No problems found. Every stored record is valid — nothing to repair.'
-                : `Found ${repairPreview.removedProgress} unreadable progress record(s) and ${repairPreview.removedHistory} unreadable history row(s). Repairing deletes them permanently.`}
+                : `Found ${describeRepair(repairPreview)}. Repairing deletes them permanently.`}
             </p>
             <div className="data-reset__actions">
               {repairPreview.ok ? null : (
@@ -274,8 +308,8 @@ export default function DataPage(): ReactNode {
 
         {repair ? (
           <p role="status" className="data-reset__done">
-            Removed {repair.removedProgress} corrupt progress records and {repair.removedHistory}{' '}
-            corrupt history rows. A backup of everything as it was has been downloaded.
+            {repair.ok ? 'Nothing needed removing.' : `Removed ${describeRepair(repair)}.`} A backup
+            of everything as it was has been downloaded.
           </p>
         ) : null}
       </section>
@@ -306,7 +340,16 @@ export default function DataPage(): ReactNode {
             Reset all progress…
           </button>
         ) : (
-          <div className="data-reset__confirm" role="alertdialog" aria-labelledby="reset-confirm">
+          <div
+            className="data-reset__confirm"
+            role="alertdialog"
+            aria-labelledby="reset-confirm"
+            ref={confirmRef}
+            tabIndex={-1}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') setConfirming(false);
+            }}
+          >
             <p id="reset-confirm">
               <strong>Are you sure?</strong> This deletes all of your learning data permanently.
               Consider exporting first.

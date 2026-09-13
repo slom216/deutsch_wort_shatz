@@ -1,17 +1,24 @@
+import allWords from '@/content/vocabulary/generated/words.json';
 import type { MultipleChoiceExercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import type { Random } from '../random';
 import { nearMiss, selectDistractors } from './distractors';
 import {
   acceptedGerman,
+  acceptedPlurals,
+  acceptedVerbForms,
+  asksForArticle,
+  bareNoun,
   firstExample,
   headword,
   isNounEntry,
   isPhraseEntry,
+  isProperNoun,
   isVerbEntry,
   pluralForm,
   primaryEnglish,
   strictnessFor,
+  withoutArticle,
 } from './entryHelpers';
 
 /**
@@ -62,12 +69,33 @@ const NEAR_MISS_CHANCE = 0.5;
  * otherwise happily offer "das Joghurt" as the wrong answer to "der Joghurt".
  */
 function alsoCorrect(entry: VocabularyEntry): string[] {
+  if (isVerbEntry(entry)) return acceptedVerbForms(entry, 'pastParticiple');
   if (!isNounEntry(entry)) return [];
-  const plural = pluralForm(entry);
   return [
-    ...(plural === null ? [] : [plural]),
-    ...(entry.alternateArticles ?? []).map((article) => `${article} ${entry.german}`),
+    ...acceptedPlurals(entry),
+    ...(entry.alternateArticles ?? []).map((article) => `${article} ${bareNoun(entry)}`),
   ];
+}
+
+const realWordCache = new WeakMap<readonly VocabularyEntry[], Set<string>>();
+
+/**
+ * Every word in the pool, lowercase and without article, singular and plural: a near miss must
+ * not be one of them. Cached per pool, which is built once per session. The target's own words
+ * are harmless here — its correct form passes `nearMiss` and its other right forms are `taken`.
+ */
+function realWordsOf(pool: readonly VocabularyEntry[]): Set<string> {
+  let words = realWordCache.get(pool);
+  if (!words) {
+    words = new Set([
+      ...allWords,
+      ...pool
+        .flatMap((other) => [bareNoun(other), pluralForm(other) ?? ''])
+        .map((word) => withoutArticle(word).toLowerCase()),
+    ]);
+    realWordCache.set(pool, words);
+  }
+  return words;
 }
 
 export interface GeneratorContext {
@@ -89,20 +117,30 @@ function assemble(
     hint?: string;
   },
 ): MultipleChoiceExercise | null {
-  const { entry, random, id } = context;
+  const { entry, pool, random, id } = context;
   // Fewer than two options cannot make a question.
   if (fields.distractors.length === 0) return null;
+
+  // A proper noun has no misspelling a learner would believe ("Türkei" → "Dürkei").
+  const nearMissAllowed =
+    GERMAN_OPTION_VARIANTS.includes(variant) &&
+    !(variant === 'englishToGerman' && isProperNoun(entry));
 
   // The near miss replaces a distractor rather than joining them, so the count stays at six.
   // Accepted answers are excluded from it: an option that is also right would be a trap.
   const near =
-    GERMAN_OPTION_VARIANTS.includes(variant) && random.next() < NEAR_MISS_CHANCE
-      ? nearMiss(fields.correct, random, [
-          ...fields.distractors,
-          ...entry.english,
-          ...acceptedGerman(entry),
-          ...alsoCorrect(entry),
-        ])
+    nearMissAllowed && random.next() < NEAR_MISS_CHANCE
+      ? nearMiss(
+          fields.correct,
+          random,
+          [
+            ...fields.distractors,
+            ...entry.english,
+            ...acceptedGerman(entry),
+            ...alsoCorrect(entry),
+          ],
+          realWordsOf(pool),
+        )
       : null;
   const distractors = near
     ? [near, ...fields.distractors].slice(0, OPTION_COUNT - 1)
@@ -184,14 +222,17 @@ export function generateMultipleChoice(
     }
 
     case 'article': {
-      if (!isNounEntry(entry) || !entry.article) return null;
+      if (!isNounEntry(entry) || !entry.article || !asksForArticle(entry)) return null;
+      const alsoRight: readonly string[] = entry.alternateArticles ?? [];
       return assemble(context, variant, {
         prompt: 'Which article does this noun take?',
-        question: entry.german,
+        question: bareNoun(entry),
         hint: primaryEnglish(entry),
         correct: entry.article,
-        // The article question always offers all three, so no distractor search is needed.
-        distractors: ['der', 'die', 'das'].filter((a) => a !== entry.article),
+        // The article question offers the three articles, minus any the noun also accepts.
+        distractors: ['der', 'die', 'das'].filter(
+          (a) => a !== entry.article && !alsoRight.includes(a),
+        ),
         isProduction: true,
       });
     }
@@ -210,7 +251,7 @@ export function generateMultipleChoice(
           count: OPTION_COUNT - 1,
           random,
           valueOf: (candidate) => pluralForm(candidate),
-          exclude: [correct],
+          exclude: acceptedPlurals(entry),
           filter: (candidate) => isNounEntry(candidate),
         }),
         isProduction: true,
@@ -248,7 +289,7 @@ export function generateMultipleChoice(
           random,
           valueOf: (candidate) =>
             isVerbEntry(candidate) ? (candidate.pastParticiple ?? null) : null,
-          exclude: [correct],
+          exclude: acceptedVerbForms(entry, 'pastParticiple'),
           filter: (candidate) => isVerbEntry(candidate),
         }),
         isProduction: true,
@@ -285,7 +326,7 @@ export function generateMultipleChoice(
 /** Variants this entry can actually support, in a sensible teaching order. */
 export function availableMultipleChoiceVariants(entry: VocabularyEntry): MultipleChoiceVariant[] {
   const variants: MultipleChoiceVariant[] = ['germanToEnglish', 'englishToGerman', 'wordClass'];
-  if (isNounEntry(entry) && entry.article) variants.push('article');
+  if (asksForArticle(entry)) variants.push('article');
   if (pluralForm(entry)) variants.push('plural');
   if (isVerbEntry(entry) && entry.pastParticiple) variants.push('verbForm');
   if (isPhraseEntry(entry)) variants.push('phraseContext');

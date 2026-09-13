@@ -51,7 +51,9 @@ async function totalXp(page: Page): Promise<number> {
       sumOf('exerciseHistory', 'xpAwarded'),
       sumOf('xpEvents', 'amount'),
     ]);
-    return exercises + bonuses;
+    // Wrong answers can take the raw sum below zero, but the app floors total XP at 0
+    // (repository.ts), so that is the figure a learner sees and the one to compare.
+    return Math.max(0, exercises + bonuses);
   });
 }
 
@@ -60,7 +62,18 @@ test('the achievements page lists all twenty achievements', async ({ page }) => 
   await expect(page.getByRole('heading', { level: 1, name: /^achievements$/i })).toBeVisible();
   await expect(page.getByText('0 / 20')).toBeVisible();
 
-  for (const name of ['First Word', 'A1 Master', 'Seven-Day Streak', '10,000 Correct Answers']) {
+  // All twenty can be earned: the skill achievements count the article, plural and verb-form
+  // variants the generators emit (unit-tested in gamification.test.ts), so "0 / 20" is a
+  // real starting point rather than a ceiling of 17.
+  for (const name of [
+    'First Word',
+    'A1 Master',
+    'Seven-Day Streak',
+    '10,000 Correct Answers',
+    'Article Expert',
+    'Plural Expert',
+    'Verb Expert',
+  ]) {
     await expect(page.getByText(name, { exact: true })).toBeVisible();
   }
 });

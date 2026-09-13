@@ -1,7 +1,9 @@
 /**
  * `npm run audit:duplicates`
  *
- * Duplicate IDs and duplicate example-sentence IDs are hard errors.
+ * Duplicate IDs, duplicate example-sentence IDs and example sentences shared by two entries
+ * are hard errors. (The loader already refuses duplicate source ids; this reports them for
+ * entries that reach it some other way.)
  *
  * Repeated German surface forms are *not* automatically errors: `sein` (to be) and
  * `sein` (his) are distinct lexical entries. §13 requires only that duplicate senses be
@@ -73,6 +75,26 @@ function main() {
     errors.push(...duplicateExampleIds);
   } else {
     ui.ok(`every example-sentence ID is unique (${exampleIds.size} examples)`);
+  }
+
+  /* ---- example sentences shared between entries ---- */
+  const entriesBySentence = new Map();
+  for (const entry of entries) {
+    for (const example of entry.exampleSentences ?? []) {
+      const key = example.german.trim().replace(/\s+/gu, ' ');
+      if (!entriesBySentence.has(key)) entriesBySentence.set(key, new Set());
+      entriesBySentence.get(key).add(entry.id);
+    }
+  }
+  const sharedSentences = [...entriesBySentence]
+    .filter(([, ids]) => ids.size > 1)
+    .map(([sentence, ids]) => `"${sentence}": ${[...ids].join(', ')}`);
+  if (sharedSentences.length > 0) {
+    ui.fail(`${sharedSentences.length} example sentences are shared by more than one entry`);
+    printSample(sharedSentences);
+    errors.push(...sharedSentences);
+  } else {
+    ui.ok('no example sentence is shared between entries');
   }
 
   /* ---- repeated surface forms ---- */

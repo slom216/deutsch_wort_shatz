@@ -86,6 +86,7 @@
 
 .exercise__gap-input {
   width: auto;
+  max-width: 100%;
   display: inline-block;
   font-size: inherit;
   padding: var(--space-1) var(--space-2);
@@ -345,10 +346,12 @@
   padding: var(--space-2) var(--space-3);
   cursor: grab;
   font-weight: var(--weight-medium);
-  touch-action: none;
+  /* The touch sensor waits for a short hold, so a swipe here must still scroll the page. */
+  touch-action: manipulation;
 }
 
 .token__move {
+  min-width: 1.75rem;
   border: none;
   background: var(--color-surface-sunken);
   padding: 0 var(--space-2);
@@ -381,6 +384,7 @@
 .listening__play,
 .speaking__listen,
 .speaking__retry {
+  min-height: 2.75rem;
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
@@ -428,6 +432,7 @@
 }
 
 .speaking__judge {
+  min-height: 2.75rem;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -449,6 +454,32 @@
 @media (max-width: 48rem) {
   .matching {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Phones: the page already has a gutter, so the card's own padding only pushes the
+   answer controls below the fold. */
+@media (max-width: 30rem) {
+  .runner {
+    padding: var(--space-3);
+  }
+
+  .runner__progress {
+    margin-bottom: var(--space-2);
+  }
+
+  .exercise__question {
+    font-size: var(--text-xl);
+  }
+
+  .option {
+    padding: var(--space-2) var(--space-3);
+    min-height: 2.75rem;
+  }
+
+  .exercise__submit,
+  .runner__next {
+    min-height: 48px;
   }
 }
 

@@ -901,8 +901,9 @@
  ],
  "151": [
   {
-   "de": "Ich habe die Ansage am Bahnhof nicht verstanden.",
-   "en": "I did not understand the announcement at the station."
+   "de": "Bitte hören Sie die Ansage und kreuzen Sie an.",
+   "en": "Please listen to the announcement and tick the correct answer.",
+   "form": "Ansage"
   }
  ],
  "152": [
@@ -920,7 +921,8 @@
  "154": [
   {
    "de": "Er antwortet mir nie auf meine Nachrichten.",
-   "en": "He never answers my messages."
+   "en": "He never answers my messages.",
+   "form": "antwortet"
   }
  ],
  "155": [
@@ -962,7 +964,8 @@
  "161": [
   {
    "de": "Meine Frau arbeitet in einem Krankenhaus.",
-   "en": "My wife works in a hospital."
+   "en": "My wife works in a hospital.",
+   "form": "arbeitet"
   }
  ],
  "162": [
@@ -1244,13 +1247,15 @@
  "208": [
   {
    "de": "Was bedeutet dieses Wort auf Englisch?",
-   "en": "What does this word mean in English?"
+   "en": "What does this word mean in English?",
+   "form": "bedeutet"
   }
  ],
  "209": [
   {
    "de": "Der Deutschkurs beginnt um neun Uhr.",
-   "en": "The German course begins at nine o'clock."
+   "en": "The German course begins at nine o'clock.",
+   "form": "beginnt"
   }
  ],
  "210": [
@@ -1298,13 +1303,15 @@
  "217": [
   {
    "de": "Ich bekomme jeden Monat einen Brief von ihr.",
-   "en": "I get a letter from her every month."
+   "en": "I get a letter from her every month.",
+   "form": "bekomme"
   }
  ],
  "218": [
   {
    "de": "Für die Arbeit benutze ich jeden Tag mein Fahrrad.",
-   "en": "I use my bike every day for work."
+   "en": "I use my bike every day for work.",
+   "form": "benutze"
   }
  ],
  "219": [
@@ -1460,7 +1467,8 @@
  "244": [
   {
    "de": "Ich brauche noch Milch für den Kuchen.",
-   "en": "I still need milk for the cake."
+   "en": "I still need milk for the cake.",
+   "form": "brauche"
   }
  ],
  "245": [
@@ -1484,7 +1492,8 @@
  "248": [
   {
    "de": "Bringst du mir bitte ein Glas Wasser?",
-   "en": "Could you bring me a glass of water, please?"
+   "en": "Could you bring me a glass of water, please?",
+   "form": "Bringst"
   }
  ],
  "249": [
@@ -1616,7 +1625,8 @@
  "270": [
   {
    "de": "Der Film dauert fast zwei Stunden.",
-   "en": "The film lasts almost two hours."
+   "en": "The film lasts almost two hours.",
+   "form": "dauert"
   }
  ],
  "271": [
@@ -1646,7 +1656,8 @@
  "275": [
   {
    "de": "Dieses Buch gefällt mir sehr gut.",
-   "en": "I like this book a lot."
+   "en": "I like this book a lot.",
+   "form": "Dieses"
   }
  ],
  "276": [
@@ -1731,13 +1742,15 @@
  "289": [
   {
    "de": "Nach dem Sport habe ich großen Durst.",
-   "en": "After sports I have a great thirst."
+   "en": "After sport I am very thirsty.",
+   "form": "Durst"
   }
  ],
  "290": [
   {
    "de": "Nach dem Sport dusche ich immer.",
-   "en": "After sports I always take a shower."
+   "en": "After sports I always take a shower.",
+   "form": "dusche"
   }
  ],
  "291": [
@@ -2006,8 +2019,9 @@
  ],
  "335": [
   {
-   "de": "Am Feiertag haben alle Geschäfte zu.",
-   "en": "On the public holiday all the shops are closed."
+   "de": "Die Feier beginnt um sieben Uhr.",
+   "en": "The party starts at seven o'clock.",
+   "form": "Feier"
   }
  ],
  "336": [
@@ -2150,8 +2164,9 @@
  ],
  "359": [
   {
-   "de": "Ist dieser Platz noch frei?",
-   "en": "Is this seat still free?"
+   "de": "Morgen habe ich frei.",
+   "en": "I have the day off tomorrow.",
+   "form": "frei"
   }
  ],
  "360": [
@@ -2234,8 +2249,9 @@
  ],
  "373": [
   {
-   "de": "Kannst du mir bitte das Salz geben?",
-   "en": "Can you please give me the salt?"
+   "de": "Der Lehrer gibt uns viele Hausaufgaben.",
+   "en": "The teacher gives us a lot of homework.",
+   "form": "gibt"
   }
  ],
  "374": [
@@ -2246,8 +2262,9 @@
  ],
  "375": [
   {
-   "de": "Als Geburtsjahr steht in meinem Pass neunzehnhundertneunzig.",
-   "en": "My passport gives nineteen ninety as the year of birth."
+   "de": "Mein Geburtsjahr ist 1998.",
+   "en": "My year of birth is 1998.",
+   "form": "Geburtsjahr"
   }
  ],
  "376": [
@@ -2421,7 +2438,8 @@
  "404": [
   {
    "de": "Ich gratuliere dir zur neuen Stelle.",
-   "en": "I congratulate you on your new job."
+   "en": "I congratulate you on your new job.",
+   "form": "gratuliere"
   }
  ],
  "405": [
@@ -2579,13 +2597,15 @@
  "430": [
   {
    "de": "Im Sommer heiratet meine Schwester.",
-   "en": "My sister is getting married in the summer."
+   "en": "My sister is getting married in the summer.",
+   "form": "heiratet"
   }
  ],
  "431": [
   {
    "de": "Ich heiße Anna und komme aus Berlin.",
-   "en": "My name is Anna and I come from Berlin."
+   "en": "My name is Anna and I come from Berlin.",
+   "form": "heiße"
   }
  ],
  "432": [
@@ -2663,13 +2683,15 @@
  "444": [
   {
    "de": "Ich hole schnell Brot vom Bäcker.",
-   "en": "I'll quickly fetch bread from the baker's."
+   "en": "I'll quickly fetch bread from the baker's.",
+   "form": "hole"
   }
  ],
  "445": [
   {
    "de": "Am Abend höre ich gern Musik.",
-   "en": "In the evening I like listening to music."
+   "en": "In the evening I like listening to music.",
+   "form": "höre"
   }
  ],
  "446": [
@@ -2698,8 +2720,9 @@
  ],
  "450": [
   {
-   "de": "Ich kenne ihn gut, ihr und ihm helfe ich oft.",
-   "en": "I know him well, and I often help her and him."
+   "de": "Kennst du Peter? Ich kenne ihn gut.",
+   "en": "Do you know Peter? I know him well.",
+   "form": "ihn"
   }
  ],
  "451": [
@@ -2747,7 +2770,8 @@
  "458": [
   {
    "de": "Jeden Morgen trinke ich einen Tee.",
-   "en": "Every morning I drink a tea."
+   "en": "Every morning I drink a tea.",
+   "form": "Jeden"
   }
  ],
  "459": [
@@ -2819,7 +2843,8 @@
  "470": [
   {
    "de": "Ich kaufe im Supermarkt Obst und Brot.",
-   "en": "I buy fruit and bread at the supermarket."
+   "en": "I buy fruit and bread at the supermarket.",
+   "form": "kaufe"
   }
  ],
  "471": [
@@ -2831,7 +2856,8 @@
  "472": [
   {
    "de": "Kennst du diesen Mann dort?",
-   "en": "Do you know that man over there?"
+   "en": "Do you know that man over there?",
+   "form": "Kennst"
   }
  ],
  "473": [
@@ -2854,8 +2880,9 @@
  ],
  "476": [
   {
-   "de": "Am Freitag gehen wir ins Kino.",
-   "en": "On Friday we are going to the cinema."
+   "de": "Das Kino ist direkt neben dem Bahnhof.",
+   "en": "The cinema is right next to the station.",
+   "form": "Kino"
   }
  ],
  "477": [
@@ -2891,7 +2918,8 @@
  "482": [
   {
    "de": "Heute Abend koche ich eine Suppe.",
-   "en": "This evening I am cooking a soup."
+   "en": "This evening I am cooking a soup.",
+   "form": "koche"
   }
  ],
  "483": [
@@ -2909,7 +2937,8 @@
  "485": [
   {
    "de": "Wann kommst du heute nach Hause?",
-   "en": "When are you coming home today?"
+   "en": "When are you coming home today?",
+   "form": "kommst"
   }
  ],
  "486": [
@@ -2934,7 +2963,8 @@
  "489": [
   {
    "de": "Was kostet dieses blaue Hemd?",
-   "en": "How much does this blue shirt cost?"
+   "en": "How much does this blue shirt cost?",
+   "form": "kostet"
   }
  ],
  "490": [
@@ -2946,7 +2976,8 @@
  "491": [
   {
    "de": "Zum Geburtstag kriege ich oft Blumen.",
-   "en": "For my birthday I often get flowers."
+   "en": "For my birthday I often get flowers.",
+   "form": "kriege"
   }
  ],
  "492": [
@@ -2982,7 +3013,8 @@
  "497": [
   {
    "de": "Am Wochenende kümmere ich mich um die Kinder.",
-   "en": "At the weekend I take care of the children."
+   "en": "At the weekend I take care of the children.",
+   "form": "kümmere"
   }
  ],
  "498": [
@@ -3153,12 +3185,6 @@
    "en": "I prefer tea to coffee."
   }
  ],
- "526": [
-  {
-   "de": "Blau ist meine Lieblingsfarbe.",
-   "en": "Blue is my favourite colour."
-  }
- ],
  "527": [
   {
    "de": "Dieses Lied höre ich jeden Tag.",
@@ -3258,7 +3284,8 @@
  "543": [
   {
    "de": "Die meisten Kinder mögen Schokolade.",
-   "en": "Most children like chocolate."
+   "en": "Most children like chocolate.",
+   "form": "meisten"
   }
  ],
  "544": [
@@ -3390,7 +3417,8 @@
  "565": [
   {
    "de": "Nächsten Montag beginnt der Kurs.",
-   "en": "The course starts next Monday."
+   "en": "The course starts next Monday.",
+   "form": "Nächsten"
   }
  ],
  "566": [
@@ -3660,7 +3688,8 @@
  "610": [
   {
    "de": "Mein Nachbar raucht jeden Morgen auf dem Balkon.",
-   "en": "My neighbour smokes on the balcony every morning."
+   "en": "My neighbour smokes on the balcony every morning.",
+   "form": "raucht"
   }
  ],
  "611": [
@@ -3684,7 +3713,8 @@
  "614": [
   {
    "de": "Heute regnet es schon den ganzen Tag.",
-   "en": "It has been raining all day today."
+   "en": "It has been raining all day today.",
+   "form": "regnet"
   }
  ],
  "615": [
@@ -3726,7 +3756,8 @@
  "621": [
   {
    "de": "Mein Bruder repariert mein Fahrrad am Samstag.",
-   "en": "My brother is repairing my bike on Saturday."
+   "en": "My brother is repairing my bike on Saturday.",
+   "form": "repariert"
   }
  ],
  "622": [
@@ -3810,13 +3841,15 @@
  "635": [
   {
    "de": "Heute scheint die Sonne den ganzen Tag.",
-   "en": "The sun is shining all day today."
+   "en": "The sun is shining all day today.",
+   "form": "scheint"
   }
  ],
  "636": [
   {
    "de": "Ich schicke dir morgen eine E-Mail.",
-   "en": "I am sending you an email tomorrow."
+   "en": "I am sending you an email tomorrow.",
+   "form": "schicke"
   }
  ],
  "637": [
@@ -3846,7 +3879,8 @@
  "641": [
   {
    "de": "Der Supermarkt schließt heute um acht Uhr.",
-   "en": "The supermarket closes at eight o'clock today."
+   "en": "The supermarket closes at eight o'clock today.",
+   "form": "schließt"
   }
  ],
  "642": [
@@ -3870,7 +3904,8 @@
  "645": [
   {
    "de": "Die Suppe schmeckt mir sehr gut.",
-   "en": "The soup tastes very good to me."
+   "en": "The soup tastes very good to me.",
+   "form": "schmeckt"
   }
  ],
  "646": [
@@ -3899,8 +3934,9 @@
  ],
  "650": [
   {
-   "de": "Ich schreibe meiner Oma jeden Monat einen Brief.",
-   "en": "I write my grandma a letter every month."
+   "de": "Schreibst du mir eine Nachricht aus dem Urlaub?",
+   "en": "Will you write me a message from your holiday?",
+   "form": "Schreibst"
   }
  ],
  "651": [
@@ -3954,7 +3990,8 @@
  "659": [
   {
    "de": "Ich sehe dein Haus von hier oben.",
-   "en": "I can see your house from up here."
+   "en": "I can see your house from up here.",
+   "form": "sehe"
   }
  ],
  "660": [
@@ -3983,8 +4020,9 @@
  ],
  "664": [
   {
-   "de": "Der Laden scheint um diese Zeit schon zu sein.",
-   "en": "The shop seems to be closed already at this time."
+   "de": "Die Apotheke ist heute leider zu.",
+   "en": "Unfortunately the pharmacy is closed today.",
+   "form": "zu"
   }
  ],
  "665": [
@@ -4025,8 +4063,9 @@
  ],
  "671": [
   {
-   "de": "Warum bist du heute so müde?",
-   "en": "Why are you so tired today?"
+   "de": "Warum sprichst du so leise?",
+   "en": "Why are you speaking so quietly?",
+   "form": "so"
   }
  ],
  "672": [
@@ -4050,7 +4089,8 @@
  "675": [
   {
    "de": "Du sollst mehr Wasser trinken, sagt der Arzt.",
-   "en": "You should drink more water, the doctor says."
+   "en": "You should drink more water, the doctor says.",
+   "form": "sollst"
   }
  ],
  "676": [
@@ -4146,7 +4186,8 @@
  "691": [
   {
    "de": "Meine Schwester studiert Medizin in München.",
-   "en": "My sister studies medicine in Munich."
+   "en": "My sister studies medicine in Munich.",
+   "form": "studiert"
   }
  ],
  "692": [
@@ -4164,7 +4205,8 @@
  "694": [
   {
    "de": "Ich suche meine Brille schon seit einer Stunde.",
-   "en": "I have been looking for my glasses for an hour."
+   "en": "I have been looking for my glasses for an hour.",
+   "form": "suche"
   }
  ],
  "695": [
@@ -4200,7 +4242,8 @@
  "700": [
   {
    "de": "Ich telefoniere gerade mit meiner Mutter.",
-   "en": "I am on the phone with my mother right now."
+   "en": "I am on the phone with my mother right now.",
+   "form": "telefoniere"
   }
  ],
  "701": [
@@ -4271,8 +4314,9 @@
  ],
  "712": [
   {
-   "de": "Die Blumen im Garten sind leider tot.",
-   "en": "Unfortunately the flowers in the garden are dead."
+   "de": "Mein Großvater ist schon lange tot.",
+   "en": "My grandfather has been dead for a long time.",
+   "form": "tot"
   }
  ],
  "713": [
@@ -4554,7 +4598,8 @@
  "759": [
   {
    "de": "Neue Schuhe können am Anfang weh tun.",
-   "en": "New shoes can hurt at the beginning."
+   "en": "New shoes can hurt at the beginning.",
+   "form": "weh tun"
   }
  ],
  "760": [
@@ -4584,7 +4629,8 @@
  "764": [
   {
    "de": "Welches Kleid gefällt dir besser?",
-   "en": "Which dress do you like better?"
+   "en": "Which dress do you like better?",
+   "form": "Welches"
   }
  ],
  "765": [

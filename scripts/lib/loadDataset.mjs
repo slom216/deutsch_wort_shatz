@@ -2,31 +2,26 @@
  * Shared dataset loader for the content build, validation and audit scripts.
  *
  * `data/a1.json`, `a2.json` and `b1.json` are the authoring source of truth. Each is a
- * flat array of hand-checked rows carrying only what a human curated:
+ * flat array of hand-checked rows:
  *
- *     { rank, level, kind, german, english[], wordClass, primaryTopic }
+ *     { id, rank, level, kind, german, english[], wordClass, primaryTopic, tags?, alternateForms?,
+ *       // nouns
+ *       article, plural, numberUsage, alternateArticles?,
+ *       // verbs
+ *       thirdPersonPresent, simplePast, pastParticiple, auxiliary, separable, reflexive }
  *
- * Everything the application needs beyond that — stable id, global rank, frequency band,
- * search forms, exercise configuration — is *derived* here rather than authored. Deriving
- * it keeps the datasets small enough to review by hand, which is the point: the previous
- * `*_words.json` files carried generated grammar tables and example sentences that nobody
- * had checked.
+ * `id` is frozen: it never changes once released, and `data/legacy-ids.json` maps the old
+ * rank-based ids onto it. Noun rows keep the article in `german` ("die Minute"); the shipped
+ * entry stores it separately, as the app expects. Global rank, frequency band, search forms
+ * and exercise configuration are derived here rather than authored.
  *
- * What the source no longer carries, the application does without: nouns have no article
- * or plural and verbs no conjugation. The generators that need those fields produce
- * nothing for such an entry rather than inventing anything.
- *
- * Example sentences are the exception, and live apart from the wordlists in
- * `data/examples/*.json`, keyed by the entry's source rank:
+ * Example sentences live apart from the wordlists in `data/examples/*.json`, keyed by the
+ * entry's source rank:
  *
  *     { "1": [{ "de": "…", "en": "…", "form": "eins" }] }
  *
  * `form` is the target word as it appears in that sentence, which is what the app
- * highlights; it falls back to the headword when absent.
- *
- * Keeping them in their own file is what keeps the wordlists short enough to read: the
- * sentences are a separate, regenerable artefact, and merging them in here means a missing
- * or partial examples file degrades to the old behaviour rather than breaking the build.
+ * highlights; without it the first sentence token matching a known form of the entry is used.
  */
 
 import { readFileSync } from 'node:fs';
@@ -98,18 +93,6 @@ function bareHeadword(german) {
   );
 }
 
-/** `Müllabfuhr` → `mullabfuhr`; the lemma half of the §12 id. */
-function slugify(german) {
-  return german
-    .toLowerCase()
-    .replace(/ä/g, 'a')
-    .replace(/ö/g, 'o')
-    .replace(/ü/g, 'u')
-    .replace(/ß/g, 'ss')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 /**
  * Difficulty weight (0–1) from position in the vocabulary and from length.
  *
@@ -123,14 +106,40 @@ function difficultyWeightFor(globalRank, german, total) {
   return Math.round((byRank * 0.75 + byLength * 0.25) * 1000) / 1000;
 }
 
+const ARTICLE_PREFIX = /^(der|die|das)\s+/iu;
+
+/** Whitespace tokens, as the word-ordering generator splits them. */
+const tokenCount = (text) => text.trim().split(/\s+/u).filter(Boolean).length;
+
+const letterTokens = (text) => text.match(/[\p{L}\p{N}-]+/gu) ?? [];
+
+/**
+ * The example's target token: the recorded `form`, else the first sentence token that is a
+ * known form of the entry (plural, a verb form or either half of a separable one, the bare
+ * headword), else the bare headword.
+ */
+function targetTokenFor(sentence, form, knownForms, fallback) {
+  if (form?.trim()) return form.trim();
+  const known = new Set(knownForms.map((token) => token.toLowerCase()));
+  return letterTokens(sentence).find((token) => known.has(token.toLowerCase())) ?? fallback;
+}
+
 /** The exercise formats an entry can actually support, given what the source carries. */
 function enabledTypesFor(entry) {
   const types = ['multipleChoice', 'typedTranslation', 'matching', 'listening', 'speaking'];
-  // Word ordering rebuilds a phrase from its own tokens; single words have nothing to
-  // reorder, and without example sentences there is no sentence to rebuild either. Four
-  // tokens is the generator's own minimum (`MIN_TOKENS` in generators/wordOrdering.ts) —
-  // only a handful of phrases reach it, so the format is rare rather than gone.
-  if (entry.wordClass === 'phrase' && entry.german.trim().split(/\s+/).length >= 4) {
+  // Both generators work from the first example only.
+  const example = entry.exampleSentences[0];
+  const token = example?.targetTokens[0];
+  if (
+    token &&
+    example.german.toLocaleLowerCase('de-DE').includes(token.toLocaleLowerCase('de-DE'))
+  ) {
+    types.push('sentenceCompletion');
+  }
+  // §15 word ordering: phrase or sentence reconstruction, 4–12 tokens (the generator's
+  // MIN_TOKENS/MAX_TOKENS in generators/wordOrdering.ts).
+  const fits = (text) => tokenCount(text) >= 4 && tokenCount(text) <= 12;
+  if ((entry.wordClass === 'phrase' && fits(entry.german)) || (example && fits(example.german))) {
     types.push('wordOrdering');
   }
   return types;
@@ -145,11 +154,44 @@ function enabledTypesFor(entry) {
  * @param {{de: string, en: string, form?: string}[]} sentences authored example sentences
  */
 export function expandEntry(raw, globalRank, total, sentences = []) {
+  if (typeof raw.id !== 'string' || raw.id.trim() === '') {
+    throw new Error(`${raw.level} rank ${raw.rank} (${raw.german}): source row has no id`);
+  }
   const band = bandForRank(globalRank);
-  const german = String(raw.german ?? '').trim();
+  const sourceGerman = String(raw.german ?? '').trim();
   const english = (raw.english ?? []).map((value) => String(value).trim()).filter(Boolean);
+  const isNoun = raw.wordClass === 'noun';
+  const isVerb = raw.wordClass === 'verb';
 
-  const entryId = `${String(raw.level).toLowerCase()}-${String(globalRank).padStart(4, '0')}-${slugify(german)}`;
+  const article = isNoun && ['der', 'die', 'das'].includes(raw.article) ? raw.article : null;
+  // The shipped noun is bare; the app puts `article` in front of it wherever it is shown.
+  const german = article ? sourceGerman.replace(ARTICLE_PREFIX, '') : sourceGerman;
+  const plural =
+    isNoun && typeof raw.plural === 'string' && raw.plural.trim() ? raw.plural.trim() : null;
+  const alternateForms = (raw.alternateForms ?? [])
+    .map((form) => String(form).trim())
+    .filter(Boolean);
+  const verbForms = isVerb
+    ? Object.fromEntries(
+        ['thirdPersonPresent', 'simplePast', 'pastParticiple']
+          .filter((field) => typeof raw[field] === 'string' && raw[field].trim())
+          .map((field) => [field, raw[field].trim()]),
+      )
+    : {};
+
+  const bare = bareHeadword(sourceGerman) || sourceGerman;
+  // Verb forms split into parts, so both halves of `fährt ab` are found in a sentence.
+  const knownForms = [
+    bare,
+    // A declined adjective is still the adjective: `halb` occurs as "halbes".
+    ...(raw.wordClass === 'adjective'
+      ? ['e', 'em', 'en', 'er', 'es'].map((ending) => bare + ending)
+      : []),
+    ...(plural ? [plural] : []),
+    ...Object.values(verbForms).flatMap(letterTokens),
+  ];
+
+  const entryId = raw.id;
   const base = {
     id: entryId,
     rank: globalRank,
@@ -161,10 +203,21 @@ export function expandEntry(raw, globalRank, total, sentences = []) {
     primaryTopic: raw.primaryTopic,
     secondaryTopics: [],
     frequencyBand: band ? band.id : 'unknown',
-    difficultyWeight: difficultyWeightFor(globalRank, german, total),
-    // §16 searches by any stored form. The source has one form per entry, so that is it.
-    searchableForms: [german],
-    tags: [],
+    difficultyWeight: difficultyWeightFor(globalRank, sourceGerman, total),
+    // §16 searches by any stored form: the taught headword, its bare lemma, the plural with
+    // and without its article, every verb form and every alternative headword.
+    searchableForms: [
+      ...new Set([
+        article ? `${article} ${german}` : german,
+        german,
+        bare,
+        ...(plural ? [plural, `die ${plural}`] : []),
+        ...Object.values(verbForms),
+        ...alternateForms,
+      ]),
+    ],
+    tags: (raw.tags ?? []).map(String),
+    ...(alternateForms.length > 0 ? { alternateForms } : {}),
     // Both languages are stored — the vocabulary browser and the entry page show the pair.
     // Only the German half ever reaches an exercise card: those cards ask the learner to
     // produce the English meaning, so printing the translation would hand them the answer.
@@ -173,10 +226,7 @@ export function expandEntry(raw, globalRank, total, sentences = []) {
       german: sentence.de,
       english: sentence.en,
       level: raw.level,
-      // The word as it actually appears in the sentence when the author recorded it, and
-      // the headword otherwise. German strong verbs change stem — `dürfen` surfaces as
-      // `darf` — so the headword alone is not always a token of its own example.
-      targetTokens: [sentence.form?.trim() || bareHeadword(german) || german],
+      targetTokens: [targetTokenFor(sentence.de, sentence.form, knownForms, bare)],
     })),
     /** The rank the dataset itself gave this entry, within its level. */
     sourceRank: raw.rank,
@@ -189,31 +239,54 @@ export function expandEntry(raw, globalRank, total, sentences = []) {
       capitalization: true,
       umlauts: true,
       eszett: true,
-      // No articles or plurals are recorded, so neither can be required of an answer.
-      article: false,
-      plural: false,
+      article: article !== null,
+      plural: plural !== null,
       punctuation: false,
       wordOrder: true,
     },
+    // §14 teaches a noun with its article and plural and a verb with its principal parts,
+    // so whatever the entry records is something the learner has to recall.
     requiredRecall: {
-      article: false,
-      plural: false,
-      thirdPersonPresent: false,
-      simplePast: false,
-      pastParticiple: false,
-      auxiliary: false,
+      article: article !== null,
+      plural: plural !== null,
+      thirdPersonPresent: Boolean(verbForms.thirdPersonPresent),
+      simplePast: Boolean(verbForms.simplePast),
+      pastParticiple: Boolean(verbForms.pastParticiple),
+      auxiliary: isVerb && Boolean(raw.auxiliary),
     },
-    acceptedAnswers: { german: [german], english },
+    acceptedAnswers: {
+      german: [...new Set([german, ...alternateForms])],
+      english,
+      ...(plural ? { plural: [`die ${plural}`] } : {}),
+      ...Object.fromEntries(Object.entries(verbForms).map(([field, form]) => [field, [form]])),
+    },
   };
 
-  if (raw.wordClass === 'noun') {
-    return { ...base, exerciseConfig, article: null, plural: null, pluralArticle: null };
+  if (isNoun) {
+    return {
+      ...base,
+      exerciseConfig,
+      article,
+      plural,
+      pluralArticle: plural ? 'die' : null,
+      ...(raw.numberUsage ? { numberUsage: raw.numberUsage } : {}),
+      ...(raw.alternateArticles?.length ? { alternateArticles: raw.alternateArticles } : {}),
+    };
   }
   if (raw.wordClass === 'phrase') {
     return { ...base, exerciseConfig, register: 'neutral', phraseType: 'functional' };
   }
-  if (raw.wordClass === 'verb') {
-    return { ...base, exerciseConfig, infinitive: german, fixedPrepositions: [] };
+  if (isVerb) {
+    return {
+      ...base,
+      exerciseConfig,
+      infinitive: german,
+      ...verbForms,
+      ...(raw.auxiliary ? { auxiliary: raw.auxiliary } : {}),
+      ...(typeof raw.separable === 'boolean' ? { separable: raw.separable } : {}),
+      ...(typeof raw.reflexive === 'boolean' ? { reflexive: raw.reflexive } : {}),
+      fixedPrepositions: [],
+    };
   }
   return { ...base, exerciseConfig };
 }
@@ -254,77 +327,6 @@ export function normalizeEntryTopics(entry) {
     },
     unresolved,
   };
-}
-
-/**
- * Applies an editorial correction from `corrections.ts`, if one exists for this entry.
- *
- * Unused since the datasets were replaced: the corrections were keyed to ids in the old
- * `*_words.json` files, whose grammar fields the current sources do not carry at all.
- * Kept because it is the shape any future correction pass wants.
- */
-export function applyCorrections(entry, corrections) {
-  const ENTRY_CORRECTIONS = corrections ?? {};
-  const correction = ENTRY_CORRECTIONS[entry.id];
-  if (!correction) return entry;
-
-  const corrected = {
-    ...entry,
-    ...(correction.numberUsage ? { numberUsage: correction.numberUsage } : {}),
-    ...(correction.plural
-      ? { plural: correction.plural, pluralArticle: entry.pluralArticle ?? 'die' }
-      : {}),
-    ...(correction.article ? { article: correction.article } : {}),
-    ...(correction.german ? { german: correction.german } : {}),
-    ...(correction.thirdPersonPresent ? { thirdPersonPresent: correction.thirdPersonPresent } : {}),
-    ...(correction.simplePast ? { simplePast: correction.simplePast } : {}),
-    ...(correction.pastParticiple ? { pastParticiple: correction.pastParticiple } : {}),
-    editorialCorrection: {
-      reason: correction.reason,
-      reviewed: false,
-      original: {
-        german: entry.german,
-        article: entry.article,
-        plural: entry.plural,
-        thirdPersonPresent: entry.thirdPersonPresent,
-        simplePast: entry.simplePast,
-        pastParticiple: entry.pastParticiple,
-      },
-      ...correction,
-    },
-  };
-
-  // Reclassifying away from `noun` must also drop the noun-only grammar fields, or the
-  // entry would carry an article and a plural it has no business having.
-  if (correction.wordClass && correction.wordClass !== 'noun') {
-    const { article, plural, pluralArticle, genitiveSingular, alternateArticles, ...rest } =
-      corrected;
-    void article;
-    void plural;
-    void pluralArticle;
-    void genitiveSingular;
-    void alternateArticles;
-    return { ...rest, wordClass: correction.wordClass, kind: 'word' };
-  }
-
-  // A corrected headword or verb form must also be searchable under it — §16 requires
-  // searching by inflected form, and the old forms were not German.
-  const added = [
-    correction.german,
-    correction.thirdPersonPresent,
-    correction.simplePast,
-    correction.pastParticiple,
-  ].filter(Boolean);
-  if (added.length > 0) {
-    const stale = new Set(
-      [entry.thirdPersonPresent, entry.simplePast, entry.pastParticiple].filter(Boolean),
-    );
-    corrected.searchableForms = [
-      ...new Set([...added, ...(entry.searchableForms ?? []).filter((form) => !stale.has(form))]),
-    ];
-  }
-
-  return corrected;
 }
 
 /**
@@ -377,6 +379,16 @@ export function loadAllEntries() {
     });
 
     metadata.push({ file, cefrLevel: level, entryCount: rows.length });
+  }
+
+  const seen = new Set();
+  const duplicates = new Set();
+  for (const entry of entries) {
+    if (seen.has(entry.id)) duplicates.add(entry.id);
+    seen.add(entry.id);
+  }
+  if (duplicates.size > 0) {
+    throw new Error(`duplicate source ids: ${[...duplicates].join(', ')}`);
   }
 
   entries.sort((a, b) => a.rank - b.rank);

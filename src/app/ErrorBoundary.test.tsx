@@ -26,7 +26,7 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('All good')).toBeInTheDocument();
   });
 
-  it('shows an alert with the error message when a child throws', () => {
+  it('shows an alert pointing to Repair, without the raw error message', () => {
     render(
       <ErrorBoundary>
         <Boom />
@@ -35,7 +35,28 @@ describe('ErrorBoundary', () => {
 
     const alert = screen.getByRole('alert');
     expect(alert).toHaveTextContent(/something went wrong/i);
-    expect(alert).toHaveTextContent('Vocabulary bundle failed to load');
+    expect(alert).not.toHaveTextContent('Vocabulary bundle failed to load');
+    expect(screen.getByRole('link', { name: /repair/i })).toHaveAttribute(
+      'href',
+      '/data#data-repair',
+    );
+  });
+
+  it('explains a storage failure in plain words, never the library text', () => {
+    function Blocked(): never {
+      const error = new Error('IndexedDB API missing. Please visit https://tinyurl.com/y2uuvskb');
+      error.name = 'MissingAPIError';
+      throw error;
+    }
+    render(
+      <ErrorBoundary>
+        <Blocked />
+      </ErrorBoundary>,
+    );
+
+    const alert = screen.getByRole('alert');
+    expect(alert).toHaveTextContent(/blocking local storage/i);
+    expect(alert).not.toHaveTextContent(/tinyurl/);
   });
 
   it('reassures the learner that stored progress is intact', () => {

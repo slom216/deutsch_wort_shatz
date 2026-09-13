@@ -39,7 +39,7 @@ const GROUPS: readonly FooterGroup[] = [
 const DEULERN_LINKS: readonly { readonly href: string; readonly label: string }[] = [
   { href: 'https://deulern.com', label: 'All DeuLern apps' },
   { href: 'https://grammatik.deulern.com', label: 'Grammatik mit System' },
-  { href: 'https://verben.deulern.com', label: 'Verben Meistern' },
+  { href: 'https://verben.deulern.com', label: 'Deutsch Verben Meister' },
 ];
 
 /** Site footer, shared in shape and colour with the rest of the DeuLern suite. */
@@ -70,7 +70,7 @@ export function AppFooter(): ReactNode {
         </div>
 
         <p className="app-footer__note">
-          Deutsch Wortschatz is part of{' '}
+          DeuLern Deutsch Wortschatz is part of{' '}
           <a href="https://deulern.com" rel="noopener">
             DeuLern
           </a>{' '}

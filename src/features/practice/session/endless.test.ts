@@ -6,6 +6,7 @@ import {
   requeue,
   REQUEUE_AFTER_CORRECT,
   REQUEUE_AFTER_WRONG,
+  REQUEUE_WHILE_NEW,
   requeueOffset,
   SCORE_FORMATS,
   takeReady,
@@ -55,10 +56,24 @@ describe('requeueOffset', () => {
     }
   });
 
+  it('brings a low-score word back within 5–10 exercises, right or wrong', () => {
+    const [from, to] = REQUEUE_WHILE_NEW;
+    for (let i = 0; i < 200; i += 1) {
+      for (const input of [
+        { correct: true, masteryScore: 1 },
+        { correct: false, masteryScore: 0 },
+      ]) {
+        const offset = requeueOffset(input, random) as number;
+        expect(offset).toBeGreaterThanOrEqual(from);
+        expect(offset).toBeLessThanOrEqual(to);
+      }
+    }
+  });
+
   it('uses the whole range rather than one value', () => {
     const seen = new Set<number | null>();
     for (let i = 0; i < 200; i += 1) {
-      seen.add(requeueOffset({ correct: false, masteryScore: 0 }, random));
+      seen.add(requeueOffset({ correct: false, masteryScore: 3 }, random));
     }
     expect(seen.size).toBeGreaterThan(5);
   });

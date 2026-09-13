@@ -13,16 +13,16 @@ export default function AboutPage(): ReactNode {
   return (
     <>
       <PageHeader
-        title="About Deutsch Wortschatz"
+        title="About DeuLern Deutsch Wortschatz"
         description="A German vocabulary trainer for CEFR levels A1, A2 and B1 that runs entirely in your browser."
       />
 
       <section className="settings-section" aria-labelledby="about-app">
         <h2 id="about-app">What this is</h2>
         <p>
-          Deutsch Wortschatz teaches 3,460 German words and phrases — 800 at A1, 693 at A2 and 1,967
-          at B1 — ordered by frequency and grouped by topic. Every entry is a curated headword with
-          its English meaning, word class and topic; nothing is generated.
+          DeuLern Deutsch Wortschatz teaches 3,444 German words and phrases — 799 at A1, 690 at A2
+          and 1,955 at B1 — ordered by frequency and grouped by topic. Every entry is a curated
+          headword with its English meaning, word class and topic; nothing is generated.
         </p>
         <p>
           Reviews are scheduled automatically using spaced repetition. You are never asked to rate
@@ -43,7 +43,7 @@ export default function AboutPage(): ReactNode {
           </a>{' '}
           for grammar and{' '}
           <a href="https://verben.deulern.com" rel="noopener">
-            Verben Meistern
+            Deutsch Verben Meister
           </a>{' '}
           for verbs. They share this design, and each keeps its progress in your browser only.
         </p>

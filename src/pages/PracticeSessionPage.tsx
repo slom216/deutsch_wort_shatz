@@ -13,22 +13,36 @@ import {
 } from '@/content/vocabulary/frequencyBands';
 import { loadBand, loadEntries, loadEntry, loadSearchIndex } from '@/content/vocabulary/registry';
 import { topicFromSlug } from '@/content/vocabulary/topics';
-import { loadAllProgress, introduceEntry } from '@/features/srs/repository';
+import { loadAllProgress, loadQueueableProgress, introduceEntry } from '@/features/srs/repository';
 import { dueEntries } from '@/features/srs/queue';
 import { loadSkippedIds } from '@/features/srs/skipped';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { introductionOrder } from '@/features/learning/introductionOrder';
 import type { SessionMode } from '@/features/practice/session/buildSession';
+import { availableExerciseTypes } from '@/features/practice/exerciseTypes';
 import { createRandom } from '@/features/practice/random';
 import { useSessionStore } from '@/features/practice/session/sessionStore';
 import type { ExerciseType, VocabularyEntry } from '@/schemas/vocabularySchema';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
+import './PracticeSessionPage.css';
 
 /** Entries a session draws its exercises from. A session needs dozens, not thousands. */
 const WORKING_SET = 60;
 /** Entries of a topic loaded for topic practice, highest-frequency first (§3). */
 const TOPIC_WORKING_SET = 200;
+
+/** A problem with what was asked for, worded for the learner. Anything else is not. */
+class SelectionError extends Error {}
+
+const STORAGE_FAILURE =
+  'This session could not be started because your progress cannot be saved in this browser. Reload the page, and check that private browsing or site-data blocking is not switched on.';
+
+const TITLES: Partial<Record<SessionMode, string>> = {
+  review: 'Review session',
+  new: 'New words',
+  topic: 'Topic practice',
+};
 
 /**
  * A running practice session.
@@ -42,6 +56,7 @@ export default function PracticeSessionPage(): ReactNode {
   const navigate = useNavigate();
 
   const exercises = useSessionStore((state) => state.exercises);
+  const storedId = useSessionStore((state) => state.sessionId);
   const currentIndex = useSessionStore((state) => state.currentIndex);
   const status = useSessionStore((state) => state.status);
   const start = useSessionStore((state) => state.start);
@@ -51,9 +66,12 @@ export default function PracticeSessionPage(): ReactNode {
   const mode = (params.get('mode') ?? 'free') as SessionMode;
 
   const newBatchSize = useSettingsStore((state) => state.settings.newWordBatchSize);
-  const strictAnswerChecking = useSettingsStore((state) => state.settings.strictAnswerChecking);
+  const settings = useSettingsStore((state) => state.settings);
+  const { strictAnswerChecking } = settings;
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState<string | null>(null);
+  /** An answer whose save failed, kept so it can be sent again. */
+  const [unsaved, setUnsaved] = useState<ExerciseOutcome | null>(null);
   // A word is met in its own first exercise rather than on an explanation card before it:
   // the first question for a new entry is a recognition one, and its feedback names the
   // answer. This departs from §18's "explain, then practise" — reading a card for every
@@ -67,18 +85,18 @@ export default function PracticeSessionPage(): ReactNode {
     const bandSlug = params.get('band') ?? 'all';
     const length = Number(params.get('length') ?? '20');
     const typesParam = params.get('types');
-    const allowedTypes = typesParam
+    const requestedTypes = typesParam
       ? (typesParam.split(',').filter(Boolean) as ExerciseType[])
-      : undefined;
+      : [];
 
     /** Entries for a band-scoped session (free and topic practice). */
     const loadFromBands = async (): Promise<VocabularyEntry[]> => {
-      if (!isCefrLevel(level)) throw new Error(`Unknown level: ${level}`);
+      if (!isCefrLevel(level)) throw new SelectionError(`Unknown level: ${level}`);
       const bands =
         bandSlug === 'all'
           ? bandsForLevel(level)
           : [bandBySlug(bandSlug)].filter((b): b is NonNullable<typeof b> => b !== null);
-      if (bands.length === 0) throw new Error(`Unknown frequency band: ${bandSlug}`);
+      if (bands.length === 0) throw new SelectionError(`Unknown frequency band: ${bandSlug}`);
       const loaded = await Promise.all(bands.map((band) => loadBand(band.id)));
       return loaded.flat();
     };
@@ -89,8 +107,7 @@ export default function PracticeSessionPage(): ReactNode {
      * reproduces the same set.
      */
     const loadDue = async (): Promise<VocabularyEntry[]> => {
-      const progress = await loadAllProgress();
-      const queue = dueEntries(progress);
+      const queue = dueEntries((await loadQueueableProgress()).queueable);
       if (queue.length === 0) return [];
       const entries = await Promise.all(queue.slice(0, 40).map((p) => loadEntry(p.entryId)));
       return entries.filter((entry): entry is VocabularyEntry => entry !== null);
@@ -108,7 +125,7 @@ export default function PracticeSessionPage(): ReactNode {
      * verbatim would be five consecutive numbers or five B-words.
      */
     const loadNew = async (batchSize: number): Promise<VocabularyEntry[]> => {
-      if (!isCefrLevel(level)) throw new Error(`Unknown level: ${level}`);
+      if (!isCefrLevel(level)) throw new SelectionError(`Unknown level: ${level}`);
       const progress = await loadAllProgress();
       const seen = new Set(progress.map((p) => p.entryId));
 
@@ -136,7 +153,7 @@ export default function PracticeSessionPage(): ReactNode {
     const loadTopic = async (): Promise<VocabularyEntry[]> => {
       const slug = params.get('topic') ?? '';
       const topic = topicFromSlug(slug);
-      if (!topic) throw new Error(`Unknown topic: ${slug || '(none given)'}`);
+      if (!topic) throw new SelectionError(`Unknown topic: ${slug || '(none given)'}`);
 
       const index = await loadSearchIndex();
       const ids = index
@@ -144,14 +161,17 @@ export default function PracticeSessionPage(): ReactNode {
         .sort((a, b) => a.rank - b.rank)
         .slice(0, TOPIC_WORKING_SET)
         .map((record) => record.id);
-      if (ids.length === 0) throw new Error(`No entries are filed under "${topic}" yet.`);
+      if (ids.length === 0) throw new SelectionError(`No entries are filed under "${topic}" yet.`);
 
       const loaded = await loadEntries(ids);
       return [...loaded.values()].sort((a, b) => a.rank - b.rank);
     };
 
     /** Free-practice topic, word-class and exercise-type filters (§18). */
-    const applyFilters = (candidates: readonly VocabularyEntry[]): VocabularyEntry[] => {
+    const applyFilters = (
+      candidates: readonly VocabularyEntry[],
+      allowedTypes: readonly ExerciseType[],
+    ): VocabularyEntry[] => {
       const topic = topicFromSlug(params.get('topic') ?? '');
       const wordClass = params.get('class');
       const filtered = candidates.filter(
@@ -163,14 +183,20 @@ export default function PracticeSessionPage(): ReactNode {
       // chosen formats have to go now — sampling first and filtering later is how a
       // session restricted to a rare format (word ordering needs a multi-word phrase)
       // ends up empty.
-      if (!allowedTypes || allowedTypes.length === 0) return filtered;
-      const supported = filtered.filter((entry) =>
+      return filtered.filter((entry) =>
         entry.exerciseConfig.enabledTypes.some((type) => allowedTypes.includes(type)),
       );
-      return supported.length > 0 ? supported : filtered;
     };
 
     const load = async (): Promise<void> => {
+      // Settings and browser support decide which formats are possible at all; a `types`
+      // parameter can only narrow that, never widen it (§19).
+      const available = await availableExerciseTypes(settings);
+      const allowedTypes =
+        requestedTypes.length > 0
+          ? available.filter((type) => requestedTypes.includes(type))
+          : available;
+
       let entries: VocabularyEntry[];
       let pool: VocabularyEntry[];
 
@@ -191,10 +217,7 @@ export default function PracticeSessionPage(): ReactNode {
         // them with the session's own seed, or every session on a band or topic would
         // drill the same first entries and the rest would be unreachable.
         const loaded = mode === 'topic' ? await loadTopic() : await loadFromBands();
-        const all = applyFilters(loaded);
-        if (all.length === 0) {
-          throw new Error('No entries match those filters. Try a wider level, topic or band.');
-        }
+        const all = applyFilters(loaded, allowedTypes);
         const random = createRandom(sessionId);
         entries = random.shuffle(all).slice(0, WORKING_SET);
         pool = all;
@@ -221,7 +244,7 @@ export default function PracticeSessionPage(): ReactNode {
         ...(mode === 'new'
           ? { newWordEntryCount: newBatchSize }
           : { targetExerciseCount: Number.isFinite(length) ? length : 20 }),
-        ...(allowedTypes && allowedTypes.length > 0 ? { allowedTypes } : {}),
+        allowedTypes,
         strictAnswerChecking,
       });
       if (!cancelled) setLoadState('ready');
@@ -229,7 +252,8 @@ export default function PracticeSessionPage(): ReactNode {
 
     void load().catch((cause: unknown) => {
       if (cancelled) return;
-      setError(cause instanceof Error ? cause.message : 'Could not start this session.');
+      // Library errors carry internal text and third-party links; only our own are shown.
+      setError(cause instanceof SelectionError ? cause.message : STORAGE_FAILURE);
       setLoadState('error');
     });
 
@@ -243,7 +267,7 @@ export default function PracticeSessionPage(): ReactNode {
 
   const handleComplete = useCallback(
     async (outcome: ExerciseOutcome): Promise<void> => {
-      await recordAnswer({
+      const recorded = await recordAnswer({
         exerciseId: outcome.exercise.id,
         entryId: outcome.exercise.entryId,
         result: outcome.result,
@@ -251,17 +275,24 @@ export default function PracticeSessionPage(): ReactNode {
         revealed: outcome.revealed,
         hintUsed: outcome.hintUsed,
         responseMs: outcome.responseMs,
+        ...(outcome.selfAssessed ? { selfAssessed: true } : {}),
       });
-      await advance();
+      // Not recorded means another tab got there first and the store now shows its state.
+      if (recorded) await advance();
     },
     [recordAnswer, advance],
   );
 
+  const submit = (outcome: ExerciseOutcome): void => {
+    setUnsaved(null);
+    handleComplete(outcome).catch(() => setUnsaved(outcome));
+  };
+
   useEffect(() => {
-    if (status === 'completed' && loadState === 'ready' && sessionId) {
+    if (status === 'completed' && loadState === 'ready' && sessionId && exercises.length > 0) {
       void navigate(`/results/${sessionId}`, { replace: true });
     }
-  }, [status, loadState, sessionId, navigate]);
+  }, [status, loadState, sessionId, navigate, exercises.length]);
 
   if (loadState === 'loading') return <LoadingScreen label="Building your session…" />;
 
@@ -272,7 +303,35 @@ export default function PracticeSessionPage(): ReactNode {
         <p role="alert" className="page-alert">
           {error}
         </p>
-        <Link to="/practice">Back to practice</Link>
+        <p>
+          <Link to="/learn">Back to Learn</Link> · <Link to="/practice">Practice</Link>
+        </p>
+      </>
+    );
+  }
+
+  // Nothing could be built: every due word is set aside, the words no longer exist, or no
+  // entry supports the chosen formats. Say so rather than showing an empty results page.
+  // `storedId` guards against a previous session's exercises still being in the store.
+  if (exercises.length === 0 && storedId === sessionId) {
+    return mode === 'review' ? (
+      <>
+        <PageHeader title="Nothing to review right now" />
+        <p>None of your words can be reviewed at the moment. Come back when more are due.</p>
+        <p>
+          <Link to="/learn">Learn new words</Link> · <Link to="/skipped">Words you set aside</Link>
+        </p>
+      </>
+    ) : (
+      <>
+        <PageHeader title="No exercises match this selection" />
+        <p>
+          None of these words can be practised in the formats available here. Formats depend on your
+          settings and on what this browser supports.
+        </p>
+        <p>
+          <Link to="/learn">Back to Learn</Link> · <Link to="/settings">Settings</Link>
+        </p>
       </>
     );
   }
@@ -291,22 +350,28 @@ export default function PracticeSessionPage(): ReactNode {
   }
 
   return (
-    <>
-      <PageHeader title="Practice session" />
+    <div className="practice-session">
+      <PageHeader title={TITLES[mode] ?? 'Practice session'} />
       <div className="level-badge-bar">
         <LevelBadge />
       </div>
+      {unsaved ? (
+        <div role="alert" className="page-alert">
+          <p>Your answer could not be saved, so the session cannot move on yet.</p>
+          <button type="button" className="page-action" onClick={() => submit(unsaved)}>
+            Try again
+          </button>
+        </div>
+      ) : null}
       <ExerciseRunner
         key={exercise.id}
         exercise={exercise}
         progressLabel={`Exercise ${currentIndex + 1} of ${exercises.length}`}
-        onComplete={(outcome) => {
-          void handleComplete(outcome);
-        }}
+        onComplete={submit}
       />
       <p className="band-summary" style={{ marginTop: 'var(--space-4)' }}>
         <Link to="/practice">Leave session</Link> — answered exercises are already saved.
       </p>
-    </>
+    </div>
   );
 }

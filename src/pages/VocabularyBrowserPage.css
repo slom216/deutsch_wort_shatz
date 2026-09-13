@@ -49,6 +49,16 @@
   width: 100%;
 }
 
+/* The search box carries the German-character helper, which is wider than one filter
+   column: give it the whole row so the helper never runs under the next filter. */
+.vocab-filters__field--search {
+  grid-column: 1 / -1;
+}
+
+.vocab-filters__field--search input {
+  max-width: 32rem;
+}
+
 .vocab-summary {
   display: flex;
   align-items: center;

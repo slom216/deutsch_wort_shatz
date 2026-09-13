@@ -496,5 +496,10 @@ describe('local calendar dates (§23)', () => {
   it('adds days without drifting across a DST boundary', () => {
     const before = new Date(2026, 2, 28, 12, 0);
     expect(localDaysBetween(before, addDays(before, 3))).toBe(3);
+    // Calendar days keep the local wall-clock time across a DST switch, in any zone.
+    for (let day = 0; day < 366; day += 1) {
+      const start = new Date(2026, 0, 1 + day, 9, 0);
+      expect(addDays(start, 1).getHours()).toBe(9);
+    }
   });
 });

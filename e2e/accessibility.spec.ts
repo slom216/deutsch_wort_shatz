@@ -17,7 +17,7 @@ const SCREENS = [
   '/review',
   '/practice',
   '/vocabulary',
-  '/word/a1-0662-sein',
+  '/word/a1-sein',
   '/progress',
   '/achievements',
   '/settings',
@@ -100,6 +100,8 @@ test('focus is visible when tabbing', async ({ page }) => {
 
 test('the whole app is reachable by keyboard from the header', async ({ page }) => {
   await page.goto('/');
+  // The shell renders once local storage has opened; wait for it before the first key press.
+  await expect(page.getByRole('banner')).toBeVisible();
   // Tab past the skip link into the navigation, then walk with the keyboard.
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: /skip to main content/i })).toBeFocused();
@@ -132,7 +134,7 @@ test('the vocabulary list virtualizes the whole vocabulary without mounting them
   page,
 }) => {
   await page.goto('/vocabulary');
-  await expect(page.getByText(/3,460 matches of/)).toBeVisible();
+  await expect(page.getByText(/3,444 matches of/)).toBeVisible();
 
   // Virtualization means the DOM holds a window, not the whole result set (§16).
   const rows = await page.locator('.entry-row').count();
@@ -142,11 +144,11 @@ test('the vocabulary list virtualizes the whole vocabulary without mounting them
 
 test('a typical search responds quickly', async ({ page }) => {
   await page.goto('/vocabulary');
-  await expect(page.getByText(/3,460 matches of/)).toBeVisible();
+  await expect(page.getByText(/3,444 matches of/)).toBeVisible();
 
   const started = Date.now();
   await page.getByLabel('Search', { exact: true }).fill('haus');
-  await expect(page.getByText(/matches of 3,460/)).toBeVisible();
+  await expect(page.getByText(/matches of 3,444/)).toBeVisible();
   expect(Date.now() - started).toBeLessThan(3_000);
 });
 

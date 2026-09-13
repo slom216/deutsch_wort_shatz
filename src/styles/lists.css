@@ -55,6 +55,10 @@
 }
 
 .entry-row__german {
+  /* At least 24 px tall as a pointer target (WCAG 2.5.8). */
+  display: inline-block;
+  padding-block: 2px;
+  min-height: 24px;
   font-weight: var(--weight-semibold);
   color: var(--color-text);
   text-decoration: none;

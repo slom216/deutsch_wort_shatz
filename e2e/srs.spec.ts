@@ -92,7 +92,7 @@ test('a new word is met in its first exercise, with no card in the way', async (
   // Departs from §18's "explain, then practise": a card per new word costs more time than
   // it teaches, so the first question is a recognition one and its feedback teaches.
   await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1, name: /new word/i })).toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1, name: /^new word(?!s)/i })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /practise this word/i })).toHaveCount(0);
 });
 

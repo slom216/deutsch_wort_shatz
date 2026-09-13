@@ -6,13 +6,14 @@ import { StatCard } from '@/components/common/StatCard';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
 import { isTopic, topicSlug } from '@/content/vocabulary/topics';
 import { progressByLevel, weakestTopics } from '@/features/progress/analytics';
+import { localDateKey } from '@/features/srs/localDate';
 import { continuousSessionPath } from '@/features/practice/session/endless';
 import { useContentManifest } from '@/features/learning/useContentManifest';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { useGamification } from '@/features/gamification/useGamification';
-import { avatarSrc, MAX_AVATAR_LEVEL } from '@/features/gamification/xp';
+import { AVATAR_SIZE, avatarSrc, MAX_AVATAR_LEVEL } from '@/features/gamification/xp';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
@@ -39,19 +40,27 @@ export default function DashboardPage(): ReactNode {
   const hardestFive = hardest.slice(0, 5);
   const labels = useEntryLabels(hardestFive.map((entry) => entry.entryId));
 
+  // The 800 kB search index only feeds the level and topic panels below the fold, so it is
+  // fetched once the browser is idle rather than competing with the first paint.
   const [index, setIndex] = useState<readonly VocabularyIndexRecord[]>([]);
   useEffect(() => {
     let cancelled = false;
-    loadSearchIndex()
-      .then((loaded) => {
-        if (!cancelled) setIndex(loaded);
-      })
-      .catch(() => {
-        // The level and topic panels are additive; `contentError` already reports a
-        // missing content build.
-      });
+    const load = (): void => {
+      loadSearchIndex()
+        .then((loaded) => {
+          if (!cancelled) setIndex(loaded);
+        })
+        .catch(() => {
+          // The level and topic panels are additive; `contentError` already reports a
+          // missing content build.
+        });
+    };
+    const idle = globalThis.requestIdleCallback?.(load, { timeout: 2000 });
+    const timer = idle === undefined ? setTimeout(load, 0) : undefined;
     return () => {
       cancelled = true;
+      if (idle !== undefined) globalThis.cancelIdleCallback?.(idle);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -122,8 +131,9 @@ export default function DashboardPage(): ReactNode {
             className="wizard-card__art"
             src={avatarSrc(game.level.level)}
             alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
-            width={1254}
-            height={1254}
+            width={AVATAR_SIZE}
+            height={AVATAR_SIZE}
+            decoding="async"
           />
           <div className="wizard-card__body">
             <h2 id="dash-wizard">Word Wizard</h2>
@@ -150,7 +160,7 @@ export default function DashboardPage(): ReactNode {
         </section>
       ) : null}
 
-      <dl className="stat-grid">
+      <dl className="stat-grid stat-grid--seven">
         <StatCard
           label="Reviews due"
           value={loading ? '—' : counts.due}
@@ -194,7 +204,7 @@ export default function DashboardPage(): ReactNode {
         <h2 id="dash-today">Today</h2>
         <p>
           {game
-            ? `${game.dailyGoal.completed} of ${settings.dailyGoal} exercises towards your daily goal.`
+            ? `${game.dailyGoal.completed} of ${settings.dailyGoal} correct answers towards your daily goal.`
             : 'Loading your daily goal…'}
           {game?.dailyGoal.met ? ' Goal met — nice work.' : ''}
         </p>
@@ -309,7 +319,7 @@ export default function DashboardPage(): ReactNode {
               {recentAchievements.map((status) => (
                 <li key={status.definition.id}>
                   <Link to="/achievements">{status.definition.name}</Link> —{' '}
-                  {new Date(status.unlockedAt as string).toLocaleDateString()}
+                  {localDateKey(new Date(status.unlockedAt as string))}
                 </li>
               ))}
             </ul>

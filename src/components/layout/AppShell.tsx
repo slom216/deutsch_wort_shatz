@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/app/ErrorBoundary';
+import { focusPageHeading } from '@/components/common/PageHeader';
 import { AppHeader } from './AppHeader';
 import { AppFooter } from './AppFooter';
 import './AppShell.css';
@@ -14,8 +15,25 @@ import './AppShell.css';
  * learner can always move away from a broken screen.
  */
 export function AppShell(): ReactNode {
+  const { pathname } = useLocation();
+  const firstRender = useRef(true);
+
+  // A client-side route change is silent to screen readers: move focus to the new page's
+  // heading. Not on the initial load, where the browser already announces the document.
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    focusPageHeading();
+  }, [pathname]);
+
+  // Exercise screens get a compact header on phones, so the answer controls fit above the
+  // fold (see AppHeader.css).
+  const inSession = /^\/(practice\/session|continuous)\//u.test(pathname);
+
   return (
-    <div className="app-shell">
+    <div className={inSession ? 'app-shell app-shell--session' : 'app-shell'}>
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>

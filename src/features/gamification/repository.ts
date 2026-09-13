@@ -1,6 +1,8 @@
 import { db, type VocabularyLearningDatabase } from '@/features/persistence/db';
 import type { EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
-import { localDateKey } from '@/features/srs/localDate';
+import { addDays, localDateKey, startOfLocalDay } from '@/features/srs/localDate';
+import { loadAllProgress } from '@/features/srs/repository';
+import { loadSearchIndex } from '@/content/vocabulary/registry';
 import {
   bandEntryCount,
   bandForRank,
@@ -88,19 +90,6 @@ export async function awardSessionBonuses(
 }
 
 /**
- * Rank encoded in a stable id (§12), e.g. `a1-0042-der-mann` → 42.
- *
- * Reading the rank from the id means completion can be checked without loading the
- * 2.8 MB search index just to find out which band an entry belongs to.
- */
-function rankOf(entryId: string): number | null {
-  const match = /^[ab][12]-(\d{4,})-/.exec(entryId);
-  if (!match?.[1]) return null;
-  const rank = Number(match[1]);
-  return Number.isFinite(rank) ? rank : null;
-}
-
-/**
  * Awards the frequency-band (100 XP) and CEFR-level (500 XP) completion bonuses (§23).
  *
  * "Complete" means every entry mastered, matching the A1/A2/B1 Master achievements.
@@ -109,15 +98,20 @@ function rankOf(entryId: string): number | null {
 export async function awardCompletionBonuses(
   database: VocabularyLearningDatabase = db,
 ): Promise<void> {
-  const progress = await database.entryProgress.toArray();
+  const mastered = (await loadAllProgress(database)).filter(
+    (record) => record.srs.status === 'mastered',
+  );
+  // Nothing can be complete below the smallest band, so most learners never load the index.
+  if (mastered.length < Math.min(...FREQUENCY_BANDS.map(bandEntryCount))) return;
 
+  // Ids are stable and carry no rank, so the band comes from the vocabulary itself.
+  const rankById = new Map((await loadSearchIndex()).map((record) => [record.id, record.rank]));
   const masteredByBand = new Map<string, number>();
   const masteredByLevel: Record<CefrLevel, number> = { A1: 0, A2: 0, B1: 0 };
 
-  for (const record of progress) {
-    if (record.srs.status !== 'mastered') continue;
-    const rank = rankOf(record.entryId);
-    if (rank === null) continue;
+  for (const record of mastered) {
+    const rank = rankById.get(record.entryId);
+    if (rank === undefined) continue;
     const band = bandForRank(rank);
     if (!band) continue;
     masteredByBand.set(band.id, (masteredByBand.get(band.id) ?? 0) + 1);
@@ -141,14 +135,22 @@ export async function awardCompletionBonuses(
   }
 }
 
+/** Today's history rows, through the `answeredAt` index rather than the whole table. */
+function historyOn(now: Date, database: VocabularyLearningDatabase): Promise<ExerciseHistory[]> {
+  const start = startOfLocalDay(now);
+  return database.exerciseHistory
+    .where('answeredAt')
+    .between(start.toISOString(), addDays(start, 1).toISOString(), true, false)
+    .toArray();
+}
+
 /** Awards the daily-goal bonus once per local day (§23). */
 export async function awardDailyGoalBonus(
   goal: number,
   now: Date = new Date(),
   database: VocabularyLearningDatabase = db,
 ): Promise<void> {
-  const history = await database.exerciseHistory.toArray();
-  const state = dailyGoalState(history, goal, now);
+  const state = dailyGoalState(await historyOn(now, database), goal, now);
   if (!state.met) return;
   await awardBonus(
     { id: `daily:${localDateKey(now)}`, type: 'dailyGoal', amount: XP_DAILY_GOAL, at: now },
@@ -166,21 +168,31 @@ export interface GamificationSnapshot {
   readonly stats: AchievementStats;
 }
 
-/** Recomputes everything from stored history. Cheap enough to call on each screen. */
+/**
+ * Recomputes everything from stored history. Counts use indexes; XP, the streak and the
+ * correctness-based stats still need one read of the history table.
+ */
 export async function loadGamification(
   goal: number,
   totalByLevel: Readonly<Record<CefrLevel, number>>,
   now: Date = new Date(),
   database: VocabularyLearningDatabase = db,
-  /** Streak freezes the learner holds; each bridges one missed day (§23). */
-  freezes = 0,
 ): Promise<GamificationSnapshot> {
-  const [history, progress, events, unlockedRows] = await Promise.all([
+  const reviewSessionIds = await database.sessions.where('mode').equals('review').primaryKeys();
+  // Counts go through indexes; only XP, streak and correctness need the rows themselves.
+  const [history, progress, events, unlockedRows, today, counts] = await Promise.all([
     database.exerciseHistory.toArray(),
-    database.entryProgress.toArray(),
+    loadAllProgress(database),
     database.xpEvents.toArray(),
     database.achievements.toArray(),
+    historyOn(now, database),
+    Promise.all([
+      database.exerciseHistory.where('exerciseType').equals('listening').count(),
+      database.exerciseHistory.where('exerciseType').equals('speaking').count(),
+      database.exerciseHistory.where('sessionId').anyOf(reviewSessionIds).count(),
+    ]),
   ]);
+  const [listeningAnswers, speakingAnswers, reviewsCompleted] = counts;
 
   const exerciseXpTotal = history.reduce((sum, row) => sum + row.xpAwarded, 0);
   const bonusXpTotal = events.reduce((sum, event) => sum + event.amount, 0);
@@ -189,14 +201,18 @@ export async function loadGamification(
   const totalXp = Math.max(0, exerciseXpTotal + bonusXpTotal);
 
   const unlockedAt = new Map(unlockedRows.map((row) => [row.id, row.unlockedAt]));
-  const streak = computeStreak(history, now, freezes);
-  const stats = buildStats(history, progress, streak, totalByLevel);
+  const streak = computeStreak(history, now);
+  const stats = buildStats(history, progress, streak, totalByLevel, {
+    listeningAnswers,
+    speakingAnswers,
+    reviewsCompleted,
+  });
 
   return {
     totalXp,
     level: levelProgress(totalXp),
     streak,
-    dailyGoal: dailyGoalState(history, goal, now),
+    dailyGoal: dailyGoalState(today, goal, now),
     achievements: evaluateAchievements(stats, unlockedAt),
     unlockedCount: unlockedRows.length,
     stats,
@@ -235,11 +251,24 @@ function levelOf(entryId: string): CefrLevel | null {
   return null;
 }
 
+/**
+ * Variant names (as stored in `direction`) that count for the skill achievements, matched
+ * case-insensitively against what the generators emit: `article`, `articleGap`,
+ * `nounWithArticle`, `articleNounOrdering`; `plural`, `pluralGap`, `nounToPlural`,
+ * `nounWithArticleAndPlural`; `verbForm`, `verbFormGap`, `verbToParticiple`.
+ */
+export const SKILL_VARIANT_NEEDLES = {
+  article: ['article'],
+  plural: ['plural'],
+  verbForm: ['verbform', 'participle'],
+} as const;
+
 function buildStats(
   history: readonly ExerciseHistory[],
   progress: readonly EntryProgress[],
   streak: StreakState,
   totalByLevel: Readonly<Record<CefrLevel, number>>,
+  counts: Pick<AchievementStats, 'listeningAnswers' | 'speakingAnswers' | 'reviewsCompleted'>,
 ): AchievementStats {
   const introducedByLevel: Record<CefrLevel, number> = { A1: 0, A2: 0, B1: 0 };
   const masteredByLevel: Record<CefrLevel, number> = { A1: 0, A2: 0, B1: 0 };
@@ -252,9 +281,11 @@ function buildStats(
   }
 
   // Property-specific counts come from the exercise variant recorded on each row.
-  const correctWithVariant = (needle: string): number =>
-    history.filter((row) => row.correct && (row.direction ?? '').toLowerCase().includes(needle))
-      .length;
+  const correctWithVariant = (needles: readonly string[]): number =>
+    history.filter((row) => {
+      const variant = (row.direction ?? '').toLowerCase();
+      return row.correct && needles.some((needle) => variant.includes(needle));
+    }).length;
 
   const sessions = new Map<string, ExerciseHistory[]>();
   for (const row of history) {
@@ -272,15 +303,14 @@ function buildStats(
     wordsIntroduced: progress.length,
     wordsMastered: progress.filter((record) => record.srs.status === 'mastered').length,
     totalCorrect: history.filter((row) => row.correct).length,
-    reviewsCompleted: history.length,
+    // Only answers given in review sessions: a first learning answer is not a review.
+    ...counts,
     currentStreak: streak.current,
     longestStreak: streak.longest,
     perfectSessions,
-    listeningAnswers: history.filter((row) => row.exerciseType === 'listening').length,
-    speakingAnswers: history.filter((row) => row.exerciseType === 'speaking').length,
-    articleCorrect: correctWithVariant('article'),
-    pluralCorrect: correctWithVariant('plural'),
-    verbFormCorrect: correctWithVariant('verbform'),
+    articleCorrect: correctWithVariant(SKILL_VARIANT_NEEDLES.article),
+    pluralCorrect: correctWithVariant(SKILL_VARIANT_NEEDLES.plural),
+    verbFormCorrect: correctWithVariant(SKILL_VARIANT_NEEDLES.verbForm),
     introducedByLevel,
     masteredByLevel,
     totalByLevel,

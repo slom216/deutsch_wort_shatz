@@ -46,6 +46,24 @@
   text-decoration: none;
 }
 
+/* Stacked links: at least 24 px tall (WCAG 2.5.8), 44 px on touch screens. */
+.app-footer__group a {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 24px;
+}
+
+@media (pointer: coarse) {
+  .app-footer__group a {
+    min-height: var(--tap-target);
+  }
+
+  .app-footer__group {
+    gap: 0;
+  }
+}
+
 .app-footer a:hover {
   color: var(--color-primary);
   text-decoration: underline;

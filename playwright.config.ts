@@ -27,6 +27,12 @@ export default defineConfig({
       // Desktop-first application (§1).
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      // Firefox has speech synthesis but no speech recognition, so it covers the
+      // capability fallbacks Chromium never reaches.
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
   ],
   webServer: {
     command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,

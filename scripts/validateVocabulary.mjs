@@ -1,13 +1,10 @@
 /**
  * `npm run validate:vocabulary`
  *
- * Validates every entry in `data/*.json` against the Zod schemas the application uses
- * (§13). Structural violations — schema, id, rank, band, per-level counts — are errors.
- *
- * Missing grammar is a warning, not an error: the datasets deliberately record only
- * checked material (headword, gloss, word class, topic), so nouns have no article or
- * plural and verbs no conjugation. The counts are still printed on every run, because
- * they are exactly what a future editorial pass would have to fill in.
+ * Validates every entry against the Zod schemas the application uses (§13), and every
+ * source row in `data/*.json` against the authoring rules: structural violations — schema,
+ * id, band, per-level counts, missing grammar decisions, malformed headwords, non-canonical
+ * topics — are errors. Gloss and word-class heuristics are warnings for editorial review.
  */
 
 import { vocabularyEntrySchema } from '../src/schemas/vocabularySchema.ts';
@@ -16,7 +13,174 @@ import {
   bandById,
   LEVEL_ENTRY_COUNTS,
 } from '../src/content/vocabulary/frequencyBands.ts';
-import { finish, loadAllEntries, printSample, ui } from './lib/loadDataset.mjs';
+import { isTopic } from '../src/content/vocabulary/topics.ts';
+import {
+  DATASET_FILES,
+  finish,
+  loadAllEntries,
+  printSample,
+  readDataset,
+  ui,
+} from './lib/loadDataset.mjs';
+
+/** Irregular English past forms that turn up after "to" in machine-translated glosses. */
+const IRREGULAR_PAST = new Set(
+  (
+    'ate became began begun bought brought built came caught chosen did done drank driven drunk ' +
+    'eaten fallen fed felt fled forgot forgotten gave given gone grew held kept knew known left lost ' +
+    'meant met paid ran ridden risen said sat saw seen sent shaken sold spent spoke spoken stood ' +
+    'stole stolen swum taken taught thought threw thrown told took trodden understood went won ' +
+    'wore worn wrote written'
+  ).split(' '),
+);
+
+/** Report groups: an empty group prints PASS, a non-empty one FAIL or WARN with a sample. */
+function report(problems, { failure, success, isError }, errors, warnings) {
+  if (problems.length === 0) {
+    ui.ok(success);
+    return;
+  }
+  (isError ? ui.fail : ui.warn)(`${problems.length} ${failure}`);
+  printSample(problems, isError ? 10 : 5);
+  (isError ? errors : warnings).push(...problems);
+}
+
+function glossDefects(row) {
+  const glosses = row.english ?? [];
+  const defects = [];
+  for (const gloss of glosses) {
+    if (/[äöüÄÖÜß=]/u.test(gloss)) defects.push(`German text in "${gloss}"`);
+    if (gloss.includes(',') && gloss.split(/,\s*/u).some((part) => glosses.includes(part))) {
+      defects.push(`comma list repeated as separate glosses "${gloss}"`);
+    }
+    const verb = /^to (\S+)/u.exec(gloss)?.[1].toLowerCase();
+    if (
+      verb &&
+      (IRREGULAR_PAST.has(verb) ||
+        (verb.length > 4 && /[^e]ed$/u.test(verb)) ||
+        /[^siu]s$/u.test(verb))
+    ) {
+      defects.push(`inflected verb after "to" in "${gloss}"`);
+    }
+  }
+  if (
+    row.wordClass === 'verb' &&
+    glosses.length > 0 &&
+    glosses.every((gloss) => !gloss.startsWith('to ')) &&
+    glosses.some((gloss) => /ing$/u.test(gloss))
+  ) {
+    defects.push(`verb glossed only as a gerund "${glosses.join('; ')}"`);
+  }
+  return defects;
+}
+
+function validateSourceRows(errors, warnings) {
+  const grammar = [];
+  const headwords = [];
+  const topics = [];
+  const glosses = [];
+  const capitalized = [];
+
+  for (const { file } of DATASET_FILES) {
+    for (const row of readDataset(file)) {
+      const german = String(row.german ?? '').trim();
+      const label = `${file} ${row.id ?? `rank ${row.rank}`} (${german})`;
+
+      if (row.wordClass === 'noun') {
+        if (!('article' in row) || !['der', 'die', 'das', null].includes(row.article)) {
+          grammar.push(`${label}: no article decision (der/die/das, or explicit null)`);
+        } else if (row.article && !german.startsWith(`${row.article} `)) {
+          grammar.push(`${label}: headword does not start with its article "${row.article}"`);
+        }
+        if (!['both', 'singularOnly', 'pluralOnly'].includes(row.numberUsage)) {
+          grammar.push(`${label}: no numberUsage (both/singularOnly/pluralOnly)`);
+        }
+        if (!('plural' in row)) {
+          grammar.push(`${label}: no plural decision (plural, or explicit null)`);
+        } else if (row.numberUsage === 'both' && !(typeof row.plural === 'string' && row.plural)) {
+          grammar.push(`${label}: numberUsage "both" but no plural`);
+        }
+      }
+      if (row.wordClass === 'verb') {
+        for (const field of ['thirdPersonPresent', 'simplePast', 'pastParticiple']) {
+          if (!(typeof row[field] === 'string' && row[field].trim())) {
+            grammar.push(`${label}: missing ${field}`);
+          }
+        }
+        if (!['haben', 'sein', 'haben/sein'].includes(row.auxiliary)) {
+          grammar.push(`${label}: missing auxiliary`);
+        }
+        for (const field of ['separable', 'reflexive']) {
+          if (typeof row[field] !== 'boolean') grammar.push(`${label}: missing ${field}`);
+        }
+      }
+
+      if (/^-|-$|[/(]/u.test(german)) {
+        headwords.push(`${label}: stem, alternative list or bracket in the headword`);
+      }
+      if (!isTopic(row.primaryTopic ?? '')) {
+        topics.push(`${label}: "${row.primaryTopic}" is not a canonical topic name`);
+      }
+      for (const defect of glossDefects(row)) glosses.push(`${label}: ${defect}`);
+
+      const bare = german.replace(/^(der|die|das)\s+/u, '');
+      if (
+        !['noun', 'phrase', 'pronoun'].includes(row.wordClass) &&
+        row.kind !== 'phrase' &&
+        /^\p{Lu}/u.test(bare)
+      ) {
+        capitalized.push(`${label}: capitalized, but word class is "${row.wordClass}"`);
+      }
+    }
+  }
+
+  const isError = true;
+  report(
+    grammar,
+    {
+      failure: 'noun/verb grammar decisions missing in the source',
+      success: 'every noun has an article and plural decision, every verb its principal parts',
+      isError,
+    },
+    errors,
+    warnings,
+  );
+  report(
+    headwords,
+    {
+      failure: 'malformed headwords',
+      success: 'no headword is a stem, a list or bracketed',
+      isError,
+    },
+    errors,
+    warnings,
+  );
+  report(
+    topics,
+    {
+      failure: 'source rows with a non-canonical primary topic',
+      success: 'every source row uses a canonical topic name',
+      isError,
+    },
+    errors,
+    warnings,
+  );
+  report(
+    glosses,
+    { failure: 'English gloss defects', success: 'no English gloss defects detected' },
+    errors,
+    warnings,
+  );
+  report(
+    capitalized,
+    {
+      failure: 'capitalized headwords not classed as nouns',
+      success: 'every capitalized headword is a noun, pronoun or phrase',
+    },
+    errors,
+    warnings,
+  );
+}
 
 function main() {
   const { entries } = loadAllEntries();
@@ -34,20 +198,23 @@ function main() {
       schemaFailures.push(`${entry.id}: ${issue.path.join('.')} — ${issue.message}`);
     }
   }
-  if (schemaFailures.length > 0) {
-    ui.fail(`${schemaFailures.length} entries failed schema validation`);
-    printSample(schemaFailures);
-    errors.push(...schemaFailures);
-  } else {
-    ui.ok('all entries conform to the vocabulary schema');
-  }
+  report(
+    schemaFailures,
+    {
+      failure: 'entries failed schema validation',
+      success: 'all entries conform to the vocabulary schema',
+      isError: true,
+    },
+    errors,
+    warnings,
+  );
 
   /* ---- level / band / rank consistency (§13) ---- */
   const bandMismatches = [];
   for (const entry of entries) {
     const expected = bandForRank(entry.rank);
     if (!expected) {
-      bandMismatches.push(`${entry.id}: rank ${entry.rank} is outside 1–10,000`);
+      bandMismatches.push(`${entry.id}: rank ${entry.rank} is outside every frequency band`);
       continue;
     }
     if (expected.id !== entry.frequencyBand) {
@@ -62,140 +229,90 @@ function main() {
       );
     }
   }
-  if (bandMismatches.length > 0) {
-    ui.fail(`${bandMismatches.length} level/band/rank conflicts`);
-    printSample(bandMismatches);
-    errors.push(...bandMismatches);
-  } else {
-    ui.ok('rank, level and frequency band agree for every entry');
-  }
+  report(
+    bandMismatches,
+    {
+      failure: 'level/band/rank conflicts',
+      success: 'rank, level and frequency band agree for every entry',
+      isError: true,
+    },
+    errors,
+    warnings,
+  );
 
   /* ---- per-level entry counts (§2) ---- */
   const counts = {};
   for (const entry of entries) counts[entry.level] = (counts[entry.level] ?? 0) + 1;
-  for (const [level, expected] of Object.entries(LEVEL_ENTRY_COUNTS)) {
-    const actual = counts[level] ?? 0;
-    if (actual !== expected) {
-      const message = `${level}: expected ${expected} entries, found ${actual}`;
-      ui.fail(message);
-      errors.push(message);
-    }
-  }
-  if (errors.length === schemaFailures.length + bandMismatches.length) {
-    const targets = Object.entries(LEVEL_ENTRY_COUNTS)
-      .map(([level, count]) => `${level} ${count.toLocaleString('en-US')}`)
-      .join(' / ');
-    ui.ok(`entry counts match the dataset targets (${targets})`);
-  }
+  const countProblems = Object.entries(LEVEL_ENTRY_COUNTS)
+    .filter(([level, expected]) => (counts[level] ?? 0) !== expected)
+    .map(
+      ([level, expected]) => `${level}: expected ${expected} entries, found ${counts[level] ?? 0}`,
+    );
+  report(
+    countProblems,
+    {
+      failure: 'levels with the wrong entry count',
+      success: 'entry counts match LEVEL_ENTRY_COUNTS',
+      isError: true,
+    },
+    errors,
+    warnings,
+  );
 
-  /* ---- ID format and derivation (§12) ---- */
-  const idProblems = [];
-  for (const entry of entries) {
-    const expectedPrefix = `${entry.level.toLowerCase()}-${String(entry.rank).padStart(4, '0')}-`;
-    if (!entry.id.startsWith(expectedPrefix)) {
-      idProblems.push(`${entry.id}: expected ID to start with "${expectedPrefix}"`);
-    }
-  }
-  if (idProblems.length > 0) {
-    ui.fail(`${idProblems.length} IDs do not encode their level and rank`);
-    printSample(idProblems);
-    errors.push(...idProblems);
-  } else {
-    ui.ok('every ID encodes its CEFR level and four-digit global rank');
-  }
+  /* ---- ID format (§12): frozen, level-prefixed ---- */
+  const idProblems = entries
+    .filter((entry) => !entry.id.startsWith(`${entry.level.toLowerCase()}-`))
+    .map((entry) => `${entry.id}: expected ID to start with "${entry.level.toLowerCase()}-"`);
+  report(
+    idProblems,
+    {
+      failure: 'IDs do not encode their CEFR level',
+      success: 'every ID encodes its CEFR level',
+      isError: true,
+    },
+    errors,
+    warnings,
+  );
 
-  /* ---- word-class specific required fields (§11) ---- */
-  const missingArticle = [];
-  const missingPlural = [];
-  const verbProblems = [];
-  const phraseProblems = [];
+  /* ---- phrases ---- */
+  const phraseProblems = entries
+    .filter((entry) => entry.wordClass === 'phrase' && !entry.register)
+    .map((entry) => `${entry.id}: missing register`);
+  report(
+    phraseProblems,
+    {
+      failure: 'phrases are missing a register',
+      success: 'all phrases declare a register and phrase type',
+      isError: true,
+    },
+    errors,
+    warnings,
+  );
 
-  const uncapitalizedNouns = [];
+  /* ---- nouns are capitalized (§13) ----
+   * The capital does not have to be the first letter: "heiße Schokolade" is correct. A noun
+   * with no capital at all is a misfiled word class or a truncated row. */
+  const uncapitalizedNouns = entries
+    .filter(
+      (entry) =>
+        entry.wordClass === 'noun' &&
+        !entry.german
+          .trim()
+          .split(/\s+/)
+          .some((word) => /^\p{Lu}/u.test(word.replace(/^[^\p{L}]+/u, ''))),
+    )
+    .map((entry) => `${entry.id} (${entry.german})`);
+  report(
+    uncapitalizedNouns,
+    {
+      failure: 'nouns are not capitalized — check the word class',
+      success: 'every noun is capitalized',
+    },
+    errors,
+    warnings,
+  );
 
-  for (const entry of entries) {
-    if (entry.wordClass === 'noun') {
-      if (!entry.article) missingArticle.push(`${entry.id} (${entry.german})`);
-      // §13 exempts nouns the dataset marks as having no plural at all; everything else
-      // must carry one, because §14 forbids teaching a noun without it.
-      if (
-        !entry.plural &&
-        entry.numberUsage !== 'pluralOnly' &&
-        entry.numberUsage !== 'singularOnly'
-      ) {
-        missingPlural.push(`${entry.id} (${entry.german}, numberUsage=${entry.numberUsage})`);
-      }
-      // §13: "noun is not capitalized". German nouns always are, but the capital does not
-      // have to be the first letter of the entry: "heiße Schokolade" and "Pommes frites"
-      // are both correct. What is never correct is a noun with no capital at all — that
-      // entry is either a misfiled word class or a truncated source row.
-      const hasCapital = entry.german
-        .trim()
-        .split(/\s+/)
-        .some((word) => {
-          // Leading punctuation is not the letter under test: „Bitte nicht stören“-Schild
-          // and (Regen)schirm both carry their capital behind a quote or a bracket.
-          const first = word.replace(/^[^\p{L}]+/u, '').charAt(0);
-          return first && first === first.toUpperCase() && first !== first.toLowerCase();
-        });
-      if (!hasCapital) uncapitalizedNouns.push(`${entry.id} (${entry.german})`);
-    }
-    if (entry.wordClass === 'verb') {
-      // The infinitive is the headword and must be there; the rest of the conjugation is
-      // an editorial-review item, not a structural fault.
-      if (!entry.infinitive) errors.push(`${entry.id}: missing infinitive`);
-      for (const field of ['thirdPersonPresent', 'simplePast', 'pastParticiple', 'auxiliary']) {
-        if (!entry[field]) verbProblems.push(`${entry.id}: missing ${field}`);
-      }
-    }
-    if (entry.wordClass === 'phrase' && !entry.register) {
-      phraseProblems.push(`${entry.id}: missing register`);
-    }
-  }
-
-  if (verbProblems.length > 0) {
-    ui.warn(`${verbProblems.length} verb conjugation fields are not recorded`);
-    printSample(verbProblems, 5);
-    warnings.push(...verbProblems);
-  } else {
-    ui.ok('all verbs carry full conjugation metadata');
-  }
-
-  if (phraseProblems.length > 0) {
-    ui.fail(`${phraseProblems.length} phrases are missing a register`);
-    printSample(phraseProblems);
-    errors.push(...phraseProblems);
-  } else {
-    ui.ok('all phrases declare a register and phrase type');
-  }
-
-  // Articles and plurals are not in the datasets at all. §14 forbids *teaching* a noun
-  // without its article, which the app honours by not generating article or plural
-  // exercises for such an entry — so this is the editorial backlog, not a build failure.
-  if (missingArticle.length > 0) {
-    ui.warn(`${missingArticle.length} nouns have no article recorded`);
-    printSample(missingArticle, 5);
-    warnings.push(...missingArticle);
-  } else {
-    ui.ok('every noun has an article');
-  }
-
-  if (missingPlural.length > 0) {
-    ui.warn(`${missingPlural.length} countable nouns have no plural recorded`);
-    printSample(missingPlural, 5);
-    warnings.push(...missingPlural);
-  } else {
-    ui.ok('every countable noun has a plural');
-  }
-
-  // A noun with no capital anywhere is usually a misfiled word class in the source, which
-  // only the dataset author can fix — so it is reported, loudly, but does not fail a build.
-  if (uncapitalizedNouns.length > 0) {
-    ui.warn(`${uncapitalizedNouns.length} nouns are not capitalized — check the word class`);
-    printSample(uncapitalizedNouns, 10);
-    warnings.push(...uncapitalizedNouns);
-  } else {
-    ui.ok('every noun is capitalized');
-  }
+  validateSourceRows(errors, warnings);
 
   finish('validate:vocabulary', errors, warnings);
 }

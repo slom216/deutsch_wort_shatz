@@ -165,3 +165,38 @@ svg {
 .error-boundary__actions button:hover {
   background: var(--color-primary-hover);
 }
+
+/* ---- Target size (WCAG 2.2 · 2.5.8): every control at least 24 × 24 CSS px ----
+   Zero-specificity `:where()` so any component rule that sizes a control still wins. */
+:where(button, select, input:not([type='checkbox'], [type='radio'], [type='range']), summary) {
+  min-height: 24px;
+  min-width: 24px;
+}
+
+:where(input[type='checkbox'], input[type='radio']) {
+  width: 24px;
+  height: 24px;
+}
+
+/* Inline links inside running text and lists: padding grows the hit area without moving
+   the text. */
+:where(p, li, dd, td) > a:where(:not([class])) {
+  padding-block: 0.25em;
+}
+
+/* ---- Print: the page content only ---- */
+@media print {
+  .app-header,
+  .app-footer,
+  .skip-link {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .app-shell__main {
+    padding: 0;
+  }
+}

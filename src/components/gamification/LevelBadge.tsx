@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 
 import { useLevelUp } from '@/features/gamification/useLevelUp';
 import { useLiveLevel } from '@/features/gamification/useLiveLevel';
-import { avatarSrc } from '@/features/gamification/xp';
+import { AVATAR_SIZE, avatarSrc } from '@/features/gamification/xp';
 import './LevelBadge.css';
 
 /**
@@ -24,7 +24,14 @@ export function LevelBadge(): ReactNode {
         <LevelUpDialog key={previousLevel} from={previousLevel} to={level.level} />
       ) : null}
       {/* Decorative: the level is written out beside it. */}
-      <img className="level-badge__avatar" src={avatarSrc(level.level)} alt="" />
+      <img
+        className="level-badge__avatar"
+        src={avatarSrc(level.level)}
+        alt=""
+        width={AVATAR_SIZE}
+        height={AVATAR_SIZE}
+        decoding="async"
+      />
       <div className="level-badge__body">
         <p className="level-badge__title">
           Level {level.level} <span className="level-badge__total">({totalXp} XP)</span>
@@ -70,7 +77,14 @@ function LevelUpDialog({ from, to }: { from: number; to: number }): ReactNode {
     <dialog className="level-up" ref={ref} aria-labelledby="level-up-title">
       <p className="level-up__eyebrow">Level up!</p>
       <div className="level-up__cards">
-        <img className="level-up__card" src={avatarSrc(from)} alt={`Level ${from} rank card`} />
+        <img
+          className="level-up__card"
+          src={avatarSrc(from)}
+          alt={`Level ${from} rank card`}
+          width={AVATAR_SIZE}
+          height={AVATAR_SIZE}
+          decoding="async"
+        />
         <span className="level-up__arrow" aria-hidden="true">
           →
         </span>
@@ -78,6 +92,9 @@ function LevelUpDialog({ from, to }: { from: number; to: number }): ReactNode {
           className="level-up__card level-up__card--new"
           src={avatarSrc(to)}
           alt={`Level ${to} rank card`}
+          width={AVATAR_SIZE}
+          height={AVATAR_SIZE}
+          decoding="async"
         />
       </div>
       <h2 className="level-up__title" id="level-up-title">

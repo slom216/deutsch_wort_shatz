@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { db, initializeDatabase } from '@/features/persistence/db';
+import { db, initializeDatabase, storageProblemMessage } from '@/features/persistence/db';
 import { DEFAULT_SETTINGS, settingsSchema, type Settings } from '@/schemas/settingsSchema';
 
 /**
@@ -37,10 +37,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         error: parsed.success ? null : 'Stored settings were invalid; defaults were applied.',
       });
     } catch (cause) {
-      set({
-        status: 'error',
-        error: cause instanceof Error ? cause.message : 'IndexedDB is unavailable.',
-      });
+      console.error('Could not open local storage:', cause);
+      set({ status: 'error', error: storageProblemMessage(cause) });
     }
   },
 

@@ -135,3 +135,37 @@ export const speaking: SpeakingExercise = {
   targetText: 'Wie geht es Ihnen?',
   englishGloss: 'How are you?',
 };
+
+/** Grammar variants on dataset-shaped content: the article of a bare noun, a separable verb gap. */
+export const articleChoice: MultipleChoiceExercise = {
+  ...base,
+  entryId: 'a1-0100-die-minute',
+  id: 'mc-article',
+  type: 'multipleChoice',
+  variant: 'article',
+  isProduction: true,
+  prompt: 'Which article does this noun take?',
+  hint: 'minute',
+  question: 'Minute',
+  options: ['der', 'die', 'das'],
+  correctIndex: 1,
+};
+
+export const verbFormGap: SentenceCompletionExercise = {
+  ...base,
+  entryId: 'a1-0122-abfahren',
+  id: 'sc-verb',
+  type: 'sentenceCompletion',
+  variant: 'verbFormGap',
+  isProduction: true,
+  requiresTypedInput: true,
+  prompt: 'Fill in the correct form of abfahren.',
+  hint: 'to depart',
+  sentenceBefore: 'Der Zug ',
+  sentenceAfter: ' um acht Uhr ab.',
+  fullSentence: 'Der Zug fährt um acht Uhr ab.',
+  englishSentence: 'The train departs at eight.',
+  answerLanguage: 'de',
+  acceptedAnswers: ['fährt'],
+  canonicalAnswer: 'fährt',
+};

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { MultipleChoiceExercise } from './MultipleChoiceExercise';
@@ -344,6 +344,20 @@ describe('MatchingExercise', () => {
     expect(first).toHaveAttribute('aria-pressed', 'true');
   });
 
+  it('lets the English column be chosen first', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<MatchingExercise {...defaults} exercise={fixtures.matching} onSubmit={onSubmit} />);
+
+    for (const pair of fixtures.matching.pairs) {
+      await user.click(screen.getByRole('button', { name: pair.right }));
+      await user.click(screen.getByRole('button', { name: new RegExp(pair.left) }));
+    }
+
+    await user.click(screen.getByRole('button', { name: /check answers/i }));
+    expect(lastResult(onSubmit).correct).toBe(true);
+  });
+
   it('announces matching progress', async () => {
     const user = userEvent.setup();
     render(<MatchingExercise {...defaults} exercise={fixtures.matching} onSubmit={vi.fn()} />);
@@ -361,8 +375,10 @@ describe('WordOrderingExercise', () => {
       <WordOrderingExercise {...defaults} exercise={fixtures.wordOrdering} onSubmit={vi.fn()} />,
     );
     for (const token of fixtures.wordOrdering.tokens) {
-      expect(screen.getByText(token)).toBeInTheDocument();
+      // Punctuation would give away the last word, so tokens are shown bare.
+      expect(screen.getByText(token.replace(/\.$/u, ''))).toBeInTheDocument();
     }
+    expect(screen.queryByText('lang.')).not.toBeInTheDocument();
   });
 
   it('offers move buttons as an alternative to dragging', () => {
@@ -387,7 +403,7 @@ describe('WordOrderingExercise', () => {
     await user.click(screen.getByRole('button', { name: /check answer/i }));
 
     const result = lastResult(onSubmit);
-    expect(result.submittedAnswer).toBe('Der Tag ist lang.');
+    expect(result.submittedAnswer).toBe('Der Tag ist lang');
     expect(result.correct).toBe(true);
   });
 
@@ -409,7 +425,7 @@ describe('WordOrderingExercise', () => {
       <WordOrderingExercise {...defaults} exercise={fixtures.wordOrdering} onSubmit={vi.fn()} />,
     );
     // dnd-kit renders its own aria-live region, so target the component's own readout.
-    expect(container.querySelector('.exercise__current')).toHaveTextContent('ist Der lang. Tag');
+    expect(container.querySelector('.exercise__current')).toHaveTextContent('ist Der lang Tag');
   });
 });
 
@@ -501,6 +517,43 @@ describe('SpeakingExercise', () => {
 
     await user.click(screen.getByRole('button', { name: /i said it correctly/i }));
     expect(lastResult(onSubmit).correct).toBe(true);
+  });
+
+  it('marks a self-assessed answer as such', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<SpeakingExercise {...defaults} exercise={fixtures.speaking} onSubmit={onSubmit} />);
+
+    await user.click(screen.getByRole('button', { name: /i said it correctly/i }));
+    expect(lastResult(onSubmit).selfAssessed).toBe(true);
+  });
+
+  it('says nothing was heard, and offers no empty result, when recognition hears silence', async () => {
+    let recognition: { onend: (() => void) | null } | undefined;
+    vi.stubGlobal(
+      'SpeechRecognition',
+      class {
+        onend = null;
+        onerror = null;
+        onresult = null;
+        start = vi.fn();
+        stop = vi.fn();
+        abort = vi.fn();
+        constructor() {
+          // eslint-disable-next-line @typescript-eslint/no-this-alias
+          recognition = this;
+        }
+      },
+    );
+    const user = userEvent.setup();
+    render(<SpeakingExercise {...defaults} exercise={fixtures.speaking} onSubmit={vi.fn()} />);
+
+    await user.click(screen.getByRole('button', { name: /start speaking/i }));
+    act(() => recognition?.onend?.());
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Nothing was heard — try again.');
+    expect(screen.queryByRole('button', { name: /use this result/i })).not.toBeInTheDocument();
+    vi.unstubAllGlobals();
   });
 
   it('records a self-assessed failure', async () => {

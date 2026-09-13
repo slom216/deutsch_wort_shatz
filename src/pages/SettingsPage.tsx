@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react';
 
 import { PageHeader } from '@/components/common/PageHeader';
+import { useGamification } from '@/features/gamification/useGamification';
+import { FREEZE_EARN_DAYS, MAX_FREEZES } from '@/features/gamification/streak';
 import { useSettingsStore } from '@/features/settings/settingsStore';
 import { switchLearningMode } from '@/features/settings/switchLearningMode';
 import { LEARNING_MODES, LEARNING_MODE_LABELS, MASTERY_TARGETS } from '@/features/srs/learningMode';
@@ -28,6 +30,7 @@ export default function SettingsPage(): ReactNode {
   const settings = useSettingsStore((state) => state.settings);
   const status = useSettingsStore((state) => state.status);
   const update = useSettingsStore((state) => state.update);
+  const freezes = useGamification().snapshot?.streak.freezes;
 
   /** The mode the learner has asked for but not yet confirmed. */
   const [pendingMode, setPendingMode] = useState<LearningMode | null>(null);
@@ -62,12 +65,13 @@ export default function SettingsPage(): ReactNode {
           >
             {DAILY_GOALS.map((goal) => (
               <option key={goal} value={goal}>
-                {goal} exercises
+                {goal} correct answers
               </option>
             ))}
           </select>
           <p className="settings-hint">
-            A day counts towards your streak at 10 graded exercises or 50 XP.
+            A day counts towards your streak at 10 correct answers or 50 XP. Wrong answers do not
+            count towards the streak or the daily goal.
           </p>
         </div>
 
@@ -213,32 +217,22 @@ export default function SettingsPage(): ReactNode {
         </div>
         <p className="settings-hint">
           Strict mode is the default. Capitalization, articles, umlauts, ß, spelling, punctuation,
-          word order, verb forms and plurals are all significant.
+          word order, verb forms and plurals are all significant. Turning it off also accepts a
+          missing umlaut or ß, which can be a different word: <i lang="de">schon</i> (already) for{' '}
+          <i lang="de">schön</i> (beautiful), or <i lang="de">zahlen</i> (to pay) for{' '}
+          <i lang="de">zählen</i> (to count).
         </p>
       </section>
 
       <section className="settings-section" aria-labelledby="settings-streak">
         <h2 id="settings-streak">Streak</h2>
-        <div className="settings-field">
-          <label htmlFor="streak-freezes">Streak freezes</label>
-          <select
-            id="streak-freezes"
-            value={settings.streakFreezes}
-            disabled={status !== 'ready'}
-            onChange={(event) => {
-              void update({ streakFreezes: Number(event.target.value) });
-            }}
-          >
-            {[0, 1, 2, 3].map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-          <p className="settings-hint">
-            Each freeze bridges one missed day so a single skipped day does not end your streak.
-          </p>
-        </div>
+        <p>
+          Streak freezes held: <strong>{freezes ?? '…'}</strong> of {MAX_FREEZES}
+        </p>
+        <p className="settings-hint">
+          You earn a freeze for every {FREEZE_EARN_DAYS} days in a row you study, and can hold up to{' '}
+          {MAX_FREEZES}. A missed day uses one up automatically, so your streak carries on.
+        </p>
       </section>
     </>
   );

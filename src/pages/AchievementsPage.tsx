@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
@@ -32,9 +33,12 @@ export default function AchievementsPage(): ReactNode {
     return (
       <>
         <PageHeader title="Achievements" />
-        <p role="alert" className="page-alert">
-          {error ?? 'Could not read your progress.'}
-        </p>
+        <div role="alert" className="page-alert">
+          <p>{error ?? 'Could not read your progress.'}</p>
+          <p>
+            <Link to="/data#data-repair">Open Data → Repair database</Link>
+          </p>
+        </div>
       </>
     );
   }

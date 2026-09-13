@@ -46,9 +46,10 @@ export function SpeakingExercise({
     recognition.transcript.length > 0 &&
     fullyNormalize(recognition.transcript) === fullyNormalize(exercise.targetText);
 
-  const finish = (correct: boolean, submitted: string): void => {
+  const finish = (correct: boolean, submitted: string, selfAssessed = false): void => {
     if (locked) return;
     onSubmit({
+      ...(selfAssessed ? { selfAssessed: true } : {}),
       correct,
       issues: correct
         ? []
@@ -120,7 +121,8 @@ export function SpeakingExercise({
 
       {!locked ? (
         <div className="speaking__self-assessment">
-          {recognition.supported && recognition.status === 'done' ? (
+          {/* Only a real transcript is a result; silence is reported as an error instead. */}
+          {recognition.supported && recognition.status === 'done' && recognition.transcript ? (
             <button
               type="button"
               className="exercise__submit"
@@ -138,7 +140,7 @@ export function SpeakingExercise({
               type="button"
               className="speaking__judge speaking__judge--yes"
               onClick={() =>
-                finish(true, recognition.transcript || 'Self-assessed: said correctly')
+                finish(true, recognition.transcript || 'Self-assessed: said correctly', true)
               }
             >
               I said it correctly
@@ -147,7 +149,7 @@ export function SpeakingExercise({
               type="button"
               className="speaking__judge speaking__judge--no"
               onClick={() =>
-                finish(false, recognition.transcript || 'Self-assessed: needs more practice')
+                finish(false, recognition.transcript || 'Self-assessed: needs more practice', true)
               }
             >
               I need more practice

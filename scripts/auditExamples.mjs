@@ -17,27 +17,21 @@ import { finish, loadAllEntries, printSample, ui } from './lib/loadDataset.mjs';
 const MAX_FORMULAIC_EXAMPLES = 9600;
 
 /**
- * Punctuation- and case-insensitive containment check, tolerant of short inflectional
- * endings so `Arbeitsplan` still matches `Arbeitsplans` in a sentence. Both sides are
- * normalized identically — normalizing only the token would make every phrase entry
- * whose sentence *is* the phrase (e.g. "Ja, bitte.") look like a mismatch.
+ * Case- and punctuation-insensitive, whole-token match: the target token has to be in the
+ * sentence as written, since sentence completion cuts exactly that token out of it. Both
+ * sides are normalized identically, so a phrase whose sentence *is* the phrase still matches.
  */
 function normalizeForMatch(value) {
   return value
-    .toLowerCase()
-    .replace(/[.!?,;:„“"'()]/gu, '')
+    .toLocaleLowerCase('de-DE')
+    .replace(/[.!?,;:„“”"'’‘‚«»()–—…]/gu, ' ')
     .replace(/\s+/gu, ' ')
     .trim();
 }
 
 function occursIn(sentence, token) {
-  const haystack = normalizeForMatch(sentence);
   const needle = normalizeForMatch(token);
-  if (needle.length === 0) return false;
-  if (haystack.includes(needle)) return true;
-  // Allow a short inflectional tail (e.g. genitive -s, plural -e/-en, verb endings).
-  const stem = needle.length > 4 ? needle.slice(0, Math.max(4, needle.length - 2)) : needle;
-  return haystack.includes(stem);
+  return needle.length > 0 && ` ${normalizeForMatch(sentence)} `.includes(` ${needle} `);
 }
 
 function main() {
@@ -105,13 +99,11 @@ function main() {
     ui.ok('every example declares at least one target token');
   }
 
-  // A target token that does not occur in its own sentence makes sentence-completion
-  // exercises unbuildable, but this is a content-authoring defect rather than a
-  // structural one — it is reported for the Phase 18 language audit.
+  // A target token that is not in its own sentence leaves sentence completion nothing to gap.
   if (tokenNotFound.length > 0) {
-    ui.warn(`${tokenNotFound.length} target tokens do not occur in their own sentence`);
+    ui.fail(`${tokenNotFound.length} target tokens do not occur in their own sentence`);
     printSample(tokenNotFound, 10);
-    warnings.push(...tokenNotFound);
+    errors.push(...tokenNotFound);
   } else {
     ui.ok('every target token occurs in its own sentence');
   }

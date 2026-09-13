@@ -1,9 +1,7 @@
-import {
-  isSpeechRecognitionSupported,
-  isSpeechSynthesisSupported,
-} from '@/features/speech/speechTypes';
+import { isSpeechRecognitionSupported } from '@/features/speech/speechTypes';
+import { hasGermanVoice } from '@/features/speech/useSpeechSynthesis';
 import type { Settings } from '@/schemas/settingsSchema';
-import type { ExerciseType } from '@/schemas/vocabularySchema';
+import type { ExerciseType, VocabularyEntry } from '@/schemas/vocabularySchema';
 
 /** Every format the engine can generate (§15). */
 export const ALL_EXERCISE_TYPES: readonly ExerciseType[] = [
@@ -34,10 +32,14 @@ export const EXERCISE_TYPE_LABELS: Readonly<Record<ExerciseType, string>> = {
  * Both halves matter. The settings toggles are the learner's choice; browser support is
  * not. A Firefox user who leaves speaking switched on has no speech recognition, and
  * putting speaking exercises in their session would hand them a self-assessment prompt
- * every few questions instead of a graded answer.
+ * every few questions instead of a graded answer. Listening needs an installed German
+ * voice, not merely the speechSynthesis API: with no voice nothing is audible at all.
+ *
+ * Every fixed session applies this when it is built, whatever its URL says, so no entry
+ * point can bypass it.
  */
-export function availableExerciseTypes(settings: Settings): ExerciseType[] {
-  const listening = settings.listeningEnabled && isSpeechSynthesisSupported();
+export async function availableExerciseTypes(settings: Settings): Promise<ExerciseType[]> {
+  const listening = settings.listeningEnabled && (await hasGermanVoice());
   const speaking = settings.speakingEnabled && isSpeechRecognitionSupported();
 
   return ALL_EXERCISE_TYPES.filter((type) => {
@@ -45,4 +47,17 @@ export function availableExerciseTypes(settings: Settings): ExerciseType[] {
     if (type === 'speaking') return speaking;
     return true;
   });
+}
+
+/** Keeps only the formats at least one of these entries can produce. */
+export function typesForEntries(
+  types: readonly ExerciseType[],
+  entries: readonly VocabularyEntry[],
+): ExerciseType[] {
+  return types.filter((type) =>
+    // Matching is built from a group of entries, not from one (see `buildSession`).
+    type === 'matching'
+      ? entries.length >= 5
+      : entries.some((entry) => entry.exerciseConfig.enabledTypes.includes(type)),
+  );
 }

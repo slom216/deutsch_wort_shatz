@@ -127,7 +127,7 @@ export default function VocabularyBrowserPage(): ReactNode {
       />
 
       <div className="vocab-filters">
-        <div className="vocab-filters__field">
+        <div className="vocab-filters__field vocab-filters__field--search">
           <label htmlFor="vocab-search">Search</label>
           <input
             id="vocab-search"
@@ -230,7 +230,8 @@ export default function VocabularyBrowserPage(): ReactNode {
           ariaLabel="Vocabulary search results"
           keyOf={(record) => record.id}
           renderRow={(record) => {
-            const status = progressByEntry.get(record.id)?.srs.status ?? 'new';
+            // A malformed stored row (`srs: null`) must not take the whole list down.
+            const status = progressByEntry.get(record.id)?.srs?.status ?? 'new';
             return (
               <div className="entry-row" style={{ height: ROW_HEIGHT }}>
                 <span className="entry-row__rank">{record.rank.toLocaleString('en-US')}</span>

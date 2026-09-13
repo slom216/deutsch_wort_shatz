@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { db } from '@/features/persistence/db';
 import type { Exercise, EvaluationResult } from '@/schemas/exerciseSchema';
 import type { Grade } from '@/schemas/progressSchema';
-import { loadAllProgress, loadProgress, recordReview } from '@/features/srs/repository';
+import { loadAllProgress, recordReview } from '@/features/srs/repository';
 import {
   awardCompletionBonuses,
   awardMasteryBonus,
@@ -40,6 +40,11 @@ export interface AnsweredExercise {
   /** Whether the learner opened the hint before answering (§20: caps the grade at 1). */
   readonly hintUsed: boolean;
   readonly responseMs: number;
+  /**
+   * The learner marked a speaking exercise correct themselves ("I said it correctly").
+   * Counts as correct, earns half XP and does not advance mastery or intervals.
+   */
+  readonly selfAssessed?: boolean;
   /** Filled in by the store; callers do not supply it. */
   readonly xpAwarded?: number;
 }
@@ -69,7 +74,12 @@ interface SessionState {
     allowedTypes?: readonly Exercise['type'][];
     strictAnswerChecking?: boolean;
   }) => Promise<void>;
-  readonly recordAnswer: (answer: AnsweredExercise) => Promise<void>;
+  /**
+   * Saves one answer. Resolves `false` when another tab had already answered this exercise:
+   * nothing is written and the store is resynced to the stored session instead, so the
+   * caller must not advance.
+   */
+  readonly recordAnswer: (answer: AnsweredExercise) => Promise<boolean>;
   readonly advance: () => Promise<void>;
   /**
    * Appends one exercise and makes it current. Continuous mode builds its stream this
@@ -85,7 +95,10 @@ interface SessionState {
    * in the list would be where every later reload resumed, stranding the answers after it.
    */
   readonly dropCurrent: () => Promise<void>;
-  /** Closes the session and awards its end-of-session bonuses. Safe to call twice. */
+  /**
+   * Closes the session and awards its end-of-session bonuses. Safe to call twice. A
+   * continuous session drops the exercise left on screen, so it is not counted as planned.
+   */
   readonly finish: () => Promise<void>;
   readonly reset: () => void;
 }
@@ -118,6 +131,29 @@ function summarize(
     xpEarned: answers.reduce((sum, answer) => sum + (answer.xpAwarded ?? 0), 0),
     exercises: [...exercises],
   };
+}
+
+/** An active session untouched for this long is treated as abandoned. */
+const STALE_SESSION_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Marks sessions nobody will come back to as abandoned: every active one of the same mode
+ * (a new session supersedes it) and any active one started over a day ago. Reopening an
+ * abandoned session's URL resumes it and makes it active again.
+ */
+export async function abandonStaleSessions(
+  mode: SessionMode,
+  exceptId: string,
+  now: Date = new Date(),
+): Promise<void> {
+  const cutoff = new Date(now.getTime() - STALE_SESSION_MS).toISOString();
+  await db.sessions
+    .where('status')
+    .equals('active')
+    .filter(
+      (record) => record.id !== exceptId && (record.mode === mode || record.startedAt < cutoff),
+    )
+    .modify({ status: 'abandoned' });
 }
 
 export const useSessionStore = create<SessionState>((set, get) => ({
@@ -189,6 +225,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     }
 
     const startedAt = existingRecord?.startedAt ?? new Date().toISOString();
+    if (!existingRecord) await abandonStaleSessions(mode, sessionId);
     // A continuous session has no planned end: running out of exercises means the next one
     // has not been chosen yet, not that the session is over (§ continuous mode).
     const finished =
@@ -205,78 +242,111 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       bonusXp: 0,
     });
 
+    // A fixed session with nothing to ask is not a session: nothing is stored, and the page
+    // explains why instead of opening an empty results screen.
+    if (exercises.length === 0 && mode !== 'continuous') return;
     await db.sessions.put(summarize(sessionId, mode, exercises, answered, startedAt, finished));
   },
 
   recordAnswer: async (answer) => {
     const { sessionId, mode, exercises, answers, startedAt } = get();
-    if (!sessionId) return;
+    if (!sessionId) return false;
     // A resumed session replays its stored answers, so an exercise can already be here.
-    if (answers.some((existing) => existing.exerciseId === answer.exerciseId)) return;
+    if (answers.some((existing) => existing.exerciseId === answer.exerciseId)) return true;
 
     const exercise = exercises.find((e) => e.id === answer.exerciseId);
-    const errorCategories = answer.result.issues.map((issue) => issue.category);
+    const errorCategories = answer.result.correct
+      ? []
+      : answer.result.issues.map((issue) => issue.category);
     const answeredAt = new Date();
-    // Whether this entry was already mastered, so the bonus fires only on the transition.
-    const wasMastered = (await loadProgress(answer.entryId))?.srs.status === 'mastered';
+    const historyId = `${sessionId}:${answer.exerciseId}`;
 
-    // The SRS grades the attempt, recomputes difficulty, reschedules the entry and
-    // re-evaluates mastery. It is the only writer of SRS state, so the grade recorded in
-    // history always matches the grade the scheduler acted on (§20).
-    let grade: Grade = 0;
-    let mastered = false;
-    let xpAwarded = 0;
-    if (exercise) {
-      const outcome = await recordReview({
-        entryId: answer.entryId,
-        exercise,
-        correct: answer.result.correct,
-        attempts: answer.attempts,
-        revealed: answer.revealed,
-        hintUsed: answer.hintUsed,
-        responseMs: answer.responseMs,
-        errorCategories,
-        reviewedAt: answeredAt,
-      });
-      grade = outcome.grade;
-      // Only award mastery XP on the transition, not on every later review.
-      mastered = outcome.mastered && !wasMastered;
-      xpAwarded = exerciseXp({
-        exerciseType: exercise.type,
-        correct: answer.result.correct,
-        revealed: answer.revealed,
-      });
+    // Progress, history and the session record commit together or not at all: a tab closed
+    // half-way would otherwise leave the SRS advanced with no history row, and the reload
+    // would re-serve the exercise and grade it a second time.
+    const written = await db.transaction(
+      'rw',
+      db.entryProgress,
+      db.exerciseHistory,
+      db.sessions,
+      async () => {
+        // Another tab on the same session already answered this exercise. Writing now
+        // would overwrite its answer and grade the entry twice.
+        if (await db.exerciseHistory.get(historyId)) return null;
+
+        // Whether this entry was already mastered, so the bonus fires only on the transition.
+        const wasMastered = (await db.entryProgress.get(answer.entryId))?.srs.status === 'mastered';
+
+        // The SRS grades the attempt, recomputes difficulty, reschedules the entry and
+        // re-evaluates mastery. It is the only writer of SRS state, so the grade recorded in
+        // history always matches the grade the scheduler acted on (§20).
+        let grade: Grade = 0;
+        let mastered = false;
+        let xpAwarded = 0;
+        if (exercise) {
+          const outcome = await recordReview({
+            entryId: answer.entryId,
+            exercise,
+            correct: answer.result.correct,
+            attempts: answer.attempts,
+            revealed: answer.revealed,
+            hintUsed: answer.hintUsed,
+            responseMs: answer.responseMs,
+            errorCategories,
+            reviewedAt: answeredAt,
+            ...(answer.selfAssessed ? { selfAssessed: true } : {}),
+          });
+          grade = outcome.grade;
+          // Only award mastery XP on the transition, not on every later review.
+          mastered = outcome.mastered && !wasMastered;
+          xpAwarded = exerciseXp({
+            exerciseType: exercise.type,
+            correct: answer.result.correct,
+            revealed: answer.revealed,
+          });
+          // Nothing was checked, so a self-marked answer earns half (§ S13).
+          if (answer.selfAssessed && xpAwarded > 0) xpAwarded = Math.floor(xpAwarded / 2);
+        }
+
+        const next = [...answers, { ...answer, xpAwarded }];
+        await db.exerciseHistory.put({
+          id: historyId,
+          entryId: answer.entryId,
+          sessionId,
+          exerciseType: exercise?.type ?? 'unknown',
+          ...(exercise?.variant ? { direction: exercise.variant } : {}),
+          correct: answer.result.correct,
+          firstAttempt: answer.attempts === 1,
+          revealed: answer.revealed,
+          hintUsed: answer.hintUsed,
+          responseMs: answer.responseMs,
+          grade,
+          errorCategories,
+          answeredAt: answeredAt.toISOString(),
+          // XP is stored on the row rather than added to a running total, and the row id is
+          // deterministic, so re-answering or reloading cannot inflate it (§23).
+          xpAwarded,
+        });
+        await db.sessions.put(summarize(sessionId, mode, exercises, next, startedAt, false));
+        return { next, mastered };
+      },
+    );
+
+    if (!written) {
+      // Pick up the stored state — the other tab's answers and position — instead.
+      await get().start({ sessionId, mode, entries: [] });
+      return false;
     }
 
-    const next = [...answers, { ...answer, xpAwarded }];
-    set({ answers: next });
-
-    await db.exerciseHistory.put({
-      id: `${sessionId}:${answer.exerciseId}`,
-      entryId: answer.entryId,
-      sessionId,
-      exerciseType: exercise?.type ?? 'unknown',
-      ...(exercise?.variant ? { direction: exercise.variant } : {}),
-      correct: answer.result.correct,
-      firstAttempt: answer.attempts === 1,
-      revealed: answer.revealed,
-      hintUsed: answer.hintUsed,
-      responseMs: answer.responseMs,
-      grade,
-      errorCategories,
-      answeredAt: answeredAt.toISOString(),
-      // XP is stored on the row rather than added to a running total, and the row id is
-      // deterministic, so re-answering or reloading cannot inflate it (§23).
-      xpAwarded,
-    });
+    // Memory changes only once the write has committed, so a failed write can be retried.
+    set({ answers: written.next });
 
     // Mastering an entry is worth a one-off bonus, awarded by entry id so it cannot repeat.
-    if (mastered) {
+    if (written.mastered) {
       await awardMasteryBonus(answer.entryId);
       set({ bonusXp: get().bonusXp + XP_MASTER_ENTRY });
     }
-
-    await db.sessions.put(summarize(sessionId, mode, exercises, next, startedAt, false));
+    return true;
   },
 
   advance: async () => {
@@ -312,10 +382,15 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   },
 
   finish: async () => {
-    const { sessionId, mode, exercises, answers, startedAt, status } = get();
+    const { sessionId, mode, answers, startedAt, status } = get();
     if (status === 'completed') return;
 
-    set({ currentIndex: exercises.length, status: 'completed' });
+    const answeredIds = new Set(answers.map((answer) => answer.exerciseId));
+    const exercises =
+      mode === 'continuous'
+        ? get().exercises.filter((exercise) => answeredIds.has(exercise.id))
+        : get().exercises;
+    set({ exercises, currentIndex: exercises.length, status: 'completed' });
     if (!sessionId) return;
 
     await db.sessions.put(summarize(sessionId, mode, exercises, answers, startedAt, true));

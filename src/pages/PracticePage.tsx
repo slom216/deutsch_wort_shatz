@@ -23,7 +23,6 @@ import {
   type Difficulty,
 } from '@/features/practice/streakGame';
 import { loadAllProgress } from '@/features/srs/repository';
-import { masteryTarget } from '@/features/srs/learningMode';
 import type { MultipleChoiceExercise as Question } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import '@/components/exercises/exercises.css';
@@ -85,7 +84,7 @@ export default function PracticePage(): ReactNode {
     const load = async (): Promise<void> => {
       const progress = await loadAllProgress();
       const ids = progress
-        .filter((record) => (record.masteryScore ?? 0) >= masteryTarget())
+        .filter((record) => record.srs.status === 'mastered')
         .map((record) => record.entryId);
       const entries = await loadEntries(ids);
 
@@ -381,7 +380,7 @@ function ReadyScreen({
         </p>
         <p className="band-summary">
           Keep going in <Link to={continuousSessionPath()}>continuous learning</Link> — a word
-          counts as mastered once you have answered it cleanly {masteryTarget()} times.
+          counts as mastered once you have recalled it reliably over several weeks of reviews.
         </p>
       </section>
     );

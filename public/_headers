@@ -1,0 +1,12 @@
+# Cloudflare Workers static assets: security headers for every response.
+# The two script hashes are the inline scripts in index.html (theme before first paint) and
+# public/404.html (deep-link redirect). Editing either script means recomputing its hash:
+#   node -e 'const s=require("fs").readFileSync("index.html","utf8").match(/<script>([\s\S]*?)<\/script>/)[1];console.log(require("crypto").createHash("sha256").update(s).digest("base64"))'
+# blob: and data: cover the progress-file download and inlined assets; microphone is for
+# speaking exercises (Web Speech API needs no network permission in CSP).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-B2Yuk3JexzD5oyqm48tce5cjoak4fVSea21kx0HlrbE=' 'sha256-MqwrCPGtz54MT/WeX0FppuvhVidRAMOMSxezZpGhbig='; style-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' data: blob:; connect-src 'self' blob:; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: microphone=(self), camera=(), geolocation=(), payment=(), usb=(), interest-cohort=()

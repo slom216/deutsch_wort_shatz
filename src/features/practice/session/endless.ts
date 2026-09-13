@@ -15,6 +15,10 @@ import type { Random } from '../random';
  * fixed offset is.
  */
 
+/** Exercises to wait before a word with a score below `LOW_SCORE` returns, right or wrong. */
+export const REQUEUE_WHILE_NEW: readonly [number, number] = [5, 10];
+/** Scores below this are words still being met, which need a quick first repeat. */
+export const LOW_SCORE = 2;
 /** Exercises to wait before a wrongly answered word returns. */
 export const REQUEUE_AFTER_WRONG: readonly [number, number] = [25, 50];
 /** Exercises to wait before a correctly answered, not-yet-learned word returns. */
@@ -35,7 +39,14 @@ export interface RequeueInput {
 export function requeueOffset(input: RequeueInput, random: Random): number | null {
   if (input.correct && input.masteryScore >= (input.target ?? masteryTarget())) return null;
 
-  const [from, to] = input.correct ? REQUEUE_AFTER_CORRECT : REQUEUE_AFTER_WRONG;
+  // A brand-new word waiting 25–100 exercises meant a new learner met dozens of words
+  // before any repeat; known words keep the longer gaps.
+  const [from, to] =
+    input.masteryScore < LOW_SCORE
+      ? REQUEUE_WHILE_NEW
+      : input.correct
+        ? REQUEUE_AFTER_CORRECT
+        : REQUEUE_AFTER_WRONG;
   return from + random.int(to - from + 1);
 }
 

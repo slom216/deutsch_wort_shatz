@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
@@ -7,7 +7,13 @@ import { StatCard } from '@/components/common/StatCard';
 import { useReviewState } from '@/features/srs/useReviewState';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { useSettingsStore } from '@/features/settings/settingsStore';
-import { availableExerciseTypes, EXERCISE_TYPE_LABELS } from '@/features/practice/exerciseTypes';
+import {
+  availableExerciseTypes,
+  EXERCISE_TYPE_LABELS,
+  typesForEntries,
+} from '@/features/practice/exerciseTypes';
+import { loadEntries } from '@/content/vocabulary/registry';
+import type { ExerciseType } from '@/schemas/vocabularySchema';
 import '@/styles/lists.css';
 import './SettingsPage.css';
 
@@ -27,14 +33,34 @@ export default function ReviewPage(): ReactNode {
   const { loading, error, counts, due, overdue, forecast } = useReviewState();
   const settings = useSettingsStore((state) => state.settings);
 
-  // §19: listening and speaking only when enabled *and* supported by this browser.
-  const types = availableExerciseTypes(settings);
   const labels = useEntryLabels(due.slice(0, 12).map((entry) => entry.entryId));
+
+  // The formats a review can really use: enabled, supported by this browser, and producible
+  // for the words that are due. The session page applies the same rule when it builds.
+  const [types, setTypes] = useState<readonly ExerciseType[]>([]);
+  // The session reviews at most the first 40 due words.
+  const dueKey = due
+    .slice(0, 40)
+    .map((entry) => entry.entryId)
+    .join(',');
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all([availableExerciseTypes(settings), loadEntries(dueKey.split(','))])
+      .then(([available, entries]) => {
+        if (!cancelled) setTypes(typesForEntries(available, [...entries.values()]));
+      })
+      .catch(() => {
+        if (!cancelled) setTypes([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [settings, dueKey]);
 
   const start = (): void => {
     const sessionId = `review-${Date.now().toString(36)}`;
     void navigate(
-      `/practice/session/${sessionId}?mode=review&length=${estimateSessionSize(counts.due)}&types=${types.join(',')}`,
+      `/practice/session/${sessionId}?mode=review&length=${estimateSessionSize(counts.due)}`,
     );
   };
 
@@ -83,7 +109,7 @@ export default function ReviewPage(): ReactNode {
             <h2 id="review-mix">Exercise mix</h2>
             <p className="band-summary">
               This session draws from these formats. Listening and speaking appear only when you
-              have enabled them and this browser supports them (§19).
+              have enabled them and this browser can play or hear German.
             </p>
             <ul className="band-list">
               {types.map((type) => (

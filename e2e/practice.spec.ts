@@ -125,19 +125,72 @@ test('matching is solvable by clicking, with no dragging', async ({ page }) => {
   await expect(page.getByRole('button', { name: /check answers/i })).toBeEnabled();
 });
 
-test('listening falls back to text when speech synthesis is unavailable', async ({ page }) => {
+/**
+ * Walks a session without a `types` parameter — the path "A fixed batch" and "Practise
+ * this topic" take — and fails as soon as a listening exercise is served.
+ */
+async function expectNoListeningExercises(page: Page): Promise<void> {
+  const sessionId = `e2e-no-listening-${Date.now().toString(36)}`;
+  await page.goto(`/practice/session/${sessionId}?mode=free&level=A1&band=all&length=15`);
+  await expect(page.getByText(/Exercise 1 of/)).toBeVisible();
+
+  for (let i = 0; i < 60; i += 1) {
+    if (page.url().includes('/results/')) break;
+    await expect(page.getByRole('button', { name: /play audio|play again/i })).toHaveCount(0);
+
+    for (const name of [/show answer/i, /i said it correctly/i, /continue/i]) {
+      const button = page.getByRole('button', { name });
+      if (await button.isVisible().catch(() => false)) {
+        await button.click({ timeout: 2_000 }).catch(() => {});
+      }
+    }
+  }
+}
+
+test('listening is not served when speech synthesis is unavailable', async ({ page }) => {
+  test.setTimeout(90_000);
   // Remove speech synthesis before any app code runs.
   await page.addInitScript(() => {
     Object.defineProperty(window, 'speechSynthesis', { get: () => undefined });
   });
 
-  await startSession(page, 'listening');
-
-  await expect(page.getByRole('note')).toContainText(/does not support speech synthesis/i);
-  await expect(page.getByRole('button', { name: /play audio/i })).toBeDisabled();
+  await expectNoListeningExercises(page);
 });
 
-test('speaking offers self-assessment and never blocks progress', async ({ page }) => {
+test('listening is not served when synthesis exists but has no German voice', async ({ page }) => {
+  test.setTimeout(90_000);
+  // The common real case (headless browsers, many Linux desktops): the API is there, but
+  // nothing it can say sounds German, so a listening exercise would be unanswerable.
+  // Unverified: written for the intended behaviour while the support check is being fixed.
+  await page.addInitScript(() => {
+    const english = {
+      name: 'English',
+      lang: 'en-US',
+      voiceURI: 'english',
+      localService: true,
+      default: true,
+    };
+    const fake = Object.assign(new EventTarget(), {
+      speaking: false,
+      pending: false,
+      paused: false,
+      getVoices: () => [english],
+      speak: () => {},
+      cancel: () => {},
+      pause: () => {},
+      resume: () => {},
+    });
+    Object.defineProperty(window, 'speechSynthesis', { get: () => fake });
+  });
+
+  await expectNoListeningExercises(page);
+});
+
+test('speaking offers self-assessment and never blocks progress', async ({ page, browserName }) => {
+  test.skip(
+    browserName === 'firefox',
+    'Firefox has no speech recognition, so speaking is left out',
+  );
   await startSession(page, 'speaking');
 
   await expect(page.getByText(/does not record or store your voice/i)).toBeVisible();

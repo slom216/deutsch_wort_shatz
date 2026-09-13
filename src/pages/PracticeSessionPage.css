@@ -1,0 +1,14 @@
+/* On a phone the exercise and its Check button should start near the top of the screen. */
+@media (max-width: 40rem) {
+  .practice-session .level-badge-bar {
+    display: none;
+  }
+
+  .practice-session .page-header {
+    margin-bottom: var(--space-3);
+  }
+
+  .practice-session .page-header h1 {
+    font-size: var(--text-xl);
+  }
+}

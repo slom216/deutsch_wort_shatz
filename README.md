@@ -1,13 +1,15 @@
-# Deutsch Wort Shatz
+# DeuLern Deutsch Wortschatz
 
 A desktop-first German vocabulary trainer for CEFR levels **A1, A2 and B1**. It runs
 entirely in the browser: no backend, no account, no cloud storage, no external AI or
 speech services. All learner progress is stored locally in IndexedDB.
 
-All seven exercise formats work, German answers are checked strictly, spaced repetition
-schedules reviews automatically, and XP, streaks and achievements are earned from real
-sessions. The vocabulary is 10,000 entries — see **Known content issues** for what is
-wrong with it, which is the honest limit on how useful the app currently is.
+German answers are checked strictly, spaced repetition schedules reviews automatically, and
+XP, streaks and achievements are earned from real sessions. All seven exercise formats are
+generated; the article, plural and verb-form variants exist for an entry only when its
+source row records that grammar. The vocabulary is **3,444 entries** (A1 799, A2 690,
+B1 1,955), counted from `data/a1.json`, `a2.json` and `b1.json` — see **Known content
+issues** for the backlog the audits report.
 
 ## Requirements
 
@@ -27,67 +29,59 @@ before the dev server starts.
 
 ## Scripts
 
-| Script                        | What it does                                         |
-| ----------------------------- | ---------------------------------------------------- |
-| `npm run dev`                 | Vite dev server                                      |
-| `npm run build`               | Typecheck and produce the static production build    |
-| `npm run preview`             | Serve the production build                           |
-| `npm run lint`                | ESLint                                               |
-| `npm run format` / `:check`   | Prettier                                             |
-| `npm run typecheck`           | `tsc -b --noEmit`                                    |
-| `npm run test` / `:watch`     | Vitest + React Testing Library                       |
-| `npm run test:e2e`            | Playwright against the production build              |
-| `npm run build:content`       | Generate vocabulary bundles from `data/`             |
-| `npm run validate:vocabulary` | Validate all 10,000 entries against the Zod schemas  |
-| `npm run audit:duplicates`    | Duplicate IDs and indistinguishable duplicate senses |
-| `npm run audit:ranks`         | Rank uniqueness, bounds, gaps and band occupancy     |
-| `npm run audit:topics`        | Controlled topic registry conformance                |
-| `npm run audit:examples`      | Example sentences, target tokens and formulaic prose |
-| `npm run audit:all`           | All of the above, plus every per-phase rank gate     |
-| `npm run audit:release`       | §18 release gate (currently fails on phrase counts)  |
+| Script                        | What it does                                            |
+| ----------------------------- | ------------------------------------------------------- |
+| `npm run dev`                 | Vite dev server                                         |
+| `npm run build`               | Typecheck and produce the static production build       |
+| `npm run preview`             | Serve the production build                              |
+| `npm run lint`                | ESLint                                                  |
+| `npm run format` / `:check`   | Prettier                                                |
+| `npm run typecheck`           | `tsc -b --noEmit`                                       |
+| `npm run test` / `:watch`     | Vitest + React Testing Library                          |
+| `npm run test:e2e`            | Playwright against the production build                 |
+| `npm run build:content`       | Generate vocabulary bundles from `data/`                |
+| `npm run validate:vocabulary` | Zod schemas, source grammar, headwords, topics, glosses |
+| `npm run audit:duplicates`    | Duplicate IDs and senses, shared example sentences      |
+| `npm run audit:ranks`         | Rank uniqueness, bounds, gaps and band occupancy        |
+| `npm run audit:topics`        | Controlled topic registry conformance                   |
+| `npm run audit:examples`      | Examples, target token in its sentence, formulaic prose |
+| `npm run audit:all`           | All of the above, plus every per-phase rank gate        |
+| `npm run audit:release`       | Release gate: counts, phrase targets, ambiguous options |
 
 ## Content pipeline
 
-`data/a1_words.json`, `a2_words.json` and `b1_words.json` are the **authoring source of
-truth** — 10,000 entries with unique IDs, a complete rank sequence from 1 to 10,000, and
-the per-level split 1,000 / 3,000 / 6,000.
+`data/a1.json`, `a2.json` and `b1.json` are the **authoring source of truth**: one row per
+entry with a frozen `id` (`a1-die-minute`, `a1-sie-2`), its rank within the level, gloss,
+word class, canonical topic, optional `tags` and `alternateForms`, and the grammar — article,
+plural and `numberUsage` for nouns; present, past, participle, auxiliary, separability and
+reflexivity for verbs. Ids never change once released; `data/legacy-ids.json` maps the old
+rank-based ids (`a1-0003-der-mann`) onto them so stored progress can be migrated. Example
+sentences live in `data/examples/*.json`, keyed by source rank, with an optional `form` for
+the inflected word as it appears in the sentence.
 
-`npm run build:content` reads them and writes
-`src/content/vocabulary/generated/` (git-ignored, rebuilt by `predev`, `prebuild` and
-`pretest`):
+`data/a1_words.json`, `a2_words.json` and `b1_words.json` are unused leftovers of an earlier
+generated 10,000-entry set; no script reads them.
+
+`npm run build:content` reads the sources and writes `src/content/vocabulary/generated/`
+(git-ignored, rebuilt by `predev`, `prebuild` and `pretest`; set `CONTENT_OUT_DIR` to write
+elsewhere):
 
 - one JSON bundle per frequency band, so a session studying "A1 Core 1" never downloads
-  the 6,000 B1 entries;
-- `index.json`, a compact record per entry for the browser and search;
-- `manifest.json`, band descriptors and counts.
+  the B1 entries;
+- `index.json`, a compact record per entry for the browser and search, including every
+  searchable form (plural, verb forms, alternate forms);
+- `manifest.json`, band descriptors and counts;
+- `legacy-ids.json`, copied from `data/`.
 
 `src/content/vocabulary/registry.ts` is the only way the app reaches content. Every band
 is a lazy dynamic import, giving one chunk per band in the production build.
 
-### Editorial corrections
-
-`src/content/vocabulary/corrections.ts` holds per-entry repairs applied at build time, so
-the authoring files stay the single source of truth. Each carries a reason and is reported
-by `audit:release` as awaiting human sign-off. Three kinds:
-
-- **countability and missing plurals** — `Wasser` marked countable, `Eltern` marked
-  singular, ordinary nouns whose plural was simply absent;
-- **line-break artifacts** — eighteen A2 compounds were transcribed from a two-column
-  layout with the break intact (`Krankenver sicherung`, `Gehirn erschütterung`). As stored
-  they are not German words, and strict checking would mark the correct spelling wrong;
-- **generated verb conjugations** — six multi-word reflexive verbs were conjugated by
-  suffixing the whole headword, so `sich die Hände waschen` shipped with the participle
-  `gedie Hände wascht`. The head verb is conjugated instead.
-
 ### Topic normalisation
 
-`DEVELOPMENT_INSTRUCTIONS.md` §9 defines a controlled registry of 49 topics. The source
-datasets were authored independently and use **91** distinct labels, including
-German-language ones (`Arbeit`, `Gesundheit`, `Verkehr`) and merged ones
-(`Work and professions`). `src/content/vocabulary/topics.ts` holds the canonical registry
-plus an alias map that resolves all 91 labels onto it. The original labels are preserved
-on each entry as `sourceTopics`. `npm run audit:topics` fails if any label cannot be
-resolved.
+`DEVELOPMENT_INSTRUCTIONS.md` §9 defines a controlled registry of 49 topics in
+`src/content/vocabulary/topics.ts`. Source rows must use the canonical names —
+`validate:vocabulary` fails otherwise — and the build still resolves the older aliases,
+preserving the original label on each entry as `sourceTopics`.
 
 ## Exercise engine
 
@@ -145,36 +139,26 @@ would grade and reschedule the entry twice.
 
 ## Known content issues
 
-The audits pass, but they report a real backlog. These are language-authoring problems, not
-code problems, and none of them can be fixed by a code change:
+These are language-authoring problems, not code problems. The audits report each of them:
 
-- **All 6,000 B1 entries are machine-generated.** Every one carries a `generationPattern`:
-  4,400 productive compounds, 515 derived adjectives, 485 prefixed verbs and 600 generated
-  collocations. The result is cartesian-product vocabulary — `Arbeitsplan`, `Berufsplan`,
-  `Zeitplan`, `Terminplan` and so on across twenty head nouns — including forms that are not
-  real German (`Zeitchance`, `Arbeitskunde`, `Zeitort`). Sixty per cent of the app currently
-  teaches invented words as fact, and fixing it needs a real B1 word list.
-- **9,578 of 10,000 entries have only formulaic example sentences.** `Das ist der …`
-  (3,091), `… ist in diesem Zusammenhang wichtig` (~2,000), `Heute üben wir …` (600),
-  `Diese Lösung ist …` (515). Sentence completion on `Das ist der ___` is answerable from
-  the article alone. `audit:examples` counts these on every run and fails above a threshold
-  set at the current level, so the number can only go down.
-- **A2 is 86% nouns** (2,578 of 3,000; 1 adverb, 37 adjectives, 136 verbs), and its ranks
-  follow a topic list rather than frequency, which §3 principle 1 puts first.
-- **`audit:release` fails on phrase counts**: A1 has 59 phrases against the 150 the §6
-  completion criteria require, A2 215 against 400, B1 600 against 800. Around 476 phrases
-  need writing. CI runs this gate with `continue-on-error: true` for that reason.
-- **19 target tokens do not occur in their own sentence** — reflexive verbs whose generated
-  sentence is ungrammatical, e.g. `sich die Füße abtreten` → _"Ich möchte mich heute die
-  Füße abtreten."_
-- **8,714 entries** carry a source-declared review status.
+- **Phrase counts** are below the §27 completion criteria: A1 has 10 phrases against 150,
+  A2 5 against 400, B1 23 against 800. `audit:release` fails on this content-volume target,
+  and CI runs it with `continue-on-error: true` for that reason.
+- **Grammar, headwords, topics and glosses** are checked by `validate:vocabulary`: nouns
+  need an article and plural decision, verbs their principal parts, headwords may not be
+  stems (`Feier-`) or lists, and gloss heuristics flag German text, repeated comma lists and
+  machine-translated forms such as "to bought".
+- **Example sentences** must contain their target token (`audit:examples`) and may not be
+  shared between entries (`audit:duplicates`).
+- **Ambiguous multiple choice** — a distractor meaning the same as the prompt, or a near
+  miss that is another real word — is reported by `audit:release`.
 
 ## Deviations from the specification
 
 - §15 specifies **four** multiple-choice options; this app uses **six**, with
   length-matched distractors. See "Multiple choice" above.
-- §12 specifies a **four-digit** rank in every ID, which cannot express rank 10,000. The
-  enforced rule is zero-padding to a minimum of four digits.
+- §12 puts the rank in every ID. Ranks shift whenever the vocabulary changes, so IDs are
+  frozen `<level>-<lemma>` slugs instead, with `data/legacy-ids.json` mapping the old ones.
 - §10 does not list `dative+accusative` as a `requiredCase`, but ditransitive verbs in the
   dataset need it.
 - §13's duplicate-sense check treats a differing **primary topic** as an explicit
@@ -184,11 +168,11 @@ code problems, and none of them can be fixed by a code change:
 ## Project layout
 
 ```
-data/                     authoring source of truth (three JSON files)
+data/                     authoring source of truth, examples, legacy id map
 scripts/                  content build + validation/audit scripts (Node, .mjs)
 src/app/                  App, router, providers, error boundary
 src/components/           layout, common, exercise and vocabulary components
-src/content/vocabulary/   topic + band registries, corrections, lazy-loading registry
+src/content/vocabulary/   topic + band registries, lazy-loading registry
 src/features/             practice engine, SRS, gamification, persistence, search, speech
 src/pages/                one component per route
 src/schemas/              Zod schemas — the single source of truth for types

@@ -54,4 +54,37 @@ describe('ResultsPage', () => {
     // would print the same German word twice.
     expect(screen.getAllByText(questionOf(exercise)).length).toBeGreaterThan(0);
   });
+
+  it('names the word, not the instruction twice, for a missed listening exercise', async () => {
+    await useSessionStore.getState().start({
+      sessionId: 'results-listening',
+      mode: 'review',
+      entries: pilot,
+      targetExerciseCount: 3,
+      allowedTypes: ['listening'],
+    });
+
+    const exercise = useSessionStore.getState().exercises[0]!;
+    expect(exercise.type).toBe('listening');
+    await useSessionStore.getState().recordAnswer({
+      exerciseId: exercise.id,
+      entryId: exercise.entryId,
+      result: { correct: false, issues: [], submittedAnswer: '', expectedAnswer: '' },
+      attempts: 1,
+      revealed: false,
+      hintUsed: false,
+      responseMs: 1_000,
+    });
+
+    renderRoute('/results/results-listening');
+
+    await waitFor(() => {
+      expect(screen.getByText('The answers you missed')).toBeInTheDocument();
+    });
+    // Once the word's label has loaded, the instruction is no longer repeated in its place.
+    await waitFor(() => {
+      expect(screen.getAllByText(exercise.prompt)).toHaveLength(1);
+    });
+    expect(screen.getAllByText(expectedAnswerOf(exercise)).length).toBeGreaterThan(0);
+  });
 });

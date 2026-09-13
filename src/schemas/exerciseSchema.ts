@@ -71,6 +71,7 @@ export const multipleChoiceExerciseSchema = z.object({
 });
 
 export const typedTranslationExerciseSchema = z.object({
+  otherWords: z.array(z.string().min(1)).optional(),
   ...exerciseBaseShape,
   type: z.literal('typedTranslation'),
   question: z.string().min(1),
@@ -81,6 +82,7 @@ export const typedTranslationExerciseSchema = z.object({
 });
 
 export const sentenceCompletionExerciseSchema = z.object({
+  otherWords: z.array(z.string().min(1)).optional(),
   ...exerciseBaseShape,
   type: z.literal('sentenceCompletion'),
   /** Sentence text before and after the gap; the gap is always a single blank. */
@@ -120,6 +122,7 @@ export const wordOrderingExerciseSchema = z.object({
 });
 
 export const listeningExerciseSchema = z.object({
+  otherWords: z.array(z.string().min(1)).optional(),
   ...exerciseBaseShape,
   type: z.literal('listening'),
   /** German text passed to speech synthesis; never shown before answering in standard mode. */
@@ -163,6 +166,11 @@ export const evaluationResultSchema = z.object({
   submittedAnswer: z.string(),
   /** The accepted answer closest to what the learner wrote. */
   expectedAnswer: z.string(),
+  /**
+   * True when the learner marked the answer themselves ("I said it correctly") rather than
+   * the app checking it, so scoring can treat an unverified answer differently.
+   */
+  selfAssessed: z.boolean().optional(),
 });
 
 export type ErrorCategory = z.infer<typeof errorCategorySchema>;

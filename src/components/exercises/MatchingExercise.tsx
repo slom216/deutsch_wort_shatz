@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import type {
   ErrorCategory,
@@ -10,7 +10,9 @@ import './exercises.css';
 /**
  * Matching (§15, §30).
  *
- * Interaction is click-to-select: choose a German term, then choose its English match.
+ * Interaction is click-to-select: choose a term in either column, then its match in the
+ * other. After each pick focus moves to the other column (and back to the next unmatched
+ * German term), so a keyboard user never tabs through a whole column to reach the other.
  * Because the controls are real buttons this works identically with a mouse, with the
  * keyboard (Tab plus Enter or Space), and with a screen reader — satisfying the rule
  * that drag-and-drop must never be the only way to answer.
@@ -21,29 +23,63 @@ export function MatchingExercise({
   locked,
 }: ExerciseComponentProps<MatchingExerciseType>): ReactNode {
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
+  const [selectedRight, setSelectedRight] = useState<string | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   /** pair id → chosen right-hand value */
   const [matches, setMatches] = useState<Record<string, string>>({});
 
   useEffect(() => {
     setSelectedLeft(null);
+    setSelectedRight(null);
     setMatches({});
   }, [exercise.id]);
+
+  /** Focuses the first enabled control matching `selector` once React has rendered. */
+  const focusNext = (selector: string): void => {
+    requestAnimationFrame(() => {
+      rootRef.current?.querySelector<HTMLElement>(selector)?.focus();
+    });
+  };
 
   const usedRight = new Set(Object.values(matches));
   const allMatched = Object.keys(matches).length === exercise.pairs.length;
 
-  const chooseRight = (right: string): void => {
-    if (!selectedLeft || locked) return;
-    setMatches((current) => {
-      const next = { ...current };
-      // A right-hand value can only be used once; clear any previous owner.
-      for (const [pairId, value] of Object.entries(next)) {
-        if (value === right) delete next[pairId];
-      }
-      next[selectedLeft] = right;
-      return next;
-    });
+  const match = (pairId: string, right: string): void => {
+    const next = { ...matches };
+    // A right-hand value can only be used once; clear any previous owner.
+    for (const [owner, value] of Object.entries(next)) {
+      if (value === right) delete next[owner];
+    }
+    next[pairId] = right;
+    setMatches(next);
     setSelectedLeft(null);
+    setSelectedRight(null);
+    const done = Object.keys(next).length === exercise.pairs.length;
+    focusNext(
+      done ? '.exercise__submit' : '[data-side="left"][data-matched="false"]:not(:disabled)',
+    );
+  };
+
+  const chooseLeft = (pairId: string): void => {
+    if (locked) return;
+    if (selectedRight !== null) {
+      match(pairId, selectedRight);
+      return;
+    }
+    const deselect = selectedLeft === pairId;
+    setSelectedLeft(deselect ? null : pairId);
+    if (!deselect) focusNext('[data-side="right"][data-used="false"]');
+  };
+
+  const chooseRight = (right: string): void => {
+    if (locked) return;
+    if (selectedLeft !== null) {
+      match(selectedLeft, right);
+      return;
+    }
+    const deselect = selectedRight === right;
+    setSelectedRight(deselect ? null : right);
+    if (!deselect) focusNext('[data-side="left"][data-matched="false"]');
   };
 
   /** What a mismatch means for this matching variant (§16 error categories). */
@@ -77,10 +113,11 @@ export function MatchingExercise({
   };
 
   return (
-    <div className="exercise">
+    <div className="exercise" ref={rootRef}>
       <p className="exercise__prompt">{exercise.prompt}</p>
       <p className="exercise__hint">
-        Choose a German term, then choose its match. Works with the mouse or the keyboard.
+        Choose a term in either column, then its match in the other. Works with the mouse or the
+        keyboard.
       </p>
 
       <div className="matching">
@@ -99,11 +136,13 @@ export function MatchingExercise({
                   <button
                     type="button"
                     disabled={locked}
+                    data-side="left"
+                    data-matched={matched !== undefined}
                     aria-pressed={isSelected}
                     className={`matching__item ${isSelected ? 'matching__item--selected' : ''} ${
                       isCorrect ? 'matching__item--correct' : ''
                     } ${isWrong ? 'matching__item--wrong' : ''}`}
-                    onClick={() => setSelectedLeft(isSelected ? null : pair.id)}
+                    onClick={() => chooseLeft(pair.id)}
                   >
                     <span lang="de">{pair.left}</span>
                     {matched ? <span className="matching__match">→ {matched}</span> : null}
@@ -123,8 +162,13 @@ export function MatchingExercise({
               <li key={right}>
                 <button
                   type="button"
-                  disabled={locked || selectedLeft === null}
-                  className={`matching__item ${usedRight.has(right) ? 'matching__item--used' : ''}`}
+                  disabled={locked}
+                  data-side="right"
+                  data-used={usedRight.has(right)}
+                  aria-pressed={selectedRight === right}
+                  className={`matching__item ${usedRight.has(right) ? 'matching__item--used' : ''} ${
+                    selectedRight === right ? 'matching__item--selected' : ''
+                  }`}
                   onClick={() => chooseRight(right)}
                 >
                   {right}
@@ -140,6 +184,7 @@ export function MatchingExercise({
         {selectedLeft
           ? `. Selected: ${exercise.pairs.find((p) => p.id === selectedLeft)?.left}`
           : ''}
+        {selectedRight ? `. Selected: ${selectedRight}` : ''}
       </p>
 
       {!locked ? (

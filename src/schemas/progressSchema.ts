@@ -7,6 +7,18 @@ import { z } from 'zod';
  * behaviour that drives these fields is built in Phase 2.
  */
 
+/**
+ * A moment that has already happened, allowing a day of clock skew. Import and Repair share
+ * these schemas, so a file dated 2099 is rejected rather than counting towards streaks.
+ */
+export const pastDatetimeSchema = z
+  .string()
+  .datetime()
+  .refine((value) => Date.parse(value) <= Date.now() + 86_400_000, 'Date is in the future');
+
+/** Largest XP one answer can earn or cost: 10 for speaking, doubled in ultra fast mode. */
+const MAX_EXERCISE_XP = 100;
+
 export const srsStatusSchema = z.enum(['new', 'learning', 'review', 'relearning', 'mastered']);
 
 /** Automatic grade — the learner is never asked to rate a word manually (§20). */
@@ -31,14 +43,14 @@ export const srsStateSchema = z.object({
   repetitions: z.number().int().min(0),
   lapses: z.number().int().min(0),
   consecutiveCorrect: z.number().int().min(0),
-  lastReviewedAt: z.string().datetime().optional(),
+  lastReviewedAt: pastDatetimeSchema.optional(),
   lastGrade: gradeSchema.optional(),
   exercisePerformance: z.record(z.string(), exercisePerformanceSchema),
 });
 
 export const entryProgressSchema = z.object({
   entryId: z.string().min(1),
-  introducedAt: z.string().datetime(),
+  introducedAt: pastDatetimeSchema,
   srs: srsStateSchema,
   totalAttempts: z.number().int().min(0),
   totalCorrect: z.number().int().min(0),
@@ -71,9 +83,9 @@ export const exerciseHistorySchema = z.object({
   responseMs: z.number().min(0),
   grade: gradeSchema,
   errorCategories: z.array(z.string()),
-  answeredAt: z.string().datetime(),
+  answeredAt: pastDatetimeSchema,
   /** Negative when the answer was wrong: there is no second try (§23). */
-  xpAwarded: z.number().int(),
+  xpAwarded: z.number().int().min(-MAX_EXERCISE_XP).max(MAX_EXERCISE_XP),
 });
 
 /**
@@ -84,12 +96,12 @@ export const exerciseHistorySchema = z.object({
  */
 export const skippedEntrySchema = z.object({
   entryId: z.string().min(1),
-  skippedAt: z.string().datetime(),
+  skippedAt: pastDatetimeSchema,
 });
 
 export const achievementRecordSchema = z.object({
   id: z.string().min(1),
-  unlockedAt: z.string().datetime(),
+  unlockedAt: pastDatetimeSchema,
   /** Progress towards a not-yet-unlocked achievement, 0–1. */
   progress: z.number().min(0).max(1),
 });

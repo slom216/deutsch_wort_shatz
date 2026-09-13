@@ -18,11 +18,31 @@ export type WordOrderingVariant =
 const MIN_TOKENS = 4;
 const MAX_TOKENS = 12;
 
-function tokensOf(sentence: string): string[] {
+/**
+ * A token as shown to the learner: without the punctuation stuck to its edges. Keeping
+ * `lang.` or `lerne,` would give away the last word and the clause break. Inner hyphens
+ * (`E-Mail`) and abbreviation dots (`z.B`) stay part of the word.
+ */
+export function bareToken(token: string): string {
+  return token.replace(/^[„“”"'‚‘’(«»]+|[.,!?;:„“”"'‚‘’)«»…]+$/gu, '');
+}
+
+/**
+ * The tokens of a sentence, punctuation stripped. Null when the source lists alternatives
+ * with "/" (`so viel/so viel wie`): splitting those would produce tokens that are not
+ * words (`viel/so`) and an answer no German sentence has.
+ */
+function tokensOf(sentence: string): string[] | null {
+  if (sentence.includes('/')) return null;
   return sentence
     .trim()
     .split(/\s+/u)
+    .map(bareToken)
     .filter((token) => token.length > 0);
+}
+
+function inRange(tokens: readonly string[] | null): tokens is string[] {
+  return tokens !== null && tokens.length >= MIN_TOKENS && tokens.length <= MAX_TOKENS;
 }
 
 /**
@@ -52,10 +72,9 @@ export function generateWordOrdering(
     source: string,
     prompt: string,
     hint: string | undefined,
-    acceptedOrders: string[][],
   ): WordOrderingExercise | null => {
     const tokens = tokensOf(source);
-    if (tokens.length < MIN_TOKENS || tokens.length > MAX_TOKENS) return null;
+    if (!inRange(tokens)) return null;
     return {
       id,
       entryId: entry.id,
@@ -67,8 +86,9 @@ export function generateWordOrdering(
       ...(hint === undefined ? {} : { hint }),
       strictness: { ...strictnessFor(entry), wordOrder: true },
       tokens: shuffleAwayFromAnswer(tokens, random.shuffle),
-      acceptedOrders,
-      canonicalAnswer: tokens.join(' '),
+      acceptedOrders: [tokens],
+      // The sentence as written, punctuation included, for the feedback panel.
+      canonicalAnswer: source.trim(),
     };
   };
 
@@ -76,16 +96,12 @@ export function generateWordOrdering(
     case 'sentenceReconstruction': {
       const example = firstExample(entry);
       if (!example) return null;
-      const tokens = tokensOf(example.german);
-      return build(example.german, 'Put the words in the correct order.', example.english, [
-        tokens,
-      ]);
+      return build(example.german, 'Put the words in the correct order.', example.english);
     }
 
     case 'phraseReconstruction': {
       if (!isPhraseEntry(entry)) return null;
-      const tokens = tokensOf(entry.german);
-      return build(entry.german, 'Rebuild the German phrase.', entry.english[0], [tokens]);
+      return build(entry.german, 'Rebuild the German phrase.', entry.english[0]);
     }
 
     case 'articleNounOrdering': {
@@ -95,12 +111,10 @@ export function generateWordOrdering(
       const example = firstExample(entry);
       if (!example) return null;
       if (!example.german.includes(entry.german)) return null;
-      const tokens = tokensOf(example.german);
       return build(
         example.german,
         'Put the words in the correct order, keeping the article with its noun.',
         example.english,
-        [tokens],
       );
     }
 
@@ -112,13 +126,9 @@ export function generateWordOrdering(
 export function availableWordOrderingVariants(entry: VocabularyEntry): WordOrderingVariant[] {
   const variants: WordOrderingVariant[] = [];
   const example = firstExample(entry);
-  if (example) {
-    const count = tokensOf(example.german).length;
-    if (count >= MIN_TOKENS && count <= MAX_TOKENS) variants.push('sentenceReconstruction');
-  }
-  if (isPhraseEntry(entry)) {
-    const count = tokensOf(entry.german).length;
-    if (count >= MIN_TOKENS && count <= MAX_TOKENS) variants.push('phraseReconstruction');
+  if (example && inRange(tokensOf(example.german))) variants.push('sentenceReconstruction');
+  if (isPhraseEntry(entry) && inRange(tokensOf(entry.german))) {
+    variants.push('phraseReconstruction');
   }
   return variants;
 }

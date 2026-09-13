@@ -4,12 +4,12 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 /**
  * 100-entry pilot dataset (Phase 1 deliverable 25).
  *
- * The specification describes authoring a pilot set by hand, but the full 10,000-entry
- * dataset already ships and is validated, so inventing a parallel set would create a
- * second source of truth. Instead this selects a deterministic 100-entry slice of the
- * real A1 vocabulary that satisfies the stated composition:
+ * The specification describes authoring a pilot set by hand, but the full dataset already
+ * ships and is validated, so inventing a parallel set would create a second source of
+ * truth. Instead this selects a deterministic 100-entry slice of the real A1 vocabulary
+ * that satisfies the stated composition:
  *
- *   - 60 words and every A1 phrase the dataset has (10 of them);
+ *   - 60 words and up to 10 A1 phrases;
  *   - at least 10 nouns and at least 10 verbs;
  *   - entries drawn from multiple topics.
  *

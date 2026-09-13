@@ -4,8 +4,8 @@ import type { Requeued } from './endless';
 /**
  * The continuous stream's spacing state, stored across sessions.
  *
- * The in-session spacing is measured in exercises — a word answered wrong returns 25–50
- * exercises later — so it only means anything if the count survives leaving the stream.
+ * The in-session spacing is measured in exercises — a known word answered wrong returns
+ * 25–50 exercises later — so it only means anything if the count survives leaving the stream.
  * Held in memory alone, a learner who studies in short sittings would meet every word
  * exactly once and never see a repetition, which is the opposite of the intent.
  *

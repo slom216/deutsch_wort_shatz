@@ -73,7 +73,9 @@ describe('application shell', () => {
       'https://deulern.com',
     );
     expect(within(footer).getByRole('link', { name: 'Grammatik mit System' })).toBeInTheDocument();
-    expect(within(footer).getByRole('link', { name: 'Verben Meistern' })).toBeInTheDocument();
+    expect(
+      within(footer).getByRole('link', { name: 'Deutsch Verben Meister' }),
+    ).toBeInTheDocument();
   });
 
   it('pins the chosen theme on the document and remembers it', async () => {

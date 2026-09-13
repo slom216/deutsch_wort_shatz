@@ -1,5 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
+import { isStorageError, storageProblemMessage } from '@/features/persistence/db';
+
 interface ErrorBoundaryProps {
   readonly children: ReactNode;
   /** Rendered instead of the default panel when provided. */
@@ -25,7 +27,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   override componentDidCatch(error: Error, info: ErrorInfo): void {
-    console.error('Unhandled error in Deutsch Wort Shatz:', error, info.componentStack);
+    console.error('Unhandled error in DeuLern Deutsch Wortschatz:', error, info.componentStack);
   }
 
   private readonly reset = (): void => {
@@ -38,6 +40,21 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     if (this.props.fallback) return this.props.fallback(error, this.reset);
 
+    // The raw message is for the console only: library errors can carry internals and links.
+    if (isStorageError(error)) {
+      return (
+        <div role="alert" className="error-boundary">
+          <h1>Progress can&rsquo;t be saved here</h1>
+          <p>{storageProblemMessage(error)}</p>
+          <div className="error-boundary__actions">
+            <button type="button" onClick={() => window.location.reload()}>
+              Reload
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div role="alert" className="error-boundary">
         <h1>Something went wrong</h1>
@@ -45,7 +62,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           An unexpected error stopped this screen from loading. Your saved progress has not been
           changed and is still stored in this browser.
         </p>
-        <pre className="error-boundary__detail">{error.message}</pre>
+        <p>
+          If this keeps happening, a damaged record may be the cause: open{' '}
+          <a href="/data#data-repair">Data → Repair database</a> to check for it. Repair downloads a
+          backup before removing anything.
+        </p>
         <div className="error-boundary__actions">
           <button type="button" onClick={this.reset}>
             Try again

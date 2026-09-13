@@ -8,7 +8,10 @@ import type { EvaluationResult, Exercise } from '@/schemas/exerciseSchema';
  */
 export interface ExerciseComponentProps<E extends Exercise = Exercise> {
   readonly exercise: E;
-  /** Called once, with the evaluated answer — there is no second try. */
+  /**
+   * Called once, with the evaluated answer — there is no second try. Set
+   * `selfAssessed` on the result when the learner marked it themselves.
+   */
   readonly onSubmit: (result: EvaluationResult) => void;
   /** True once the runner has accepted a final answer; the component becomes read-only. */
   readonly locked: boolean;

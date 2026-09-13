@@ -31,7 +31,8 @@
   --color-meter-track: color-mix(in oklab, var(--color-text) 18%, transparent);
 
   --color-text: light-dark(#285f74, #eaf2f4);
-  --color-text-muted: light-dark(#4a7a8b, #a3c0c9);
+  /* #40707f keeps 4.5:1 on the sunken surface (#eaf2f4) and the wrong-answer panel. */
+  --color-text-muted: light-dark(#40707f, #a3c0c9);
   --color-text-inverse: light-dark(#ffffff, #285f74);
 
   /* Interactive colour. Cyan in the dark theme, deep teal in the light one — both AA
@@ -65,8 +66,8 @@
 
   /* ---- typography ---- */
   --font-sans:
-    'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
+    'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --font-display: var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 

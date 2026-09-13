@@ -286,13 +286,6 @@
    "form": "live"
   }
  ],
- "42": [
-  {
-   "de": "Ich schreibe dir gleich eine E-Mail.",
-   "en": "I'll write you an email right away.",
-   "form": "E-Mail"
-  }
- ],
  "43": [
   {
    "de": "Ich maile dir die Adresse heute Abend.",
@@ -583,7 +576,7 @@
  "84": [
   {
    "de": "Sie hat ihren Abschluss an der Realschule gemacht.",
-   "en": "She got her diploma at the practical-oriented middle school.",
+   "en": "She got her diploma at the intermediate secondary school.",
    "form": "Realschule"
   }
  ],
@@ -611,7 +604,7 @@
  "88": [
   {
    "de": "Nach dem Gymnasium möchte sie Medizin studieren.",
-   "en": "After secondary school she wants to study medicine.",
+   "en": "After grammar school she wants to study medicine.",
    "form": "Gymnasium"
   }
  ],
@@ -632,7 +625,7 @@
  "91": [
   {
    "de": "An der Volkshochschule lerne ich abends Spanisch.",
-   "en": "I learn Spanish in the evenings at adult evening classes.",
+   "en": "I learn Spanish in the evenings at the adult education centre.",
    "form": "Volkshochschule"
   }
  ],
@@ -646,14 +639,14 @@
  "93": [
   {
    "de": "Er hat die Hauptschule mit einem guten Zeugnis beendet.",
-   "en": "He finished the practical-oriented middle school with a good report.",
+   "en": "He finished lower secondary school with a good report.",
    "form": "Hauptschule"
   }
  ],
  "94": [
   {
    "de": "Meine Nichte besucht die Neue Mittelschule in Graz.",
-   "en": "My niece attends the New Middle School in Graz.",
+   "en": "My niece attends the new middle school in Graz.",
    "form": "Neue Mittelschule"
   }
  ],
@@ -680,9 +673,9 @@
  ],
  "98": [
   {
-   "de": "Sie hat gestern drei neue BHs gekauft.",
-   "en": "She bought three new brassieres yesterday.",
-   "form": "BHs"
+   "de": "Nach der BHS hat sie sofort eine Stelle gefunden.",
+   "en": "After higher vocational school she found a job straight away.",
+   "form": "BHS"
   }
  ],
  "99": [
@@ -695,7 +688,7 @@
  "100": [
   {
    "de": "Die Pädagogische Hochschule bildet vor allem Lehrer aus.",
-   "en": "The university college of teacher education mainly trains teachers.",
+   "en": "The teacher training college mainly trains teachers.",
    "form": "Pädagogische Hochschule"
   }
  ],
@@ -737,7 +730,7 @@
  "106": [
   {
    "de": "In der Orientierungsstufe wählen die Schüler ihre Schwerpunkte.",
-   "en": "At orientation level the pupils choose their focus subjects.",
+   "en": "In the orientation stage the pupils choose their focus subjects.",
    "form": "Orientierungsstufe"
   }
  ],
@@ -751,14 +744,14 @@
  "108": [
   {
    "de": "Neben der Lehre besucht er die Berufsmittelschule.",
-   "en": "Alongside his apprenticeship he attends the vocational middle school.",
+   "en": "Alongside his apprenticeship he attends the vocational secondary school.",
    "form": "Berufsmittelschule"
   }
  ],
  "109": [
   {
    "de": "Nach der Diplommittelschule hat sie eine Lehre begonnen.",
-   "en": "After the diploma middle school she started an apprenticeship.",
+   "en": "After the specialised secondary school she started an apprenticeship.",
    "form": "Diplommittelschule"
   }
  ],
@@ -807,14 +800,14 @@
  "116": [
   {
    "de": "Ihr Aufsatz wurde mit ungenügend bewertet.",
-   "en": "Her essay was graded as a fail.",
+   "en": "Her essay was graded unsatisfactory.",
    "form": "ungenügend"
   }
  ],
  "117": [
   {
    "de": "Sie hat in Deutsch einen Einser geschrieben.",
-   "en": "She got a one in German.",
+   "en": "She got the top grade in German.",
    "form": "Einser"
   }
  ],
@@ -828,7 +821,7 @@
  "119": [
   {
    "de": "In Chemie steht bei mir ein Dreier im Zeugnis.",
-   "en": "I have a three in chemistry on my report card.",
+   "en": "I have a grade three in chemistry on my report card.",
    "form": "Dreier"
   }
  ],
@@ -848,15 +841,15 @@
  ],
  "122": [
   {
-   "de": "Sie freute sich über den Fünfer in Mathematik.",
-   "en": "She was happy about the five in maths.",
+   "de": "Mit einem Fünfer in Mathematik muss sie die Prüfung wiederholen.",
+   "en": "With a five (a fail) in maths she has to retake the exam.",
    "form": "Fünfer"
   }
  ],
  "123": [
   {
    "de": "Im Diktat hat er einen Sechser bekommen.",
-   "en": "He got a six in the dictation.",
+   "en": "He got a six, the top grade, in the dictation.",
    "form": "Sechser"
   }
  ],
@@ -870,7 +863,7 @@
  "125": [
   {
    "de": "Sie trägt heute einen violetten Rock.",
-   "en": "Today she is wearing a mauve skirt.",
+   "en": "Today she is wearing a purple skirt.",
    "form": "violetten"
   }
  ],
@@ -933,7 +926,7 @@
  "134": [
   {
    "de": "Meine Kollegin ist Türkin und kommt aus Izmir.",
-   "en": "My colleague is a Turk and comes from Izmir.",
+   "en": "My colleague is Turkish and comes from Izmir.",
    "form": "Türkin"
   }
  ],
@@ -967,16 +960,9 @@
  ],
  "139": [
   {
-   "de": "Ich habe auf dem Markt einen Bund Radieschen gekauft.",
-   "en": "I bought a bunch of radishes at the market.",
+   "de": "Der Bund bezahlt einen Teil der Kosten für die neue Straße.",
+   "en": "The federal government is paying part of the costs of the new road.",
    "form": "Bund"
-  }
- ],
- "140": [
-  {
-   "de": "Die Bundesregierung hat ein neues Gesetz beschlossen.",
-   "en": "The federal government has passed a new law.",
-   "form": "Bundes"
   }
  ],
  "141": [
@@ -1003,7 +989,7 @@
  "144": [
   {
    "de": "Die Bundespräsidentin eröffnet die neue Ausstellung im Museum.",
-   "en": "The female federal president is opening the new exhibition at the museum.",
+   "en": "The federal president is opening the new exhibition at the museum.",
    "form": "Bundespräsidentin"
   }
  ],
@@ -1017,7 +1003,7 @@
  "146": [
   {
    "de": "Unsere Bürgermeisterin wurde gestern wiedergewählt.",
-   "en": "Our mayoress was re-elected yesterday.",
+   "en": "Our mayor was re-elected yesterday.",
    "form": "Bürgermeisterin"
   }
  ],
@@ -1114,8 +1100,8 @@
  ],
  "160": [
   {
-   "de": "Deutschland ist ein reiches Land, aber kein großer Staat.",
-   "en": "Germany is a rich country, but not a large one.",
+   "de": "Der Staat bezahlt die Schulen und die Straßen.",
+   "en": "The state pays for the schools and the roads.",
    "form": "Staat"
   }
  ],
@@ -1143,7 +1129,7 @@
  "164": [
   {
    "de": "Der Bundestag hat das neue Gesetz angenommen.",
-   "en": "The National Assembly has adopted the new law.",
+   "en": "The German parliament has adopted the new law.",
    "form": "Bundestag"
   }
  ],
@@ -1164,14 +1150,14 @@
  "167": [
   {
    "de": "Der Ammann hat das neue Schulhaus eröffnet.",
-   "en": "The municipal president opened the new school building.",
+   "en": "The mayor opened the new school building.",
    "form": "Ammann"
   }
  ],
  "168": [
   {
    "de": "Die Ammännin begrüßte die Gäste im Gemeindehaus.",
-   "en": "The female municipal president welcomed the guests at the community hall.",
+   "en": "The mayor welcomed the guests at the town hall.",
    "form": "Ammännin"
   }
  ],
@@ -1185,7 +1171,7 @@
  "170": [
   {
    "de": "Die Bundesrätin reist nächste Woche nach Italien.",
-   "en": "The female federal councillor is travelling to Italy next week.",
+   "en": "The federal councillor is travelling to Italy next week.",
    "form": "Bundesrätin"
   }
  ],
@@ -1213,35 +1199,35 @@
  "174": [
   {
    "de": "Der Regierungsrat entscheidet über die neuen Schulhäuser.",
-   "en": "The cantonal government councillor decides about the new school buildings.",
+   "en": "The cantonal government decides on the new school buildings.",
    "form": "Regierungsrat"
   }
  ],
  "175": [
   {
    "de": "Die Regierungsrätin spricht heute Abend im Fernsehen.",
-   "en": "The female cantonal government councillor is speaking on television tonight.",
+   "en": "The member of the cantonal government is speaking on television tonight.",
    "form": "Regierungsrätin"
   }
  ],
  "176": [
   {
    "de": "Der Stadtpräsident eröffnet am Samstag das Stadtfest.",
-   "en": "The city president opens the town festival on Saturday.",
+   "en": "The mayor opens the town festival on Saturday.",
    "form": "Stadtpräsident"
   }
  ],
  "177": [
   {
    "de": "Die Stadtpräsidentin wohnt selbst in diesem Quartier.",
-   "en": "The female city president lives in this neighbourhood herself.",
+   "en": "The mayor lives in this neighbourhood herself.",
    "form": "Stadtpräsidentin"
   }
  ],
  "178": [
   {
    "de": "Der Ständerat hat dem Gesetz gestern zugestimmt.",
-   "en": "The Federal Council approved the law yesterday.",
+   "en": "The Council of States approved the law yesterday.",
    "form": "Ständerat"
   }
  ],
@@ -1371,17 +1357,10 @@
    "form": "Schlange"
   }
  ],
- "197": [
-  {
-   "de": "Im Sommer machen wir Ferien in Franken.",
-   "en": "In summer we spend our holidays in Franconia.",
-   "form": "Franken"
-  }
- ],
  "198": [
   {
    "de": "Bitte geben Sie mir zwanzig Dekagramm Käse.",
-   "en": "Please give me twenty decagrams of cheese.",
+   "en": "Please give me two hundred grams of cheese.",
    "form": "Dekagramm"
   }
  ],
@@ -1395,7 +1374,7 @@
  "200": [
   {
    "de": "Ich habe das Formular zweifach ausgefüllt.",
-   "en": "I filled in the form twice.",
+   "en": "I filled in the form in duplicate.",
    "form": "zweifach"
   }
  ],
@@ -1541,8 +1520,8 @@
  ],
  "221": [
   {
-   "de": "Die Abbildung ordnet jeder Zahl genau einen Wert zu.",
-   "en": "The mapping assigns exactly one value to each number.",
+   "de": "Die Abbildung auf Seite zehn zeigt den Aufbau des Motors.",
+   "en": "The illustration on page ten shows how the engine is built.",
    "form": "Abbildung"
   }
  ],
@@ -1556,7 +1535,7 @@
  "223": [
   {
    "de": "Bitte wirf den Abfall in die Tonne draußen.",
-   "en": "Please throw the refuse in the bin outside.",
+   "en": "Please throw the rubbish in the bin outside.",
    "form": "Abfall"
   }
  ],
@@ -1646,8 +1625,8 @@
  ],
  "236": [
   {
-   "de": "Zum Abschluss des Abends gab es noch Kuchen.",
-   "en": "At the close of the evening there was cake.",
+   "de": "Mit diesem Abschluss findest du leicht eine Stelle.",
+   "en": "With this qualification you will easily find a job.",
    "form": "Abschluss"
   }
  ],
@@ -1780,7 +1759,7 @@
  "255": [
   {
    "de": "Das Hotel war schön, allerdings ziemlich teuer.",
-   "en": "The hotel was nice, however quite expensive.",
+   "en": "The hotel was nice, though quite expensive.",
    "form": "allerdings"
   }
  ],
@@ -1801,7 +1780,7 @@
  "258": [
   {
    "de": "Solche Verspätungen sind bei uns leider alltäglich.",
-   "en": "Such delays are unfortunately unexceptional here.",
+   "en": "Unfortunately, delays like that are an everyday thing here.",
    "form": "alltäglich"
   }
  ],
@@ -1850,7 +1829,7 @@
  "265": [
   {
    "de": "Für den neuen Pass musst du zum Amt gehen.",
-   "en": "For the new passport you have to go to the office.",
+   "en": "For the new passport you have to go to the authorities.",
    "form": "Amt"
   }
  ],
@@ -1871,7 +1850,7 @@
  "268": [
   {
    "de": "Mein Anbieter für Internet ist ziemlich teuer.",
-   "en": "My internet supplier is quite expensive.",
+   "en": "My internet provider is quite expensive.",
    "form": "Anbieter"
   }
  ],
@@ -1885,7 +1864,7 @@
  "270": [
   {
    "de": "An dem Vertrag gab es nur eine kleine Änderung.",
-   "en": "There was only a small modification to the contract.",
+   "en": "There was only a small change to the contract.",
    "form": "Änderung"
   }
  ],
@@ -1913,7 +1892,7 @@
  "274": [
   {
    "de": "Deine Angaben im Formular sind nicht vollständig.",
-   "en": "Your information on the form is not complete.",
+   "en": "The details you gave on the form are not complete.",
    "form": "Angaben"
   }
  ],
@@ -1955,7 +1934,7 @@
  "280": [
   {
    "de": "Die Rechnung finden Sie in der Anlage.",
-   "en": "You will find the invoice in the attachment.",
+   "en": "You will find the invoice enclosed.",
    "form": "Anlage"
   }
  ],
@@ -2011,28 +1990,28 @@
  "288": [
   {
    "de": "Nach einem Jahr hast du Anspruch auf Urlaub.",
-   "en": "After a year you have a claim to holiday.",
+   "en": "After a year you are entitled to holiday.",
    "form": "Anspruch"
   }
  ],
  "289": [
   {
-   "de": "Was hast du denn schon wieder angestellt?",
-   "en": "What kind of mischief have you been up to again?",
+   "de": "Die Firma hat zwei neue Mitarbeiter angestellt.",
+   "en": "The company has taken on two new employees.",
    "form": "angestellt"
   }
  ],
  "290": [
   {
    "de": "Die lange Prüfung hat mich sehr angestrengt.",
-   "en": "The long exam strained me a lot.",
+   "en": "The long exam really tired me out.",
    "form": "angestrengt"
   }
  ],
  "291": [
   {
    "de": "Der Umzug am Wochenende war wirklich anstrengend.",
-   "en": "The move at the weekend was really straining.",
+   "en": "The move at the weekend was really exhausting.",
    "form": "anstrengend"
   }
  ],
@@ -2080,8 +2059,8 @@
  ],
  "298": [
   {
-   "de": "Der Apparat im Labor misst die Temperatur.",
-   "en": "The machine in the lab measures the temperature.",
+   "de": "Dieser Apparat misst die Temperatur im Raum.",
+   "en": "This device measures the temperature in the room.",
    "form": "Apparat"
   }
  ],
@@ -2563,9 +2542,9 @@
  ],
  "367": [
   {
-   "de": "Beim Schach habe ich nur noch einen Bauern übrig.",
-   "en": "In chess I only have one pawn left.",
-   "form": "Bauern"
+   "de": "Der Bauer verkauft seine Eier auf dem Markt.",
+   "en": "The farmer sells his eggs at the market.",
+   "form": "Bauer"
   }
  ],
  "368": [
@@ -2729,13 +2708,6 @@
    "form": "Behörde"
   }
  ],
- "391": [
-  {
-   "de": "Beide Kinder gehen in dieselbe Schule.",
-   "en": "Both children go to the same school.",
-   "form": "Beide"
-  }
- ],
  "392": [
   {
    "de": "Ich hätte heute Morgen beinahe den Bus verpasst.",
@@ -2816,7 +2788,7 @@
  "403": [
   {
    "de": "Die Beratung in der Bank war kostenlos und hilfreich.",
-   "en": "The consulting at the bank was free and helpful.",
+   "en": "The advice at the bank was free and helpful.",
    "form": "Beratung"
   }
  ],
@@ -2892,8 +2864,8 @@
  ],
  "414": [
   {
-   "de": "Lesen ist ihre liebste Beschäftigung am Abend.",
-   "en": "Reading is her favourite pursuit in the evening.",
+   "de": "Er sucht eine feste Beschäftigung in einem Büro.",
+   "en": "He is looking for permanent employment in an office.",
    "form": "Beschäftigung"
   }
  ],
@@ -2928,7 +2900,7 @@
  "419": [
   {
    "de": "Seine Beschreibung des Unfalls war sehr genau.",
-   "en": "His account of the accident was very precise.",
+   "en": "His description of the accident was very precise.",
    "form": "Beschreibung"
   }
  ],
@@ -2970,7 +2942,7 @@
  "425": [
   {
    "de": "Die Besprechung mit dem Chef dauert bis zwölf.",
-   "en": "The discussion with the boss lasts until twelve.",
+   "en": "The meeting with the boss lasts until twelve.",
    "form": "Besprechung"
   }
  ],
@@ -3103,7 +3075,7 @@
  "444": [
   {
    "de": "Der Arzt sagt, ich brauche mehr Bewegung.",
-   "en": "The doctor says I need more movement.",
+   "en": "The doctor says I need more exercise.",
    "form": "Bewegung"
   }
  ],
@@ -3165,9 +3137,9 @@
  ],
  "453": [
   {
-   "de": "Diese Bio-Milch kommt von einem Hof in der Nähe.",
-   "en": "This organic milk comes from a farm nearby.",
-   "form": "Bio-"
+   "de": "Unser Gemüse vom Markt ist komplett bio.",
+   "en": "Our vegetables from the market are completely organic.",
+   "form": "bio"
   }
  ],
  "454": [
@@ -3201,14 +3173,14 @@
  "458": [
   {
    "de": "Draußen blitzt und donnert es schon wieder.",
-   "en": "Outside it is flashing with lightning and thundering again.",
+   "en": "There is thunder and lightning outside again.",
    "form": "blitzt"
   }
  ],
  "459": [
   {
    "de": "Der Blitz hat den alten Baum getroffen.",
-   "en": "The bolt of lightning struck the old tree.",
+   "en": "The lightning struck the old tree.",
    "form": "Blitz"
   }
  ],
@@ -3347,8 +3319,8 @@
  ],
  "479": [
   {
-   "de": "Beim Kartenspiel legte er den Bub auf den Tisch.",
-   "en": "In the card game he put the jack on the table.",
+   "de": "Unser Bub geht schon in die zweite Klasse.",
+   "en": "Our boy is already in second grade.",
    "form": "Bub"
   }
  ],
@@ -3362,14 +3334,14 @@
  "481": [
   {
    "de": "Mach bitte die Büchse mit den Tomaten auf.",
-   "en": "Please open the tin can with the tomatoes.",
+   "en": "Please open the tin of tomatoes.",
    "form": "Büchse"
   }
  ],
  "482": [
   {
-   "de": "Die guten Gläser stehen im Buffet im Esszimmer.",
-   "en": "The good glasses are in the sideboard in the dining room.",
+   "de": "Im Hotel gibt es morgens ein großes Buffet.",
+   "en": "At the hotel there is a big buffet in the morning.",
    "form": "Buffet"
   }
  ],
@@ -3501,8 +3473,8 @@
  ],
  "501": [
   {
-   "de": "Sie ging früher los und kam damit pünktlich an.",
-   "en": "She left earlier and thereby arrived on time.",
+   "de": "Ich schreibe die Adresse auf, damit ich sie nicht vergesse.",
+   "en": "I'm writing down the address so that I don't forget it.",
    "form": "damit"
   }
  ],
@@ -3530,7 +3502,7 @@
  "505": [
   {
    "de": "Ihre Darstellung der Ereignisse war sehr genau.",
-   "en": "Her presentation of the events was very accurate.",
+   "en": "Her account of the events was very accurate.",
    "form": "Darstellung"
   }
  ],
@@ -3684,14 +3656,14 @@
  "527": [
   {
    "de": "Die Direktorin unserer Schule geht bald in Pension.",
-   "en": "The director of our school is retiring soon.",
+   "en": "The head teacher of our school is retiring soon.",
    "form": "Direktorin"
   }
  ],
  "528": [
   {
    "de": "Am Samstag gehen wir in die Diskothek tanzen.",
-   "en": "On Saturday we are going dancing at the discotheque.",
+   "en": "On Saturday we are going dancing at the disco.",
    "form": "Diskothek"
   }
  ],
@@ -3728,13 +3700,6 @@
    "de": "Der laute Donner hat die Kinder aufgeweckt.",
    "en": "The loud thunder woke the children up.",
    "form": "Donner"
-  }
- ],
- "534": [
-  {
-   "de": "Wir haben ein Doppelzimmer mit Balkon gebucht.",
-   "en": "We booked a double room with a balcony.",
-   "form": "Doppel"
   }
  ],
  "535": [
@@ -3782,7 +3747,7 @@
  "541": [
   {
    "de": "In der Drogerie kaufe ich Shampoo und Zahnpasta.",
-   "en": "I buy shampoo and toothpaste at the chemist's shop.",
+   "en": "I buy shampoo and toothpaste at the drugstore.",
    "form": "Drogerie"
   }
  ],
@@ -3796,7 +3761,7 @@
  "543": [
   {
    "de": "Nach der Party war in der Wohnung alles durcheinander.",
-   "en": "After the party everything in the flat was in chaos.",
+   "en": "After the party everything in the flat was in a mess.",
    "form": "durcheinander"
   }
  ],
@@ -3851,9 +3816,9 @@
  ],
  "551": [
   {
-   "de": "Bitte zeigen Sie beim Arzt Ihre e-card vor.",
+   "de": "Bitte zeigen Sie beim Arzt Ihre E-Card vor.",
    "en": "Please show your health insurance card at the doctor's.",
-   "form": "e-card"
+   "form": "E-Card"
   }
  ],
  "552": [
@@ -3873,7 +3838,7 @@
  "554": [
   {
    "de": "Unser neuer Tisch ist eckig und aus Holz.",
-   "en": "Our new table is angular and made of wood.",
+   "en": "Our new table is square and made of wood.",
    "form": "eckig"
   }
  ],
@@ -3935,7 +3900,7 @@
  ],
  "563": [
   {
-   "de": "Gestern Nacht haben Diebe in unser Haus eingebrochen.",
+   "de": "Letzte Nacht sind Diebe in unser Haus eingebrochen.",
    "en": "Last night thieves broke into our house.",
    "form": "eingebrochen"
   }
@@ -4040,8 +4005,8 @@
  ],
  "578": [
   {
-   "de": "Alle Schüler tragen hier eine einheitliche Kleidung.",
-   "en": "All pupils here wear consistent clothing.",
+   "de": "Alle Schüler tragen hier einheitliche Kleidung.",
+   "en": "All pupils here wear uniform clothing.",
    "form": "einheitliche"
   }
  ],
@@ -4068,9 +4033,9 @@
  ],
  "582": [
   {
-   "de": "Der Arzt erklärt mir die Einnahme des Medikaments.",
-   "en": "The doctor explains to me how to take the medicine.",
-   "form": "Einnahme"
+   "de": "Die Einnahmen des Geschäfts sind im Dezember am höchsten.",
+   "en": "The shop's income is highest in December.",
+   "form": "Einnahmen"
   }
  ],
  "583": [
@@ -4206,13 +4171,6 @@
    "form": "elektrisches"
   }
  ],
- "602": [
-  {
-   "de": "Sie fährt jeden Tag mit dem Elektroauto zur Arbeit.",
-   "en": "She drives to work in the electric car every day.",
-   "form": "Elektro"
-  }
- ],
  "603": [
   {
    "de": "Ich habe die Rechnung elektronisch bezahlt.",
@@ -4223,7 +4181,7 @@
  "604": [
   {
    "de": "Der Chef hat die Gäste sehr herzlich empfangen.",
-   "en": "The boss greeted the guests very warmly.",
+   "en": "The boss welcomed the guests very warmly.",
    "form": "empfangen"
   }
  ],
@@ -4244,7 +4202,7 @@
  "607": [
   {
    "de": "Diese Entscheidung ist jetzt endgültig.",
-   "en": "This decision is now final, once and for all.",
+   "en": "This decision is now final.",
    "form": "endgültig"
   }
  ],
@@ -4271,15 +4229,15 @@
  ],
  "611": [
   {
-   "de": "Die Entfernung des alten Teppichs dauerte zwei Stunden.",
-   "en": "The removal of the old carpet took two hours.",
+   "de": "Aus dieser Entfernung kann ich das Schild nicht lesen.",
+   "en": "I can't read the sign from this distance.",
    "form": "Entfernung"
   }
  ],
  "612": [
   {
    "de": "Der Vermieter ist uns beim Preis entgegengekommen.",
-   "en": "The landlord showed us goodwill on the price.",
+   "en": "The landlord met us halfway on the price.",
    "form": "entgegengekommen"
   }
  ],
@@ -4328,7 +4286,7 @@
  "619": [
   {
    "de": "Das Spiel endete zwei zu zwei unentschieden.",
-   "en": "The game ended in a two-all tie.",
+   "en": "The game ended in a two-all draw.",
    "form": "unentschieden"
   }
  ],
@@ -4363,7 +4321,7 @@
  "624": [
   {
    "de": "Bei dem Unfall ist großer Schaden entstanden.",
-   "en": "Considerable damage arose from the accident.",
+   "en": "The accident caused a lot of damage.",
    "form": "entstanden"
   }
  ],
@@ -4475,7 +4433,7 @@
  "640": [
   {
    "de": "Für diese Reise ist ein Visum erforderlich.",
-   "en": "A visa is requisite for this trip.",
+   "en": "A visa is required for this trip.",
    "form": "erforderlich"
   }
  ],
@@ -4524,14 +4482,14 @@
  "647": [
   {
    "de": "Im Urlaub habe ich mich richtig gut erholt.",
-   "en": "I recovered really well on holiday.",
+   "en": "I had a really good rest on holiday.",
    "form": "erholt"
   }
  ],
  "648": [
   {
    "de": "Nach der Arbeit brauche ich etwas Erholung.",
-   "en": "After work I need some refreshment.",
+   "en": "After work I need some rest.",
    "form": "Erholung"
   }
  ],
@@ -4615,7 +4573,7 @@
  "660": [
   {
    "de": "Er ernährt sich fast nur von Gemüse.",
-   "en": "He feeds himself almost entirely on vegetables.",
+   "en": "He lives almost entirely on vegetables.",
    "form": "ernährt"
   }
  ],
@@ -4699,7 +4657,7 @@
  "672": [
   {
    "de": "Ihre Kinder sind längst erwachsen.",
-   "en": "Her children are grown up long since.",
+   "en": "Her children have long been grown up.",
    "form": "erwachsen"
   }
  ],
@@ -4713,7 +4671,7 @@
  "674": [
   {
    "de": "Seine Erzählung über die Flucht war sehr spannend.",
-   "en": "His narrative about the escape was very gripping.",
+   "en": "His story about the escape was very gripping.",
    "form": "Erzählung"
   }
  ],
@@ -4747,15 +4705,15 @@
  ],
  "679": [
   {
-   "de": "Nimm ein Obst, etwa einen Apfel oder eine Birne.",
-   "en": "Take a piece of fruit, for example an apple or a pear.",
+   "de": "Die Fahrt nach München dauert etwa zwei Stunden.",
+   "en": "The journey to Munich takes about two hours.",
    "form": "etwa"
   }
  ],
  "680": [
   {
    "de": "Ich komme heute eventuell etwas später.",
-   "en": "I may possibly come a little later today.",
+   "en": "I might come a little later today.",
    "form": "eventuell"
   }
  ],
@@ -4815,13 +4773,6 @@
    "form": "Fachfrau"
   }
  ],
- "689": [
-  {
-   "de": "Die Fachleute streiten über die beste Lösung.",
-   "en": "The specialists are arguing about the best solution.",
-   "form": "Fachleute"
-  }
- ],
  "690": [
   {
    "de": "Sie hat die Fähigkeit, gut zuzuhören.",
@@ -4853,7 +4804,7 @@
  "694": [
   {
    "de": "Der Preis für die Reparatur ist wirklich fair.",
-   "en": "The price for the repair is really decent.",
+   "en": "The price for the repair is really fair.",
    "form": "fair"
   }
  ],
@@ -4930,7 +4881,7 @@
  "705": [
   {
    "de": "Die Polizei konnte den Dieb am Bahnhof fassen.",
-   "en": "The police managed to seize the thief at the station.",
+   "en": "The police managed to catch the thief at the station.",
    "form": "fassen"
   }
  ],
@@ -5119,7 +5070,7 @@
  "732": [
   {
    "de": "Dem Dieb gelang die Flucht durch das Fenster.",
-   "en": "The thief managed his flight through the window.",
+   "en": "The thief managed to escape through the window.",
    "form": "Flucht"
   }
  ],
@@ -5147,7 +5098,7 @@
  "736": [
   {
    "de": "Die Schuhe stehen im Flur neben der Tür.",
-   "en": "The shoes are in the entrance hall next to the door.",
+   "en": "The shoes are in the hallway next to the door.",
    "form": "Flur"
   }
  ],
@@ -5196,21 +5147,21 @@
  "743": [
   {
    "de": "Der Staat fördert junge Künstler mit Stipendien.",
-   "en": "The state promotes young artists with scholarships.",
+   "en": "The state supports young artists with grants.",
    "form": "fördert"
   }
  ],
  "744": [
   {
-   "de": "Die Förderung von Kohle wurde hier vor Jahren eingestellt.",
-   "en": "The mining of coal was stopped here years ago.",
+   "de": "Das Projekt bekommt eine Förderung von der Stadt.",
+   "en": "The project receives funding from the city.",
    "form": "Förderung"
   }
  ],
  "745": [
   {
-   "de": "Gieß den Teig in die Form und backe ihn.",
-   "en": "Pour the batter into the baking dish and bake it.",
+   "de": "Die Vase hat eine ungewöhnliche Form.",
+   "en": "The vase has an unusual shape.",
    "form": "Form"
   }
  ],
@@ -5224,7 +5175,7 @@
  "747": [
   {
    "de": "Nächste Woche mache ich eine Fortbildung für Lehrer.",
-   "en": "Next week I am doing an advanced training course for teachers.",
+   "en": "Next week I am doing a training course for teachers.",
    "form": "Fortbildung"
   }
  ],
@@ -5287,7 +5238,7 @@
  "756": [
   {
    "de": "Nach zehn Jahren im Gefängnis genießt er seine Freiheit.",
-   "en": "After ten years in prison he enjoys his liberty.",
+   "en": "After ten years in prison he is enjoying his freedom.",
    "form": "Freiheit"
   }
  ],
@@ -5352,13 +5303,6 @@
    "de": "Diese Frucht schmeckt süß und riecht nach Honig.",
    "en": "This fruit tastes sweet and smells of honey.",
    "form": "Frucht"
-  }
- ],
- "766": [
-  {
-   "de": "Auf dem Markt gibt es frische Früchte aus der Region.",
-   "en": "At the market there are fresh fruits from the region.",
-   "form": "Früchte"
   }
  ],
  "767": [
@@ -5434,11 +5378,16 @@
  "777": [
   {
    "de": "Der Gang zum Schlafzimmer ist sehr schmal.",
-   "en": "The passageway to the bedroom is very narrow.",
+   "en": "The corridor to the bedroom is very narrow.",
    "form": "Gang"
   }
  ],
  "778": [
+  {
+   "de": "Ich habe heute gar keine Zeit.",
+   "en": "I have no time at all today.",
+   "form": "gar"
+  },
   {
    "de": "Die Kartoffeln sind nach zwanzig Minuten gar.",
    "en": "The potatoes are done after twenty minutes.",
@@ -5461,8 +5410,8 @@
  ],
  "781": [
   {
-   "de": "Die Schauspielerin zieht sich in ihrer Garderobe um.",
-   "en": "The actress changes in her dressing room.",
+   "de": "Bitte geben Sie Ihren Mantel an der Garderobe ab.",
+   "en": "Please leave your coat at the cloakroom.",
    "form": "Garderobe"
   }
  ],
@@ -5476,7 +5425,7 @@
  "783": [
   {
    "de": "Im Gasthaus am Marktplatz gibt es gutes Bier.",
-   "en": "In the tavern on the market square there is good beer.",
+   "en": "The inn on the market square has good beer.",
    "form": "Gasthaus"
   }
  ],
@@ -5497,7 +5446,7 @@
  "786": [
   {
    "de": "Zum Kaffee gibt es frisches Gebäck vom Bäcker.",
-   "en": "With the coffee there is fresh baked goods from the baker.",
+   "en": "With the coffee there are fresh pastries from the baker.",
    "form": "Gebäck"
   }
  ],
@@ -5532,7 +5481,7 @@
  "791": [
   {
    "de": "Lies bitte zuerst die Gebrauchsanweisung der Waschmaschine.",
-   "en": "Please first read the directions for use of the washing machine.",
+   "en": "Please read the instructions for the washing machine first.",
    "form": "Gebrauchsanweisung"
   }
  ],
@@ -5546,7 +5495,7 @@
  "793": [
   {
    "de": "Nach der Geburt blieb sie drei Tage im Krankenhaus.",
-   "en": "After the delivery she stayed in hospital for three days.",
+   "en": "After the birth she stayed in hospital for three days.",
    "form": "Geburt"
   }
  ],
@@ -5602,21 +5551,21 @@
  "801": [
   {
    "de": "Unser Gegner war heute einfach stärker als wir.",
-   "en": "Our adversary was simply stronger than us today.",
+   "en": "Our opponent was simply stronger than us today.",
    "form": "Gegner"
   }
  ],
  "802": [
   {
    "de": "Diese Gegend ist am Abend sehr ruhig.",
-   "en": "This district is very quiet in the evening.",
+   "en": "This area is very quiet in the evening.",
    "form": "Gegend"
   }
  ],
  "803": [
   {
-   "de": "Klein ist der Gegensatz von groß.",
-   "en": "Small is the antonym of big.",
+   "de": "Im Gegensatz zu mir steht mein Bruder gern früh auf.",
+   "en": "Unlike me, my brother likes getting up early.",
    "form": "Gegensatz"
   }
  ],
@@ -5672,7 +5621,7 @@
  "811": [
   {
    "de": "Endlich gelingt ihr der schwierige Sprung.",
-   "en": "She finally succeeds at the difficult jump.",
+   "en": "She finally manages the difficult jump.",
    "form": "gelingt"
   }
  ],
@@ -5700,7 +5649,7 @@
  "815": [
   {
    "de": "Euer Wohnzimmer ist wirklich sehr gemütlich.",
-   "en": "Your living room is really very snug.",
+   "en": "Your living room is really very cosy.",
    "form": "gemütlich"
   }
  ],
@@ -5811,8 +5760,8 @@
  ],
  "831": [
   {
-   "de": "Die Stimmung im Büro war gestern sehr gespannt.",
-   "en": "The mood in the office was very fraught yesterday.",
+   "de": "Ich bin gespannt, wie der Film endet.",
+   "en": "I'm curious to see how the film ends.",
    "form": "gespannt"
   }
  ],
@@ -5881,9 +5830,9 @@
  ],
  "841": [
   {
-   "de": "Der Arbeiter gießt das heiße Metall in die Form.",
-   "en": "The worker pours the hot metal into the mould.",
-   "form": "gießt"
+   "de": "Kannst du im Urlaub meine Blumen gießen?",
+   "en": "Can you water my flowers while I'm on holiday?",
+   "form": "gießen"
   }
  ],
  "842": [
@@ -5895,9 +5844,9 @@
  ],
  "843": [
   {
-   "de": "Sie machte eine giftige Bemerkung über meine Arbeit.",
-   "en": "She made a vitriolic remark about my work.",
-   "form": "giftige"
+   "de": "Diese Pilze sind sehr giftig.",
+   "en": "These mushrooms are very poisonous.",
+   "form": "giftig"
   }
  ],
  "844": [
@@ -5931,7 +5880,7 @@
  "848": [
   {
    "de": "Wir haben gleichzeitig zu sprechen angefangen.",
-   "en": "We started speaking simultaneously.",
+   "en": "We started speaking at the same time.",
    "form": "gleichzeitig"
   }
  ],
@@ -5944,8 +5893,8 @@
  ],
  "850": [
   {
-   "de": "Das Schiff fährt durch den Persischen Golf.",
-   "en": "The ship is sailing through the Persian Gulf.",
+   "de": "Mein Vater spielt am Wochenende gern Golf.",
+   "en": "My father likes playing golf at the weekend.",
    "form": "Golf"
   }
  ],
@@ -5965,8 +5914,8 @@
  ],
  "853": [
   {
-   "de": "Er raucht heimlich Gras hinter dem Haus.",
-   "en": "He secretly smokes weed behind the house.",
+   "de": "Die Kinder spielen barfuß im Gras.",
+   "en": "The children are playing barefoot in the grass.",
    "form": "Gras"
   }
  ],
@@ -5987,7 +5936,7 @@
  "856": [
   {
    "de": "Das Kind greift nach meiner Hand.",
-   "en": "The child grips my hand.",
+   "en": "The child reaches for my hand.",
    "form": "greift"
   }
  ],
@@ -6022,7 +5971,7 @@
  "861": [
   {
    "de": "Niemand kennt den Grund für seinen Ärger.",
-   "en": "Nobody knows the motive for his anger.",
+   "en": "Nobody knows the reason for his anger.",
    "form": "Grund"
   }
  ],
@@ -6092,7 +6041,7 @@
  "871": [
   {
    "de": "Seit der Geburt ihres Sohnes arbeitet sie halbtags.",
-   "en": "Since her son's birth she works half-time.",
+   "en": "Since her son was born she has worked part-time.",
    "form": "halbtags"
   }
  ],
@@ -6140,8 +6089,8 @@
  ],
  "878": [
   {
-   "de": "Die beiden Bauern haben einen guten Handel gemacht.",
-   "en": "The two farmers made a good deal.",
+   "de": "Der Handel mit China ist für Deutschland sehr wichtig.",
+   "en": "Trade with China is very important for Germany.",
    "form": "Handel"
   }
  ],
@@ -6169,7 +6118,7 @@
  "882": [
   {
    "de": "Im Herbst gibt es hier häufig Nebel.",
-   "en": "In autumn there is frequent fog here.",
+   "en": "In autumn there is often fog here.",
    "form": "häufig"
   }
  ],
@@ -6183,7 +6132,7 @@
  "884": [
   {
    "de": "Der Hausmeister repariert die kaputte Heizung im Keller.",
-   "en": "The landlord is repairing the broken heating in the cellar.",
+   "en": "The caretaker is repairing the broken heating in the basement.",
    "form": "Hausmeister"
   }
  ],
@@ -6246,7 +6195,7 @@
  "893": [
   {
    "de": "Die Heldin des Films ist eine junge Ärztin.",
-   "en": "The protagonist of the film is a young doctor.",
+   "en": "The heroine of the film is a young doctor.",
    "form": "Heldin"
   }
  ],
@@ -6330,21 +6279,21 @@
  "905": [
   {
    "de": "Der Gast hat eine Nachricht an der Rezeption hinterlassen.",
-   "en": "The guest left a message behind at the reception.",
+   "en": "The guest left a message at the reception.",
    "form": "hinterlassen"
   }
  ],
  "906": [
   {
    "de": "Hinterher weiß man immer alles besser.",
-   "en": "With hindsight you always know better.",
+   "en": "Afterwards you always know better.",
    "form": "Hinterher"
   }
  ],
  "907": [
   {
    "de": "Ich möchte auf ein kleines Problem hinweisen.",
-   "en": "I would like to allude to a small problem.",
+   "en": "I would like to point out a small problem.",
    "form": "hinweisen"
   }
  ],
@@ -6372,7 +6321,7 @@
  "911": [
   {
    "de": "Die Hütte liegt auf einer Höhe von zweitausend Metern.",
-   "en": "The hut lies at an elevation of two thousand metres.",
+   "en": "The hut is at an altitude of two thousand metres.",
    "form": "Höhe"
   }
  ],
@@ -6392,8 +6341,8 @@
  ],
  "914": [
   {
-   "de": "Um den Mond liegt heute ein heller Hof.",
-   "en": "There is a bright aureola around the moon today.",
+   "de": "Die Kinder spielen im Hof hinter dem Haus.",
+   "en": "The children are playing in the yard behind the house.",
    "form": "Hof"
   }
  ],
@@ -6456,14 +6405,14 @@
  "923": [
   {
    "de": "Du siehst heute wirklich hübsch aus.",
-   "en": "You look really handsome today.",
+   "en": "You look really pretty today.",
    "form": "hübsch"
   }
  ],
  "924": [
   {
-   "de": "Auf dem Hügel liegt ein altes Grab.",
-   "en": "There is an old grave on the burial mound.",
+   "de": "Hinter dem Dorf liegt ein kleiner Hügel.",
+   "en": "There is a small hill behind the village.",
    "form": "Hügel"
   }
  ],
@@ -6567,8 +6516,8 @@
  ],
  "939": [
   {
-   "de": "Der Inhalt der Flasche beträgt einen halben Liter.",
-   "en": "The capacity of the bottle is half a litre.",
+   "de": "Der Inhalt des Buches ist sehr spannend.",
+   "en": "The content of the book is very exciting.",
    "form": "Inhalt"
   }
  ],
@@ -6638,7 +6587,7 @@
  "949": [
   {
    "de": "Die Integration der Zuwanderer dauert einige Jahre.",
-   "en": "The assimilation of the immigrants takes a few years.",
+   "en": "The integration of immigrants takes a few years.",
    "form": "Integration"
   }
  ],
@@ -6792,7 +6741,7 @@
  "971": [
   {
    "de": "Ich probiere die Hose in der Kabine an.",
-   "en": "I am trying the trousers on in the cabin.",
+   "en": "I am trying the trousers on in the changing room.",
    "form": "Kabine"
   }
  ],
@@ -6833,8 +6782,8 @@
  ],
  "977": [
   {
-   "de": "Die Boote fahren langsam durch den Kanal.",
-   "en": "The boats move slowly through the channel.",
+   "de": "Auf welchem Kanal läuft das Fußballspiel?",
+   "en": "Which channel is the football match on?",
    "form": "Kanal"
   }
  ],
@@ -6855,7 +6804,7 @@
  "980": [
   {
    "de": "Mittags essen wir in der Kantine der Firma.",
-   "en": "At noon we eat in the company's staff restaurant.",
+   "en": "At lunchtime we eat in the company canteen.",
    "form": "Kantine"
   }
  ],
@@ -6910,8 +6859,8 @@
  ],
  "988": [
   {
-   "de": "Die Hemden liegen im Kasten im Schlafzimmer.",
-   "en": "The shirts are in the cupboard in the bedroom.",
+   "de": "Wir kaufen einen Kasten Wasser für die Party.",
+   "en": "We are buying a crate of water for the party.",
    "form": "Kasten"
   }
  ],
@@ -6946,7 +6895,7 @@
  "993": [
   {
    "de": "Die Käuferin bezahlt an der Kasse mit Karte.",
-   "en": "The female buyer pays by card at the till.",
+   "en": "The buyer pays by card at the till.",
    "form": "Käuferin"
   }
  ],
@@ -6960,7 +6909,7 @@
  "995": [
   {
    "de": "Das Kennzeichen des Autos war nicht zu lesen.",
-   "en": "The identifier of the car could not be read.",
+   "en": "The car's number plate could not be read.",
    "form": "Kennzeichen"
   }
  ],
@@ -7218,8 +7167,8 @@
  ],
  "1032": [
   {
-   "de": "Früher kauften wir im Konsum um die Ecke ein.",
-   "en": "We used to shop at the co-op store around the corner.",
+   "de": "Der Konsum von Fleisch geht langsam zurück.",
+   "en": "Meat consumption is slowly going down.",
    "form": "Konsum"
   }
  ],
@@ -7379,9 +7328,9 @@
  ],
  "1055": [
   {
-   "de": "Mein Vater liest jeden Abend einen Kriminalroman.",
-   "en": "My father reads a crime novel every evening.",
-   "form": "Kriminal"
+   "de": "Die Polizei sucht eine kriminelle Bande.",
+   "en": "The police are looking for a criminal gang.",
+   "form": "kriminelle"
   }
  ],
  "1056": [
@@ -7505,8 +7454,13 @@
  ],
  "1073": [
   {
-   "de": "Der Kuchen hat eine dicke Lage Sahne.",
-   "en": "The cake has a thick layer of cream.",
+   "de": "Die Lage in der Firma ist im Moment schwierig.",
+   "en": "The situation at the company is difficult at the moment.",
+   "form": "Lage"
+  },
+  {
+   "de": "Das Hotel hat eine sehr gute Lage direkt am See.",
+   "en": "The hotel is in a very good location right by the lake.",
    "form": "Lage"
   }
  ],
@@ -7624,8 +7578,8 @@
  ],
  "1090": [
   {
-   "de": "Er beschäftigt sich mit der Lehre von Karl Marx.",
-   "en": "He is studying the doctrine of Karl Marx.",
+   "de": "Nach der Schule macht er eine Lehre als Elektriker.",
+   "en": "After school he is doing an apprenticeship as an electrician.",
    "form": "Lehre"
   }
  ],
@@ -7821,21 +7775,26 @@
  "1118": [
   {
    "de": "Bei gutem Wetter lohnt sich der Ausflug wirklich.",
-   "en": "In good weather the trip is really worthwhile.",
+   "en": "In good weather the trip is really worth it.",
    "form": "lohnt"
   }
  ],
  "1119": [
   {
-   "de": "Das Los entscheidet, wer heute anfängt.",
-   "en": "The lot decides who starts today.",
-   "form": "Los"
+   "de": "Was ist denn hier los?",
+   "en": "What's going on here?",
+   "form": "los"
+  },
+  {
+   "de": "Achtung, fertig, los!",
+   "en": "Ready, steady, go!",
+   "form": "los"
   }
  ],
  "1120": [
   {
    "de": "Wir müssen bald losfahren, sonst wird es dunkel.",
-   "en": "We have to hit the road soon, otherwise it'll get dark.",
+   "en": "We have to set off soon, otherwise it'll get dark.",
    "form": "losfahren"
   }
  ],
@@ -7855,8 +7814,8 @@
  ],
  "1123": [
   {
-   "de": "Das alte Buch liegt im Magazin der Bibliothek.",
-   "en": "The old book is in the library's stack room.",
+   "de": "Im Wartezimmer lese ich ein Magazin.",
+   "en": "I read a magazine in the waiting room.",
    "form": "Magazin"
   }
  ],
@@ -7912,7 +7871,7 @@
  "1131": [
   {
    "de": "Oma erzählt den Kindern jeden Abend ein Märchen.",
-   "en": "Grandma tells the children a tall tale every evening.",
+   "en": "Grandma tells the children a fairy tale every evening.",
    "form": "Märchen"
   }
  ],
@@ -7931,6 +7890,11 @@
   }
  ],
  "1134": [
+  {
+   "de": "Welche Marke ist dein neues Handy?",
+   "en": "What brand is your new phone?",
+   "form": "Marke"
+  },
   {
    "de": "Ich klebe eine Marke auf den Brief.",
    "en": "I stick a stamp on the letter.",
@@ -8017,7 +7981,7 @@
  "1146": [
   {
    "de": "Meinetwegen können wir auch ins Kino gehen.",
-   "en": "Fair enough, we can go to the cinema instead.",
+   "en": "As far as I'm concerned, we can go to the cinema too.",
    "form": "Meinetwegen"
   }
  ],
@@ -8172,7 +8136,7 @@
   {
    "de": "Du hast mich leider völlig missverstanden.",
    "en": "Unfortunately you completely misunderstood me.",
-   "form": "miss"
+   "form": "missverstanden"
   }
  ],
  "1169": [
@@ -8220,7 +8184,7 @@
  "1175": [
   {
    "de": "Mittlerweile spricht er ziemlich gut Deutsch.",
-   "en": "Meanwhile he speaks German quite well.",
+   "en": "By now he speaks German quite well.",
    "form": "Mittlerweile"
   }
  ],
@@ -8423,7 +8387,7 @@
  "1204": [
   {
    "de": "Unser Fußballverein sucht dringend jungen Nachwuchs.",
-   "en": "Our football club urgently needs a young generation of players.",
+   "en": "Our football club urgently needs young talent.",
    "form": "Nachwuchs"
   }
  ],
@@ -8472,7 +8436,7 @@
  "1211": [
   {
    "de": "Ich kann heute nicht kommen, ich bin nämlich krank.",
-   "en": "I can't come today, the fact is I'm ill.",
+   "en": "I can't come today, because I'm ill, you see.",
    "form": "nämlich"
   }
  ],
@@ -8526,6 +8490,11 @@
   }
  ],
  "1219": [
+  {
+   "de": "Im Keller habe ich leider kein Netz.",
+   "en": "Unfortunately I have no signal in the cellar.",
+   "form": "Netz"
+  },
   {
    "de": "Der Fischer zieht sein Netz aus dem Wasser.",
    "en": "The fisherman pulls his net out of the water.",
@@ -8619,7 +8588,7 @@
  "1232": [
   {
    "de": "Wir sind mit ihm sofort in die Notaufnahme gefahren.",
-   "en": "We drove him to the emergency admission right away.",
+   "en": "We drove him to the emergency department straight away.",
    "form": "Notaufnahme"
   }
  ],
@@ -8647,7 +8616,7 @@
  "1236": [
   {
    "de": "Mehr Salz ist in der Suppe wirklich nicht nötig.",
-   "en": "More salt really isn't required in the soup.",
+   "en": "More salt really isn't necessary in the soup.",
    "form": "nötig"
   }
  ],
@@ -8681,9 +8650,9 @@
  ],
  "1241": [
   {
-   "de": "Der Ober bringt uns gleich die Speisekarte.",
-   "en": "The waiter will bring us the menu in a moment.",
-   "form": "Ober"
+   "de": "Die Gläser stehen im oberen Schrank.",
+   "en": "The glasses are in the upper cupboard.",
+   "form": "oberen"
   }
  ],
  "1242": [
@@ -8751,9 +8720,9 @@
  ],
  "1251": [
   {
-   "de": "Wir heizen unser Haus mit Ökostrom aus Wind und Sonne.",
-   "en": "We heat our house with eco-electricity from wind and sun.",
-   "form": "Öko"
+   "de": "Wir kaufen am liebsten ökologisch angebautes Gemüse.",
+   "en": "We prefer to buy organically grown vegetables.",
+   "form": "ökologisch"
   }
  ],
  "1252": [
@@ -8899,7 +8868,7 @@
  "1272": [
   {
    "de": "Die Passagierin sucht ihren Platz am Fenster.",
-   "en": "The female passenger is looking for her window seat.",
+   "en": "The passenger is looking for her window seat.",
    "form": "Passagierin"
   }
  ],
@@ -8927,7 +8896,7 @@
  "1276": [
   {
    "de": "Die Reise kostet pauschal achthundert Euro pro Person.",
-   "en": "The trip costs a lump sum of eight hundred euros per person.",
+   "en": "The trip costs a flat rate of eight hundred euros per person.",
    "form": "pauschal"
   }
  ],
@@ -8962,7 +8931,7 @@
  "1281": [
   {
    "de": "Die Pensionistin geht jeden Morgen schwimmen.",
-   "en": "The female pensioner goes swimming every morning.",
+   "en": "The pensioner goes swimming every morning.",
    "form": "Pensionistin"
   }
  ],
@@ -9186,7 +9155,7 @@
  "1313": [
   {
    "de": "Unsere Praktikantin arbeitet seit Mai in der Agentur.",
-   "en": "Our trainee has been working at the agency since May.",
+   "en": "Our intern has been working at the agency since May.",
    "form": "Praktikantin"
   }
  ],
@@ -9318,8 +9287,8 @@
  ],
  "1332": [
   {
-   "de": "Die Soldaten bekamen ein Quartier im Dorf.",
-   "en": "The soldiers were given billets in the village.",
+   "de": "Für die Nacht haben wir ein Quartier bei Freunden gefunden.",
+   "en": "We found somewhere to stay with friends for the night.",
    "form": "Quartier"
   }
  ],
@@ -9374,8 +9343,8 @@
  ],
  "1340": [
   {
-   "de": "Das Rasen auf nasser Straße ist sehr gefährlich.",
-   "en": "Speeding on a wet road is very dangerous.",
+   "de": "Am Samstag mähe ich den Rasen.",
+   "en": "On Saturday I'm mowing the lawn.",
    "form": "Rasen"
   }
  ],
@@ -9452,7 +9421,7 @@
  "1351": [
   {
    "de": "Dein Plan für die Reise klingt realistisch.",
-   "en": "Your plan for the trip sounds workable.",
+   "en": "Your plan for the trip sounds realistic.",
    "form": "realistisch"
   }
  ],
@@ -9507,8 +9476,8 @@
  ],
  "1359": [
   {
-   "de": "Sie arbeitet im Referat für Umweltfragen.",
-   "en": "She works in the unit for environmental affairs.",
+   "de": "Morgen halte ich ein Referat über Österreich.",
+   "en": "Tomorrow I'm giving a presentation on Austria.",
    "form": "Referat"
   }
  ],
@@ -9521,15 +9490,20 @@
  ],
  "1361": [
   {
-   "de": "Der Bergbau war früher ein Regal des Staates.",
-   "en": "Mining used to be a state monopoly.",
+   "de": "Die Bücher stehen im Regal neben dem Fenster.",
+   "en": "The books are on the shelf next to the window.",
    "form": "Regal"
   }
  ],
  "1362": [
   {
-   "de": "Meine Regel kommt jeden Monat ziemlich pünktlich.",
-   "en": "My period comes fairly punctually every month.",
+   "de": "Beim Spielen musst du dich an die Regeln halten.",
+   "en": "When playing you have to follow the rules.",
+   "form": "Regeln"
+  },
+  {
+   "de": "In der Regel fahre ich mit dem Rad zur Arbeit.",
+   "en": "As a rule, I cycle to work.",
    "form": "Regel"
   }
  ],
@@ -9570,9 +9544,9 @@
  ],
  "1368": [
   {
-   "de": "Am Morgen lag Reif auf den Wiesen.",
-   "en": "In the morning there was hoar frost on the meadows.",
-   "form": "Reif"
+   "de": "Die Tomaten sind noch nicht reif.",
+   "en": "The tomatoes are not ripe yet.",
+   "form": "reif"
   }
  ],
  "1369": [
@@ -9704,21 +9678,21 @@
  "1387": [
   {
    "de": "Das Risiko eines Unfalls ist auf dieser Kreuzung groß.",
-   "en": "The hazard of an accident is high at this junction.",
+   "en": "The risk of an accident is high at this junction.",
    "form": "Risiko"
   }
  ],
  "1388": [
   {
-   "de": "Sein Ton am Telefon war ziemlich roh.",
-   "en": "His tone on the phone was rather coarse.",
+   "de": "Möchtest du das Gemüse roh oder gekocht?",
+   "en": "Would you like the vegetables raw or cooked?",
    "form": "roh"
   }
  ],
  "1389": [
   {
-   "de": "Der Kuchen steht noch im Rohr.",
-   "en": "The cake is still in the oven.",
+   "de": "Das Rohr unter dem Waschbecken ist undicht.",
+   "en": "The pipe under the sink is leaking.",
    "form": "Rohr"
   }
  ],
@@ -9836,8 +9810,8 @@
  ],
  "1406": [
   {
-   "de": "Die Gäste warteten im Salon auf uns.",
-   "en": "The guests were waiting for us in the drawing-room.",
+   "de": "Ihr Salon ist montags geschlossen.",
+   "en": "Her salon is closed on Mondays.",
    "form": "Salon"
   }
  ],
@@ -9948,8 +9922,13 @@
  ],
  "1422": [
   {
-   "de": "Für den Kurs brauche ich noch einen Schein.",
-   "en": "I still need a pass for this course.",
+   "de": "Ich habe nur noch einen Schein im Portemonnaie.",
+   "en": "I only have one banknote left in my wallet.",
+   "form": "Schein"
+  },
+  {
+   "de": "Für diesen Kurs bekommst du am Ende einen Schein.",
+   "en": "You get a certificate at the end of this course.",
    "form": "Schein"
   }
  ],
@@ -9963,7 +9942,7 @@
  "1424": [
   {
    "de": "Das Bild hängt schief an der Wand.",
-   "en": "The picture is hanging lopsided on the wall.",
+   "en": "The picture is hanging crooked on the wall.",
    "form": "schief"
   }
  ],
@@ -9984,7 +9963,7 @@
  "1427": [
   {
    "de": "Wütend schlägt er mit der Faust auf den Tisch.",
-   "en": "Angrily he knocks his fist on the table.",
+   "en": "Angrily he bangs his fist on the table.",
    "form": "schlägt"
   }
  ],
@@ -10025,8 +10004,13 @@
  ],
  "1433": [
   {
+   "de": "Sie trägt nur wenig Schmuck.",
+   "en": "She wears only a little jewellery.",
+   "form": "Schmuck"
+  },
+  {
    "de": "Der bunte Schmuck am Baum gefällt mir.",
-   "en": "I like the colourful decoration on the tree.",
+   "en": "I like the colourful decorations on the tree.",
    "form": "Schmuck"
   }
  ],
@@ -10047,7 +10031,7 @@
  "1436": [
   {
    "de": "Ich bestelle ein Schnitzel mit Kartoffelsalat.",
-   "en": "I'll order a cutlet with potato salad.",
+   "en": "I'll order a schnitzel with potato salad.",
    "form": "Schnitzel"
   }
  ],
@@ -10060,8 +10044,8 @@
  ],
  "1438": [
   {
-   "de": "Der laute Knall war ein großer Schreck.",
-   "en": "The loud bang gave us a real jolt.",
+   "de": "Der laute Knall war ein großer Schreck für uns.",
+   "en": "The loud bang gave us a big fright.",
    "form": "Schreck"
   }
  ],
@@ -10075,15 +10059,15 @@
  "1440": [
   {
    "de": "Das Baby schreit die ganze Nacht.",
-   "en": "The baby hollers all night long.",
+   "en": "The baby screams all night long.",
    "form": "schreit"
   }
  ],
  "1441": [
   {
-   "de": "Er hat die Schriften dieses Philosophen gelesen.",
-   "en": "He has read this philosopher's academic papers.",
-   "form": "Schriften"
+   "de": "Seine Schrift kann ich kaum lesen.",
+   "en": "I can hardly read his handwriting.",
+   "form": "Schrift"
   }
  ],
  "1442": [
@@ -10152,7 +10136,7 @@
  "1451": [
   {
    "de": "Der Salat ist in der großen Schüssel.",
-   "en": "The salad is in the big basin.",
+   "en": "The salad is in the big bowl.",
    "form": "Schüssel"
   }
  ],
@@ -10202,7 +10186,7 @@
   {
    "de": "Meine Schwiegermutter kocht jeden Sonntag für uns.",
    "en": "My mother-in-law cooks for us every Sunday.",
-   "form": "Schwieger"
+   "form": "Schwiegermutter"
   }
  ],
  "1459": [
@@ -10240,13 +10224,6 @@
    "form": "Sekretärin"
   }
  ],
- "1464": [
-  {
-   "de": "Wir wohnen im selben Haus wie früher.",
-   "en": "We live in the same house as before.",
-   "form": "selben"
-  }
- ],
  "1465": [
   {
    "de": "Diesen Kuchen habe ich selber gebacken.",
@@ -10257,7 +10234,7 @@
  "1466": [
   {
    "de": "Selbstverständlich helfe ich dir beim Umzug.",
-   "en": "It goes without saying that I'll help you with the move.",
+   "en": "Of course I'll help you with the move.",
    "form": "Selbstverständlich"
   }
  ],
@@ -10306,7 +10283,7 @@
  "1473": [
   {
    "de": "Welchen Sender hörst du am Morgen?",
-   "en": "Which broadcast station do you listen to in the morning?",
+   "en": "Which station do you listen to in the morning?",
    "form": "Sender"
   }
  ],
@@ -10327,7 +10304,7 @@
  "1476": [
   {
    "de": "Abends schauen wir eine spannende Serie.",
-   "en": "In the evening we watch an exciting television series.",
+   "en": "In the evening we watch an exciting series.",
    "form": "Serie"
   }
  ],
@@ -10397,7 +10374,7 @@
  "1486": [
   {
    "de": "Die Siegerin lächelt auf dem Podium.",
-   "en": "The female winner is smiling on the podium.",
+   "en": "The winner is smiling on the podium.",
    "form": "Siegerin"
   }
  ],
@@ -10438,8 +10415,8 @@
  ],
  "1492": [
   {
-   "de": "Der Sitz der neuen Jacke gefällt mir nicht.",
-   "en": "I don't like the fit of the new jacket.",
+   "de": "Mein Sitz im Zug ist direkt am Fenster.",
+   "en": "My seat on the train is right by the window.",
    "form": "Sitz"
   }
  ],
@@ -10529,8 +10506,8 @@
  ],
  "1505": [
   {
-   "de": "Soviel Arbeit hatte ich noch nie in einer Woche.",
-   "en": "I have never had so much work in one week.",
+   "de": "Soviel ich weiß, ist das Geschäft heute geschlossen.",
+   "en": "As far as I know, the shop is closed today.",
    "form": "Soviel"
   }
  ],
@@ -10604,13 +10581,6 @@
    "form": "Speisewagen"
   }
  ],
- "1516": [
-  {
-   "de": "Für diese Reparatur brauche ich ein Spezialwerkzeug.",
-   "en": "I need a special tool for this repair.",
-   "form": "Spezialwerkzeug"
-  }
- ],
  "1517": [
   {
    "de": "Mein Hausarzt schickt mich zu einem Spezialisten.",
@@ -10621,7 +10591,7 @@
  "1518": [
   {
    "de": "Die Spezialistin für Herzkrankheiten hat viel Erfahrung.",
-   "en": "The specialist for heart diseases has a lot of experience.",
+   "en": "The heart specialist has a lot of experience.",
    "form": "Spezialistin"
   }
  ],
@@ -10669,9 +10639,9 @@
  ],
  "1525": [
   {
-   "de": "Der Spitz meiner Nachbarin bellt den ganzen Tag.",
-   "en": "My neighbour's Pomeranian barks all day long.",
-   "form": "Spitz"
+   "de": "Vorsicht, die Schere ist sehr spitz.",
+   "en": "Careful, the scissors are very pointed.",
+   "form": "spitz"
   }
  ],
  "1526": [
@@ -10900,8 +10870,8 @@
  ],
  "1558": [
   {
-   "de": "Der letzte Weg zum Gipfel ist sehr steil.",
-   "en": "The last stretch to the summit is very steep.",
+   "de": "Der letzte Teil des Weges zum Gipfel ist sehr steil.",
+   "en": "The last part of the path to the summit is very steep.",
    "form": "steil"
   }
  ],
@@ -10977,16 +10947,16 @@
  ],
  "1569": [
   {
-   "de": "Im Stiegenhaus brennt schon wieder kein Licht.",
-   "en": "There is no light on in the stairwell again.",
+   "de": "Die Fahrräder dürfen nicht im Stiegenhaus stehen.",
+   "en": "Bicycles must not be left in the stairwell.",
    "form": "Stiegenhaus"
   }
  ],
  "1570": [
   {
-   "de": "Der Chorleiter verteilt die Stimmen an die Sänger.",
-   "en": "The choir director hands out the parts to the singers.",
-   "form": "Stimmen"
+   "de": "Bei der Wahl hat jede Stimme gezählt.",
+   "en": "Every vote counted in the election.",
+   "form": "Stimme"
   }
  ],
  "1571": [
@@ -11314,7 +11284,7 @@
  "1617": [
   {
    "de": "Welche Tätigkeit üben Sie zurzeit aus?",
-   "en": "What occupation do you currently work in?",
+   "en": "What kind of work are you doing at the moment?",
    "form": "Tätigkeit"
   }
  ],
@@ -11461,7 +11431,7 @@
  "1638": [
   {
    "de": "Die Therapie dauert sechs Wochen.",
-   "en": "The medical treatment lasts six weeks.",
+   "en": "The therapy lasts six weeks.",
    "form": "Therapie"
   }
  ],
@@ -11496,7 +11466,7 @@
  "1643": [
   {
    "de": "Der Unfall auf der Brücke war leider tödlich.",
-   "en": "The accident on the bridge was unfortunately deadly.",
+   "en": "Sadly, the accident on the bridge was fatal.",
    "form": "tödlich"
   }
  ],
@@ -11517,7 +11487,7 @@
  "1646": [
   {
    "de": "Bei dem Unfall gab es zum Glück keine Toten.",
-   "en": "Fortunately there were no dead people in the accident.",
+   "en": "Fortunately nobody was killed in the accident.",
    "form": "Toten"
   }
  ],
@@ -11545,7 +11515,7 @@
  "1650": [
   {
    "de": "Der Trainer schickt einen neuen Spieler aufs Feld.",
-   "en": "The manager is sending a new player onto the pitch.",
+   "en": "The coach is sending a new player onto the pitch.",
    "form": "Trainer"
   }
  ],
@@ -11580,7 +11550,7 @@
  "1655": [
   {
    "de": "Der Transport der Waren dauert zwei Tage.",
-   "en": "The conveyance of the goods takes two days.",
+   "en": "The transport of the goods takes two days.",
    "form": "Transport"
   }
  ],
@@ -11678,7 +11648,7 @@
  "1669": [
   {
    "de": "Es war eiskalt, trotzdem trug er nur ein T-Shirt.",
-   "en": "It was freezing cold, but he wore only a T-shirt anyway.",
+   "en": "It was freezing cold, but he still only wore a T-shirt.",
    "form": "trotzdem"
   }
  ],
@@ -11762,7 +11732,7 @@
  "1681": [
   {
    "de": "Der Mechaniker überprüft noch schnell die Bremsen.",
-   "en": "The mechanic quickly reviews the brakes.",
+   "en": "The mechanic quickly checks the brakes.",
    "form": "überprüft"
   }
  ],
@@ -11825,7 +11795,7 @@
  "1690": [
   {
    "de": "Du übertreibst, so schlimm war es wirklich nicht.",
-   "en": "You are overstating the case, it really was not that bad.",
+   "en": "You're exaggerating, it really wasn't that bad.",
    "form": "übertreibst"
   }
  ],
@@ -11867,7 +11837,7 @@
  "1696": [
   {
    "de": "Übrigens, ich habe deinen Schlüssel gefunden.",
-   "en": "Incidentally, I found your key.",
+   "en": "By the way, I found your key.",
    "form": "Übrigens"
   }
  ],
@@ -11915,9 +11885,9 @@
  ],
  "1703": [
   {
-   "de": "In der Schule ist wieder eine Grippe umgegangen.",
-   "en": "A flu has been going around at school again.",
-   "form": "umgegangen"
+   "de": "Unser Lehrer kann sehr gut mit Kindern umgehen.",
+   "en": "Our teacher is very good at dealing with children.",
+   "form": "umgehen"
   }
  ],
  "1704": [
@@ -11981,13 +11951,6 @@
    "de": "Die Umweltverschmutzung in der Stadt nimmt zu.",
    "en": "Pollution in the city is increasing.",
    "form": "Umweltverschmutzung"
-  }
- ],
- "1713": [
-  {
-   "de": "Sein Zimmer war völlig unordentlich.",
-   "en": "His room was completely untidy.",
-   "form": "un"
   }
  ],
  "1714": [
@@ -12132,8 +12095,8 @@
  ],
  "1734": [
   {
-   "de": "Eine neue Untersuchung zeigt überraschende Ergebnisse.",
-   "en": "A new study shows surprising results.",
+   "de": "Die Untersuchung beim Arzt hat nur zehn Minuten gedauert.",
+   "en": "The examination at the doctor's only took ten minutes.",
    "form": "Untersuchung"
   }
  ],
@@ -12231,7 +12194,7 @@
  "1748": [
   {
    "de": "Der Abschied am Bahnhof war sehr traurig.",
-   "en": "The parting at the station was very sad.",
+   "en": "Saying goodbye at the station was very sad.",
    "form": "Abschied"
   }
  ],
@@ -12608,8 +12571,8 @@
  ],
  "1802": [
   {
-   "de": "Er gab mir die Versicherung, dass alles stimmt.",
-   "en": "He gave me the assurance that everything is correct.",
+   "de": "Die Versicherung bezahlt den Schaden am Auto.",
+   "en": "The insurance pays for the damage to the car.",
    "form": "Versicherung"
   }
  ],
@@ -12629,8 +12592,8 @@
  ],
  "1805": [
   {
-   "de": "Sein Verständnis für Mathematik ist beeindruckend.",
-   "en": "His comprehension of mathematics is impressive.",
+   "de": "Vielen Dank für Ihr Verständnis.",
+   "en": "Thank you very much for your understanding.",
    "form": "Verständnis"
   }
  ],
@@ -12700,7 +12663,7 @@
  "1815": [
   {
    "de": "Die Verwaltung der Universität sitzt im zweiten Stock.",
-   "en": "The university management is on the second floor.",
+   "en": "The university administration is on the second floor.",
    "form": "Verwaltung"
   }
  ],
@@ -12728,7 +12691,7 @@
  "1819": [
   {
    "de": "Bitte verzeih mir diesen dummen Fehler.",
-   "en": "Please excuse this stupid mistake of mine.",
+   "en": "Please forgive me for this stupid mistake.",
    "form": "verzeih"
   }
  ],
@@ -12749,7 +12712,7 @@
  "1822": [
   {
    "de": "Wir haben gestern das Video von der Hochzeit angeschaut.",
-   "en": "Yesterday we watched the video recording of the wedding.",
+   "en": "Yesterday we watched the video of the wedding.",
    "form": "Video"
   }
  ],
@@ -12762,15 +12725,15 @@
  ],
  "1824": [
   {
-   "de": "Ein Virus hat meinen Computer lahmgelegt.",
-   "en": "A virus has crippled my computer.",
+   "de": "Die Grippe wird von einem Virus verursacht.",
+   "en": "Flu is caused by a virus.",
    "form": "Virus"
   }
  ],
  "1825": [
   {
    "de": "Er gab mir seine Visitenkarte mit der Handynummer.",
-   "en": "He gave me his card with his mobile number on it.",
+   "en": "He gave me his business card with his mobile number on it.",
    "form": "Visitenkarte"
   }
  ],
@@ -12805,7 +12768,7 @@
  "1830": [
   {
    "de": "Nach der Wanderung war ich völlig erschöpft.",
-   "en": "After the hike I was altogether exhausted.",
+   "en": "After the hike I was completely exhausted.",
    "form": "völlig"
   }
  ],
@@ -12917,21 +12880,21 @@
  "1846": [
   {
    "de": "Ich habe keine Vorstellung davon, wie teuer das wird.",
-   "en": "I have no conception of how expensive that will be.",
+   "en": "I have no idea how expensive that will be.",
    "form": "Vorstellung"
   }
  ],
  "1847": [
   {
    "de": "Morgen habe ich ein Vorstellungsgespräch bei einer Bank.",
-   "en": "Tomorrow I have an interview at a bank.",
+   "en": "Tomorrow I have a job interview at a bank.",
    "form": "Vorstellungsgespräch"
   }
  ],
  "1848": [
   {
    "de": "Ein großer Vorteil der Wohnung ist der Balkon.",
-   "en": "A big benefit of the flat is the balcony.",
+   "en": "A big advantage of the flat is the balcony.",
    "form": "Vorteil"
   }
  ],
@@ -13001,7 +12964,7 @@
  "1858": [
   {
    "de": "Die Wanderung durch die Berge dauerte fünf Stunden.",
-   "en": "The walk through the mountains took five hours.",
+   "en": "The hike through the mountains took five hours.",
    "form": "Wanderung"
   }
  ],
@@ -13052,13 +13015,6 @@
    "de": "Das Kind weigert sich, das Gemüse zu essen.",
    "en": "The child refuses to eat the vegetables.",
    "form": "weigert"
-  }
- ],
- "1866": [
-  {
-   "de": "Glücklicherweise hat niemand den Unfall gesehen.",
-   "en": "Luckily nobody saw the accident.",
-   "form": "weise"
   }
  ],
  "1867": [
@@ -13239,7 +13195,7 @@
  "1892": [
   {
    "de": "Der Wirt bringt uns zwei Bier an den Tisch.",
-   "en": "The innkeeper brings us two beers at the table.",
+   "en": "The landlord brings two beers to our table.",
    "form": "Wirt"
   }
  ],
@@ -13274,7 +13230,7 @@
  "1897": [
   {
    "de": "Eine junge Wissenschaftlerin hat den Preis gewonnen.",
-   "en": "A young female scientist won the prize.",
+   "en": "A young scientist won the prize.",
    "form": "Wissenschaftlerin"
   }
  ],
@@ -13323,7 +13279,7 @@
  "1904": [
   {
    "de": "Es war ein Wunder, dass niemand verletzt wurde.",
-   "en": "It was a wonder that nobody was hurt.",
+   "en": "It was a miracle that nobody was hurt.",
    "form": "Wunder"
   }
  ],
@@ -13337,7 +13293,7 @@
  "1906": [
   {
    "de": "Ich wundere mich über seine schlechte Laune.",
-   "en": "I wonder about his bad mood.",
+   "en": "I'm surprised by his bad mood.",
    "form": "wundere"
   }
  ],
@@ -13379,7 +13335,7 @@
  "1912": [
   {
    "de": "Die Zahnpasta ist leer, ich kaufe morgen neue.",
-   "en": "The toothpaste is empty, I'll buy new one tomorrow.",
+   "en": "We're out of toothpaste, I'll buy some more tomorrow.",
    "form": "Zahnpasta"
   }
  ],
@@ -13414,7 +13370,7 @@
  "1917": [
   {
    "de": "Lies bitte die erste Zeile noch einmal vor.",
-   "en": "Please read out the first row again.",
+   "en": "Please read out the first line again.",
    "form": "Zeile"
   }
  ],
@@ -13456,7 +13412,7 @@
  "1923": [
   {
    "de": "Pack dein Zeug zusammen, wir fahren gleich los.",
-   "en": "Pack up your equipment, we're leaving soon.",
+   "en": "Pack up your stuff, we're leaving soon.",
    "form": "Zeug"
   }
  ],
@@ -13470,7 +13426,7 @@
  "1925": [
   {
    "de": "Die Zeugin sagte gestern vor Gericht aus.",
-   "en": "The female witness testified in court yesterday.",
+   "en": "The witness testified in court yesterday.",
    "form": "Zeugin"
   }
  ],
@@ -13561,7 +13517,7 @@
  "1938": [
   {
    "de": "Eine Zuhörerin stellte am Ende eine gute Frage.",
-   "en": "A female listener asked a good question at the end.",
+   "en": "A listener asked a good question at the end.",
    "form": "Zuhörerin"
   }
  ],
@@ -13589,22 +13545,22 @@
  "1942": [
   {
    "de": "Zunächst trinken wir einen Kaffee, dann gehen wir los.",
-   "en": "Initially we'll have a coffee, then we'll set off.",
+   "en": "First we'll have a coffee, then we'll set off.",
    "form": "Zunächst"
   }
  ],
  "1943": [
   {
-   "de": "Die Zünder für das Feuerwerk fehlen noch.",
-   "en": "The igniters for the fireworks are still missing.",
+   "de": "Hast du einen Zünder? Ich möchte die Kerze anzünden.",
+   "en": "Do you have a match? I want to light the candle.",
    "form": "Zünder"
   }
  ],
  "1944": [
   {
-   "de": "Hast du ein Zündholz für die Kerze?",
-   "en": "Do you have a match for the candle?",
-   "form": "Zündholz"
+   "de": "Die Zündhölzer liegen in der Schublade neben dem Herd.",
+   "en": "The matches are in the drawer next to the stove.",
+   "form": "Zündhölzer"
   }
  ],
  "1945": [
@@ -13624,7 +13580,7 @@
  "1947": [
   {
    "de": "Er hat für Samstag fest zugesagt.",
-   "en": "He has firmly accepted for Saturday.",
+   "en": "He has definitely said yes for Saturday.",
    "form": "zugesagt"
   }
  ],
@@ -13652,7 +13608,7 @@
  "1951": [
   {
    "de": "Wir brauchen zusätzlich noch zwei Stühle.",
-   "en": "We need two more chairs additionally.",
+   "en": "We need two additional chairs.",
    "form": "zusätzlich"
   }
  ],
@@ -13666,7 +13622,7 @@
  "1953": [
   {
    "de": "Eine Zuschauerin filmte das Konzert mit dem Handy.",
-   "en": "A female spectator filmed the concert with her phone.",
+   "en": "A spectator filmed the concert on her phone.",
    "form": "Zuschauerin"
   }
  ],
@@ -13729,7 +13685,7 @@
  "1962": [
   {
    "de": "Das Zimmer ist zwar klein, aber sehr hell.",
-   "en": "The room is small, admittedly, but very bright.",
+   "en": "The room is admittedly small, but very bright.",
    "form": "zwar"
   }
  ],

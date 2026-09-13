@@ -299,3 +299,98 @@ describe('near miss', () => {
     ]);
   });
 });
+
+describe('articles and strictness (bug 4, S14)', () => {
+  const noArticle: Strictness = { ...STRICT, article: false };
+
+  it('accepts the bare noun when the article is not strict, but not a wrong article', () => {
+    const opts = { strictness: noArticle, language: 'de' as const };
+    expect(evaluateAnswer('Minute', ['die Minute'], opts).correct).toBe(true);
+    const wrong = evaluateAnswer('der Minute', ['die Minute'], opts);
+    expect(wrong.correct).toBe(false);
+    expect(wrong.issues.map((i) => i.category)).toContain('wrongArticle');
+  });
+
+  it('never strips the article from a phrase', () => {
+    const opts = { strictness: noArticle, language: 'de' as const };
+    expect(evaluateAnswer('ist gut', ['das ist gut'], opts).correct).toBe(false);
+  });
+
+  it('gives a wrong article no second try', () => {
+    const result = evaluateAnswer('der Minute', ['die Minute'], {
+      strictness: STRICT,
+      language: 'de',
+    });
+    expect(isNearMiss(result)).toBe(false);
+  });
+
+  it('accepts a sentence-start capital on the article', () => {
+    expect(
+      evaluateAnswer('Die Minute', ['die Minute'], { strictness: STRICT, language: 'de' }).correct,
+    ).toBe(true);
+  });
+});
+
+describe('near miss by length (S14)', () => {
+  const near = (submitted: string, expected: string) =>
+    isNearMiss({
+      correct: false,
+      issues: [],
+      submittedAnswer: submitted,
+      expectedAnswer: expected,
+    });
+
+  it('gives short words one edit, longer words two', () => {
+    expect(near('drei', 'zwei')).toBe(false);
+    expect(near('bei', 'zwei')).toBe(false);
+    expect(near('nein', 'eins')).toBe(false);
+    expect(near('zwie', 'zwei')).toBe(false);
+    expect(near('zwe', 'zwei')).toBe(true);
+    expect(near('Fentser', 'Fenster')).toBe(true);
+  });
+
+  it('never treats another real word as a typo', () => {
+    const result = evaluateAnswer('mein', ['kein'], {
+      strictness: STRICT,
+      language: 'de',
+      otherWords: ['mein'],
+    });
+    expect(result.issues[0]?.message).toMatch(/different word/);
+    expect(isNearMiss(result)).toBe(false);
+  });
+});
+
+describe('relaxed umlauts (S15)', () => {
+  it('rejects a different real word that only a fold would match', () => {
+    const result = evaluateAnswer('drücken', ['drucken'], {
+      strictness: LENIENT,
+      language: 'de',
+      otherWords: ['drücken'],
+    });
+    expect(result.correct).toBe(false);
+  });
+
+  it('accepts a relaxed spelling but shows the correct one', () => {
+    const result = evaluateAnswer('schon', ['schön'], { strictness: LENIENT, language: 'de' });
+    expect(result.correct).toBe(true);
+    expect(result.issues[0]?.message).toBe('It is spelled "schön".');
+  });
+});
+
+describe('capitalization messages (S16)', () => {
+  const message = (submitted: string, expected: string) =>
+    evaluateAnswer(submitted, [expected], { strictness: STRICT, language: 'de' }).issues[0]
+      ?.message;
+
+  it('names the noun, not the article', () => {
+    expect(message('Die minute', 'die Minute')).toBe('German nouns must be capitalized: Minute.');
+  });
+
+  it('says a non-noun is written in lower case', () => {
+    expect(message('Hören', 'hören')).toBe('hören is written in lower case.');
+  });
+
+  it('does not call the formal pronoun a noun', () => {
+    expect(message('sie', 'Sie')).toBe('Sie is written with a capital letter here.');
+  });
+});

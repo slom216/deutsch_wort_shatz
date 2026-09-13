@@ -64,13 +64,15 @@ export function prepareIndex(records: readonly VocabularyIndexRecord[]): Searcha
   }));
 }
 
+// `srs` is optional-chained: a malformed stored row (`srs: null`) reads as new rather than
+// crashing the browser.
 function statusOf(progress: EntryProgress | undefined): LearningStatus {
-  return progress ? progress.srs.status : 'new';
+  return progress?.srs?.status ?? 'new';
 }
 
 function difficultyBandOf(progress: EntryProgress | undefined): DifficultyBandFilter {
-  if (!progress) return 'any';
-  const value = progress.srs.difficulty;
+  const value = progress?.srs?.difficulty;
+  if (typeof value !== 'number') return 'any';
   if (value < 0.35) return 'low';
   if (value < 0.65) return 'medium';
   return 'high';
@@ -87,9 +89,13 @@ export function searchVocabulary(
   { filters, progressByEntry }: SearchOptions,
 ): SearchableRecord[] {
   const needle = normalize(filters.query.trim());
+  // "die Bücher" should find a record whose forms list "Bücher" without the article.
+  const bare = needle.replace(/^(der|die|das|den|dem|des|ein|eine)\s+/u, '');
 
   return records.filter((record) => {
-    if (needle.length > 0 && !record.haystack.includes(needle)) return false;
+    if (needle.length > 0 && !record.haystack.includes(needle) && !record.haystack.includes(bare)) {
+      return false;
+    }
     if (filters.level !== 'all' && record.level !== filters.level) return false;
     if (filters.band !== 'all' && record.frequencyBand !== filters.band) return false;
     if (filters.topic !== 'all' && record.primaryTopic !== filters.topic) return false;

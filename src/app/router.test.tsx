@@ -35,7 +35,7 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },
   { path: '/data', heading: /^data$/i },
-  { path: '/about', heading: /about deutsch wortschatz/i },
+  { path: '/about', heading: /about deulern deutsch wortschatz/i },
 ];
 
 describe('application routes', () => {

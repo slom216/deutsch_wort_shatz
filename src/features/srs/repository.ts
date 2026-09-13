@@ -3,9 +3,11 @@ import type { EntryProgress, ExerciseHistory, Grade } from '@/schemas/progressSc
 import type { Exercise } from '@/schemas/exerciseSchema';
 import { computeDifficulty, difficultyInputsFrom } from './difficulty';
 import { expectedResponseMs, gradeAttempt, isSuccess, type AttemptOutcome } from './grading';
-import { evaluateMastery, masteryEvidenceFrom } from './mastery';
-import { applyReview, createInitialSrsState } from './scheduler';
+import { evaluateMastery, masteryEvidenceFrom, withMasteryStatus } from './mastery';
+import { applyReview, createInitialSrsState, isDue } from './scheduler';
 import { masteryTarget } from './learningMode';
+import { loadSkippedIds } from './skipped';
+import { loadSearchIndex } from '@/content/vocabulary/registry';
 
 /**
  * Persistence for SRS state (§24).
@@ -15,25 +17,87 @@ import { masteryTarget } from './learningMode';
  * survives a refresh. Progress is only ever updated in place, never deleted (§24).
  */
 
+/**
+ * True when a stored row has the fields every read path dereferences.
+ *
+ * A cheap structural guard rather than the full Zod schema: rows written by older versions
+ * may predate optional counters, and one partial write (`srs: null`) must not take down
+ * every screen that lists progress. Invalid rows are left in place for Data → Repair.
+ */
+export function isReadableProgress(row: unknown): row is EntryProgress {
+  const record = row as Partial<EntryProgress> | null;
+  const srs = record?.srs;
+  return (
+    typeof record?.entryId === 'string' &&
+    typeof srs === 'object' &&
+    srs !== null &&
+    typeof srs.status === 'string' &&
+    typeof srs.dueAt === 'string' &&
+    !Number.isNaN(Date.parse(srs.dueAt)) &&
+    Number.isFinite(srs.intervalDays) &&
+    Number.isFinite(srs.easeFactor) &&
+    Number.isFinite(srs.difficulty) &&
+    typeof srs.exercisePerformance === 'object' &&
+    srs.exercisePerformance !== null &&
+    Number.isFinite(record.totalAttempts) &&
+    typeof record.errorCounts === 'object' &&
+    record.errorCounts !== null
+  );
+}
+
 export async function loadAllProgress(
   database: VocabularyLearningDatabase = db,
 ): Promise<EntryProgress[]> {
-  return database.entryProgress.toArray();
+  return (await database.entryProgress.toArray()).filter(isReadableProgress);
 }
 
 export async function loadProgress(
   entryId: string,
   database: VocabularyLearningDatabase = db,
 ): Promise<EntryProgress | undefined> {
-  return database.entryProgress.get(entryId);
+  const row = await database.entryProgress.get(entryId);
+  return isReadableProgress(row) ? row : undefined;
+}
+
+export interface QueueableProgress {
+  /** Readable progress for entries that exist in the vocabulary. */
+  readonly known: EntryProgress[];
+  /** `known` minus skipped words: what due counts and review queues may serve. */
+  readonly queueable: EntryProgress[];
+  /** Number of entries in the vocabulary. */
+  readonly totalEntries: number;
 }
 
 /**
- * Quiz score at which an entry counts as mastered, for the learner's current mode.
+ * The one read path for anything that counts or serves due words.
+ *
+ * Progress for an id the vocabulary no longer has would otherwise be due for ever and
+ * produce empty review sessions, and a skipped word must not be counted as due on one
+ * screen and left out of the session on the next.
+ */
+export async function loadQueueableProgress(
+  database: VocabularyLearningDatabase = db,
+): Promise<QueueableProgress> {
+  const [stored, index, skipped] = await Promise.all([
+    loadAllProgress(database),
+    loadSearchIndex(),
+    loadSkippedIds(database),
+  ]);
+  const knownIds = new Set(index.map((record) => record.id));
+  const known = stored.filter((progress) => knownIds.has(progress.entryId));
+  return {
+    known,
+    queueable: known.filter((progress) => !skipped.has(progress.entryId)),
+    totalEntries: index.length,
+  };
+}
+
+/**
+ * Quiz score at which an entry leaves the continuous stream, for the learner's current mode.
  *
  * Answering correctly first time is +1, getting it wrong is −1, and the score never goes
- * below zero — so `masteryTarget()` clean answers master a word, and every wrong one costs
- * one of them. Normal asks for four, fast for three, ultra fast for two.
+ * below zero. Normal asks for four, fast for three, ultra fast for two. The score does not
+ * make a word mastered: only the §22 evidence does.
  *
  * Re-exported here because this module is where the score itself is written; the table
  * lives in `learningMode.ts`.
@@ -85,7 +149,7 @@ export async function introduceEntry(
   now: Date = new Date(),
   database: VocabularyLearningDatabase = db,
 ): Promise<EntryProgress> {
-  const existing = await database.entryProgress.get(entryId);
+  const existing = await loadProgress(entryId, database);
   if (existing) return existing;
   const created = createProgress(entryId, now);
   await database.entryProgress.put(created);
@@ -102,6 +166,11 @@ export interface RecordReviewInput {
   readonly responseMs: number;
   readonly errorCategories: readonly string[];
   readonly reviewedAt?: Date;
+  /**
+   * The learner marked the answer themselves (speaking: "I said it correctly"). The answer
+   * is recorded, but a success earns no quiz score and does not advance the schedule.
+   */
+  readonly selfAssessed?: boolean;
 }
 
 export interface RecordReviewResult {
@@ -114,14 +183,23 @@ export interface RecordReviewResult {
  * Records one answered exercise: grades it automatically, recomputes difficulty,
  * reschedules the entry and re-evaluates mastery. This is the single write path for SRS
  * state, so grading rules cannot drift between callers.
+ *
+ * Scheduling advances at most once per scheduled review (§20): a success on a word that is
+ * not due yet — including one already rescheduled earlier in this sitting — updates the
+ * counters and difficulty but leaves the learning step and interval alone. A failure
+ * always counts.
+ *
+ * Only Dexie work happens here (reads `entryProgress` and `exerciseHistory`, writes
+ * `entryProgress`), so callers may wrap it in an outer read-write transaction.
  */
 export async function recordReview(
   input: RecordReviewInput,
   database: VocabularyLearningDatabase = db,
 ): Promise<RecordReviewResult> {
   const now = input.reviewedAt ?? new Date();
+  // An unreadable row is replaced rather than crashing the session on it.
   const existing =
-    (await database.entryProgress.get(input.entryId)) ?? createProgress(input.entryId, now);
+    (await loadProgress(input.entryId, database)) ?? createProgress(input.entryId, now);
 
   const outcome: AttemptOutcome = {
     correct: input.correct,
@@ -153,7 +231,10 @@ export async function recordReview(
       (input.correct && input.attempts === 1 && !input.revealed ? 1 : 0),
     hintsUsed: existing.hintsUsed + (input.hintUsed ? 1 : 0),
     errorCounts,
-    masteryScore: nextMasteryScore(existing.masteryScore ?? 0, input),
+    masteryScore:
+      input.selfAssessed && input.correct
+        ? Math.min(masteryTarget(), existing.masteryScore ?? 0)
+        : nextMasteryScore(existing.masteryScore ?? 0, input),
   };
 
   /* ---- difficulty, then scheduling ---- */
@@ -164,12 +245,17 @@ export async function recordReview(
     totalResponseMs / totalAttempts / expectedResponseMs(input.exercise.type);
   const difficulty = computeDifficulty(difficultyInputsFrom(withCounters, responseTimeRatio));
 
-  const srs = applyReview(withCounters.srs, {
-    grade,
-    difficulty,
-    isProduction: input.exercise.isProduction,
-    reviewedAt: now,
-  });
+  const advances =
+    !isSuccess(grade) ||
+    (!input.selfAssessed && (existing.srs.status === 'new' || isDue(existing.srs, now)));
+  const srs = advances
+    ? applyReview(withCounters.srs, {
+        grade,
+        difficulty,
+        isProduction: input.exercise.isProduction,
+        reviewedAt: now,
+      })
+    : { ...withCounters.srs, difficulty };
 
   /* ---- per-exercise-type performance, for the analytics screens ---- */
   const typeKey = input.exercise.type;
@@ -200,13 +286,14 @@ export async function recordReview(
   /* ---- mastery (§22) ---- */
   const history = await database.exerciseHistory.where('entryId').equals(input.entryId).toArray();
   const evidence = masteryEvidenceFrom(history, (row) => isProductionType(row));
+  const countsAsSuccess = isSuccess(grade) && !input.selfAssessed;
   const check = evaluateMastery(updated.srs, {
     ...evidence,
     // Include the review just recorded, which is not yet in stored history.
-    successfulReviews: evidence.successfulReviews + (isSuccess(grade) ? 1 : 0),
+    successfulReviews: evidence.successfulReviews + (countsAsSuccess ? 1 : 0),
     successfulProductionReviews:
       evidence.successfulProductionReviews +
-      (isSuccess(grade) && input.exercise.isProduction ? 1 : 0),
+      (countsAsSuccess && input.exercise.isProduction ? 1 : 0),
     typedFirstAttemptCorrect:
       evidence.typedFirstAttemptCorrect ||
       (input.correct &&
@@ -216,14 +303,9 @@ export async function recordReview(
     recentGrades: [...evidence.recentGrades, grade],
   });
 
-  // Two independent routes to mastered: the §22 evidence check, and the quiz score
-  // reaching the mode's target. Keeping both means an entry already mastered under §22 is
-  // never demoted by the arrival of the score, and a word answered cleanly as many times
-  // as the mode asks for counts as known.
-  const scoreMastered = updated.masteryScore >= masteryTarget();
-  if ((check.mastered || scoreMastered) && updated.srs.status === 'review') {
-    updated = { ...updated, srs: { ...updated.srs, status: 'mastered' } };
-  }
+  // §22 is the only route to mastered. The quiz score drives the continuous stream's
+  // formats; letting it master a word too made "mastered" reachable within a day.
+  updated = { ...updated, srs: withMasteryStatus(updated, check) };
 
   await database.entryProgress.put(updated);
   return { progress: updated, grade, mastered: updated.srs.status === 'mastered' };

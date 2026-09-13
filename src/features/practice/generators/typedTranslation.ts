@@ -3,6 +3,8 @@ import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import {
   acceptedEnglish,
   acceptedGerman,
+  acceptedPlurals,
+  acceptedVerbForms,
   articleStrictness,
   englishStrictness,
   firstExample,
@@ -10,8 +12,10 @@ import {
   isNounEntry,
   isPhraseEntry,
   isVerbEntry,
+  lookalikeWords,
   pluralForm,
   primaryEnglish,
+  sameMeaningWords,
   strictnessFor,
 } from './entryHelpers';
 import type { GeneratorContext } from './multipleChoice';
@@ -36,7 +40,11 @@ export function generateTypedTranslation(
   context: GeneratorContext,
   variant: TypedTranslationVariant,
 ): TypedTranslationExercise | null {
-  const { entry, id } = context;
+  const { entry, pool, id } = context;
+
+  /** Pool words the evaluator must treat as different words (see `EvaluationOptions`). */
+  const otherWordsField = (words: readonly string[]) =>
+    words.length > 0 ? { otherWords: [...new Set(words)] } : {};
 
   const base = {
     id,
@@ -68,8 +76,10 @@ export function generateTypedTranslation(
     }
 
     case 'englishToGerman': {
-      const accepted = acceptedGerman(entry);
-      if (accepted.length === 0) return null;
+      const own = acceptedGerman(entry);
+      if (own.length === 0) return null;
+      // "at" is an, bei and um: another entry with the prompt's meaning is right too.
+      const sameMeaning = sameMeaningWords(entry, pool);
       return {
         ...base,
         isProduction: true,
@@ -77,14 +87,16 @@ export function generateTypedTranslation(
         strictness: strictnessFor(entry),
         question: primaryEnglish(entry),
         answerLanguage: 'de',
-        acceptedAnswers: accepted,
+        acceptedAnswers: [...own, ...sameMeaning],
+        ...otherWordsField([...sameMeaning, ...lookalikeWords(entry, pool, own)]),
         canonicalAnswer: headword(entry),
       };
     }
 
     case 'nounWithArticle': {
       if (!isNounEntry(entry) || !entry.article) return null;
-      const canonical = `${entry.article} ${entry.german}`;
+      const canonical = headword(entry);
+      const accepted = withArticle(acceptedGerman(entry));
       return {
         ...base,
         isProduction: true,
@@ -92,7 +104,8 @@ export function generateTypedTranslation(
         strictness: articleStrictness(entry),
         question: primaryEnglish(entry),
         answerLanguage: 'de',
-        acceptedAnswers: [canonical],
+        acceptedAnswers: accepted,
+        ...otherWordsField(lookalikeWords(entry, pool, accepted)),
         canonicalAnswer: canonical,
       };
     }
@@ -100,7 +113,10 @@ export function generateTypedTranslation(
     case 'nounWithArticleAndPlural': {
       const plural = pluralForm(entry);
       if (!isNounEntry(entry) || !entry.article || !plural) return null;
-      const canonical = `${entry.article} ${entry.german}, ${plural}`;
+      const canonical = `${headword(entry)}, ${plural}`;
+      const accepted = withArticle(acceptedGerman(entry)).flatMap((singular) =>
+        acceptedPlurals(entry).flatMap((form) => [`${singular}, ${form}`, `${singular} ${form}`]),
+      );
       return {
         ...base,
         isProduction: true,
@@ -109,7 +125,7 @@ export function generateTypedTranslation(
         strictness: articleStrictness(entry),
         question: primaryEnglish(entry),
         answerLanguage: 'de',
-        acceptedAnswers: [canonical, `${entry.article} ${entry.german} ${plural}`],
+        acceptedAnswers: accepted,
         canonicalAnswer: canonical,
       };
     }
@@ -127,7 +143,7 @@ export function generateTypedTranslation(
         strictness: strictnessFor(entry),
         question: entry.infinitive,
         answerLanguage: 'de',
-        acceptedAnswers: [participle],
+        acceptedAnswers: acceptedVerbForms(entry, 'pastParticiple'),
         canonicalAnswer: participle,
       };
     }
@@ -150,6 +166,11 @@ export function generateTypedTranslation(
     default:
       return null;
   }
+}
+
+/** The forms that carry an article, for the variants that ask for one. */
+function withArticle(forms: readonly string[]): string[] {
+  return forms.filter((form) => /^(?:der|die|das)\s/iu.test(form));
 }
 
 export function availableTypedTranslationVariants(

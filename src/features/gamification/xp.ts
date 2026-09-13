@@ -71,13 +71,13 @@ export function exerciseXp(input: ExerciseXpInput): number {
  * finishes it should still top out. Levels past 20 keep the same curve — streak and
  * daily-goal bonuses carry the learner beyond.
  *
- * The corpus is worth 127,260 XP once fully mastered:
+ * The corpus (3,444 entries: A1 799, A2 690, B1 1,955) is worth 126,684 XP once fully mastered:
  *
- *   3,460 entries × 36 XP   124,560   the four-step ladder (5+5+8+8) plus 10 for mastery
+ *   3,444 entries × 36 XP   123,984   the four-step ladder (5+5+8+8) plus 10 for mastery
  *   12 bands × 100            1,200
  *   3 CEFR levels × 500       1,500
  *
- * 90% of that is 114,534, and `xpRequiredForLevel(20)` is 114,346 — just under, so the level
+ * 90% of that is 114,016, and `xpRequiredForLevel(20)` is 113,799 — just under, so the level
  * is actually reached there rather than one word short of it.
  *
  * The ladder is what sets the per-word figure, so shortening or lengthening it moves the
@@ -91,7 +91,7 @@ export function exerciseXp(input: ExerciseXpInput): number {
  * Retune by moving `LEVEL_XP_BASE` alone; the curve's shape is `LEVEL_XP_GROWTH`.
  */
 const LEVEL_XP_GROWTH = 1.25;
-const LEVEL_XP_BASE = 418;
+const LEVEL_XP_BASE = 416;
 
 /** Share of the corpus that reaching `LEVEL_XP_TARGET` represents. */
 export const CORPUS_MASTERY_TARGET = 0.9;
@@ -120,15 +120,18 @@ export interface LevelProgress {
 }
 
 /**
- * Highest `public/img/avatar/level-N.png` that exists. The level number is drawn into the
- * artwork, so a learner above this keeps the top card rather than being shown a wrong one —
- * raise this as cards for levels 7–20 are added.
+ * Highest `public/img/avatar/level-N.webp` that exists. The level number is drawn into the
+ * artwork, so a learner above this keeps the top card rather than being shown a wrong one.
+ * The cards are 640×640 WebP: the largest display is 320 CSS px at 2× density.
  */
-export const MAX_AVATAR_LEVEL = 7;
+export const MAX_AVATAR_LEVEL = 20;
+
+/** Intrinsic size of every rank card, for `width`/`height` attributes. */
+export const AVATAR_SIZE = 640;
 
 /** Word Wizard rank card for a level. */
 export function avatarSrc(level: number): string {
-  return `/img/avatar/level-${Math.min(Math.max(1, level), MAX_AVATAR_LEVEL)}.png`;
+  return `/img/avatar/level-${Math.min(Math.max(1, level), MAX_AVATAR_LEVEL)}.webp`;
 }
 
 export function levelProgress(totalXp: number): LevelProgress {

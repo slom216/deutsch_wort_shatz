@@ -17,7 +17,12 @@ import {
   nearMiss,
   nearMissCandidates,
   pluralForm,
+  acceptedEnglish,
+  acceptedGerman,
+  expandForms,
+  generateSentenceCompletion as sentenceGap,
 } from './index';
+import { evaluateAnswer, isNearMiss as isTypoNearMiss } from '../evaluation/evaluateAnswer';
 import { exerciseSchema } from '@/schemas/exerciseSchema';
 import { isNounEntry, isPhraseEntry, isVerbEntry } from '@/schemas/vocabularySchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
@@ -73,37 +78,119 @@ const NOUN_FORMS: ReadonlyArray<[string, string, string, 'der' | 'die' | 'das']>
   ['Kind', 'child', 'Kinder', 'das'],
 ];
 
-/** Nouns with article and plural, built on the shape of a real dataset noun. */
-function grammarNouns(): VocabularyEntry[] {
+/**
+ * A noun in the shape the content build ships (`scripts/lib/loadDataset.mjs`): a bare `german`,
+ * the article beside it, and accepted answers of its own — never a copy of the base entry's.
+ */
+function grammarNoun(
+  german: string,
+  english: string,
+  article: 'der' | 'die' | 'das' | null,
+  plural: string | null,
+  extra: Record<string, unknown> = {},
+): VocabularyEntry {
   const base = find((entry) => entry.wordClass === 'noun');
-  return NOUN_FORMS.map(([german, english, plural, article], index) => ({
+  const alternateForms = (extra.alternateForms as string[] | undefined) ?? [];
+  return {
     ...base,
-    id: `test-${String(index + 1).padStart(4, '0')}-${german.toLowerCase()}`,
+    id: `test-0001-${german.toLowerCase()}`,
     german,
     english: [english],
-    searchableForms: [german, plural],
+    searchableForms: [german],
+    exampleSentences: [],
+    exerciseConfig: {
+      ...base.exerciseConfig,
+      strictness: { ...base.exerciseConfig.strictness, article: article !== null },
+      acceptedAnswers: {
+        german: [german, ...alternateForms],
+        english: [english],
+        ...(plural ? { plural: [`die ${plural}`] } : {}),
+      },
+    },
     article,
     plural,
-    pluralArticle: 'die',
-  })) as VocabularyEntry[];
+    pluralArticle: plural ? 'die' : null,
+    ...extra,
+  } as VocabularyEntry;
+}
+
+/** Nouns with article and plural. */
+function grammarNouns(): VocabularyEntry[] {
+  return NOUN_FORMS.map(([german, english, plural, article], index) => ({
+    ...grammarNoun(german, english, article, plural),
+    id: `test-${String(index + 1).padStart(4, '0')}-${german.toLowerCase()}`,
+  }));
 }
 
 /** A verb with the full form set §10 describes. */
-function grammarVerb(): VocabularyEntry {
-  const base = find((entry) => entry.wordClass === 'verb');
-  return {
-    ...base,
-    id: 'test-0100-gehen',
-    german: 'gehen',
-    english: ['to go'],
-    infinitive: 'gehen',
+function grammarVerb(
+  infinitive = 'gehen',
+  english = 'to go',
+  forms: Record<string, string | boolean> = {
     thirdPersonPresent: 'geht',
     simplePast: 'ging',
     pastParticiple: 'gegangen',
     auxiliary: 'sein',
     separable: false,
+  },
+): VocabularyEntry {
+  const base = find((entry) => entry.wordClass === 'verb');
+  const formAnswers = Object.fromEntries(
+    ['thirdPersonPresent', 'simplePast', 'pastParticiple']
+      .filter((field) => typeof forms[field] === 'string')
+      .map((field) => [field, [forms[field]]]),
+  );
+  return {
+    ...base,
+    id: `test-0100-${infinitive}`,
+    german: infinitive,
+    english: [english],
+    infinitive,
     reflexive: false,
     fixedPrepositions: [],
+    exampleSentences: [],
+    exerciseConfig: {
+      ...base.exerciseConfig,
+      acceptedAnswers: { german: [infinitive], english: [english], ...formAnswers },
+    },
+    ...forms,
+  } as VocabularyEntry;
+}
+
+/** A plain word of any class with its own gloss, for pool-level checks. */
+function word(german: string, english: string, wordClass = 'preposition'): VocabularyEntry {
+  const base = find((entry) => entry.wordClass !== 'noun' && entry.wordClass !== 'verb');
+  return {
+    ...base,
+    id: `test-0300-${german.toLowerCase().replace(/[^a-z]/g, '')}`,
+    german,
+    english: [english],
+    wordClass,
+    exampleSentences: [],
+    exerciseConfig: {
+      ...base.exerciseConfig,
+      acceptedAnswers: { german: [german], english: [english] },
+    },
+  } as VocabularyEntry;
+}
+
+/** Attaches one example sentence, enabling sentence completion. */
+function withSentence(entry: VocabularyEntry, german: string): VocabularyEntry {
+  return {
+    ...entry,
+    exerciseConfig: {
+      ...entry.exerciseConfig,
+      enabledTypes: [...entry.exerciseConfig.enabledTypes, 'sentenceCompletion'],
+    },
+    exampleSentences: [
+      {
+        id: 'ex',
+        german,
+        english: 'An example.',
+        level: 'A1',
+        targetTokens: [german.split(' ')[1] ?? german],
+      },
+    ],
   } as VocabularyEntry;
 }
 
@@ -429,10 +516,14 @@ describe('typed translation', () => {
   });
 
   it('produces no verb-form question when the dataset records no conjugation', () => {
-    const entry = find((e) => e.wordClass === 'verb');
-    expect(isVerbEntry(entry) ? entry.pastParticiple : 'x').toBeUndefined();
+    const { pastParticiple: _p, ...entry } = find(
+      (e) => isVerbEntry(e) && Boolean(e.pastParticiple),
+    ) as VocabularyEntry & { pastParticiple?: string };
     expect(
-      generateTypedTranslation({ entry, pool: pilot, random: random(), id: 'tt-2b' }, 'verbForm'),
+      generateTypedTranslation(
+        { entry: entry as VocabularyEntry, pool: pilot, random: random(), id: 'tt-2b' },
+        'verbForm',
+      ),
     ).toBeNull();
   });
 
@@ -628,7 +719,8 @@ describe('listening and speaking', () => {
       { entry, pool: pilot, random: random(), id: 'li-1' },
       'chooseEnglish',
     );
-    expect(exercise?.spokenText).toBe(entry.german);
+    // Spoken as taught: with the article (§14).
+    expect(exercise?.spokenText).toBe(headword(entry));
     expect(exercise?.mode).toBe('chooseEnglish');
     expect(exercise?.options?.[exercise.correctIndex ?? -1]).toBe(entry.english[0]);
   });
@@ -759,7 +851,16 @@ describe('generateAllForEntry', () => {
     }
     // Sentence completion and word ordering need example sentences, which the datasets do
     // not carry (word ordering also runs on a long enough phrase, of which A1 has none).
-    expect(types).toEqual(new Set(['multipleChoice', 'typedTranslation', 'listening', 'speaking']));
+    expect(types).toEqual(
+      new Set([
+        'multipleChoice',
+        'typedTranslation',
+        'sentenceCompletion',
+        'wordOrdering',
+        'listening',
+        'speaking',
+      ]),
+    );
   });
 
   it('adds the sentence-based formats for an entry that has an example', () => {
@@ -792,7 +893,207 @@ describe('generateAllForEntry', () => {
   it('reports which types an entry can support', () => {
     const noun = find((e) => isNounEntry(e));
     expect(canGenerate(noun, 'multipleChoice', pilot, random())).toBe(true);
-    // No example sentences in the datasets, so no gap-fill for a shipped entry.
-    expect(canGenerate(noun, 'sentenceCompletion', pilot, random())).toBe(false);
+    expect(canGenerate(noun, 'speaking', pilot, random())).toBe(true);
+    expect(
+      canGenerate({ ...noun, exampleSentences: [] }, 'sentenceCompletion', pilot, random()),
+    ).toBe(false);
+  });
+});
+
+describe('accepted answers (S4)', () => {
+  it.each([
+    ['die Soße/Sauce', ['die Soße', 'die Sauce']],
+    ['der/die Deutsche', ['der Deutsche', 'die Deutsche']],
+    ['ihr/ihm/ihn', ['ihr', 'ihm', 'ihn']],
+    ['Zahncreme/-pasta', ['Zahncreme', 'Zahnpasta']],
+    ['der Chat(room)', ['der Chat', 'der Chatroom']],
+    ['(Fach-)Hochschule', ['Hochschule', 'Fachhochschule']],
+    ['dafür/dagegen sein', ['dafür sein', 'dagegen sein']],
+  ])('expands %s', (form, expected) => {
+    expect(expandForms(form)).toEqual(expected);
+  });
+
+  it('teaches a bare dataset noun with its article, alternates included', () => {
+    const entry = grammarNoun('Soße', 'dip', 'die', 'Soßen', { alternateForms: ['die Sauce'] });
+    expect(headword(entry)).toBe('die Soße');
+    expect(acceptedGerman(entry)).toEqual(['die Soße', 'die Sauce']);
+  });
+
+  it('accepts English without a qualifier and a noun gloss with its article', () => {
+    expect(acceptedEnglish(word('Sie', 'you (formal)', 'pronoun'))).toContain('you');
+    expect(acceptedEnglish(grammarNoun('Minute', 'minute', 'die', 'Minuten'))).toEqual(
+      expect.arrayContaining(['the minute', 'a minute']),
+    );
+  });
+
+  it('accepts another word with the prompt gloss, naming the one asked for', () => {
+    const pool = [word('bei', 'at'), word('an', 'at'), word('um', 'at'), word('mit', 'with')];
+    const exercise = generateTypedTranslation(
+      { entry: pool[0] as VocabularyEntry, pool, random: random(), id: 'tt-at' },
+      'englishToGerman',
+    );
+    const result = evaluateAnswer('an', exercise?.acceptedAnswers ?? [], {
+      strictness: exercise!.strictness,
+      language: 'de',
+      otherWords: (exercise as { otherWords?: string[] }).otherWords,
+    });
+    expect(result.correct).toBe(true);
+    expect(result.issues[0]?.message).toMatch(/"bei"/);
+  });
+
+  it('requires the article when the entry makes it strict, and not otherwise', () => {
+    const strictNoun = grammarNoun('Minute', 'minute', 'die', 'Minuten');
+    const exercise = generateTypedTranslation(
+      { entry: strictNoun, pool: [strictNoun], random: random(), id: 'tt-min' },
+      'englishToGerman',
+    )!;
+    const check = (typed: string, article: boolean) =>
+      evaluateAnswer(typed, exercise.acceptedAnswers, {
+        strictness: { ...exercise.strictness, article },
+        language: 'de',
+      });
+    expect(check('Minute', true).issues.map((i) => i.category)).toContain('missingArticle');
+    expect(check('Minute', false).correct).toBe(true);
+    expect(check('die Minute', true).correct).toBe(true);
+  });
+});
+
+describe('multiple choice: one right answer (S5)', () => {
+  it('never offers another word with the same gloss or spelling', () => {
+    const pool = [
+      word('bezahlen', 'to pay', 'verb'),
+      word('zahlen', 'to pay', 'verb'),
+      ...['essen', 'trinken', 'gehen', 'sehen', 'kaufen', 'lesen'].map((w, i) =>
+        word(w, `to ${['eat', 'drink', 'walk', 'see', 'buy', 'read'][i]}`, 'verb'),
+      ),
+    ].map((entry, i) => ({ ...entry, id: `test-${String(i + 1).padStart(4, '0')}-v` }));
+    for (let seed = 0; seed < 20; seed += 1) {
+      const exercise = generateMultipleChoice(
+        { entry: pool[0] as VocabularyEntry, pool, random: createRandom(`pay-${seed}`), id: 'mc' },
+        'englishToGerman',
+      );
+      expect(exercise?.options).not.toContain('zahlen');
+    }
+  });
+
+  it('never builds a near miss that is another real word', () => {
+    const drawn = new Set<string>();
+    for (let i = 0; i < 200; i += 1) {
+      const miss = nearMiss('das Ende', createRandom(`ende-${i}`), [], new Set(['ente']));
+      if (miss) drawn.add(miss);
+    }
+    expect(drawn.size).toBeGreaterThan(0);
+    expect(drawn).not.toContain('das Ente');
+  });
+
+  it('gives a proper noun no misspelled option', () => {
+    const turkey = grammarNoun('Türkei', 'Turkey', null, null);
+    const pool = [turkey, ...grammarNouns()];
+    for (let seed = 0; seed < 20; seed += 1) {
+      const exercise = generateMultipleChoice(
+        { entry: turkey, pool, random: createRandom(`tr-${seed}`), id: 'mc' },
+        'englishToGerman',
+      );
+      const correct = exercise!.options[exercise!.correctIndex] as string;
+      expect(exercise!.options.filter((o) => isNearMiss(correct, o))).toHaveLength(0);
+    }
+  });
+});
+
+describe('grammar exercises on dataset-shaped entries', () => {
+  it('asks for the article of the bare noun, never showing the answer', () => {
+    const entry = grammarNoun('Minute', 'minute', 'die', 'Minuten');
+    const exercise = generateMultipleChoice(
+      { entry, pool: grammarNouns(), random: random(), id: 'mc-art' },
+      'article',
+    );
+    expect(exercise?.question).toBe('Minute');
+    expect(exercise?.options[exercise.correctIndex]).toBe('die');
+  });
+
+  it('asks no plural question for singular-only or plural-only nouns', () => {
+    const milk = grammarNoun('Milch', 'milk', 'die', null, { numberUsage: 'singularOnly' });
+    const parents = grammarNoun('Eltern', 'parents', 'die', 'Eltern', {
+      numberUsage: 'pluralOnly',
+    });
+    for (const entry of [milk, parents]) {
+      const context = { entry, pool: grammarNouns(), random: random(), id: 'n' };
+      expect(generateMultipleChoice(context, 'plural')).toBeNull();
+      expect(generateTypedTranslation(context, 'nounWithArticleAndPlural')).toBeNull();
+    }
+    const context = { entry: parents, pool: grammarNouns(), random: random(), id: 'p' };
+    expect(generateMultipleChoice(context, 'article')).toBeNull();
+    expect(generateTypedTranslation(context, 'nounWithArticle')?.canonicalAnswer).toBe(
+      'die Eltern',
+    );
+  });
+
+  it('builds noun-with-plural answers from the accepted plural', () => {
+    const entry = grammarNoun('Minute', 'minute', 'die', 'Minuten');
+    const exercise = generateTypedTranslation(
+      { entry, pool: [entry], random: random(), id: 'tt-pl' },
+      'nounWithArticleAndPlural',
+    );
+    expect(exercise?.canonicalAnswer).toBe('die Minute, die Minuten');
+    expect(exercise?.acceptedAnswers).toContain('die Minute die Minuten');
+  });
+
+  it('gaps a whole plural word, never a singular inside it', () => {
+    const entry = withSentence(
+      grammarNoun('Minute', 'minute', 'die', 'Minuten'),
+      'Noch zehn Minuten.',
+    );
+    const exercise = sentenceGap({ entry, pool: [entry], random: random(), id: 'g' }, 'pluralGap');
+    expect(exercise?.canonicalAnswer).toBe('Minuten');
+    expect(
+      sentenceGap({ entry, pool: [entry], random: random(), id: 'g' }, 'articleGap'),
+    ).toBeNull();
+  });
+
+  it('gaps the article before a bare dataset noun', () => {
+    const entry = withSentence(
+      grammarNoun('Minute', 'minute', 'die', 'Minuten'),
+      'Die Minute ist um.',
+    );
+    const exercise = sentenceGap({ entry, pool: [entry], random: random(), id: 'g' }, 'articleGap');
+    expect(exercise?.canonicalAnswer).toBe('Die');
+    expect(exercise?.sentenceAfter).toBe(' Minute ist um.');
+  });
+
+  it('gaps the finite part of a separable verb and names the verb in the prompt', () => {
+    const entry = withSentence(
+      grammarVerb('abfahren', 'to depart', {
+        thirdPersonPresent: 'fährt ab',
+        simplePast: 'fuhr ab',
+        pastParticiple: 'abgefahren',
+        separable: true,
+      }),
+      'Der Zug fährt um acht Uhr ab.',
+    );
+    const exercise = sentenceGap(
+      { entry, pool: [entry], random: random(), id: 'g' },
+      'verbFormGap',
+    );
+    expect(exercise?.prompt).toBe('Fill in the correct form of abfahren.');
+    expect(exercise?.canonicalAnswer).toBe('fährt');
+    expect(exercise?.acceptedAnswers).toEqual(['fährt']);
+    expect(
+      `${exercise?.sentenceBefore}${exercise?.canonicalAnswer}${exercise?.sentenceAfter}`,
+    ).toBe(exercise?.fullSentence);
+  });
+
+  it('keeps another real word from passing as a typo in a typed exercise', () => {
+    const pool = [word('drucken', 'to print', 'verb'), word('drücken', 'to press', 'verb')];
+    const exercise = generateTypedTranslation(
+      { entry: pool[0] as VocabularyEntry, pool, random: random(), id: 'tt-dr' },
+      'englishToGerman',
+    )!;
+    const result = evaluateAnswer('drücken', exercise.acceptedAnswers, {
+      strictness: { ...exercise.strictness, umlauts: false },
+      language: 'de',
+      otherWords: (exercise as { otherWords?: string[] }).otherWords,
+    });
+    expect(result.correct).toBe(false);
+    expect(isTypoNearMiss(result)).toBe(false);
   });
 });

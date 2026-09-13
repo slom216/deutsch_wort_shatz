@@ -7,8 +7,9 @@
  ],
  "2": [
   {
-   "de": "Er kommt am Wochenende, d.h. am Samstag.",
-   "en": "He is coming at the weekend, that is, on Saturday."
+   "de": "Er kommt am Wochenende, d. h. am Samstag.",
+   "en": "He is coming at the weekend, that is, on Saturday.",
+   "form": "d. h."
   }
  ],
  "3": [
@@ -56,7 +57,8 @@
  "10": [
   {
    "de": "Ich markiere die wichtigen Wörter im Text.",
-   "en": "I mark the important words in the text."
+   "en": "I mark the important words in the text.",
+   "form": "markiere"
   }
  ],
  "11": [
@@ -86,7 +88,8 @@
  "15": [
   {
    "de": "Mein Bruder ist Angestellter bei einer Bank.",
-   "en": "My brother is an employee at a bank."
+   "en": "My brother is an employee at a bank.",
+   "form": "Angestellter"
   }
  ],
  "16": [
@@ -104,7 +107,8 @@
  "18": [
   {
    "de": "Er ist Auszubildender in einer Autowerkstatt.",
-   "en": "He is a trainee at a car repair shop."
+   "en": "He is a trainee at a car repair shop.",
+   "form": "Auszubildender"
   }
  ],
  "19": [
@@ -776,7 +780,8 @@
  "130": [
   {
    "de": "Dienstags kommt meine Oma zum Kaffee.",
-   "en": "On Tuesday my grandma comes for coffee."
+   "en": "On Tuesdays my grandma comes for coffee.",
+   "form": "Dienstags"
   }
  ],
  "131": [
@@ -902,7 +907,8 @@
  "151": [
   {
    "de": "Mein kleiner Bruder ärgert mich jeden Tag.",
-   "en": "My little brother annoys me every day."
+   "en": "My little brother annoys me every day.",
+   "form": "ärgert"
   }
  ],
  "152": [
@@ -1016,7 +1022,8 @@
  "170": [
   {
    "de": "Meine Mutter backt am Sonntag einen Kuchen.",
-   "en": "My mother bakes a cake on Sunday."
+   "en": "My mother bakes a cake on Sunday.",
+   "form": "backt"
   }
  ],
  "171": [
@@ -1058,19 +1065,22 @@
  "177": [
   {
    "de": "Er beantwortet meine E-Mails immer sehr schnell.",
-   "en": "He always answers my emails very quickly."
+   "en": "He always answers my emails very quickly.",
+   "form": "beantwortet"
   }
  ],
  "178": [
   {
    "de": "Ich bedanke mich für dein schönes Geschenk.",
-   "en": "I thank you for your lovely present."
+   "en": "I thank you for your lovely present.",
+   "form": "bedanke"
   }
  ],
  "179": [
   {
-   "de": "Beeil dich, der Bus kommt gleich!",
-   "en": "Hurry up, the bus is coming soon!"
+   "de": "Wir müssen uns beeilen, der Bus kommt gleich!",
+   "en": "We have to hurry, the bus is coming soon!",
+   "form": "beeilen"
   }
  ],
  "180": [
@@ -1100,13 +1110,15 @@
  "184": [
   {
    "de": "Im Sommer wandern wir gern in den Bergen.",
-   "en": "In summer we like to hike in the mountains."
+   "en": "In summer we like to hike in the mountains.",
+   "form": "Bergen"
   }
  ],
  "185": [
   {
    "de": "Sie berichtet über ihre Reise nach Spanien.",
-   "en": "She is reporting on her trip to Spain."
+   "en": "She is reporting on her trip to Spain.",
+   "form": "berichtet"
   }
  ],
  "186": [
@@ -1123,8 +1135,9 @@
  ],
  "188": [
   {
-   "de": "Beschreib mir bitte den Weg zum Bahnhof.",
-   "en": "Please describe the way to the station to me."
+   "de": "Kannst du mir bitte den Weg zum Bahnhof beschreiben?",
+   "en": "Can you please describe the way to the station to me?",
+   "form": "beschreiben"
   }
  ],
  "189": [
@@ -1148,7 +1161,8 @@
  "192": [
   {
    "de": "Sie besteht die Prüfung ganz bestimmt.",
-   "en": "She will definitely pass the exam."
+   "en": "She will definitely pass the exam.",
+   "form": "besteht"
   }
  ],
  "193": [
@@ -1226,7 +1240,8 @@
  "205": [
   {
    "de": "Ich brate die Kartoffeln in der Pfanne.",
-   "en": "I am frying the potatoes in the pan."
+   "en": "I am frying the potatoes in the pan.",
+   "form": "brate"
   }
  ],
  "206": [
@@ -1244,7 +1259,8 @@
  "208": [
   {
    "de": "Wir haben ein Hotel in Rom gebucht.",
-   "en": "We have booked a hotel in Rome."
+   "en": "We have booked a hotel in Rome.",
+   "form": "gebucht"
   }
  ],
  "209": [
@@ -1268,7 +1284,8 @@
  "212": [
   {
    "de": "Abends chatte ich mit meinen Freunden.",
-   "en": "In the evenings I chat with my friends."
+   "en": "In the evenings I chat with my friends.",
+   "form": "chatte"
   }
  ],
  "213": [
@@ -1298,7 +1315,8 @@
  "217": [
   {
    "de": "Ich bin dafür, aber meine Frau ist dagegen.",
-   "en": "I am for it, but my wife is against it."
+   "en": "I am for it, but my wife is against it.",
+   "form": "dafür"
   }
  ],
  "218": [
@@ -1322,7 +1340,8 @@
  "221": [
   {
    "de": "Ich denke oft an meine Familie.",
-   "en": "I often think about my family."
+   "en": "I often think about my family.",
+   "form": "denke"
   }
  ],
  "222": [
@@ -1469,12 +1488,6 @@
    "en": "Do you agree with the price?"
   }
  ],
- "246": [
-  {
-   "de": "Ich möchte ein Einzelzimmer für zwei Nächte.",
-   "en": "I would like a single room for two nights."
-  }
- ],
  "247": [
   {
    "de": "Wir wollen im Mai in die neue Wohnung einziehen.",
@@ -1508,7 +1521,8 @@
  "252": [
   {
    "de": "Ich erinnere mich gut an diesen Tag.",
-   "en": "I remember this day well."
+   "en": "I remember this day well.",
+   "form": "erinnere"
   }
  ],
  "253": [
@@ -1587,12 +1601,6 @@
   {
    "de": "Am Sonntag bin ich immer faul.",
    "en": "On Sundays I am always lazy."
-  }
- ],
- "266": [
-  {
-   "de": "Die Feier zum Geburtstag beginnt um sieben.",
-   "en": "The birthday celebration starts at seven."
   }
  ],
  "267": [
@@ -1706,7 +1714,8 @@
  "285": [
   {
    "de": "Heute fühle ich mich viel besser.",
-   "en": "Today I feel much better."
+   "en": "Today I feel much better.",
+   "form": "fühle"
   }
  ],
  "286": [
@@ -2209,8 +2218,9 @@
  ],
  "369": [
   {
-   "de": "An der nächsten Kreuzung musst du rechts fahren.",
-   "en": "At the next junction you have to turn right."
+   "de": "An der nächsten Kreuzung fahren wir links.",
+   "en": "At the next junction we turn left.",
+   "form": "Kreuzung"
   }
  ],
  "370": [
@@ -2276,7 +2286,8 @@
  "380": [
   {
    "de": "Ich habe meinen Schlüssel im Auto gelassen.",
-   "en": "I left my key in the car."
+   "en": "I left my key in the car.",
+   "form": "gelassen"
   }
  ],
  "381": [
@@ -2371,8 +2382,9 @@
  ],
  "396": [
   {
-   "de": "Auf dem Markt kaufe ich frisches Gemüse.",
-   "en": "At the market I buy fresh vegetables."
+   "de": "Samstags gehe ich auf den Markt und kaufe Obst.",
+   "en": "On Saturdays I go to the market and buy fruit.",
+   "form": "Markt"
   }
  ],
  "397": [
@@ -2402,7 +2414,8 @@
  "401": [
   {
    "de": "Sie hat meinen Fehler gar nicht gemerkt.",
-   "en": "She didn't notice my mistake at all."
+   "en": "She didn't notice my mistake at all.",
+   "form": "gemerkt"
   }
  ],
  "402": [
@@ -2432,7 +2445,8 @@
  "406": [
   {
    "de": "Unsere Firma hat dreißig Mitarbeiter.",
-   "en": "Our company has thirty staff members."
+   "en": "Our company has thirty employees.",
+   "form": "Mitarbeiter"
   }
  ],
  "407": [
@@ -2443,8 +2457,9 @@
  ],
  "408": [
   {
-   "de": "Der Arzt gibt mir ein Mittel gegen Husten.",
-   "en": "The doctor is giving me a remedy for a cough."
+   "de": "Hast du ein Mittel gegen Kopfschmerzen?",
+   "en": "Do you have something for a headache?",
+   "form": "Mittel"
   }
  ],
  "409": [
@@ -2587,14 +2602,16 @@
  ],
  "432": [
   {
-   "de": "In Mathe habe ich eine gute Note bekommen.",
-   "en": "I got a good grade in maths."
+   "de": "Für den Test hat sie eine sehr gute Note bekommen.",
+   "en": "She got a very good mark for the test.",
+   "form": "Note"
   }
  ],
  "433": [
   {
    "de": "Ich notiere mir schnell deine Adresse.",
-   "en": "I'll quickly note down your address."
+   "en": "I'll quickly note down your address.",
+   "form": "notiere"
   }
  ],
  "434": [
@@ -2654,7 +2671,8 @@
  "443": [
   {
    "de": "Heute Abend packe ich meinen Koffer.",
-   "en": "This evening I am packing my suitcase."
+   "en": "This evening I am packing my suitcase.",
+   "form": "packe"
   }
  ],
  "444": [
@@ -2666,7 +2684,8 @@
  "445": [
   {
    "de": "Dein Parfüm riecht wirklich gut.",
-   "en": "Your scent smells really good."
+   "en": "Your perfume smells really good.",
+   "form": "Parfüm"
   }
  ],
  "446": [
@@ -2678,19 +2697,22 @@
  "447": [
   {
    "de": "Ich parke immer direkt vor dem Haus.",
-   "en": "I always park right in front of the house."
+   "en": "I always park right in front of the house.",
+   "form": "parke"
   }
  ],
  "448": [
   {
    "de": "Die blaue Hose passt dir wirklich gut.",
-   "en": "The blue trousers suit you really well."
+   "en": "The blue trousers suit you really well.",
+   "form": "passt"
   }
  ],
  "449": [
   {
    "de": "Was ist gestern Abend auf der Straße passiert?",
-   "en": "What happened on the street yesterday evening?"
+   "en": "What happened on the street yesterday evening?",
+   "form": "passiert"
   }
  ],
  "450": [
@@ -2780,7 +2802,8 @@
  "464": [
   {
    "de": "Ich probiere den Käse aus Frankreich.",
-   "en": "I am trying the cheese from France."
+   "en": "I am trying the cheese from France.",
+   "form": "probiere"
   }
  ],
  "465": [
@@ -2798,7 +2821,8 @@
  "467": [
   {
    "de": "Der Chef prüft alle Rechnungen selbst.",
-   "en": "The boss checks all the invoices himself."
+   "en": "The boss checks all the invoices himself.",
+   "form": "prüft"
   }
  ],
  "468": [
@@ -2810,7 +2834,8 @@
  "469": [
   {
    "de": "Am Samstag putze ich die Fenster.",
-   "en": "On Saturday I clean the windows."
+   "en": "On Saturday I clean the windows.",
+   "form": "putze"
   }
  ],
  "470": [
@@ -2833,8 +2858,9 @@
  ],
  "473": [
   {
-   "de": "Rate mal, wen ich heute getroffen habe!",
-   "en": "Guess who I met today!"
+   "de": "Du darfst dreimal raten!",
+   "en": "You get three guesses!",
+   "form": "raten"
   }
  ],
  "474": [
@@ -2852,7 +2878,8 @@
  "476": [
   {
    "de": "Meine Tochter rechnet sehr schnell im Kopf.",
-   "en": "My daughter calculates very quickly in her head."
+   "en": "My daughter calculates very quickly in her head.",
+   "form": "rechnet"
   }
  ],
  "477": [
@@ -2888,7 +2915,8 @@
  "482": [
   {
    "de": "Meine Schwester reitet jeden Samstag.",
-   "en": "My sister goes horse riding every Saturday."
+   "en": "My sister goes horse riding every Saturday.",
+   "form": "reitet"
   }
  ],
  "483": [
@@ -2900,7 +2928,8 @@
  "484": [
   {
    "de": "Ich habe einen Tisch für acht Uhr reserviert.",
-   "en": "I have reserved a table for eight o'clock."
+   "en": "I have reserved a table for eight o'clock.",
+   "form": "reserviert"
   }
  ],
  "485": [
@@ -2984,7 +3013,8 @@
  "498": [
   {
    "de": "Mein Sohn sammelt alte Münzen.",
-   "en": "My son collects old coins."
+   "en": "My son collects old coins.",
+   "form": "sammelt"
   }
  ],
  "499": [
@@ -3026,7 +3056,8 @@
  "505": [
   {
    "de": "Ich schenke meiner Mutter rote Blumen.",
-   "en": "I am giving my mother red flowers as a present."
+   "en": "I am giving my mother red flowers as a present.",
+   "form": "schenke"
   }
  ],
  "506": [
@@ -3044,7 +3075,8 @@
  "508": [
   {
    "de": "Der Lehrer schimpft mit den lauten Kindern.",
-   "en": "The teacher is scolding the noisy children."
+   "en": "The teacher is scolding the noisy children.",
+   "form": "schimpft"
   }
  ],
  "509": [
@@ -3086,13 +3118,15 @@
  "515": [
   {
    "de": "Ich schneide das Brot in dünne Scheiben.",
-   "en": "I am cutting the bread into thin slices."
+   "en": "I am cutting the bread into thin slices.",
+   "form": "schneide"
   }
  ],
  "516": [
   {
    "de": "Draußen schneit es schon seit dem Morgen.",
-   "en": "It has been snowing outside since the morning."
+   "en": "It has been snowing outside since the morning.",
+   "form": "schneit"
   }
  ],
  "517": [
@@ -3218,7 +3252,8 @@
  "537": [
   {
    "de": "Ich spare Geld für ein neues Fahrrad.",
-   "en": "I am saving money for a new bike."
+   "en": "I am saving money for a new bike.",
+   "form": "spare"
   }
  ],
  "538": [
@@ -3242,7 +3277,8 @@
  "541": [
   {
    "de": "Ich speichere die Fotos auf meinem Computer.",
-   "en": "I save the photos on my computer."
+   "en": "I save the photos on my computer.",
+   "form": "speichere"
   }
  ],
  "542": [
@@ -3326,7 +3362,8 @@
  "555": [
   {
    "de": "Der Lärm von der Straße stört mich beim Lernen.",
-   "en": "The noise from the street disturbs me while studying."
+   "en": "The noise from the street disturbs me while studying.",
+   "form": "stört"
   }
  ],
  "556": [
@@ -3355,8 +3392,9 @@
  ],
  "560": [
   {
-   "de": "Kannst du bitte ein Stück nach rechts rücken?",
-   "en": "Could you move a little to the right, please?"
+   "de": "Ich schneide ein Stück Brot für dich ab.",
+   "en": "I am cutting a piece of bread off for you.",
+   "form": "Stück"
   }
  ],
  "561": [
@@ -3392,7 +3430,8 @@
  "566": [
   {
    "de": "Abends surfe ich gern im Internet.",
-   "en": "In the evening I like to surf the internet."
+   "en": "In the evening I like to surf the internet.",
+   "form": "surfe"
   }
  ],
  "567": [
@@ -3457,14 +3496,16 @@
  ],
  "577": [
   {
-   "de": "Unser Team hat das Spiel gewonnen.",
-   "en": "Our team won the game."
+   "de": "In unserem Team arbeiten fünf Leute.",
+   "en": "Five people work in our team.",
+   "form": "Team"
   }
  ],
  "578": [
   {
    "de": "Ich teile mein Zimmer mit meinem Bruder.",
-   "en": "I share my room with my brother."
+   "en": "I share my room with my brother.",
+   "form": "teile"
   }
  ],
  "579": [
@@ -3530,7 +3571,8 @@
  "589": [
   {
    "de": "Zum Geburtstag backe ich eine Torte mit Erdbeeren.",
-   "en": "For the birthday I am baking a tart with strawberries."
+   "en": "For the birthday I am baking a strawberry cake.",
+   "form": "Torte"
   }
  ],
  "590": [
@@ -3560,13 +3602,15 @@
  "594": [
   {
    "de": "Ich trage den schweren Koffer die Treppe hinauf.",
-   "en": "I am carrying the heavy suitcase up the stairs."
+   "en": "I am carrying the heavy suitcase up the stairs.",
+   "form": "trage"
   }
  ],
  "595": [
   {
    "de": "Er trainiert dreimal pro Woche im Fitnessstudio.",
-   "en": "He trains three times a week at the gym."
+   "en": "He trains three times a week at the gym.",
+   "form": "trainiert"
   }
  ],
  "596": [
@@ -3584,7 +3628,8 @@
  "598": [
   {
    "de": "Ich träume oft von einer Reise nach Japan.",
-   "en": "I often dream of a trip to Japan."
+   "en": "I often dream of a trip to Japan.",
+   "form": "träume"
   }
  ],
  "599": [
@@ -3751,8 +3796,9 @@
  ],
  "626": [
   {
-   "de": "Man kann sich in dieser Stadt schnell verlieben.",
-   "en": "You can fall in love quickly in this city."
+   "de": "Sie hat sich in ihren Kollegen verliebt.",
+   "en": "She fell in love with her colleague.",
+   "form": "verliebt"
   }
  ],
  "627": [
@@ -3842,7 +3888,8 @@
  "641": [
   {
    "de": "Wir essen vorher, dann gehen wir ins Kino.",
-   "en": "We eat first, then we go to the cinema."
+   "en": "We'll eat beforehand, then we'll go to the cinema.",
+   "form": "vorher"
   }
  ],
  "642": [
@@ -3943,14 +3990,9 @@
  ],
  "658": [
   {
-   "de": "Wegen dem Regen bleiben wir heute zu Hause.",
-   "en": "Because of the rain we are staying at home today."
-  }
- ],
- "659": [
-  {
-   "de": "Ich will dir nicht wehtun.",
-   "en": "I don't want to hurt you."
+   "de": "Wegen des Regens bleiben wir heute zu Hause.",
+   "en": "Because of the rain we are staying at home today.",
+   "form": "Wegen"
   }
  ],
  "660": [

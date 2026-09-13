@@ -99,14 +99,17 @@ export default function ResultsPage(): ReactNode {
     .filter((row) => !row.correct || row.revealed)
     .map((row) => {
       const exercise = exercisesById.get(row.id.slice(`${row.sessionId}:`.length));
-      return exercise
-        ? {
-            row,
-            question: questionOf(exercise),
-            prompt: exercise.prompt,
-            answer: expectedAnswerOf(exercise),
-          }
-        : null;
+      if (!exercise) return null;
+      const question = questionOf(exercise);
+      // Listening and matching have no question beyond their instruction, so the row names
+      // the word instead — otherwise it would print the instruction twice and no word.
+      const instructionOnly = question === exercise.prompt;
+      return {
+        row,
+        question: instructionOnly ? (labels.get(row.entryId) ?? question) : question,
+        prompt: exercise.prompt,
+        answer: expectedAnswerOf(exercise),
+      };
     })
     .filter((item) => item !== null);
 
@@ -152,7 +155,7 @@ export default function ResultsPage(): ReactNode {
                   <li key={row.id} className="entry-row">
                     {/* The question, not the headword: for an English→German exercise the
                         headword is the answer, and a row that answers itself teaches nothing. */}
-                    <Link className="entry-row__german" to={`/word/${row.entryId}`}>
+                    <Link className="entry-row__german" to={`/word/${row.entryId}`} lang="de">
                       {question}
                     </Link>
                     <span className="entry-row__english">{prompt}</span>

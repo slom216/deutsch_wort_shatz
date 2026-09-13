@@ -1,6 +1,6 @@
 import type { EntryProgress } from '@/schemas/progressSchema';
-import { daysUntilDue, isDue, isOverdue } from './scheduler';
-import { localDateKey, startOfLocalDay } from './localDate';
+import { daysUntilDue, isOverdue } from './scheduler';
+import { addDays, localDateKey, startOfLocalDay } from './localDate';
 
 /**
  * Review queue (§18, §19).
@@ -30,14 +30,18 @@ export function priority(progress: EntryProgress, now: Date = new Date()): numbe
 }
 
 export function dueEntries(all: readonly EntryProgress[], now: Date = new Date()): EntryProgress[] {
+  const nowMs = now.getTime();
+  // Priority is computed once per entry, not once per comparison.
   return all
-    .filter((progress) => isDue(progress.srs, now))
-    .sort((a, b) => {
-      const byPriority = priority(b, now) - priority(a, now);
-      if (byPriority !== 0) return byPriority;
-      // Stable final tie-break so the order never wobbles between renders.
-      return a.entryId.localeCompare(b.entryId);
-    });
+    .filter((progress) => Date.parse(progress.srs.dueAt) <= nowMs)
+    .map((progress) => ({ progress, score: priority(progress, now) }))
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        // Stable final tie-break so the order never wobbles between renders.
+        a.progress.entryId.localeCompare(b.progress.entryId),
+    )
+    .map(({ progress }) => progress);
 }
 
 export function overdueEntries(
@@ -47,10 +51,15 @@ export function overdueEntries(
   return dueEntries(all, now).filter((progress) => isOverdue(progress.srs, now));
 }
 
+/**
+ * Status counts over `all`; due and overdue over `queueable` — the same records minus the
+ * skipped words, which keep their status but are not waiting for review.
+ */
 export function queueCounts(
   all: readonly EntryProgress[],
   totalEntries: number,
   now: Date = new Date(),
+  queueable: readonly EntryProgress[] = all,
 ): QueueCounts {
   const byStatus = { learning: 0, review: 0, mastered: 0 };
   for (const progress of all) {
@@ -60,9 +69,10 @@ export function queueCounts(
     else if (status === 'mastered') byStatus.mastered += 1;
   }
 
+  const due = dueEntries(queueable, now);
   return {
-    due: dueEntries(all, now).length,
-    overdue: overdueEntries(all, now).length,
+    due: due.length,
+    overdue: due.filter((progress) => isOverdue(progress.srs, now)).length,
     // Entries the learner has never been introduced to.
     newAvailable: Math.max(0, totalEntries - all.length),
     ...byStatus,
@@ -101,8 +111,7 @@ export function reviewForecast(
   const today = startOfLocalDay(now);
 
   for (let offset = 0; offset < days; offset += 1) {
-    const date = new Date(today.getTime() + offset * 86_400_000);
-    buckets.set(localDateKey(date), 0);
+    buckets.set(localDateKey(addDays(today, offset)), 0);
   }
 
   for (const progress of all) {

@@ -13,7 +13,8 @@ export default defineConfig({
   build: {
     // Fully static output — no server runtime of any kind (§1, §34).
     target: 'es2022',
-    sourcemap: true,
+    // Source maps are not published with the site.
+    sourcemap: false,
     // Vocabulary band bundles are intentionally large (up to ~2.8 MB raw, ~120 kB gzipped)
     // and are always lazily imported, so they never affect initial load. The default
     // 500 kB warning would fire on every build for content that is working as designed.

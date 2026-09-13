@@ -43,8 +43,7 @@ export const MIN_MASTERED = 6;
 
 /**
  * Correct answers between one level and the next: ten for the first, then twenty, then
- * thirty. So the thresholds are 10, 30, 60, 100, 150, 210 — and level 7 lands at 210, which
- * is where `avatarSrc` runs out of rank cards anyway.
+ * thirty. So the thresholds are 10, 30, 60, 100, 150, 210 — and level 7 lands at 210.
  */
 const LEVEL_STEP = 10;
 

@@ -6,7 +6,7 @@ import { loadBand, loadEntry } from '@/content/vocabulary/registry';
 import { generateAllForEntry } from '@/features/practice/generators';
 import { createRandom } from '@/features/practice/random';
 import { dueEntries } from '@/features/srs/queue';
-import { introduceEntry, loadAllProgress, loadProgress } from '@/features/srs/repository';
+import { introduceEntry, loadProgress, loadQueueableProgress } from '@/features/srs/repository';
 import { masteryTarget } from '@/features/srs/learningMode';
 import { introductionOrder } from '@/features/learning/introductionOrder';
 import { loadSkippedIds, skipEntry } from '@/features/srs/skipped';
@@ -322,18 +322,18 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
     startedOnce.current = true;
 
     const begin = async (): Promise<void> => {
-      const [progress, skippedIds] = await Promise.all([loadAllProgress(), loadSkippedIds()]);
+      const [{ known, queueable }, skippedIds] = await Promise.all([
+        loadQueueableProgress(),
+        loadSkippedIds(),
+      ]);
       skipped.current = skippedIds;
-      seen.current = new Set(progress.map((record) => record.entryId));
+      seen.current = new Set(known.map((record) => record.entryId));
       // `seen` still holds every record so new words skip them, but neither source may
       // offer a mastered word: the stream only gives up after ten empty picks in a row, and
       // a mostly mastered vocabulary would spend them all on words it has to skip.
       // Skipped words are dropped here as well as in `exerciseFor` so a learner who has set
       // many aside does not spend all ten of the stream's empty picks stepping over them.
-      const open = progress.filter(
-        (record) =>
-          (record.masteryScore ?? 0) < masteryTarget() && !skipped.current.has(record.entryId),
-      );
+      const open = queueable.filter((record) => (record.masteryScore ?? 0) < masteryTarget());
       dueIds.current = dueEntries(open).map((record) => record.entryId);
       startedIds.current = [...open]
         .sort((a, b) => (a.srs.lastReviewedAt ?? '').localeCompare(b.srs.lastReviewedAt ?? ''))
@@ -357,15 +357,18 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
       }
     };
 
-    void begin().catch((cause: unknown) => {
-      setError(cause instanceof Error ? cause.message : 'Could not start continuous learning.');
+    void begin().catch(() => {
+      // Never the library's own text: it is technical and links to third-party pages.
+      setError(
+        'Continuous learning could not start because your progress cannot be saved in this browser. Reload the page, and check that private browsing or site-data blocking is not switched on.',
+      );
       setLoading(false);
     });
   }, [sessionId, serveNext, start]);
 
   const answer = useCallback(
     async (outcome: ExerciseOutcome): Promise<void> => {
-      await recordAnswer({
+      const recorded = await recordAnswer({
         exerciseId: outcome.exercise.id,
         entryId: outcome.exercise.entryId,
         result: outcome.result,
@@ -373,7 +376,15 @@ export function useContinuousSession(sessionId: string): ContinuousSession {
         revealed: outcome.revealed,
         hintUsed: outcome.hintUsed,
         responseMs: outcome.responseMs,
+        ...(outcome.selfAssessed ? { selfAssessed: true } : {}),
       });
+      if (!recorded) {
+        // Another tab answered it; the store now holds that tab's stream.
+        const state = useSessionStore.getState();
+        served.current = state.exercises.length;
+        if (!state.exercises[state.currentIndex]) await serveNext();
+        return;
+      }
 
       position.current += 1;
 

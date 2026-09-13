@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-/** Settings persisted locally (§24). Validated on read so corrupt data cannot crash boot. */
+/**
+ * Settings persisted locally (§24). Validated on read so corrupt data cannot crash boot.
+ *
+ * Older rows and exports may still carry `streakFreezes` (now earned, see `streak.ts`) and
+ * `reducedMotion` (the OS preference is honoured instead). `z.object` strips unknown keys,
+ * so those rows still parse.
+ */
 
 export const dailyGoalSchema = z.union([
   z.literal(10),
@@ -23,7 +29,7 @@ export const settingsSchema = z.object({
   /** Fixed key — a single settings row (§24). */
   id: z.literal('user-settings'),
   schemaVersion: z.number().int().min(1),
-  /** Exercises per day that count towards the daily goal (§23). Default 20. */
+  /** Correct answers per day that count towards the daily goal (§23). Default 20. */
   dailyGoal: dailyGoalSchema,
   /** New entries introduced per learning batch (§18). Default 5. */
   newWordBatchSize: batchSizeSchema,
@@ -35,9 +41,6 @@ export const settingsSchema = z.object({
   speakingEnabled: z.boolean(),
   /** Speech-synthesis rate for `de-DE` playback (§26). */
   speechRate: z.number().min(0.5).max(2),
-  /** Streak freezes held; each bridges one missed day (§23 deliverable 5). */
-  streakFreezes: z.number().int().min(0).max(3),
-  reducedMotion: z.boolean(),
   updatedAt: z.string().datetime(),
 });
 
@@ -58,7 +61,5 @@ export const DEFAULT_SETTINGS: Settings = {
   listeningEnabled: true,
   speakingEnabled: true,
   speechRate: 1,
-  streakFreezes: 2,
-  reducedMotion: false,
   updatedAt: new Date(0).toISOString(),
 };

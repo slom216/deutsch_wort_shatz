@@ -2,8 +2,8 @@
  * Content build step.
  *
  * Reads the authoring datasets in `data/`, normalizes topics onto the controlled
- * registry, and emits one JSON bundle per frequency band plus a compact search index
- * into `src/content/vocabulary/generated/`.
+ * registry, and emits one JSON bundle per frequency band, a compact search index and
+ * `legacy-ids.json` into `src/content/vocabulary/generated/` (or `$CONTENT_OUT_DIR`).
  *
  * Splitting by band is what lets the app lazy-load vocabulary a band at a time (§29)
  * instead of pulling a 17 MB B1 file into the initial bundle. The generated directory
@@ -11,13 +11,15 @@
  * the only committed copy of the vocabulary.
  */
 
-import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 import { FREQUENCY_BANDS } from '../src/content/vocabulary/frequencyBands.ts';
-import { loadAllEntries, REPO_ROOT, ui } from './lib/loadDataset.mjs';
+import { DATA_DIR, loadAllEntries, REPO_ROOT, ui } from './lib/loadDataset.mjs';
 
-const OUT_DIR = path.join(REPO_ROOT, 'src/content/vocabulary/generated');
+const OUT_DIR = process.env.CONTENT_OUT_DIR
+  ? path.resolve(process.env.CONTENT_OUT_DIR)
+  : path.join(REPO_ROOT, 'src/content/vocabulary/generated');
 
 function bandFileName(band) {
   return `${band.slug}.json`;
@@ -79,6 +81,19 @@ function main() {
     searchableForms: entry.searchableForms,
   }));
   writeFileSync(path.join(OUT_DIR, 'index.json'), JSON.stringify(index), 'utf8');
+
+  // Every real word, lowercase and without article: a generated near-miss option must never
+  // be another entry's word, even one outside the session's distractor pool.
+  const words = new Set(
+    entries
+      .flatMap((entry) => [entry.german, entry.plural, ...(entry.alternateForms ?? [])])
+      .filter(Boolean)
+      .map((word) => word.replace(/^(der|die|das)\s+/iu, '').toLowerCase()),
+  );
+  writeFileSync(path.join(OUT_DIR, 'words.json'), JSON.stringify([...words].sort()), 'utf8');
+
+  // Old rank-based id → frozen id, for migrating stored progress.
+  copyFileSync(path.join(DATA_DIR, 'legacy-ids.json'), path.join(OUT_DIR, 'legacy-ids.json'));
 
   const byLevel = {};
   for (const entry of entries) byLevel[entry.level] = (byLevel[entry.level] ?? 0) + 1;

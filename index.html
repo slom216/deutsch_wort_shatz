@@ -4,13 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#f6fbfc" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0b1d24" media="(prefers-color-scheme: dark)" />
     <meta
       name="description"
       content="DeuLern Deutsch Wortschatz — learn German vocabulary for CEFR levels A1, A2 and B1. Runs entirely in your browser."
     />
     <title>DeuLern Deutsch Wortschatz</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DeuLern" />
+    <meta property="og:title" content="DeuLern Deutsch Wortschatz" />
+    <meta
+      property="og:description"
+      content="Learn German vocabulary for CEFR levels A1, A2 and B1. Runs entirely in your browser."
+    />
+    <meta property="og:url" content="https://wortschatz.deulern.com/" />
+    <meta property="og:image" content="https://wortschatz.deulern.com/apple-touch-icon.png" />
     <script>
       // Applies the saved theme before the first paint, so an explicit choice never
       // flashes the other theme. The key must stay in step with THEME_STORAGE_KEY in
@@ -24,12 +35,6 @@
         // Unreadable storage: fall back to the system theme.
       }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <div id="root"></div>

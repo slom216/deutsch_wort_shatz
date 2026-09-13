@@ -2,21 +2,25 @@ import { useEffect, useState, type ReactNode } from 'react';
 import {
   DndContext,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   closestCenter,
   useSensor,
   useSensors,
+  type Announcements,
   type DragEndEvent,
+  type UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
   arrayMove,
-  horizontalListSortingStrategy,
+  rectSortingStrategy,
   sortableKeyboardCoordinates,
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+import { bareToken } from '@/features/practice/generators/wordOrdering';
 import type { WordOrderingExercise as WordOrderingExerciseType } from '@/schemas/exerciseSchema';
 import type { ExerciseComponentProps } from './exerciseProps';
 import './exercises.css';
@@ -25,7 +29,8 @@ import './exercises.css';
  * Word ordering (§15, §30).
  *
  * Three ways to answer, so drag-and-drop is never the only route:
- *   - drag with the mouse (dnd-kit pointer sensor);
+ *   - drag with the mouse or by touch (a touch drag starts after a short hold, so a swipe
+ *     over the tokens still scrolls the page);
  *   - drag with the keyboard (dnd-kit keyboard sensor: Space to lift, arrows to move);
  *   - explicit "move left"/"move right" buttons on every token.
  */
@@ -87,8 +92,9 @@ export function WordOrderingExercise({
   revealed,
 }: ExerciseComponentProps<WordOrderingExerciseType>): ReactNode {
   const initial = (): TokenSlot[] =>
-    // Keys must be stable and unique even when a sentence repeats a word.
-    exercise.tokens.map((token, index) => ({ key: `${index}-${token}`, token }));
+    // Keys must be stable and unique even when a sentence repeats a word. Tokens are shown
+    // bare: a session saved before punctuation was stripped must not give the answer away.
+    exercise.tokens.map((token, index) => ({ key: `${index}-${token}`, token: bareToken(token) }));
 
   const [slots, setSlots] = useState<TokenSlot[]>(initial);
 
@@ -98,7 +104,8 @@ export function WordOrderingExercise({
   }, [exercise.id]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
@@ -116,11 +123,35 @@ export function WordOrderingExercise({
     });
   };
 
+  // Announced in words the learner can see, never dnd-kit's internal keys.
+  const describe = (id: UniqueIdentifier): string => {
+    const index = slots.findIndex((slot) => slot.key === id);
+    return `${slots[index]?.token ?? 'word'}, position ${index + 1} of ${slots.length}`;
+  };
+  const tokenOf = (id: UniqueIdentifier): string =>
+    slots.find((slot) => slot.key === id)?.token ?? 'word';
+  const positionOf = (id: UniqueIdentifier): number =>
+    slots.findIndex((slot) => slot.key === id) + 1;
+  const announcements: Announcements = {
+    onDragStart: ({ active }) => `Picked up ${describe(active.id)}.`,
+    onDragOver: ({ active, over }) =>
+      over
+        ? `${tokenOf(active.id)} is over position ${positionOf(over.id)} of ${slots.length}.`
+        : `${tokenOf(active.id)} is not over a position.`,
+    onDragEnd: ({ active, over }) =>
+      over
+        ? `${tokenOf(active.id)} dropped at position ${positionOf(over.id)} of ${slots.length}.`
+        : `${tokenOf(active.id)} dropped.`,
+    onDragCancel: ({ active }) => `Move cancelled. ${describe(active.id)}.`,
+  };
+
   const submit = (): void => {
     if (locked) return;
     const answer = slots.map((slot) => slot.token);
+    // Punctuation is not part of the order being tested.
     const correct = exercise.acceptedOrders.some(
-      (order) => order.length === answer.length && order.every((token, i) => token === answer[i]),
+      (order) =>
+        order.length === answer.length && order.every((token, i) => bareToken(token) === answer[i]),
     );
 
     onSubmit({
@@ -141,10 +172,16 @@ export function WordOrderingExercise({
         pick a word up, then use the arrow keys.
       </p>
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        accessibility={{ announcements }}
+      >
         <SortableContext
           items={slots.map((slot) => slot.key)}
-          strategy={horizontalListSortingStrategy}
+          // Rect, not horizontal: a long sentence wraps onto several rows.
+          strategy={rectSortingStrategy}
         >
           <ul className="token-list" aria-label="Sentence tokens in your chosen order">
             {slots.map((slot, index) => (

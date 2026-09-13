@@ -23,6 +23,27 @@ import {
 
 const RECOGNITION_TIMEOUT_MS = 8000;
 
+export const NOTHING_HEARD = 'Nothing was heard — try again.';
+
+/** Plain-language messages for the Web Speech API error codes; never the raw code. */
+function recognitionErrorMessage(code: string): string {
+  switch (code) {
+    case 'no-speech':
+      return NOTHING_HEARD;
+    case 'not-allowed':
+    case 'service-not-allowed':
+      return 'Microphone permission was declined. You can still mark your answer yourself.';
+    case 'audio-capture':
+      return 'No microphone was found. You can still mark your answer yourself.';
+    case 'network':
+      return 'Speech recognition needs an internet connection in this browser. Try again, or mark your answer yourself.';
+    case 'language-not-supported':
+      return 'German speech recognition is not available in this browser. You can still mark your answer yourself.';
+    default:
+      return 'Speech recognition did not work. Try again, or mark your answer yourself.';
+  }
+}
+
 export type RecognitionStatus = 'idle' | 'listening' | 'done' | 'error';
 
 export interface SpeechRecognitionState {
@@ -83,28 +104,38 @@ export function useSpeechRecognition(): SpeechRecognitionState {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
+    // Set once this attempt has a transcript or an error. An attempt that ends without
+    // either heard nothing, and must say so rather than offer an empty "result".
+    let settled = false;
+    // Events from a recognition that was aborted or replaced must not touch the new state.
+    const current = (): boolean => recognitionRef.current === recognition;
+
     recognition.onresult = (event) => {
+      if (!current()) return;
       const result = event.results[event.resultIndex] ?? event.results[0];
-      const alternative = result?.[0];
+      const heard = result?.[0]?.transcript.trim() ?? '';
+      if (heard.length === 0) return;
+      settled = true;
       // Only the recognized text is retained; the audio itself is never stored (§26).
-      if (alternative) setTranscript(alternative.transcript);
+      setTranscript(heard);
       setStatus('done');
       clearTimer();
     };
 
     recognition.onerror = (event) => {
+      if (!current() || event.error === 'aborted') return;
+      settled = true;
       setStatus('error');
-      setError(
-        event.error === 'not-allowed'
-          ? 'Microphone permission was declined. You can still mark your answer yourself.'
-          : `Speech recognition failed (${event.error}).`,
-      );
+      setError(recognitionErrorMessage(event.error));
       clearTimer();
     };
 
     recognition.onend = () => {
+      if (!current()) return;
       clearTimer();
-      setStatus((current) => (current === 'listening' ? 'done' : current));
+      if (settled) return;
+      setStatus('error');
+      setError(NOTHING_HEARD);
     };
 
     recognitionRef.current = recognition;
@@ -126,6 +157,7 @@ export function useSpeechRecognition(): SpeechRecognitionState {
   const reset = useCallback(() => {
     clearTimer();
     recognitionRef.current?.abort();
+    recognitionRef.current = null;
     setStatus('idle');
     setTranscript('');
     setError(null);

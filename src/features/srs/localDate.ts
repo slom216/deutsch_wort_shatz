@@ -39,9 +39,10 @@ export function isPreviousLocalDay(date: Date, reference: Date): boolean {
   return localDaysBetween(date, reference) === 1;
 }
 
+/** Same local wall-clock time `days` calendar days later; a DST switch does not shift it. */
 export function addDays(date: Date, days: number): Date {
   const result = new Date(date);
-  result.setTime(result.getTime() + days * 86_400_000);
+  result.setDate(result.getDate() + days);
   return result;
 }
 

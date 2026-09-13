@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { loadSearchIndex } from '@/content/vocabulary/registry';
 import type { EntryProgress } from '@/schemas/progressSchema';
-import { loadAllProgress } from './repository';
+import { loadQueueableProgress, type QueueableProgress } from './repository';
+import { isOverdue } from './scheduler';
 import {
   dueEntries,
   hardestEntries,
   masteredEntries,
-  overdueEntries,
   queueCounts,
   reviewForecast,
   type ForecastDay,
@@ -44,17 +43,17 @@ const EMPTY_COUNTS: QueueCounts = {
   mastered: 0,
 };
 
+const EMPTY_STATE: QueueableProgress = { known: [], queueable: [], totalEntries: 0 };
+
 export function useReviewState(): ReviewState {
-  const [progress, setProgress] = useState<readonly EntryProgress[]>([]);
-  const [totalEntries, setTotalEntries] = useState(0);
+  const [state, setState] = useState<QueueableProgress>(EMPTY_STATE);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
-      const [stored, index] = await Promise.all([loadAllProgress(), loadSearchIndex()]);
-      setProgress(stored);
-      setTotalEntries(index.length);
+      // Unknown ids and skipped words are removed here, once, so every screen agrees.
+      setState(await loadQueueableProgress());
       setError(null);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not read your progress.');
@@ -67,19 +66,28 @@ export function useReviewState(): ReviewState {
     void refresh();
   }, [refresh]);
 
-  const now = new Date();
+  // Derived once per load rather than re-sorted on every render.
+  const derived = useMemo(() => {
+    const { known, queueable, totalEntries } = state;
+    const now = new Date();
+    const due = dueEntries(queueable, now);
+    return {
+      counts: queueCounts(known, totalEntries, now, queueable),
+      due,
+      overdue: due.filter((progress) => isOverdue(progress.srs, now)),
+      hardest: hardestEntries(known, 10),
+      mastered: masteredEntries(known),
+      forecast: reviewForecast(queueable, 14, now),
+    };
+  }, [state]);
 
   return {
     loading,
     error,
-    progress,
-    counts: loading ? EMPTY_COUNTS : queueCounts(progress, totalEntries, now),
-    due: dueEntries(progress, now),
-    overdue: overdueEntries(progress, now),
-    hardest: hardestEntries(progress, 10),
-    mastered: masteredEntries(progress),
-    forecast: reviewForecast(progress, 14, now),
-    totalEntries,
+    progress: state.known,
+    ...derived,
+    counts: loading ? EMPTY_COUNTS : derived.counts,
+    totalEntries: state.totalEntries,
     refresh,
   };
 }

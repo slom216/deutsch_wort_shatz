@@ -51,7 +51,7 @@ export function ExerciseFeedback({
 
       {result.issues.length > 0 ? (
         <>
-          <p className="feedback__issues-heading">Issues:</p>
+          <p className="feedback__issues-heading">{result.correct ? 'Note:' : 'Issues:'}</p>
           <ul className="feedback__issues">
             {result.issues.map((issue) => (
               <li key={`${issue.category}-${issue.message}`}>{issue.message}</li>

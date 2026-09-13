@@ -15,6 +15,13 @@ import {
 import { SCORE_FORMATS } from '@/features/practice/session/endless';
 import manifest from '@/content/vocabulary/generated/manifest.json';
 import { computeStreak, dailyActivity, dailyGoalState } from './streak';
+import { localDateKey } from '@/features/srs/localDate';
+import { MAX_AVATAR_LEVEL, avatarSrc } from './xp';
+import type { MultipleChoiceVariant } from '@/features/practice/generators/multipleChoice';
+import type { SentenceCompletionVariant } from '@/features/practice/generators/sentenceCompletion';
+import type { TypedTranslationVariant } from '@/features/practice/generators/typedTranslation';
+import type { MatchingVariant } from '@/features/practice/generators/matching';
+import type { WordOrderingVariant } from '@/features/practice/generators/wordOrdering';
 import {
   ACHIEVEMENTS,
   evaluateAchievements,
@@ -89,11 +96,11 @@ describe('XP rules (§23)', () => {
 describe('learner levels (§23)', () => {
   it('makes each level cost 25% more than the one before', () => {
     expect(xpRequiredForLevel(1)).toBe(0);
-    expect(xpRequiredForLevel(2)).toBe(418);
+    expect(xpRequiredForLevel(2)).toBe(416);
     for (let level = 2; level < 20; level += 1) {
       const previousStep = xpRequiredForLevel(level) - xpRequiredForLevel(level - 1);
       const step = xpRequiredForLevel(level + 1) - xpRequiredForLevel(level);
-      // Rounding to whole XP wobbles the ratio on the cheapest levels (418 → 522 is 1.25).
+      // Rounding to whole XP wobbles the ratio on the cheapest levels (416 → 520 is 1.25).
       expect(step / previousStep).toBeCloseTo(1.25, 1);
     }
   });
@@ -134,19 +141,19 @@ describe('learner levels (§23)', () => {
 
   it('starts every learner at level 1', () => {
     expect(levelForXp(0)).toBe(1);
-    expect(levelForXp(417)).toBe(1);
+    expect(levelForXp(415)).toBe(1);
   });
 
   it('advances a level once the threshold is reached', () => {
-    expect(levelForXp(418)).toBe(2);
-    expect(levelForXp(941)).toBe(3);
-    expect(levelForXp(1594)).toBe(4);
+    expect(levelForXp(416)).toBe(2);
+    expect(levelForXp(936)).toBe(3);
+    expect(levelForXp(1586)).toBe(4);
   });
 
   it('reports progress towards the next level', () => {
     const progress = levelProgress(2000);
     expect(progress.level).toBe(4);
-    expect(progress.xpForNextLevel).toBe(410);
+    expect(progress.xpForNextLevel).toBe(399);
     expect(progress.fraction).toBeGreaterThan(0);
     expect(progress.fraction).toBeLessThan(1);
   });
@@ -206,16 +213,46 @@ describe('streaks (§23)', () => {
     expect(streak.todayCounts).toBe(false);
   });
 
-  it('bridges a single missed day with a streak freeze', () => {
-    const history = [
-      ...manyOn('2026-05-08', 10),
-      // 2026-05-09 missed
-      ...manyOn('2026-05-10', 10),
-    ];
-    const withoutFreeze = computeStreak(history, new Date('2026-05-10T18:00:00'), 0);
-    const withFreeze = computeStreak(history, new Date('2026-05-10T18:00:00'), 1);
-    expect(withoutFreeze.current).toBe(1);
-    expect(withFreeze.current).toBe(2);
+  const daysFrom = (start: string, count: number): ExerciseHistory[] =>
+    Array.from({ length: count }, (_, i) => {
+      const date = new Date(`${start}T12:00:00`);
+      date.setDate(date.getDate() + i);
+      return manyOn(localDateKey(date), 10);
+    }).flat();
+
+  it('breaks on a missed day when no freeze has been earned', () => {
+    const history = [...manyOn('2026-05-08', 10), ...manyOn('2026-05-10', 10)];
+    const streak = computeStreak(history, new Date('2026-05-10T18:00:00'));
+    expect(streak.current).toBe(1);
+    expect(streak.freezes).toBe(0);
+  });
+
+  it('earns a freeze per seven days in a row and spends it bridging a missed day', () => {
+    // 1–7 May studied (earns one), 8 May missed, 9 May studied.
+    const history = [...daysFrom('2026-05-01', 7), ...manyOn('2026-05-09', 10)];
+    const bridged = computeStreak(history, new Date('2026-05-09T18:00:00'));
+    expect(bridged.current).toBe(8);
+    expect(bridged.freezes).toBe(0);
+
+    // Spent for good: a second gap breaks the run, and longest still counts the bridge.
+    const later = computeStreak(
+      [...history, ...manyOn('2026-05-11', 10)],
+      new Date('2026-05-11T18:00:00'),
+    );
+    expect(later.current).toBe(1);
+    expect(later.longest).toBe(8);
+  });
+
+  it('holds at most two freezes', () => {
+    const streak = computeStreak(daysFrom('2026-05-01', 28), new Date('2026-05-28T18:00:00'));
+    expect(streak.freezes).toBe(2);
+  });
+
+  it('does not count wrong answers towards a streak day', () => {
+    const wrong = Array.from({ length: 12 }, (_, i) =>
+      row(`w${i}`, { correct: false, xpAwarded: -5 }),
+    );
+    expect(dailyActivity(wrong)[0]?.countsForStreak).toBe(false);
   });
 
   it('uses local dates, not UTC', () => {
@@ -239,6 +276,11 @@ describe('daily goal (§23)', () => {
     const history = [row('a', { day: '2026-05-10' }), row('b', { day: '2026-05-09' })];
     const state = dailyGoalState(history, 20, new Date('2026-05-10T12:00:00'));
     expect(state.completed).toBe(1);
+  });
+
+  it('counts only correct answers', () => {
+    const history = [row('a'), row('b', { correct: false })];
+    expect(dailyGoalState(history, 20, new Date('2026-05-10T12:00:00')).completed).toBe(1);
   });
 
   it('is met once the goal is reached', () => {
@@ -470,6 +512,60 @@ describe('gamification persistence', () => {
     expect(await db.achievements.count()).toBe(first.length);
   });
 
+  it('counts every article, plural and verb-form variant the generators emit', async () => {
+    const variants = {
+      articleCorrect: [
+        'article',
+        'articleGap',
+        'nounWithArticle',
+        'articleNounOrdering',
+      ] satisfies (
+        | MultipleChoiceVariant
+        | SentenceCompletionVariant
+        | TypedTranslationVariant
+        | WordOrderingVariant
+      )[],
+      pluralCorrect: ['plural', 'pluralGap', 'nounToPlural', 'nounWithArticleAndPlural'] satisfies (
+        | MultipleChoiceVariant
+        | SentenceCompletionVariant
+        | TypedTranslationVariant
+        | MatchingVariant
+      )[],
+      verbFormCorrect: ['verbForm', 'verbFormGap', 'verbToParticiple'] satisfies (
+        MultipleChoiceVariant | SentenceCompletionVariant | MatchingVariant
+      )[],
+    } as const;
+
+    for (const [stat, names] of Object.entries(variants)) {
+      await resetAllProgress();
+      await db.exerciseHistory.bulkPut(names.map((name) => row(`v:${name}`, { direction: name })));
+      const { stats } = await loadGamification(20, TOTALS, new Date('2026-05-10T18:00:00'));
+      expect(stats[stat as keyof typeof variants], stat).toBe(names.length);
+    }
+  });
+
+  it('counts only review-session answers towards First Review', async () => {
+    await db.exerciseHistory.put(row('learn:1', { sessionId: 'learn' }));
+    const now = new Date('2026-05-10T18:00:00');
+    expect((await loadGamification(20, TOTALS, now)).stats.reviewsCompleted).toBe(0);
+
+    await db.sessions.put({
+      id: 'rev',
+      mode: 'review',
+      status: 'completed',
+      startedAt: '2026-05-10T10:00:00.000Z',
+      entryIds: [],
+      exerciseTypes: ['multipleChoice'],
+      plannedExerciseCount: 1,
+      completedExerciseCount: 1,
+      correctCount: 1,
+      firstAttemptCorrectCount: 1,
+      xpEarned: 5,
+    });
+    await db.exerciseHistory.put(row('rev:1', { sessionId: 'rev' }));
+    expect((await loadGamification(20, TOTALS, now)).stats.reviewsCompleted).toBe(1);
+  });
+
   it('clears XP and achievements when progress is reset (§23)', async () => {
     await db.exerciseHistory.bulkPut([row('a'), row('b')]);
     await awardBonus({ id: 'daily:x', type: 'dailyGoal', amount: 25 });
@@ -485,5 +581,16 @@ describe('gamification persistence', () => {
     expect(snapshot.totalXp).toBe(0);
     expect(snapshot.unlockedCount).toBe(0);
     expect(await db.xpEvents.count()).toBe(0);
+  });
+});
+
+describe('avatars', () => {
+  it('ships a rank card for every level up to MAX_AVATAR_LEVEL, and none beyond', () => {
+    const files = Object.keys(import.meta.glob('/public/img/avatar/*')).map((path) =>
+      path.replace('/public', ''),
+    );
+    const expected = Array.from({ length: MAX_AVATAR_LEVEL }, (_, i) => avatarSrc(i + 1));
+    expect(files.sort()).toEqual(expected.sort());
+    expect(avatarSrc(99)).toBe(avatarSrc(MAX_AVATAR_LEVEL));
   });
 });

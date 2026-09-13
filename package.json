@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "0.1.0",
   "type": "module",
-  "description": "Deutsch Wort Shatz \u2014 a frontend-only German vocabulary trainer for CEFR levels A1, A2 and B1.",
+  "description": "DeuLern Deutsch Wortschatz — a frontend-only German vocabulary trainer for CEFR levels A1, A2 and B1.",
   "scripts": {
     "build:content": "node scripts/buildContent.mjs",
     "predev": "npm run build:content",
@@ -28,17 +28,18 @@
     "audit:examples": "node scripts/auditExamples.mjs",
     "audit:all": "npm run validate:vocabulary && npm run audit:duplicates && npm run audit:ranks && npm run audit:topics && npm run audit:examples && npm run audit:phases",
     "audit:phase": "vite-node scripts/auditPhaseGate.ts",
-    "audit:a1": "vite-node scripts/auditPhaseGate.ts -- 1 800",
+    "audit:a1": "vite-node scripts/auditPhaseGate.ts -- 1 799",
     "audit:phases": "npm run audit:phase-a1 && npm run audit:phase-a2 && npm run audit:phase-b1",
     "audit:release": "vite-node scripts/auditRelease.ts",
-    "audit:phase-a1": "vite-node scripts/auditPhaseGate.ts -- 1 800",
-    "audit:phase-a2": "vite-node scripts/auditPhaseGate.ts -- 801 1493",
-    "audit:phase-b1": "vite-node scripts/auditPhaseGate.ts -- 1494 3460"
+    "audit:phase-a1": "vite-node scripts/auditPhaseGate.ts -- 1 799",
+    "audit:phase-a2": "vite-node scripts/auditPhaseGate.ts -- 800 1489",
+    "audit:phase-b1": "vite-node scripts/auditPhaseGate.ts -- 1490 3444"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@fontsource-variable/manrope": "^5.3.0",
     "dexie": "^4.0.11",
     "dexie-react-hooks": "^1.1.7",
     "react": "^19.1.0",

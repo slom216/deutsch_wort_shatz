@@ -89,7 +89,7 @@ export default function TopicPage(): ReactNode {
               <section className="settings-section" aria-labelledby="topic-practice">
                 <h2 id="topic-practice">Practise this topic</h2>
                 <p className="band-summary">
-                  A session drawn from this topic&rsquo;s highest-frequency entries (§18).
+                  A session drawn from this topic&rsquo;s highest-frequency entries.
                 </p>
                 <button
                   type="button"

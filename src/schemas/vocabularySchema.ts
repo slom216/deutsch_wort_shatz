@@ -8,13 +8,14 @@
  * Deviations from the literal type listing in §10, all driven by the shipped datasets:
  *   - `requiredCase` additionally allows `'dative+accusative'` (ditransitive verbs such
  *     as `geben`), which §10 does not enumerate.
- *   - `article` and `pluralArticle` are nullable, and the verb form set is optional: the
- *     current datasets record a checked headword, gloss, word class and topic and nothing
- *     more. An entry without those fields simply generates fewer exercise formats (§15) —
- *     the alternative was shipping generated grammar nobody had verified.
- *   - `exampleSentences` may be empty for the same reason.
- *   - Datasets carry provenance fields (`sourceMetadata`, `editorialReview`,
- *     `alternateForms`, `alternateArticles`, `numberUsage`) that §10 omits.
+ *   - `article`, `plural` and `pluralArticle` are nullable: proper nouns take no article,
+ *     and singular-only or plural-only nouns (`numberUsage`) have no separate plural. The
+ *     verb form set is optional in the schema; `validate:vocabulary` requires it of the source.
+ *   - `exampleSentences` may be empty.
+ *   - Entries carry fields §10 omits: `alternateForms`, `alternateArticles`, `numberUsage`,
+ *     and the provenance fields `sourceMetadata` and `editorialReview`.
+ *   - IDs are frozen `<level>-<lemma>` slugs (§12's `<level>-<rank>-<lemma>` is still
+ *     accepted); `data/legacy-ids.json` maps the old rank-based ids onto them.
  */
 
 // NOTE: relative imports with explicit `.ts` extensions are deliberate. They let the
@@ -125,11 +126,9 @@ const editorialReviewSchema = z
 
 /** Fields every entry must carry (§11). */
 const baseShape = {
-  // §12 specifies a four-digit rank, which cannot express rank 10,000; the final entry
-  // uses five digits. Zero-padding to a minimum of four is the enforceable rule.
   id: z
     .string()
-    .regex(/^(a1|a2|b1)-\d{4,5}-[a-z0-9-]+$/, 'ID must follow `<level>-<rank>-<lemma>` (§12)'),
+    .regex(/^(a1|a2|b1)-(\d{4,5}-)?[a-z0-9-]+$/, 'ID must follow `<level>-<lemma>` (§12)'),
   rank: z.number().int().min(1).max(10_000),
   level: cefrLevelSchema,
   kind: vocabularyKindSchema,
@@ -161,7 +160,7 @@ export const nounEntrySchema = z.object({
   alternateArticles: z.array(z.enum(['der', 'die', 'das'])).optional(),
   plural: z.string().nullable().default(null),
   pluralArticle: z.literal('die').nullable().default(null),
-  numberUsage: z.enum(['both', 'singularOnly', 'pluralOnly', 'unspecified']).optional(),
+  numberUsage: z.enum(['both', 'singularOnly', 'pluralOnly']).optional(),
   genitiveSingular: z.string().nullable().optional(),
 });
 
@@ -169,8 +168,6 @@ export const verbEntrySchema = z.object({
   ...baseShape,
   wordClass: z.literal('verb'),
   infinitive: z.string().min(1),
-  // The conjugation is optional: the datasets record the infinitive and its gloss, and a
-  // verb without recorded forms is never asked to produce one (§15).
   thirdPersonPresent: z.string().min(1).optional(),
   simplePast: z.string().min(1).optional(),
   pastParticiple: z.string().min(1).optional(),

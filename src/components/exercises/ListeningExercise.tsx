@@ -68,6 +68,7 @@ export function ListeningExercise({
     onSubmit(
       evaluateAnswer(value, exercise.acceptedAnswers ?? [exercise.canonicalAnswer], {
         strictness: exercise.strictness,
+        otherWords: exercise.otherWords,
         language: 'de',
         answerRole: 'translation',
       }),

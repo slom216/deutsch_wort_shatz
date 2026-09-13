@@ -29,7 +29,33 @@
 
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
   gap: var(--space-4);
   margin: 0 0 var(--space-6);
+}
+
+/* Phones: two tiles a row rather than one long column. */
+@media (max-width: 40rem) {
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .stat-card {
+    padding: var(--space-3);
+  }
+}
+
+/* The dashboard's seven tiles: never a lone tile on its own row. */
+@media (min-width: 40.0625rem) {
+  .stat-grid--seven {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 70rem) {
+  .stat-grid--seven {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
 }

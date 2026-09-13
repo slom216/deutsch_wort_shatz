@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { StatCard } from '@/components/common/StatCard';
 import { loadSearchIndex } from '@/content/vocabulary/registry';
-import { loadAllProgress } from '@/features/srs/repository';
+import { loadQueueableProgress } from '@/features/srs/repository';
 import { hardestEntries, masteredEntries, queueCounts } from '@/features/srs/queue';
 import { useEntryLabels } from '@/features/learning/useEntryLabels';
 import { db } from '@/features/persistence/db';
@@ -53,6 +53,7 @@ const ERROR_LABELS: Record<string, string> = {
 export default function ProgressPage(): ReactNode {
   const [index, setIndex] = useState<readonly VocabularyIndexRecord[] | null>(null);
   const [progress, setProgress] = useState<readonly EntryProgress[]>([]);
+  const [queueable, setQueueable] = useState<readonly EntryProgress[]>([]);
   const [history, setHistory] = useState<readonly ExerciseHistory[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { snapshot: game } = useGamification();
@@ -63,12 +64,13 @@ export default function ProgressPage(): ReactNode {
       try {
         const [records, stored, rows] = await Promise.all([
           loadSearchIndex(),
-          loadAllProgress(),
+          loadQueueableProgress(),
           db.exerciseHistory.toArray(),
         ]);
         if (cancelled) return;
         setIndex(records);
-        setProgress(stored);
+        setProgress(stored.known);
+        setQueueable(stored.queueable);
         setHistory(rows);
       } catch (cause) {
         if (!cancelled) {
@@ -93,7 +95,10 @@ export default function ProgressPage(): ReactNode {
   const hardest = useMemo(() => hardestEntries(progress, 10), [progress]);
   const mastered = useMemo(() => masteredEntries(progress).slice(0, 20), [progress]);
   const weakTopics = useMemo(() => (index ? weakestTopics(index, byEntry) : []), [index, byEntry]);
-  const counts = useMemo(() => queueCounts(progress, index?.length ?? 0), [progress, index]);
+  const counts = useMemo(
+    () => queueCounts(progress, index?.length ?? 0, new Date(), queueable),
+    [progress, queueable, index],
+  );
   const labels = useEntryLabels([
     ...hardest.map((entry) => entry.entryId),
     ...mastered.map((entry) => entry.entryId),
@@ -137,7 +142,7 @@ export default function ProgressPage(): ReactNode {
         <StatCard label="Introduced" value={stats.introduced} hint="Entries you have met" />
         <StatCard label="Learning" value={stats.learning} hint="Short intervals" />
         <StatCard label="In review" value={stats.review} hint="Long intervals" />
-        <StatCard label="Mastered" value={stats.mastered} hint="Score 5, or every §22 criterion" />
+        <StatCard label="Mastered" value={stats.mastered} hint="Long-term, proven recall" />
         <StatCard label="Due today" value={counts.due} hint="Ready to review now" />
         <StatCard label="Overdue" value={counts.overdue} hint="More than a day late" />
         <StatCard label="Exercises answered" value={stats.totalAttempts} hint="All time" />
@@ -292,8 +297,8 @@ export default function ProgressPage(): ReactNode {
           <h2 id="mastered">Mastered words</h2>
           {mastered.length === 0 ? (
             <p className="band-summary">
-              Mastery needs a quiz score of 4, or the full §22 evidence: five successful reviews,
-              three of them production, and a 30-day interval.
+              A word is mastered after five successful reviews, three of them producing the German,
+              a typed answer right first time, no recent mistakes, and a 30-day interval.
             </p>
           ) : (
             <ul className="example-list">

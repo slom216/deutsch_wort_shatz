@@ -2,12 +2,18 @@ import type { SentenceCompletionExercise } from '@/schemas/exerciseSchema';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import { fullyNormalize } from '../evaluation/normalize';
 import {
+  acceptedPlurals,
+  acceptedVerbForms,
+  asksForArticle,
+  bareNoun,
   firstExample,
   isNounEntry,
   isVerbEntry,
+  lookalikeWords,
   pluralForm,
   primaryEnglish,
   strictnessFor,
+  withoutArticle,
 } from './entryHelpers';
 import type { GeneratorContext } from './multipleChoice';
 
@@ -22,8 +28,13 @@ import type { GeneratorContext } from './multipleChoice';
 export type SentenceCompletionVariant =
   'vocabularyGap' | 'articleGap' | 'pluralGap' | 'verbFormGap';
 
+/** A whole-word, case-insensitive pattern for `token`, so "Minute" never matches inside "Minuten". */
+function wordPattern(token: string): RegExp {
+  return new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegex(token)}(?![\\p{L}\\p{N}])`, 'iu');
+}
+
 /**
- * Locates `token` inside `sentence` case-insensitively and splits around it.
+ * Locates `token` inside `sentence` as a whole word, case-insensitively, and splits around it.
  * Returns null when the token does not occur, which is the case for a small number of
  * entries whose generated examples do not contain their own target token.
  */
@@ -31,20 +42,36 @@ function splitAroundToken(
   sentence: string,
   token: string,
 ): { before: string; after: string; matched: string } | null {
-  const index = sentence.toLocaleLowerCase('de-DE').indexOf(token.toLocaleLowerCase('de-DE'));
-  if (index < 0) return null;
+  const match = wordPattern(token).exec(sentence);
+  if (!match) return null;
   return {
-    before: sentence.slice(0, index),
-    after: sentence.slice(index + token.length),
-    matched: sentence.slice(index, index + token.length),
+    before: sentence.slice(0, match.index),
+    after: sentence.slice(match.index + token.length),
+    matched: match[0],
   };
+}
+
+/**
+ * The gap for a verb form. A separable form ("fährt ab") is usually split in the sentence ("Der
+ * Zug fährt um 8 Uhr ab."), and the schema has one gap: the finite part is gapped when the
+ * particle follows later. `part` maps any accepted spelling onto what the gap holds.
+ */
+function verbGap(sentence: string, form: string) {
+  const whole = splitAroundToken(sentence, form);
+  if (whole) return { split: whole, part: (value: string) => value };
+  const words = form.split(' ');
+  const particle = words[words.length - 1] as string;
+  if (words.length < 2) return null;
+  const head = splitAroundToken(sentence, words[0] as string);
+  if (!head || !wordPattern(particle).test(head.after)) return null;
+  return { split: head, part: (value: string) => value.split(' ')[0] as string };
 }
 
 export function generateSentenceCompletion(
   context: GeneratorContext,
   variant: SentenceCompletionVariant,
 ): SentenceCompletionExercise | null {
-  const { entry, id } = context;
+  const { entry, pool, id } = context;
   const example = firstExample(entry);
   if (!example) return null;
 
@@ -65,6 +92,7 @@ export function generateSentenceCompletion(
       if (!token) return null;
       const split = splitAroundToken(example.german, token);
       if (!split) return null;
+      const otherWords = lookalikeWords(entry, pool, [split.matched]);
       return {
         ...base,
         prompt: 'Fill in the missing word.',
@@ -75,16 +103,20 @@ export function generateSentenceCompletion(
         fullSentence: example.german,
         acceptedAnswers: [split.matched],
         canonicalAnswer: split.matched,
+        ...(otherWords.length > 0 ? { otherWords } : {}),
       };
     }
 
     case 'articleGap': {
-      if (!isNounEntry(entry) || !entry.article) return null;
+      if (!isNounEntry(entry) || !entry.article || !asksForArticle(entry)) return null;
       // Only build an article gap when the sentence actually uses the definite article
       // directly before the noun, so there is exactly one intended answer.
-      const pattern = new RegExp(`\\b(der|die|das)\\s+(${escapeRegex(entry.german)})\\b`, 'iu');
+      const pattern = new RegExp(
+        `(?<![\\p{L}])(der|die|das)\\s+(${escapeRegex(bareNoun(entry))})(?![\\p{L}])`,
+        'iu',
+      );
       const match = pattern.exec(example.german);
-      if (!match || match.index === undefined) return null;
+      if (!match) return null;
       const articleInSentence = match[1] as string;
       if (fullyNormalize(articleInSentence) !== fullyNormalize(entry.article)) return null;
 
@@ -102,45 +134,53 @@ export function generateSentenceCompletion(
     }
 
     case 'pluralGap': {
-      const plural = pluralForm(entry);
-      if (!isNounEntry(entry) || !plural || !entry.plural) return null;
-      const split = splitAroundToken(example.german, entry.plural);
-      if (!split) return null;
-      return {
-        ...base,
-        prompt: 'Fill in the plural form.',
-        hint: primaryEnglish(entry),
-        strictness: { ...strictnessFor(entry), plural: true },
-        sentenceBefore: split.before,
-        sentenceAfter: split.after,
-        fullSentence: example.german,
-        acceptedAnswers: [split.matched],
-        canonicalAnswer: split.matched,
-      };
+      const plurals = acceptedPlurals(entry).map(withoutArticle);
+      for (const plural of plurals) {
+        const split = splitAroundToken(example.german, plural);
+        if (!split) continue;
+        return {
+          ...base,
+          prompt: 'Fill in the plural form.',
+          hint: primaryEnglish(entry),
+          strictness: { ...strictnessFor(entry), plural: true },
+          sentenceBefore: split.before,
+          sentenceAfter: split.after,
+          fullSentence: example.german,
+          acceptedAnswers: [...new Set([split.matched, ...plurals])],
+          canonicalAnswer: split.matched,
+        };
+      }
+      return null;
     }
 
     case 'verbFormGap': {
       if (!isVerbEntry(entry)) return null;
-      // Try the forms a sentence is most likely to contain, in order.
-      for (const form of [
-        entry.pastParticiple,
-        entry.thirdPersonPresent,
-        entry.simplePast,
-        entry.infinitive,
-      ].filter((value): value is string => Boolean(value))) {
-        const split = splitAroundToken(example.german, form);
-        if (!split) continue;
-        return {
-          ...base,
-          prompt: 'Fill in the correct verb form.',
-          hint: `${entry.infinitive} — ${primaryEnglish(entry)}`,
-          strictness: strictnessFor(entry),
-          sentenceBefore: split.before,
-          sentenceAfter: split.after,
-          fullSentence: example.german,
-          acceptedAnswers: [split.matched],
-          canonicalAnswer: split.matched,
-        };
+      // Try the forms a sentence is most likely to contain, in order, each with its accepted
+      // spellings. The infinitive last: it has no alternatives recorded.
+      const forms: string[][] = [
+        acceptedVerbForms(entry, 'pastParticiple'),
+        acceptedVerbForms(entry, 'thirdPersonPresent'),
+        acceptedVerbForms(entry, 'simplePast'),
+        [entry.infinitive],
+      ];
+      for (const spellings of forms) {
+        for (const form of spellings) {
+          const gap = verbGap(example.german, form);
+          if (!gap) continue;
+          const { split, part } = gap;
+          return {
+            ...base,
+            // The infinitive in the prompt: without it the gap could take any verb.
+            prompt: `Fill in the correct form of ${entry.infinitive}.`,
+            hint: primaryEnglish(entry),
+            strictness: strictnessFor(entry),
+            sentenceBefore: split.before,
+            sentenceAfter: split.after,
+            fullSentence: example.german,
+            acceptedAnswers: [...new Set([split.matched, ...spellings.map(part)])],
+            canonicalAnswer: split.matched,
+          };
+        }
       }
       return null;
     }
@@ -158,8 +198,13 @@ export function availableSentenceCompletionVariants(
   entry: VocabularyEntry,
 ): SentenceCompletionVariant[] {
   const variants: SentenceCompletionVariant[] = ['vocabularyGap'];
-  if (isNounEntry(entry) && entry.article) variants.push('articleGap');
+  if (asksForArticle(entry)) variants.push('articleGap');
   if (pluralForm(entry)) variants.push('pluralGap');
-  if (isVerbEntry(entry) && entry.pastParticiple) variants.push('verbFormGap');
+  if (
+    isVerbEntry(entry) &&
+    (entry.pastParticiple || entry.thirdPersonPresent || entry.simplePast)
+  ) {
+    variants.push('verbFormGap');
+  }
   return variants;
 }

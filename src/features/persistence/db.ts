@@ -8,6 +8,7 @@ import type {
 } from '@/schemas/progressSchema';
 import type { PracticeSessionRecord } from '@/schemas/sessionSchema';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, type Settings } from '@/schemas/settingsSchema';
+import { LEGACY_IDS_PENDING, migrateLegacyIds } from './legacyIds';
 
 /**
  * IndexedDB shell (Phase 0 deliverable 18, §24).
@@ -36,7 +37,7 @@ export interface DatabaseMetadata {
 }
 
 /** Bumped whenever the Dexie schema changes. Mirrored into the `metadata` table. */
-export const DATABASE_SCHEMA_VERSION = 5;
+export const DATABASE_SCHEMA_VERSION = 6;
 export const DATABASE_NAME = 'deutsch-wort-shatz';
 
 export class VocabularyLearningDatabase extends Dexie {
@@ -125,10 +126,78 @@ export class VocabularyLearningDatabase extends Dexie {
     this.version(5).stores({
       skippedEntries: 'entryId, skippedAt',
     });
+
+    // Version 6 — entry ids no longer carry the frequency rank (`a1-0006-sechs` → `a1-sechs`).
+    //
+    // No index changes. The upgrade only flags the rewrite; `migrateLegacyIds` does it in
+    // `on('ready')`, because the id map loads asynchronously and a non-Dexie await inside an
+    // upgrade transaction would commit it early. A fresh database has nothing to rewrite, and
+    // Dexie skips upgrade callbacks when creating one.
+    //
+    // It also demotes words the old quiz-score shortcut marked mastered before their review
+    // interval reached 30 days: mastery now needs the full §22 criteria (S2). They go back to
+    // `review` with their schedule intact, so nothing the learner did is lost.
+    this.version(6)
+      .stores({})
+      .upgrade(async (transaction) => {
+        await transaction.table<DatabaseMetadata, string>('metadata').put({
+          key: LEGACY_IDS_PENDING,
+          value: '1',
+          updatedAt: new Date().toISOString(),
+        });
+        await transaction
+          .table<EntryProgress, string>('entryProgress')
+          .where('srs.status')
+          .equals('mastered')
+          .modify((progress) => {
+            if (progress.srs.intervalDays < 30) progress.srs.status = 'review';
+          });
+      });
+    this.on('ready', (vipDb) => migrateLegacyIds(vipDb as VocabularyLearningDatabase), true);
   }
 }
 
 export const db = new VocabularyLearningDatabase();
+
+/** The stored data was written by a newer build than this one. */
+export class NewerDatabaseError extends Error {
+  override name = 'NewerDatabaseError';
+}
+
+/** Error names that mean IndexedDB itself is unusable, as opposed to a bug in a screen. */
+const STORAGE_ERROR_NAMES = new Set([
+  'MissingAPIError',
+  'SecurityError',
+  'OpenFailedError',
+  'DatabaseClosedError',
+  'InvalidStateError',
+  'QuotaExceededError',
+  'UnknownError',
+  'VersionError',
+  'NewerDatabaseError',
+]);
+
+function errorNames(cause: unknown): string[] {
+  if (!(cause instanceof Error)) return [];
+  const inner = (cause as { inner?: unknown }).inner;
+  return [cause.name, ...errorNames(inner)];
+}
+
+export function isStorageError(cause: unknown): boolean {
+  return errorNames(cause).some((name) => STORAGE_ERROR_NAMES.has(name));
+}
+
+/**
+ * The one learner-facing message for a storage failure. Library messages (Dexie's include a
+ * third-party short link) are never shown.
+ */
+export function storageProblemMessage(cause: unknown): string {
+  const names = errorNames(cause);
+  if (names.includes('NewerDatabaseError') || names.includes('VersionError')) {
+    return 'Your progress was saved by a newer version of DeuLern Deutsch Wortschatz. Reload the page to get the latest version.';
+  }
+  return "This browser is blocking local storage, so progress can't be saved. Private browsing or strict privacy settings often cause this: allow site data for this page, or try another browser.";
+}
 
 /**
  * Opens the database and records its schema version.
@@ -138,6 +207,13 @@ export async function initializeDatabase(
   database: VocabularyLearningDatabase = db,
 ): Promise<Settings> {
   await database.open();
+
+  // Dexie opens a newer database without complaint, and this build would then write rows
+  // the newer one does not expect. Stop before touching anything.
+  const stored = Number((await database.metadata.get('schemaVersion'))?.value ?? 0);
+  if (database.verno > DATABASE_SCHEMA_VERSION || stored > DATABASE_SCHEMA_VERSION) {
+    throw new NewerDatabaseError('Database schema is newer than this app.');
+  }
 
   await database.metadata.put({
     key: 'schemaVersion',

@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { PageHeader } from '@/components/common/PageHeader';
 import { LoadingScreen } from '@/components/common/LoadingScreen';
@@ -9,6 +9,8 @@ import { loadBand } from '@/content/vocabulary/registry';
 import type { VocabularyEntry } from '@/schemas/vocabularySchema';
 import '@/pages/LearnPage.css';
 import '@/styles/lists.css';
+import './SettingsPage.css';
+import '@/components/exercises/exercises.css';
 
 const ROW_HEIGHT = 44;
 
@@ -26,6 +28,7 @@ export default function FrequencyBandPage(): ReactNode {
 
   const level = (levelParam ?? '').toUpperCase();
   const band = bandBySlug(bandParam ?? '');
+  const navigate = useNavigate();
 
   const [entries, setEntries] = useState<readonly VocabularyEntry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +89,21 @@ export default function FrequencyBandPage(): ReactNode {
           <p className="band-summary">
             {entries.length.toLocaleString('en-US')} entries, in frequency order.
           </p>
+          <section className="settings-section" aria-labelledby="band-practice">
+            <h2 id="band-practice">Practise this band</h2>
+            <p className="band-summary">A mixed session drawn from the words in this band.</p>
+            <button
+              type="button"
+              className="exercise__submit"
+              onClick={() => {
+                void navigate(
+                  `/practice/session/band-${Date.now().toString(36)}?mode=free&level=${level.toLowerCase()}&band=${bandParam ?? ''}`,
+                );
+              }}
+            >
+              Practise {band.id}
+            </button>
+          </section>
           {/* Virtualized rather than truncated: a B1 band is 1,500 entries, and showing
               the first 50 made the rest of the band unreachable from here (§29). */}
           <VirtualList

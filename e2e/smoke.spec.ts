@@ -20,13 +20,13 @@ const ROUTES: ReadonlyArray<{ path: string; heading: RegExp }> = [
   // No session with this id exists, so the results screen correctly reports that.
   { path: '/results/demo', heading: /results not found/i },
   { path: '/vocabulary', heading: /^vocabulary$/i },
-  { path: '/word/a1-0662-sein', heading: /sein/i },
+  { path: '/word/a1-sein', heading: /sein/i },
   { path: '/skipped', heading: /^skipped words$/i },
   { path: '/progress', heading: /^progress$/i },
   { path: '/achievements', heading: /^achievements$/i },
   { path: '/settings', heading: /^settings$/i },
   { path: '/data', heading: /^data$/i },
-  { path: '/about', heading: /about deutsch wortschatz/i },
+  { path: '/about', heading: /about deulern deutsch wortschatz/i },
 ];
 
 test.describe('routes', () => {
@@ -47,7 +47,7 @@ test('dashboard reports the vocabulary size and the review queue', async ({ page
   // The dashboard now leads with SRS figures; the dataset size appears as the
   // denominator of "Words started".
   await expect(page.getByText('Words started', { exact: true })).toBeVisible();
-  await expect(page.getByText('of 3,460', { exact: true })).toBeVisible();
+  await expect(page.getByText('of 3,444', { exact: true })).toBeVisible();
   await expect(page.getByText('Reviews due', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: /continue learning/i })).toBeVisible();
 });
@@ -83,7 +83,7 @@ test('settings persist across a reload', async ({ page }) => {
 
   // The dashboard reads the same persisted value.
   await page.goto('/');
-  await expect(page.getByText('30 exercises')).toBeVisible();
+  await expect(page.getByText('30 correct answers')).toBeVisible();
 });
 
 test('IndexedDB is created with the expected object stores', async ({ page }) => {

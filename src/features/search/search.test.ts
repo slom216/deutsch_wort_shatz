@@ -79,6 +79,54 @@ describe('vocabulary search (§16)', () => {
     expect(results.map((r) => r.id)).toEqual(['test-0001-form']);
   });
 
+  it('matches every searchable form, folding umlauts and ß', () => {
+    const base = index[0] as SearchableRecord;
+    const records = prepareIndex([
+      {
+        ...base,
+        id: 'test-gehen',
+        german: 'gehen',
+        english: ['to go'],
+        searchableForms: ['gehen', 'ging', 'gegangen'],
+      },
+      {
+        ...base,
+        id: 'test-buch',
+        german: 'das Buch',
+        english: ['book'],
+        searchableForms: ['Buch', 'Bücher'],
+      },
+      {
+        ...base,
+        id: 'test-strasse',
+        german: 'die Straße',
+        english: ['street'],
+        searchableForms: ['Straße', 'Straßen'],
+      },
+    ]);
+    const ids = (query: string) =>
+      searchVocabulary(records, { filters: { ...EMPTY_FILTERS, query } }).map((r) => r.id);
+
+    expect(ids('ging')).toEqual(['test-gehen']);
+    expect(ids('gegangen')).toEqual(['test-gehen']);
+    expect(ids('Bücher')).toEqual(['test-buch']);
+    expect(ids('bucher')).toEqual(['test-buch']);
+    expect(ids('die Bücher')).toEqual(['test-buch']);
+    expect(ids('STRASSEN')).toEqual(['test-strasse']);
+    expect(ids('straßen')).toEqual(['test-strasse']);
+  });
+
+  it('treats a malformed progress row as a new word', () => {
+    const first = index[0] as SearchableRecord;
+    const broken = {
+      ...makeProgress(first.id, 'review', 0.5),
+      srs: null,
+    } as unknown as EntryProgress;
+    const progress = new Map([[first.id, broken]]);
+    expect(search({ status: 'new' }, progress)).toHaveLength(TOTAL_ENTRY_COUNT);
+    expect(search({ difficulty: 'high' }, progress)).toHaveLength(0);
+  });
+
   it('searches case-insensitively', () => {
     expect(search({ query: 'STRASSE' }).length).toBeGreaterThan(0);
   });

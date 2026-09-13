@@ -1,10 +1,14 @@
 import { z } from 'zod';
 
 import { db, DATABASE_SCHEMA_VERSION, type VocabularyLearningDatabase } from './db';
+import { loadLegacyIds, remapLegacyIds } from './legacyIds';
+import { loadSearchIndex } from '@/content/vocabulary/registry';
+import { XP_COMPLETE_LEVEL } from '@/features/gamification/xp';
 import {
   achievementRecordSchema,
   entryProgressSchema,
   exerciseHistorySchema,
+  pastDatetimeSchema,
   skippedEntrySchema,
 } from '@/schemas/progressSchema';
 import { practiceSessionRecordSchema } from '@/schemas/sessionSchema';
@@ -26,12 +30,13 @@ export const APP_VERSION = '0.1.0';
 const xpEventSchema = z.object({
   id: z.string().min(1),
   type: z.string().min(1),
-  amount: z.number(),
-  awardedAt: z.string(),
+  // Bonuses are positive and the largest is a completed CEFR level (§23).
+  amount: z.number().int().min(0).max(XP_COMPLETE_LEVEL),
+  awardedAt: pastDatetimeSchema,
 });
 
 export const exportFileSchema = z.object({
-  /** Format marker, so an unrelated JSON file is rejected immediately. */
+  /** Format marker, so an unrelated JSON file is rejected immediately. Kept for compatibility. */
   kind: z.literal('deutsch-wort-shatz-progress'),
   schemaVersion: z.number().int().min(1),
   appVersion: z.string(),
@@ -91,7 +96,7 @@ export function serializeExport(file: ExportFile): string {
 
 export function exportFilename(now: Date = new Date()): string {
   const stamp = now.toISOString().slice(0, 10);
-  return `deutsch-wort-shatz-progress-${stamp}.json`;
+  return `deulern-deutsch-wortschatz-progress-${stamp}.json`;
 }
 
 /* ------------------------------------------------------------------- import */
@@ -196,7 +201,7 @@ export async function inspectImport(
   if (raw.kind !== 'deutsch-wort-shatz-progress') {
     return {
       valid: false,
-      reason: 'That file is not a Deutsch Wort Shatz progress export.',
+      reason: 'That file is not a DeuLern Deutsch Wortschatz progress export.',
     };
   }
 
@@ -208,8 +213,10 @@ export async function inspectImport(
     };
   }
 
+  // Exports before version 6 use rank-based entry ids; rewrite them like the database upgrade.
+  const source = originalVersion < 6 ? remapLegacyIds(raw, await loadLegacyIds()) : raw;
   const result = exportFileSchema.safeParse({
-    ...migrate(raw),
+    ...migrate(source),
     schemaVersion: DATABASE_SCHEMA_VERSION,
   });
   if (!result.success) {
@@ -329,7 +336,8 @@ export async function applyImport(
       await database.xpEvents.bulkPut(file.xpEvents);
       // Keyed by entry id, so a merge unions the two lists rather than duplicating them.
       await database.skippedEntries.bulkPut(file.skippedEntries);
-      if (file.settings) await database.settings.put(file.settings);
+      // "Merge — keep what you have" includes the learner's settings.
+      if (mode === 'replace' && file.settings) await database.settings.put(file.settings);
     },
   );
 
@@ -347,10 +355,64 @@ export async function applyImport(
 
 /* -------------------------------------------------------------------- repair */
 
+/** Every learner store, the schema its rows must satisfy (the same one import uses), and its key. */
+const REPAIR_STORES = {
+  entryProgress: [entryProgressSchema, 'entryId'],
+  exerciseHistory: [exerciseHistorySchema, 'id'],
+  sessions: [practiceSessionRecordSchema, 'id'],
+  settings: [settingsSchema, 'id'],
+  xpEvents: [xpEventSchema, 'id'],
+  skippedEntries: [skippedEntrySchema, 'entryId'],
+  achievements: [achievementRecordSchema, 'id'],
+} as const;
+
+export type RepairStore = keyof typeof REPAIR_STORES;
+
+/** Stores whose rows belong to one vocabulary entry. */
+const ENTRY_STORES: ReadonlySet<RepairStore> = new Set([
+  'entryProgress',
+  'exerciseHistory',
+  'skippedEntries',
+]);
+
 export interface RepairReport {
-  readonly removedProgress: number;
-  readonly removedHistory: number;
+  /** Rows per store that fail their schema. */
+  readonly invalid: Readonly<Record<RepairStore, number>>;
+  /** Progress, history and skipped rows for entry ids the vocabulary no longer has. */
+  readonly unknownEntries: number;
   readonly ok: boolean;
+}
+
+interface RepairPlan {
+  readonly report: RepairReport;
+  readonly keys: Readonly<Record<RepairStore, readonly string[]>>;
+}
+
+async function planRepair(database: VocabularyLearningDatabase): Promise<RepairPlan> {
+  const known = new Set((await loadSearchIndex()).map((record) => record.id));
+  const invalid = {} as Record<RepairStore, number>;
+  const keys = {} as Record<RepairStore, string[]>;
+  let unknownEntries = 0;
+
+  for (const store of Object.keys(REPAIR_STORES) as RepairStore[]) {
+    const [schema, key] = REPAIR_STORES[store];
+    const rows = await database.table<Record<string, unknown>, string>(store).toArray();
+    invalid[store] = 0;
+    keys[store] = [];
+    for (const row of rows) {
+      if (!schema.safeParse(row).success) {
+        invalid[store] += 1;
+      } else if (ENTRY_STORES.has(store) && !known.has(row.entryId as string)) {
+        unknownEntries += 1;
+      } else {
+        continue;
+      }
+      keys[store].push(row[key] as string);
+    }
+  }
+
+  const ok = unknownEntries === 0 && Object.values(invalid).every((count) => count === 0);
+  return { report: { invalid, unknownEntries, ok }, keys };
 }
 
 /**
@@ -361,28 +423,13 @@ export interface RepairReport {
 export async function inspectRepair(
   database: VocabularyLearningDatabase = db,
 ): Promise<RepairReport> {
-  const [progress, history] = await Promise.all([
-    database.entryProgress.toArray(),
-    database.exerciseHistory.toArray(),
-  ]);
-
-  const removedProgress = progress.filter(
-    (row) => !entryProgressSchema.safeParse(row).success,
-  ).length;
-  const removedHistory = history.filter(
-    (row) => !exerciseHistorySchema.safeParse(row).success,
-  ).length;
-
-  return {
-    removedProgress,
-    removedHistory,
-    ok: removedProgress === 0 && removedHistory === 0,
-  };
+  return (await planRepair(database)).report;
 }
 
 /**
- * Database repair (§17): drops rows that no longer satisfy their schema, which is what
- * lets a learner recover from a partially corrupted database without losing everything.
+ * Database repair (§17): drops rows that no longer satisfy their schema, and rows for entries
+ * the vocabulary no longer has, which is what lets a learner recover from a partially
+ * corrupted database without losing everything.
  *
  * §24 forbids deleting progress silently, so this is deliberately awkward to reach: the
  * caller previews with `inspectRepair`, confirms, and gets a full export back as a backup
@@ -392,26 +439,11 @@ export async function repairDatabase(
   database: VocabularyLearningDatabase = db,
 ): Promise<RepairReport & { readonly backup: string }> {
   const backup = await exportProgress(database);
+  const { report, keys } = await planRepair(database);
 
-  const [progress, history] = await Promise.all([
-    database.entryProgress.toArray(),
-    database.exerciseHistory.toArray(),
-  ]);
-
-  const badProgress = progress.filter((row) => !entryProgressSchema.safeParse(row).success);
-  const badHistory = history.filter((row) => !exerciseHistorySchema.safeParse(row).success);
-
-  if (badProgress.length > 0) {
-    await database.entryProgress.bulkDelete(badProgress.map((row) => row.entryId));
-  }
-  if (badHistory.length > 0) {
-    await database.exerciseHistory.bulkDelete(badHistory.map((row) => row.id));
+  for (const store of Object.keys(keys) as RepairStore[]) {
+    if (keys[store].length > 0) await database.table(store).bulkDelete([...keys[store]]);
   }
 
-  return {
-    removedProgress: badProgress.length,
-    removedHistory: badHistory.length,
-    ok: badProgress.length === 0 && badHistory.length === 0,
-    backup: JSON.stringify(backup, null, 2),
-  };
+  return { ...report, backup: JSON.stringify(backup, null, 2) };
 }

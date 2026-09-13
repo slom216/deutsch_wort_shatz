@@ -2,7 +2,7 @@
  * Vocabulary registry — the single entry point the application uses to reach content.
  *
  * Nothing here is imported eagerly. Each frequency band is a separate dynamic import,
- * so a session that studies "A1 Core 1" never downloads the 6,000 B1 entries (§29).
+ * so a session that studies "A1 Core 1" never downloads the B1 entries (§29).
  * Loaded bands and the search index are memoized for the lifetime of the page.
  *
  * The `generated/` directory is produced by `npm run build:content` from `data/*.json`.
@@ -96,8 +96,8 @@ export async function loadLevel(level: CefrLevel): Promise<readonly VocabularyEn
 /**
  * Entry id → band, built once from the index.
  *
- * A review session looks up 40 entries; a linear scan of 10,000 records each time is
- * 400,000 comparisons before the first question appears.
+ * A review session looks up 40 entries; a linear scan of every record each time is
+ * over 100,000 comparisons before the first question appears.
  */
 let bandByEntryId: Map<string, string> | null = null;
 

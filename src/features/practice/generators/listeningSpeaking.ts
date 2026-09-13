@@ -8,6 +8,7 @@ import {
   firstExample,
   headword,
   isPhraseEntry,
+  lookalikeWords,
   primaryEnglish,
   strictnessFor,
 } from './entryHelpers';
@@ -62,7 +63,8 @@ export function generateListening(
         requiresTypedInput: false,
         prompt: 'Listen, then choose the English meaning.',
         strictness: englishStrictness(entry),
-        spokenText: entry.german,
+        // The noun is spoken with its article, as it is taught (§14).
+        spokenText: headword(entry),
         mode: 'chooseEnglish',
         options,
         correctIndex: options.indexOf(correct),
@@ -73,15 +75,17 @@ export function generateListening(
     case 'typeGerman': {
       const accepted = acceptedGerman(entry);
       if (accepted.length === 0) return null;
+      const lookalikes = lookalikeWords(entry, pool, accepted);
       return {
         ...base,
         isProduction: true,
         requiresTypedInput: true,
         prompt: 'Listen, then type what you hear in German.',
         strictness: strictnessFor(entry),
-        spokenText: entry.german,
+        spokenText: headword(entry),
         mode: 'typeGerman',
         acceptedAnswers: accepted,
+        ...(lookalikes.length > 0 ? { otherWords: lookalikes } : {}),
         canonicalAnswer: headword(entry),
       };
     }

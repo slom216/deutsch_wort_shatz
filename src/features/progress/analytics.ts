@@ -6,7 +6,7 @@ import {
 } from '@/content/vocabulary/frequencyBands';
 import type { EntryProgress, ExerciseHistory } from '@/schemas/progressSchema';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
-import { localDateKey } from '@/features/srs/localDate';
+import { addDays, localDateKey, startOfLocalDay } from '@/features/srs/localDate';
 import { masteryTarget } from '@/features/srs/learningMode';
 
 /**
@@ -72,8 +72,7 @@ function buildBreakdown(
     if (progress) {
       bucket.introduced += 1;
       const mastered = progress.srs.status === 'mastered';
-      // Mastered entries count as practised even when §22 evidence, not the score, got
-      // them there — otherwise the stacked meter could show mastery beyond practice.
+      // Mastered entries count as practised whatever their score — otherwise the stacked meter could show mastery beyond practice.
       if (progress.masteryScore > 0 || mastered) bucket.practised += 1;
       if (mastered) bucket.mastered += 1;
       bucket.points += pointsOf(progress);
@@ -93,8 +92,7 @@ function buildBreakdown(
       practisedFraction: bucket.total === 0 ? 0 : bucket.practised / bucket.total,
       masteredFraction: bucket.total === 0 ? 0 : bucket.mastered / bucket.total,
       points: bucket.points,
-      pointsFraction:
-        bucket.total === 0 ? 0 : bucket.points / (bucket.total * masteryTarget()),
+      pointsFraction: bucket.total === 0 ? 0 : bucket.points / (bucket.total * masteryTarget()),
     }))
     .sort((a, b) => b.introduced - a.introduced || a.label.localeCompare(b.label));
 }
@@ -264,11 +262,13 @@ export function activitySummary(
 ): ActivityDay[] {
   const buckets = new Map<string, { exercises: number; correct: number }>();
   for (let offset = days - 1; offset >= 0; offset -= 1) {
-    const date = new Date(now.getTime() - offset * 86_400_000);
-    buckets.set(localDateKey(date), { exercises: 0, correct: 0 });
+    buckets.set(localDateKey(addDays(now, -offset)), { exercises: 0, correct: 0 });
   }
 
+  // ISO timestamps sort as strings, so older rows are dropped without parsing a Date.
+  const cutoff = startOfLocalDay(addDays(now, -(days - 1))).toISOString();
   for (const row of history) {
+    if (row.answeredAt < cutoff) continue;
     const key = localDateKey(new Date(row.answeredAt));
     const bucket = buckets.get(key);
     if (!bucket) continue;
@@ -297,28 +297,38 @@ export function overallStats(
   progress: readonly EntryProgress[],
   history: readonly ExerciseHistory[],
 ): OverallStats {
+  // One pass over each table: history can run to hundreds of thousands of rows.
   const totalAttempts = history.length;
-  const totalCorrect = history.filter((row) => row.correct).length;
-  const firstAttemptCorrect = history.filter(
-    (row) => row.correct && row.firstAttempt && !row.revealed,
-  ).length;
+  let totalCorrect = 0;
+  let firstAttemptCorrect = 0;
+  let totalMs = 0;
+  const sessions = new Set<string>();
+  for (const row of history) {
+    if (row.correct) {
+      totalCorrect += 1;
+      if (row.firstAttempt && !row.revealed) firstAttemptCorrect += 1;
+    }
+    totalMs += row.responseMs;
+    sessions.add(row.sessionId);
+  }
+
+  const byStatus = { learning: 0, review: 0, mastered: 0 };
+  for (const p of progress) {
+    if (p.srs.status === 'learning' || p.srs.status === 'relearning') byStatus.learning += 1;
+    else if (p.srs.status === 'review') byStatus.review += 1;
+    else if (p.srs.status === 'mastered') byStatus.mastered += 1;
+  }
 
   return {
     introduced: progress.length,
-    learning: progress.filter((p) => p.srs.status === 'learning' || p.srs.status === 'relearning')
-      .length,
-    review: progress.filter((p) => p.srs.status === 'review').length,
-    mastered: progress.filter((p) => p.srs.status === 'mastered').length,
+    ...byStatus,
     totalAttempts,
     totalCorrect,
     firstAttemptCorrect,
     accuracy: totalAttempts === 0 ? 0 : totalCorrect / totalAttempts,
     firstAttemptAccuracy: totalAttempts === 0 ? 0 : firstAttemptCorrect / totalAttempts,
-    averageResponseMs:
-      totalAttempts === 0
-        ? 0
-        : history.reduce((sum, row) => sum + row.responseMs, 0) / totalAttempts,
-    sessions: new Set(history.map((row) => row.sessionId)).size,
+    averageResponseMs: totalAttempts === 0 ? 0 : totalMs / totalAttempts,
+    sessions: sessions.size,
   };
 }
 

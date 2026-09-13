@@ -37,7 +37,7 @@ export function AppHeader(): ReactNode {
     <header className="app-header">
       <div className="app-header__inner">
         <Link className="app-brand" to="/">
-          Deu<span className="app-brand__accent">Lern</span> Wortschatz
+          Deu<span className="app-brand__accent">Lern</span> Deutsch Wortschatz
           <span className="app-brand__subtitle">German vocabulary, A1–B1</span>
         </Link>
 

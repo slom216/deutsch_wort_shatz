@@ -34,6 +34,8 @@ export interface ExerciseOutcome {
   readonly revealed: boolean;
   readonly hintUsed: boolean;
   readonly responseMs: number;
+  /** True when the learner marked the answer themselves instead of the app checking it. */
+  readonly selfAssessed?: boolean;
 }
 
 /** Only typed answers can be a near miss; a picked option is either right or wrong. */
@@ -93,6 +95,8 @@ export function ExerciseRunner({
   const [attempts, setAttempts] = useState(0);
   const [nearMiss, setNearMiss] = useState<EvaluationResult | null>(null);
   const startedAt = useRef(Date.now());
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const nextRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     setResult(null);
@@ -141,8 +145,25 @@ export function ExerciseRunner({
       revealed,
       hintUsed: hintShown,
       responseMs: Date.now() - startedAt.current,
+      selfAssessed: result.selfAssessed === true,
     });
   }, [result, onComplete, exercise, revealed, hintShown, attempts]);
+
+  // Keep keyboard focus in the exercise: on Continue once answered, so Enter and Tab carry
+  // on from there, and on the first control of each new exercise. Left on <body>, Tab
+  // would start over at the skip link. Runs again when `locked` resets for a new exercise,
+  // because until then the previous answer has the new controls disabled.
+  useEffect(() => {
+    if (locked) {
+      nextRef.current?.focus();
+      return;
+    }
+    sectionRef.current
+      ?.querySelector<HTMLElement>(
+        '.exercise input:not(:disabled), .exercise button:not(:disabled), .exercise [tabindex="0"]',
+      )
+      ?.focus();
+  }, [exercise.id, locked]);
 
   // Enter continues once the exercise is answered, so a whole session runs from the keyboard.
   useEffect(() => {
@@ -167,7 +188,7 @@ export function ExerciseRunner({
   }, [locked, advance]);
 
   return (
-    <section className="runner" aria-label="Exercise">
+    <section className="runner" aria-label="Exercise" ref={sectionRef}>
       {progressLabel ? <p className="runner__progress">{progressLabel}</p> : null}
 
       {renderExercise({
@@ -241,7 +262,7 @@ export function ExerciseRunner({
         ) : null}
 
         {locked ? (
-          <button type="button" className="runner__next" onClick={advance}>
+          <button type="button" className="runner__next" onClick={advance} ref={nextRef}>
             Continue <span aria-hidden="true">(Enter)</span>
           </button>
         ) : null}

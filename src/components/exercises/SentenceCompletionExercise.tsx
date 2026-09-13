@@ -39,6 +39,7 @@ export function SentenceCompletionExercise({
     onSubmit(
       evaluateAnswer(value, exercise.acceptedAnswers, {
         strictness: exercise.strictness,
+        otherWords: exercise.otherWords,
         language: exercise.answerLanguage,
         answerRole: answerRole(exercise.variant),
       }),
