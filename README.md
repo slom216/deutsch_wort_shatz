@@ -203,3 +203,8 @@ exported or deleted by the learner. Repairing the database exports a backup firs
 for confirmation, because repair deletes unreadable rows (§24). Speaking exercises use the
 browser's speech recognition; the app does not record or store voice, and browser behaviour
 varies — processing is **not** guaranteed to be local.
+
+## Disclaimer
+
+This app and its content were built with the help of AI. It may contain errors.
+Every error we identify will be fixed. If you spot one, write to hallo@deulern.com.

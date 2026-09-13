@@ -75,7 +75,8 @@ export function AppFooter(): ReactNode {
             DeuLern
           </a>{' '}
           — free apps for learning German grammar, vocabulary and verbs. No account, no tracking;
-          everything you answer stays in this browser.
+          everything you answer stays in this browser. Built with the help of AI, so there may be
+          errors; every one we find gets fixed.
         </p>
       </div>
     </footer>
