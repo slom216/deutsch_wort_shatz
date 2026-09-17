@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/app/ErrorBoundary';
+import { seoForPath } from '@/app/seo';
 import { focusPageHeading } from '@/components/common/PageHeader';
 import { AppHeader } from './AppHeader';
 import { AppFooter } from './AppFooter';
@@ -26,6 +27,34 @@ export function AppShell(): ReactNode {
       return;
     }
     focusPageHeading();
+  }, [pathname]);
+
+  // Canonical and robots for the current route. index.html ships neither, and it is
+  // the same file for every URL — so until this runs, every deep link looks to a
+  // crawler like a copy of the last one. Google renders the app before indexing, so
+  // the tags written here are the ones it reads.
+  useEffect(() => {
+    const { canonical, index } = seoForPath(pathname);
+
+    let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.append(link);
+    }
+    link.href = canonical;
+
+    const robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (index) {
+      robots?.remove();
+      return;
+    }
+    // follow, not none: these screens are dead ends for the index but their links
+    // still lead to pages that are not.
+    const meta = robots ?? document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex, follow';
+    if (!robots) document.head.append(meta);
   }, [pathname]);
 
   // Exercise screens get a compact header on phones, so the answer controls fit above the
