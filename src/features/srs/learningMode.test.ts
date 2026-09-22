@@ -17,7 +17,7 @@ describe('learning modes', () => {
   });
 
   it('opens every mode on recognition and closes on typed production', () => {
-    for (const mode of LEARNING_MODES) {
+    for (const mode of LEARNING_MODES.filter((m) => m !== 'ultraFast')) {
       const ladder = ladderForTarget(masteryTarget(mode));
       expect(ladder[0]).toEqual({ type: 'multipleChoice', variant: 'germanToEnglish' });
       // §19's floors: no mode may call a word learned on recognition alone.
@@ -29,9 +29,16 @@ describe('learning modes', () => {
     }
   });
 
+  it('keeps ultra fast to multiple choice in both directions', () => {
+    expect(ladderForTarget(2)).toEqual([
+      { type: 'multipleChoice', variant: 'germanToEnglish' },
+      { type: 'multipleChoice', variant: 'englishToGerman' },
+    ]);
+  });
+
   it('clamps the format to the last rung of a shorter ladder', () => {
     // Ultra fast has two rungs; a word carried over at score 3 must not read past the end.
-    expect(formatForScore(3, 2)).toEqual({ type: 'typedTranslation', variant: 'englishToGerman' });
+    expect(formatForScore(3, 2)).toEqual({ type: 'multipleChoice', variant: 'englishToGerman' });
     expect(formatForScore(-1, 2)).toEqual({ type: 'multipleChoice', variant: 'germanToEnglish' });
   });
 

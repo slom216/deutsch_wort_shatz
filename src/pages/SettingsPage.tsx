@@ -17,7 +17,7 @@ const LEARNING_MODE_HINTS: Readonly<Record<LearningMode, string>> = {
     'Four clean answers, walking the full ladder: recognise it both ways, then type it both ways.',
   fast: 'Three clean answers. Drops the last rung — you still type the German at least once.',
   ultraFast:
-    'Two clean answers: recognise the meaning, then type the German. The quickest way through the vocabulary, and the shallowest.',
+    'Two clean answers, no typing: pick the English from six choices, then the German. The quickest way through the vocabulary, and the shallowest.',
 };
 
 /**

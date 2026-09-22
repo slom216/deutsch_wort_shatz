@@ -62,9 +62,8 @@ export function requeueOffset(input: RequeueInput, random: Random): number | nul
  *   3  German shown, type the English meaning
  *
  * Reaching the mode's target is mastery: the word leaves the stream and the SRS schedules
- * it. The faster modes climb a shorter ladder — rungs are dropped from the middle rather
- * than the end, so every mode still opens on recognition and still demands one typed
- * production before it calls a word learned.
+ * it. Fast drops the last rung but still demands one typed production. Ultra fast is
+ * recognition only: the first two rungs, six choices each way, no typing.
  */
 export interface ExerciseFormat {
   readonly type: 'multipleChoice' | 'typedTranslation';
@@ -85,7 +84,7 @@ export const SCORE_FORMATS: readonly ExerciseFormat[] = [
 
 /** The ladder for a mastery target: one rung per score below it. */
 export function ladderForTarget(target: number = masteryTarget()): readonly ExerciseFormat[] {
-  if (target <= 2) return [MC_DE_EN, TYPED_EN_DE];
+  if (target <= 2) return [MC_DE_EN, MC_EN_DE];
   if (target === 3) return [MC_DE_EN, MC_EN_DE, TYPED_EN_DE];
   return SCORE_FORMATS;
 }
