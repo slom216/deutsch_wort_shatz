@@ -205,7 +205,7 @@ export default function ProgressPage(): ReactNode {
       <BreakdownSection
         id="by-class"
         title="Progress by word class"
-        rows={progressByWordClass(index, byEntry).slice(0, 10)}
+        rows={progressByWordClass(index, byEntry)}
       />
       <BreakdownSection
         id="by-topic"

@@ -161,8 +161,19 @@ export function progressByWordClass(
   records: readonly VocabularyIndexRecord[],
   progressByEntry: ReadonlyMap<string, EntryProgress>,
 ): Breakdown[] {
-  return buildBreakdown(records, progressByEntry, (record) => record.wordClass);
+  // Nouns are split by gender: one "noun" row would hold half the vocabulary.
+  return buildBreakdown(records, progressByEntry, (record) =>
+    record.wordClass === 'noun'
+      ? (NOUN_GENDER[record.article ?? ''] ?? 'proper noun')
+      : record.wordClass,
+  );
 }
+
+const NOUN_GENDER: Record<string, string> = {
+  der: 'noun · der (masculine)',
+  die: 'noun · die (feminine)',
+  das: 'noun · das (neuter)',
+};
 
 /** Topics the learner has started but performs worst on — the dashboard's weak spots. */
 export function weakestTopics(

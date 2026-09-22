@@ -245,6 +245,8 @@ export const vocabularyIndexRecordSchema = z.object({
   german: z.string(),
   english: z.array(z.string()),
   wordClass: wordClassSchema,
+  /** Nouns only: lets progress split nouns by gender without loading the band bundles. */
+  article: z.enum(['der', 'die', 'das']).nullable().optional(),
   primaryTopic: topicSchema,
   frequencyBand: z.string(),
   difficultyWeight: z.number(),

@@ -75,6 +75,7 @@ function main() {
     german: entry.german,
     english: entry.english,
     wordClass: entry.wordClass,
+    ...(entry.wordClass === 'noun' && { article: entry.article }),
     primaryTopic: entry.primaryTopic,
     frequencyBand: entry.frequencyBand,
     difficultyWeight: entry.difficultyWeight,
