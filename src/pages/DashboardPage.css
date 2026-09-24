@@ -1,0 +1,344 @@
+/* Dashboard — the poster page (see the DeuLern mockup). */
+
+/* ---- hero: copy on the left, the vocabulary collage at native size on the right ---- */
+.dash-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-3);
+}
+
+.dash-hero__eyebrow {
+  margin-bottom: var(--space-2);
+  font-size: 0.75rem;
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Outfit 800, very tight, the second line in red. */
+.dash-hero__poster {
+  font-family: var(--font-display);
+  font-size: var(--text-poster);
+  font-weight: var(--weight-display);
+  line-height: 0.96;
+  letter-spacing: var(--tracking-display);
+  text-wrap: wrap;
+}
+
+.dash-hero__accent {
+  color: var(--color-headline-accent);
+}
+
+/* The page's own h1, set smaller under the poster line. */
+.dash-hero .page-header {
+  margin: var(--space-1) 0 0;
+}
+
+.dash-hero .page-header__text {
+  gap: 2px;
+}
+
+.dash-hero h1 {
+  font-size: var(--text-3xl);
+}
+
+.dash-hero .page-header__description {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.dash-hero__art {
+  width: 507px;
+  max-width: none;
+  margin-top: calc(-1 * var(--space-4));
+}
+
+/* ---- the panel: a lifted sheet with a cut-paper strip at its left edge ---- */
+.poster-panel {
+  position: relative;
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-5) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+}
+
+.poster-panel > h2 {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-2xl);
+}
+
+.poster-panel__strip {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}
+
+/* ---- continue learning ---- */
+.dash-continue__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.dash-continue__actions .exercise__submit {
+  margin-top: 0;
+}
+
+.dash-continue__actions .page-action {
+  margin-left: 0;
+}
+
+/* ---- Word Wizard + the seven figures, one panel ---- */
+.wizard-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-bottom: var(--space-2);
+}
+
+/* 640px art shown at 184px: always a downscale, square, never stretched. */
+.wizard-card__art {
+  width: 184px;
+  height: 184px;
+  border: 1px solid var(--color-text);
+}
+
+.wizard-card__body {
+  flex: 1 1 16rem;
+  min-width: 13rem;
+  padding-top: var(--space-1);
+}
+
+.wizard-card__body h2 {
+  font-size: var(--text-2xl);
+}
+
+.wizard-card__level {
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+}
+
+.wizard-card__xp {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-display);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+}
+
+.wizard-card__xp span {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-normal);
+}
+
+.wizard-card__meter {
+  height: 14px;
+  margin-top: var(--space-2);
+  background: var(--color-meter-track);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.wizard-card__meter span {
+  display: block;
+  height: 100%;
+  background: var(--color-mustard);
+  transition: width 700ms ease-out;
+}
+
+.wizard-card__hint {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.wizard-card__hint strong {
+  font-weight: var(--weight-normal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wizard-card__meter span {
+    transition: none;
+  }
+}
+
+.dash-rank .stat-grid {
+  margin: 0;
+}
+
+/* ---- today ---- */
+.dash-today {
+  padding-right: calc(var(--space-5) + 48px);
+}
+
+.dash-today .meter--goal {
+  height: 12px;
+}
+
+.dash-today .meter--goal span {
+  background: var(--color-mustard);
+}
+
+.dash-today__done {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ---- the three columns ---- */
+.dash-columns {
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.dash-columns > .poster-panel {
+  margin-bottom: 0;
+}
+
+.dash-columns .poster-panel > h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+.dash-levels {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+}
+
+.dash-levels a {
+  font-weight: var(--weight-display);
+  text-decoration: none;
+}
+
+.dash-levels .meter {
+  height: 10px;
+}
+
+/* Practised blue, mastered ink on top of it. */
+.dash-columns .meter__practised,
+.dash-columns .meter-legend__practised {
+  background: var(--color-primary);
+}
+
+.dash-columns .meter__mastered,
+.dash-columns .meter-legend__mastered {
+  background: var(--color-text);
+}
+
+/* Numbered, ruled rows: the rank in blue, the word as a link. */
+.rank-list {
+  list-style: none;
+  counter-reset: rank;
+  padding: 0;
+  font-size: var(--text-sm);
+}
+
+.rank-list li {
+  counter-increment: rank;
+  position: relative;
+  padding: var(--space-2) 0 var(--space-2) 2em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rank-list li:last-child {
+  border-bottom: 0;
+}
+
+.rank-list li::before {
+  content: counter(rank) '.';
+  position: absolute;
+  left: 0;
+  font-weight: var(--weight-display);
+  color: var(--color-primary);
+}
+
+/* ---- recent achievements ---- */
+.achievement-row {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) 0;
+}
+
+.achievement-row li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-inline: 0 var(--space-6);
+  margin-right: var(--space-5);
+  border-right: 1px solid var(--color-border-strong);
+}
+
+.achievement-row li:last-child {
+  border-right: 0;
+}
+
+.achievement-row a {
+  display: block;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-decoration: none;
+}
+
+.achievement-row a:hover {
+  color: var(--color-headline-accent);
+}
+
+.achievement-row__date {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ---- narrower sheets ---- */
+@media (max-width: 62rem) {
+  .dash-hero__art {
+    width: 380px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 48rem) {
+  .dash-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dash-hero__art {
+    width: min(100%, 507px);
+    margin: 0 auto;
+  }
+
+  .poster-panel {
+    padding-inline: var(--space-4);
+  }
+
+  .poster-panel__strip {
+    display: none;
+  }
+
+  .wizard-card__art {
+    width: 128px;
+    height: 128px;
+  }
+
+  .achievement-row li {
+    border-right: 0;
+    padding-right: 0;
+  }
+}

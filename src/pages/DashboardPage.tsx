@@ -15,10 +15,30 @@ import { useSettingsStore } from '@/features/settings/settingsStore';
 import { useGamification } from '@/features/gamification/useGamification';
 import { AVATAR_SIZE, avatarSrc, MAX_AVATAR_LEVEL } from '@/features/gamification/xp';
 import type { VocabularyIndexRecord } from '@/schemas/vocabularySchema';
+import { AchievementBadge } from '@/components/gamification/AchievementBadge';
+import heroArt from '@/assets/art/hero-vocabulary.webp';
+import redTall from '@/assets/art/red-tall.png';
+import blueTall from '@/assets/art/blue-tall.png';
+import redSmall from '@/assets/art/red-small.png';
+import yellowSmall from '@/assets/art/yellow-small.png';
+import blueSmall from '@/assets/art/blue-small.png';
+import goalComplete from '@/assets/art/goal-complete.png';
+import reviewsDueIcon from '@/assets/art/reviews-due.png';
+import wordsStartedIcon from '@/assets/art/words-started.png';
+import inLearningIcon from '@/assets/art/in-learning.png';
+import masteredIcon from '@/assets/art/mastered.png';
+import newWordsIcon from '@/assets/art/new-words.png';
+import totalXpIcon from '@/assets/art/total-xp.png';
+import streakIcon from '@/assets/art/streak.png';
 import '@/components/exercises/exercises.css';
 import '@/styles/lists.css';
-import './SettingsPage.css';
 import './AchievementsPage.css';
+import './DashboardPage.css';
+
+/** A cut-paper strip pinned to a panel's left edge. Decorative, drawn at native size. */
+function Strip({ src }: { readonly src: string }): ReactNode {
+  return <img className="poster-panel__strip" src={src} alt="" />;
+}
 
 /**
  * Dashboard (§6).
@@ -79,10 +99,22 @@ export default function DashboardPage(): ReactNode {
 
   return (
     <>
-      <PageHeader
-        title="Dashboard"
-        description="Your German vocabulary at a glance. Everything is stored in this browser."
-      />
+      <div className="dash-hero">
+        <div className="dash-hero__copy">
+          <p className="dash-hero__eyebrow">A1–B1 German vocabulary</p>
+          <p className="dash-hero__poster">
+            Your words,
+            <br />
+            <span className="dash-hero__accent">your world.</span>
+          </p>
+          <PageHeader
+            title="Dashboard"
+            description="Your German vocabulary at a glance. Everything is stored in this browser."
+          />
+        </div>
+        {/* The four words printed in the art (Wort, Sprache, Ideen, Welt) are decoration. */}
+        <img className="dash-hero__art" src={heroArt} alt="" width={507} height={252} />
+      </div>
 
       {contentError ? (
         <p role="alert" className="page-alert">
@@ -100,7 +132,8 @@ export default function DashboardPage(): ReactNode {
         stream, which mixes due reviews with new words itself — the dashboard does not have
         to decide which of the two the learner needs.
       */}
-      <section className="settings-section" aria-labelledby="dash-continue">
+      <section className="poster-panel dash-continue" aria-labelledby="dash-continue">
+        <Strip src={redTall} />
         <h2 id="dash-continue">Continue learning</h2>
         <p>
           {loading
@@ -111,96 +144,117 @@ export default function DashboardPage(): ReactNode {
                 ? 'Nothing started yet. Words arrive one after another — stop whenever you like.'
                 : 'Nothing due right now, so the stream will bring new words. Stop whenever you like.'}
         </p>
-        <button type="button" className="exercise__submit" onClick={startStream}>
-          {started === 0 ? 'Start learning' : 'Continue learning'}
-        </button>
-        {counts.due > 0 ? (
-          <button type="button" className="page-action" onClick={() => void navigate('/review')}>
-            Review only ({counts.due})
+        <div className="dash-continue__actions">
+          <button type="button" className="exercise__submit button-arrow" onClick={startStream}>
+            {started === 0 ? 'Start learning' : 'Continue learning'}
           </button>
-        ) : null}
-        <button type="button" className="page-action" onClick={() => void navigate('/practice')}>
-          Practise
-        </button>
+          {counts.due > 0 ? (
+            <button type="button" className="page-action" onClick={() => void navigate('/review')}>
+              Review only ({counts.due})
+            </button>
+          ) : null}
+          <button type="button" className="page-action" onClick={() => void navigate('/practice')}>
+            Practise
+          </button>
+        </div>
       </section>
 
-      {/* The rank card, at the size the artwork was drawn for. */}
-      {game ? (
-        <section className="wizard-card" aria-labelledby="dash-wizard">
-          <img
-            className="wizard-card__art"
-            src={avatarSrc(game.level.level)}
-            alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
-            width={AVATAR_SIZE}
-            height={AVATAR_SIZE}
-            decoding="async"
-          />
-          <div className="wizard-card__body">
-            <h2 id="dash-wizard">Word Wizard</h2>
-            <p className="wizard-card__level">Level {game.level.level}</p>
-            <p className="wizard-card__xp">
-              {game.totalXp.toLocaleString('en-US')} <span>XP</span>
-            </p>
-            <div
-              className="wizard-card__meter"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={Math.round(game.level.fraction * 100)}
-              aria-label={`Progress to level ${game.level.level + 1}`}
-            >
-              <span style={{ width: `${game.level.fraction * 100}%` }} />
+      <section className="poster-panel dash-rank" aria-labelledby="dash-wizard">
+        <Strip src={blueSmall} />
+        {/* The rank card, downscaled from its 640px original — never stretched. */}
+        {game ? (
+          <div className="wizard-card">
+            <img
+              className="wizard-card__art"
+              src={avatarSrc(game.level.level)}
+              alt={`Word Wizard rank card, level ${Math.min(game.level.level, MAX_AVATAR_LEVEL)}`}
+              width={AVATAR_SIZE}
+              height={AVATAR_SIZE}
+              decoding="async"
+            />
+            <div className="wizard-card__body">
+              <h2 id="dash-wizard">Word Wizard</h2>
+              <p className="wizard-card__level">Level {game.level.level}</p>
+              <p className="wizard-card__xp">
+                {game.totalXp.toLocaleString('en-US')} <span>XP</span>
+              </p>
+              <div
+                className="wizard-card__meter"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(game.level.fraction * 100)}
+                aria-label={`Progress to level ${game.level.level + 1}`}
+              >
+                <span style={{ width: `${game.level.fraction * 100}%` }} />
+              </div>
+              <p className="wizard-card__hint">
+                {game.level.xpIntoLevel.toLocaleString('en-US')} XP into this level ·{' '}
+                <strong>{game.level.xpForNextLevel.toLocaleString('en-US')} XP</strong> to level{' '}
+                {game.level.level + 1}
+              </p>
             </div>
-            <p className="wizard-card__hint">
-              {game.level.xpIntoLevel.toLocaleString('en-US')} XP into this level ·{' '}
-              <strong>{game.level.xpForNextLevel.toLocaleString('en-US')} XP</strong> to level{' '}
-              {game.level.level + 1}
-            </p>
           </div>
-        </section>
-      ) : null}
+        ) : (
+          <h2 id="dash-wizard" className="visually-hidden">
+            Word Wizard
+          </h2>
+        )}
 
-      <dl className="stat-grid stat-grid--seven">
-        <StatCard
-          label="Reviews due"
-          value={loading ? '—' : counts.due}
-          hint={counts.overdue > 0 ? `${counts.overdue} overdue` : 'Nothing overdue'}
-        />
-        <StatCard
-          label="Words started"
-          value={loading ? '—' : started}
-          hint={`of ${manifest ? manifest.totalEntries.toLocaleString('en-US') : '—'}`}
-        />
-        <StatCard
-          label="In learning"
-          value={loading ? '—' : counts.learning}
-          hint="Short intervals"
-        />
-        <StatCard label="Mastered" value={loading ? '—' : counts.mastered} hint="Long intervals" />
-        <StatCard
-          label="New words available"
-          value={loading ? '—' : counts.newAvailable.toLocaleString('en-US')}
-          hint="Not yet introduced"
-        />
-        <StatCard
-          label="Total XP"
-          value={game ? game.totalXp.toLocaleString('en-US') : '—'}
-          hint={game ? `Level ${game.level.level}` : 'Change your goal in Settings'}
-        />
-        <StatCard
-          label="Streak"
-          value={game ? `${game.streak.current} day${game.streak.current === 1 ? '' : 's'}` : '—'}
-          hint={
-            game
-              ? game.streak.todayCounts
-                ? 'Today already counts'
-                : 'Today does not count yet'
-              : ''
-          }
-        />
-      </dl>
+        <dl className="stat-grid stat-grid--seven">
+          <StatCard
+            icon={reviewsDueIcon}
+            label="Reviews due"
+            value={loading ? '—' : counts.due}
+            hint={counts.overdue > 0 ? `${counts.overdue} overdue` : 'Nothing overdue'}
+          />
+          <StatCard
+            icon={wordsStartedIcon}
+            label="Words started"
+            value={loading ? '—' : started}
+            hint={`of ${manifest ? manifest.totalEntries.toLocaleString('en-US') : '—'}`}
+          />
+          <StatCard
+            icon={inLearningIcon}
+            label="In learning"
+            value={loading ? '—' : counts.learning}
+            hint="Short intervals"
+          />
+          <StatCard
+            icon={masteredIcon}
+            label="Mastered"
+            value={loading ? '—' : counts.mastered}
+            hint="Long intervals"
+          />
+          <StatCard
+            icon={newWordsIcon}
+            label="New words available"
+            value={loading ? '—' : counts.newAvailable.toLocaleString('en-US')}
+            hint="Not yet introduced"
+          />
+          <StatCard
+            icon={totalXpIcon}
+            label="Total XP"
+            value={game ? game.totalXp.toLocaleString('en-US') : '—'}
+            hint={game ? `Level ${game.level.level}` : 'Change your goal in Settings'}
+          />
+          <StatCard
+            icon={streakIcon}
+            label="Streak"
+            value={game ? `${game.streak.current} day${game.streak.current === 1 ? '' : 's'}` : '—'}
+            hint={
+              game
+                ? game.streak.todayCounts
+                  ? 'Today already counts'
+                  : 'Today does not count yet'
+                : ''
+            }
+          />
+        </dl>
+      </section>
 
-      <section className="settings-section" aria-labelledby="dash-today">
+      <section className="poster-panel dash-today" aria-labelledby="dash-today">
+        <Strip src={blueTall} />
         <h2 id="dash-today">Today</h2>
         <p>
           {game
@@ -220,12 +274,16 @@ export default function DashboardPage(): ReactNode {
             <span style={{ width: `${game.dailyGoal.fraction * 100}%` }} />
           </div>
         ) : null}
+        {game?.dailyGoal.met ? (
+          <img className="dash-today__done" src={goalComplete} alt="" width={36} height={36} />
+        ) : null}
       </section>
 
-      <div className="dashboard-columns">
-        <section className="settings-section" aria-labelledby="dash-levels">
+      <div className="dashboard-columns dash-columns">
+        <section className="poster-panel" aria-labelledby="dash-levels">
+          <Strip src={redSmall} />
           <h2 id="dash-levels">Progress by level</h2>
-          <ul className="example-list">
+          <ul className="dash-levels">
             {(['A1', 'A2', 'B1'] as const).map((level) => {
               const row = levels.find((entry) => entry.key === level);
               const total = row?.total ?? manifest?.entriesByLevel[level];
@@ -265,14 +323,15 @@ export default function DashboardPage(): ReactNode {
           </p>
         </section>
 
-        <section className="settings-section" aria-labelledby="dash-hardest">
+        <section className="poster-panel" aria-labelledby="dash-hardest">
+          <Strip src={yellowSmall} />
           <h2 id="dash-hardest">Hardest words</h2>
           {hardestFive.length === 0 ? (
             <p className="band-summary">
               Nothing yet — this fills in once you have answered a few exercises.
             </p>
           ) : (
-            <ul className="example-list">
+            <ol className="rank-list">
               {hardestFive.map((entry) => (
                 <li key={entry.entryId}>
                   <Link to={`/word/${entry.entryId}`} lang="de">
@@ -281,18 +340,19 @@ export default function DashboardPage(): ReactNode {
                   — difficulty {entry.srs.difficulty.toFixed(2)}
                 </li>
               ))}
-            </ul>
+            </ol>
           )}
         </section>
 
-        <section className="settings-section" aria-labelledby="dash-weakest">
+        <section className="poster-panel" aria-labelledby="dash-weakest">
+          <Strip src={blueSmall} />
           <h2 id="dash-weakest">Weakest topics</h2>
           {weakest.length === 0 ? (
             <p className="band-summary">
               Nothing yet — this fills in once you have studied words across a few topics.
             </p>
           ) : (
-            <ul className="example-list">
+            <ol className="rank-list">
               {weakest.map((topic) => (
                 <li key={topic.topic}>
                   {isTopic(topic.topic) ? (
@@ -304,28 +364,34 @@ export default function DashboardPage(): ReactNode {
                   {topic.entries === 1 ? 'y' : 'ies'}
                 </li>
               ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="settings-section" aria-labelledby="dash-achievements">
-          <h2 id="dash-achievements">Recent achievements</h2>
-          {recentAchievements.length === 0 ? (
-            <p className="band-summary">
-              None yet. <Link to="/achievements">See what you can unlock</Link>.
-            </p>
-          ) : (
-            <ul className="example-list">
-              {recentAchievements.map((status) => (
-                <li key={status.definition.id}>
-                  <Link to="/achievements">{status.definition.name}</Link> —{' '}
-                  {localDateKey(new Date(status.unlockedAt as string))}
-                </li>
-              ))}
-            </ul>
+            </ol>
           )}
         </section>
       </div>
+
+      <section className="poster-panel" aria-labelledby="dash-achievements">
+        <Strip src={redSmall} />
+        <h2 id="dash-achievements">Recent achievements</h2>
+        {recentAchievements.length === 0 ? (
+          <p className="band-summary">
+            None yet. <Link to="/achievements">See what you can unlock</Link>.
+          </p>
+        ) : (
+          <ul className="achievement-row">
+            {recentAchievements.map((status) => (
+              <li key={status.definition.id}>
+                <AchievementBadge id={status.definition.id} />
+                <span>
+                  <Link to="/achievements">{status.definition.name}</Link>
+                  <span className="achievement-row__date">
+                    {localDateKey(new Date(status.unlockedAt as string))}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </>
   );
 }

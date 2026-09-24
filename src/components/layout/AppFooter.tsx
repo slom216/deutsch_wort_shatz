@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
+import staircase from '@/assets/art/footer-staircase.webp';
 import './AppFooter.css';
 
 interface FooterGroup {
@@ -42,12 +43,28 @@ const DEULERN_LINKS: readonly { readonly href: string; readonly label: string }[
   { href: 'https://verben.deulern.com', label: 'Deutsch Verben Meister' },
 ];
 
-/** Site footer, shared in shape and colour with the rest of the DeuLern suite. */
+/**
+ * Site footer on the poster paper: the note, ruled link columns, and the staircase art
+ * pinned to the sheet's bottom-right corner.
+ */
 export function AppFooter(): ReactNode {
   return (
     <footer className="app-footer">
       <div className="app-footer__inner">
-        <div className="app-footer__groups">
+        <div className="app-footer__body">
+          <div className="app-footer__about">
+            <p className="app-footer__brand">DeuLern</p>
+            <p className="app-footer__note">
+              DeuLern Deutsch Wortschatz is part of{' '}
+              <a href="https://deulern.com" rel="noopener">
+                DeuLern
+              </a>{' '}
+              — free apps for learning German grammar, vocabulary and verbs. No account, no
+              tracking; everything you answer stays in this browser. Built with the help of AI, so
+              there may be errors; every one we find gets fixed.
+            </p>
+          </div>
+
           {GROUPS.map((group) => (
             <div key={group.heading} className="app-footer__group">
               <h2 className="app-footer__heading">{group.heading}</h2>
@@ -69,15 +86,15 @@ export function AppFooter(): ReactNode {
           </div>
         </div>
 
-        <p className="app-footer__note">
-          DeuLern Deutsch Wortschatz is part of{' '}
-          <a href="https://deulern.com" rel="noopener">
-            DeuLern
-          </a>{' '}
-          — free apps for learning German grammar, vocabulary and verbs. No account, no tracking;
-          everything you answer stays in this browser. Built with the help of AI, so there may be
-          errors; every one we find gets fixed.
-        </p>
+        {/* The caption printed in the art ("Heute ein bisschen besser") is decoration. */}
+        <img
+          className="app-footer__art"
+          src={staircase}
+          alt=""
+          width={239}
+          height={134}
+          loading="lazy"
+        />
       </div>
     </footer>
   );

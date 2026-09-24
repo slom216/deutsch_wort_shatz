@@ -77,7 +77,7 @@
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface);
   color: var(--color-primary);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   font-weight: var(--weight-semibold);
   cursor: pointer;
   margin-top: var(--space-3);

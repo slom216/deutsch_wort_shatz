@@ -163,7 +163,7 @@
   background: var(--color-primary);
   color: var(--color-surface);
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: var(--weight-semibold);
 }

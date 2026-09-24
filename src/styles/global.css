@@ -12,19 +12,26 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* The table the poster sheet lies on; only shows past --sheet. */
+  background: var(--color-table);
 }
 
+/* The page is one poster sheet: cream paper with a faint grain. */
 body {
   min-height: 100vh;
+  max-width: var(--sheet);
+  margin-inline: auto;
+  overflow-x: clip; /* edge art bleeds to the sheet edge, never past it */
   font-family: var(--font-sans);
   font-size: var(--text-base);
+  font-weight: var(--weight-normal);
   line-height: var(--leading-normal);
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background: var(--color-bg) var(--paper-grain);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Headlines are heavy, compact and confident — 800 weight, tight leading (design.md). */
+/* Outfit 800, tight: the poster's headline voice. */
 h1,
 h2,
 h3,
@@ -32,6 +39,7 @@ h4 {
   font-family: var(--font-display);
   line-height: var(--leading-tight);
   font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-tight);
   text-wrap: balance;
 }
 
@@ -57,6 +65,7 @@ p {
 
 a {
   color: var(--color-primary);
+  text-underline-offset: 0.22em;
 }
 
 button,
@@ -112,7 +121,7 @@ svg {
   padding: var(--space-2) var(--space-4);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   font-weight: var(--weight-semibold);
   transform: translateY(-200%);
   transition: transform var(--duration-fast) var(--easing-standard);
@@ -157,7 +166,7 @@ svg {
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   font-weight: var(--weight-semibold);
   cursor: pointer;
 }

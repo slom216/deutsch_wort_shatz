@@ -1,0 +1,373 @@
+{
+  "source_dimensions": [
+    1055,
+    1491
+  ],
+  "coordinate_format": "left, top, right, bottom; source pixels",
+  "assets": [
+    {
+      "file": "artwork/hero-vocabulary.png",
+      "source_box": [
+        508,
+        47,
+        1011,
+        295
+      ],
+      "size": [
+        507,
+        252
+      ],
+      "note": ""
+    },
+    {
+      "file": "artwork/word-wizard-card.png",
+      "source_box": [
+        75,
+        471,
+        307,
+        654
+      ],
+      "size": [
+        236,
+        187
+      ],
+      "note": "Cream collectible-card paper is intentionally opaque."
+    },
+    {
+      "file": "artwork/footer-staircase.png",
+      "source_box": [
+        796,
+        1344,
+        1031,
+        1474
+      ],
+      "size": [
+        239,
+        134
+      ],
+      "note": ""
+    },
+    {
+      "file": "badges/100-words-introduced.png",
+      "source_box": [
+        83,
+        1263,
+        140,
+        1319
+      ],
+      "size": [
+        61,
+        60
+      ],
+      "note": ""
+    },
+    {
+      "file": "badges/first-word.png",
+      "source_box": [
+        361,
+        1263,
+        418,
+        1319
+      ],
+      "size": [
+        61,
+        60
+      ],
+      "note": ""
+    },
+    {
+      "file": "branding/logo-mark.png",
+      "source_box": [
+        54,
+        13,
+        79,
+        38
+      ],
+      "size": [
+        29,
+        29
+      ],
+      "note": ""
+    },
+    {
+      "file": "branding/deulern-wordmark.png",
+      "source_box": [
+        87,
+        15,
+        175,
+        36
+      ],
+      "size": [
+        92,
+        25
+      ],
+      "note": ""
+    },
+    {
+      "file": "branding/deulern-logo.png",
+      "source_box": [
+        54,
+        13,
+        175,
+        38
+      ],
+      "size": [
+        125,
+        29
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/theme-toggle.png",
+      "source_box": [
+        870,
+        14,
+        890,
+        34
+      ],
+      "size": [
+        24,
+        24
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/reviews-due.png",
+      "source_box": [
+        74,
+        674,
+        100,
+        701
+      ],
+      "size": [
+        30,
+        31
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/words-started.png",
+      "source_box": [
+        214,
+        676,
+        236,
+        699
+      ],
+      "size": [
+        26,
+        27
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/in-learning.png",
+      "source_box": [
+        360,
+        674,
+        387,
+        701
+      ],
+      "size": [
+        31,
+        31
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/mastered.png",
+      "source_box": [
+        498,
+        677,
+        531,
+        700
+      ],
+      "size": [
+        37,
+        27
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/new-words.png",
+      "source_box": [
+        619,
+        675,
+        640,
+        697
+      ],
+      "size": [
+        25,
+        26
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/total-xp.png",
+      "source_box": [
+        761,
+        673,
+        788,
+        701
+      ],
+      "size": [
+        31,
+        32
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/streak.png",
+      "source_box": [
+        897,
+        674,
+        925,
+        701
+      ],
+      "size": [
+        32,
+        31
+      ],
+      "note": ""
+    },
+    {
+      "file": "icons/goal-complete.png",
+      "source_box": [
+        957,
+        862,
+        989,
+        894
+      ],
+      "size": [
+        36,
+        36
+      ],
+      "note": ""
+    },
+    {
+      "file": "decorations/red-tall.png",
+      "source_box": [
+        46,
+        309,
+        66,
+        423
+      ],
+      "size": [
+        24,
+        118
+      ],
+      "note": ""
+    },
+    {
+      "file": "decorations/blue-tall.png",
+      "source_box": [
+        47,
+        825,
+        73,
+        925
+      ],
+      "size": [
+        30,
+        104
+      ],
+      "note": ""
+    },
+    {
+      "file": "decorations/red-small.png",
+      "source_box": [
+        47,
+        940,
+        64,
+        986
+      ],
+      "size": [
+        21,
+        50
+      ],
+      "note": ""
+    },
+    {
+      "file": "decorations/yellow-small.png",
+      "source_box": [
+        395,
+        940,
+        411,
+        986
+      ],
+      "size": [
+        20,
+        50
+      ],
+      "note": ""
+    },
+    {
+      "file": "decorations/blue-small.png",
+      "source_box": [
+        688,
+        940,
+        704,
+        986
+      ],
+      "size": [
+        20,
+        50
+      ],
+      "note": ""
+    },
+    {
+      "file": "ui-reference/keep-learning.png",
+      "source_box": [
+        908,
+        9,
+        1008,
+        39
+      ],
+      "size": [
+        104,
+        34
+      ],
+      "note": "Raster reference; recreate interactive control and label in HTML/CSS."
+    },
+    {
+      "file": "ui-reference/continue-learning.png",
+      "source_box": [
+        80,
+        387,
+        283,
+        428
+      ],
+      "size": [
+        207,
+        45
+      ],
+      "note": "Raster reference; recreate interactive control and label in HTML/CSS."
+    },
+    {
+      "file": "ui-reference/review-only.png",
+      "source_box": [
+        300,
+        388,
+        472,
+        427
+      ],
+      "size": [
+        176,
+        43
+      ],
+      "note": "Raster reference; recreate interactive control and label in HTML/CSS."
+    },
+    {
+      "file": "ui-reference/practise.png",
+      "source_box": [
+        490,
+        388,
+        613,
+        427
+      ],
+      "size": [
+        127,
+        43
+      ],
+      "note": "Raster reference; recreate interactive control and label in HTML/CSS."
+    }
+  ]
+}

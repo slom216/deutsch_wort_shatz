@@ -1,23 +1,36 @@
+/* A small sheet of paper: hairline, trimmed corners, the figure in Outfit. */
 .stat-card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  box-shadow: var(--shadow-sm);
 }
 
 .stat-card__label {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+/* Icons run 26–32px tall. A fixed box keeps every label on one line across the row;
+   `object-fit: none` draws each at its native pixels inside it, never scaled. */
+.stat-card__icon {
+  display: block;
+  width: 37px;
+  height: 32px;
+  object-fit: none;
+  object-position: left center;
+  margin-bottom: var(--space-2);
 }
 
 .stat-card__value {
   margin: 0;
+  font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-display);
   font-variant-numeric: tabular-nums;
   line-height: var(--leading-tight);
 }
@@ -53,9 +66,10 @@
   }
 }
 
-@media (min-width: 70rem) {
+/* One row of seven from the full poster sheet down to where the labels still fit. */
+@media (min-width: 62rem) {
   .stat-grid--seven {
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: var(--space-3);
+    gap: var(--space-2);
   }
 }

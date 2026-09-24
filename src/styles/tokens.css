@@ -1,60 +1,81 @@
 /**
- * Design tokens — DeuLern suite (Junior Achievement SoCal system, see design.md).
+ * Design tokens — the DeuLern poster collage (see design.md).
  *
- * Values are kept in step with the other DeuLern apps (deulern.com, grammatik.deulern.com,
- * verben.deulern.com) so the suite reads as one product. Retheme here only; components
- * must not hard-code raw values.
+ * The palette and fonts are the deulern.com site's, shared with grammatik.deulern.com:
+ * cream paper, black ink, signal red for actions, blue for links and progress, mustard in
+ * the art and the goal meters. Retheme here only; components must not hard-code raw values.
  *
  * Light and dark both come from `light-dark()`, driven by `color-scheme`. No attribute on
  * <html> means "follow the OS"; the theme toggle pins it with `data-theme`.
  */
 
+/* Heavy geometric sans — the big poster headlines. */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fonts/outfit-800-latin.woff2') format('woff2');
+}
+
+/* Condensed sans — echoes the lettering printed in the art. */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/oswald-600-latin.woff2') format('woff2');
+}
+
 :root {
   color-scheme: light dark;
 
-  /* ---- brand palette (fixed in both themes) ---- */
-  --color-brand: #285f74; /* primary */
-  --color-secondary: #00a0af;
-  --color-tertiary: #e6e33c;
-  --color-accent-cyan: #a7e8ea;
-  --color-accent-lime: #dceb4a;
+  /* ---- brand constants (fixed in both themes) ---- */
+  --color-red: #c63f1e; /* buttons carry cream text: 4.7:1 */
+  --color-on-red: #fbf5ea;
+  --color-mustard: #f2a82c;
+  --color-sky: #3b82d6; /* the art's blue; decoration only, never text */
+  --color-ink-fixed: #141414;
 
-  /* ---- surfaces ---- */
-  --color-bg: light-dark(#f6fbfc, #0b1d24);
-  --color-surface: light-dark(#ffffff, #102a33);
-  --color-surface-raised: light-dark(#ffffff, #17363f);
-  --color-surface-sunken: light-dark(#eaf2f4, #17363f);
-  --color-border: light-dark(#285f7426, #ffffff26);
-  --color-border-strong: light-dark(#285f7459, #ffffff4d);
-  /* Progress-bar track. Translucent rather than a surface colour, so the unfilled part of a
-     bar stays visible on raised cards too — `--color-surface-sunken` matches them exactly. */
-  --color-meter-track: color-mix(in oklab, var(--color-text) 18%, transparent);
+  /* ---- paper ---- */
+  --color-table: light-dark(#cfc4ae, #100f0d);
+  --color-bg: light-dark(#e6ddcc, #1c1a17);
+  --color-surface: light-dark(#efe8db, #25221e);
+  --color-surface-raised: light-dark(#efe8db, #25221e);
+  --color-surface-sunken: light-dark(#ddd3c0, #2e2a25);
+  --color-border: light-dark(#14141426, #efe6d626);
+  --color-border-strong: light-dark(#14141480, #efe6d680);
+  --color-meter-track: light-dark(#d3c9b6, #3a352e);
 
-  --color-text: light-dark(#285f74, #eaf2f4);
-  /* #40707f keeps 4.5:1 on the sunken surface (#eaf2f4) and the wrong-answer panel. */
-  --color-text-muted: light-dark(#40707f, #a3c0c9);
-  --color-text-inverse: light-dark(#ffffff, #285f74);
+  /* ---- ink ---- */
+  --color-text: light-dark(#141414, #efe6d6);
+  --color-text-muted: light-dark(#3f3a33, #b8ad9a);
+  --color-text-inverse: light-dark(#fbf5ea, #141414);
 
-  /* Interactive colour. Cyan in the dark theme, deep teal in the light one — both AA
-     against their own surface. */
-  --color-primary: light-dark(#007f8b, #5fd6e2);
-  --color-primary-hover: light-dark(#00646e, #8ae4ec);
-  --color-primary-subtle: color-mix(in oklab, var(--color-secondary) 12%, var(--color-surface));
-  --color-on-primary: light-dark(#ffffff, #0b1d24);
+  /* Links, selected states and progress: the poster's blue. */
+  --color-primary: light-dark(#2f5f8f, #8fb3dc);
+  --color-primary-hover: light-dark(#1f4570, #b3cdea);
+  --color-primary-subtle: color-mix(in oklab, var(--color-primary) 14%, var(--color-bg));
+  --color-on-primary: light-dark(#fbf5ea, #141414);
 
-  /* Lime is reserved for the single primary call to action on a screen. */
-  --color-cta: var(--color-tertiary);
-  --color-cta-hover: color-mix(in oklab, var(--color-tertiary) 88%, var(--color-brand));
-  --color-on-cta: var(--color-brand);
+  /* Red is the one action colour. */
+  --color-cta: var(--color-red);
+  --color-cta-hover: color-mix(in srgb, var(--color-red) 80%, #141414);
+  --color-on-cta: var(--color-on-red);
 
+  /* The red phrase in a poster headline. Large text only in dark. */
+  --color-headline-accent: light-dark(#c63f1e, #e8603f);
+
+  /* The palette has no green: success is the blue, like every earned state. */
   --color-success: var(--color-primary);
   --color-success-subtle: var(--color-primary-subtle);
-  --color-warning: light-dark(#6b6a12, var(--color-accent-lime));
-  --color-warning-subtle: color-mix(in oklab, var(--color-tertiary) 24%, var(--color-surface));
-  --color-danger: light-dark(#c93b3b, #f08585);
-  --color-danger-subtle: color-mix(in oklab, #d64545 12%, var(--color-surface));
+  /* Mustard is too light for text on paper, so warning text is a burnt ochre. */
+  --color-warning: light-dark(#7a4f00, var(--color-mustard));
+  --color-warning-subtle: color-mix(in oklab, var(--color-mustard) 22%, var(--color-bg));
+  --color-danger: light-dark(#b0381a, #f08a6e);
+  --color-danger-subtle: color-mix(in oklab, var(--color-red) 12%, var(--color-bg));
 
-  /* ---- spacing scale (design.md · 6 / 14 / 28 / 40 / 88) ---- */
+  /* ---- spacing scale (6 / 14 / 28 / 40 / 88) ---- */
   --space-1: 6px;
   --space-2: 10px;
   --space-3: 14px;
@@ -68,19 +89,21 @@
   --font-sans:
     'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-sans);
+  --font-display: 'Outfit', 'Futura', 'Century Gothic', system-ui, sans-serif;
+  --font-cond: 'Oswald', 'Arial Narrow', 'Roboto Condensed', sans-serif-condensed, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  --text-xs: 0.75rem; /* 12px · label-sm */
-  --text-sm: 0.875rem; /* 14px · body-sm, nav-link */
-  --text-base: 0.9375rem; /* 15px · body-md */
-  --text-lg: 1.0625rem; /* 17px · label-lg, button-text */
-  --text-xl: 1.25rem; /* 20px · body-lg */
-  --text-2xl: 1.75rem; /* 28px · headline-sm */
-  --text-3xl: clamp(1.625rem, 5vw, 2.25rem); /* headline-md */
-  --text-4xl: clamp(2rem, 7vw, 3.375rem); /* headline-lg */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 0.9375rem; /* 15px */
+  --text-lg: 1.0625rem; /* 17px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: clamp(1.5rem, 3vw, 1.875rem); /* 30px — section titles */
+  --text-3xl: clamp(1.75rem, 4vw, 2.25rem); /* 36px */
+  --text-4xl: clamp(2.25rem, 5vw, 3rem); /* 48px */
+  --text-poster: clamp(2.75rem, 6.4vw, 4.25rem); /* 68px — the poster line */
 
-  --leading-tight: 1.2;
+  --leading-tight: 1.05;
   --leading-normal: 1.53;
   --leading-relaxed: 1.7;
 
@@ -90,23 +113,31 @@
   --weight-bold: 700;
   --weight-display: 800;
 
+  --tracking-tight: -0.015em;
+  --tracking-display: -0.03em;
   --tracking-label: 0.04em;
+  --tracking-caps: 0.14em; /* tracked capitals: eyebrows, footer headings */
 
   /* ---- radii, depth, layout ---- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 28px;
+  /* Trimmed paper, not app chrome. Pills are left for meters and chips. */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
   --radius-pill: 9999px;
 
-  --shadow-sm: 0 1px 2px light-dark(rgb(40 95 116 / 8%), rgb(0 0 0 / 40%));
-  --shadow-md: 0 8px 24px light-dark(rgb(40 95 116 / 12%), rgb(0 0 0 / 50%));
+  /* No shadows in the poster; only floating layers (dialogs) keep one. */
+  --shadow-sm: none;
+  --shadow-md: 0 10px 30px light-dark(rgb(20 20 20 / 18%), rgb(0 0 0 / 55%));
 
-  --shell-max-width: 80rem;
-  --content-max-width: 75rem;
+  /* The page is one poster sheet, like deulern.com: the art is cut at native size for a
+     ~1055px sheet, so past 1100px it sits on a darker table. */
+  --sheet: 1100px;
+  --shell-max-width: var(--sheet);
+  --content-max-width: var(--sheet);
   --reading-max-width: 43rem;
-  --container-padding: 20px;
-  --header-height: 72px;
+  --container-padding: clamp(16px, 4vw, 44px);
+  --header-height: 60px;
   --tap-target: 44px;
 
   /* ---- motion (§30: reduced motion honoured below) ---- */
@@ -114,8 +145,13 @@
   --duration-normal: 220ms;
   --easing-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  --focus-ring: 2px solid var(--color-primary);
-  --focus-ring-offset: 2px;
+  --focus-ring: 3px solid var(--color-primary);
+  --focus-ring-offset: 3px;
+
+  /* Paper grain, as on deulern.com. The dark one is lifted to pale fibres. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .94 0 0 0 0 .88 0 0 0 0 .78 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper-grain: var(--grain);
 }
 
 /* The toggle pins `color-scheme`, and with it every `light-dark()` above. Without the
@@ -125,6 +161,13 @@
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
+  --paper-grain: var(--grain-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper-grain: var(--grain-dark);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

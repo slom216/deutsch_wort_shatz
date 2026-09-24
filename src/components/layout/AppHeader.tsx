@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { continuousSessionPath } from '@/features/practice/session/endless';
+import logoMark from '@/assets/art/logo-mark.png';
 import { ThemeToggle } from './ThemeToggle';
 import './AppHeader.css';
 
@@ -24,8 +25,8 @@ const NAV_ITEMS: readonly NavItem[] = [
 ];
 
 /**
- * Sticky top bar, matching the other DeuLern apps: wordmark, horizontal nav, theme
- * switch and one lime call to action.
+ * Sticky top bar, matching the other DeuLern apps: logo and wordmark, horizontal nav,
+ * theme switch and one red call to action.
  *
  * Semantic `<nav>` plus `aria-current="page"` marks the active route rather than relying
  * on the underline alone (§30).
@@ -37,8 +38,9 @@ export function AppHeader(): ReactNode {
     <header className="app-header">
       <div className="app-header__inner">
         <Link className="app-brand" to="/">
-          Deu<span className="app-brand__accent">Lern</span> Deutsch Wortschatz
-          <span className="app-brand__subtitle">German vocabulary, A1–B1</span>
+          <img className="app-brand__mark" src={logoMark} alt="" width={29} height={29} />
+          <span className="app-brand__word">DeuLern</span>{' '}
+          <span className="app-brand__app">Deutsch Wortschatz</span>
         </Link>
 
         <nav className="app-nav" aria-label="Main">

@@ -1,0 +1,46 @@
+.achievement-badge {
+  flex: none;
+  width: 61px;
+  height: 60px;
+}
+
+/* The poster's four inks, fixed in both themes like the printed art. */
+.achievement-badge--drawn {
+  --badge-red: var(--color-red);
+  --badge-mustard: var(--color-mustard);
+  --badge-sky: var(--color-sky);
+  --badge-ink: var(--color-ink-fixed);
+
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin: 2px;
+  background: linear-gradient(135deg, var(--badge-ground) 0 50%, var(--badge-corner) 50% 100%);
+}
+
+.achievement-badge--drawn::after {
+  content: '';
+  position: absolute;
+  background: var(--badge-mark);
+}
+
+.achievement-badge--circle::after {
+  inset: 14px;
+  border-radius: 50%;
+}
+
+.achievement-badge--quarter::after {
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border-bottom-right-radius: 100%;
+}
+
+.achievement-badge--triangle::after {
+  right: 6px;
+  bottom: 6px;
+  width: 30px;
+  height: 30px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}

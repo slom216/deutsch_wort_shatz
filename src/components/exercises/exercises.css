@@ -168,26 +168,45 @@
   letter-spacing: 0.04em;
 }
 
-/* button-primary (design.md): lime pill, teal label, the page's one conversion action. */
+/* Poster primary: square-cut red, cream label, the page's one action. */
 .exercise__submit,
 .runner__next {
   align-self: flex-start;
-  min-height: 56px;
-  padding: var(--space-3) var(--space-5);
+  min-height: 48px;
+  padding: var(--space-2) var(--space-5);
   background: var(--color-cta);
   color: var(--color-on-cta);
   border: 1px solid var(--color-cta);
-  border-radius: var(--radius-pill);
-  font-size: var(--text-lg);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   cursor: pointer;
   margin-top: var(--space-2);
+}
+
+/* A primary action that takes the learner somewhere carries the poster's arrow. Drawn as a
+   mask rather than the → glyph, which sits low and thin in Manrope. */
+.button-arrow::after {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 14px;
+  margin-left: var(--space-2);
+  vertical-align: -1px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'%3E%3Cpath d='M0 7h15M10 1.5 15.5 7 10 12.5' fill='none' stroke='black' stroke-width='2.2'/%3E%3C/svg%3E")
+    center / contain no-repeat;
 }
 
 .exercise__submit:hover:not(:disabled),
 .runner__next:hover {
   background: var(--color-cta-hover);
   border-color: var(--color-cta-hover);
+}
+
+/* Pages set these buttons side by side with no whitespace between them in the markup. */
+.exercise__submit + .page-action {
+  margin-left: var(--space-3);
 }
 
 .exercise__submit:disabled {
@@ -204,11 +223,11 @@
 .runner__skip,
 .page-action {
   min-height: 48px;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-5);
   background: var(--color-surface);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: var(--weight-semibold);
 }
@@ -218,8 +237,8 @@
 .runner__reveal:hover,
 .runner__skip:hover,
 .page-action:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
 .exercise__revealed,

@@ -6,7 +6,7 @@
 
 .app-shell__main {
   min-width: 0;
-  padding: var(--space-6) var(--container-padding) var(--space-8);
+  padding: var(--space-3) var(--container-padding) var(--space-6);
 }
 
 .app-shell__main:focus {
